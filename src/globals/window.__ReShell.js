@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
 import BaseView from "../components/core/BaseView";
-import ExampleApp from "../ExampleApp";
 
 export default class DOMReShell {
   // TODO: Document
@@ -12,7 +11,11 @@ export default class DOMReShell {
   static async afterDOMReplace() {}
 
   // TODO: Document
-  static async initDOM(BaseApp = ExampleApp) {
+  static async initDOM(baseApp = null) {
+    if (!baseApp) {
+      baseApp = React.lazy(() => import("../ExampleApp"));
+    }
+
     await DOMReShell.beforeDOMReplace();
 
     // Wipe existing content
@@ -28,7 +31,9 @@ export default class DOMReShell {
 
     ReactDOM.render(
       <React.StrictMode>
-        <BaseView BaseApp={BaseApp} />
+        <Suspense fallback={<div />}>
+          <BaseView baseApp={baseApp} />
+        </Suspense>
       </React.StrictMode>,
       elBase
     );
