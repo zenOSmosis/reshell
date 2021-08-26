@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FullViewport from "../../FullViewport";
 
 export default function BaseView({ baseApp }) {
   const [areBaseStylesLoaded, setAreBaseStylesLoaded] = useState(false);
@@ -17,5 +18,9 @@ export default function BaseView({ baseApp }) {
   }
 
   const BaseAppView = baseApp;
-  return <BaseAppView />;
+  return (
+    <FullViewport>
+      <BaseAppView />
+    </FullViewport>
+  );
 }
