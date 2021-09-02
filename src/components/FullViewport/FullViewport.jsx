@@ -11,6 +11,8 @@ export const EVT_TOUCH_MOVE = "touchmove";
 export const EVT_TOUCH_END = "touchend";
 
 // TODO: Replace a lot of this w/ position fixed; width 100%, height: 100%?
+// (IMPORTANT: If doing so, expose child Full view as Firefox will relate to
+// document.body for child nodes)
 
 /**
  * A React Component which utilizes the entire viewport (or what is available
