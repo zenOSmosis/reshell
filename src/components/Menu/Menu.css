@@ -1,0 +1,21 @@
+.szh-menu-container * {
+  background-color: #000;
+  color: #fff;
+  border: 0px;
+  font-weight: normal;
+}
+
+.szh-menu-container li:hover {
+  background-color: #3c8aff;
+  color: #000;
+}
+
+button.szh-menu-button {
+  background-color: transparent;
+  border: 0px;
+}
+
+button.szh-menu-button.szh-menu-button--open {
+  background-color: #3c8aff;
+  color: #000;
+}

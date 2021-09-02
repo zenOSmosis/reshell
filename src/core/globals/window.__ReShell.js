@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
-import BaseView from "../components/core/BaseView";
+import BaseView from "../BaseView";
 
 export default class DOMReShell {
   // TODO: Document
@@ -13,7 +13,7 @@ export default class DOMReShell {
   // TODO: Document
   static async initDOM(baseApp = null) {
     if (!baseApp) {
-      baseApp = React.lazy(() => import("../ExampleApp"));
+      baseApp = React.lazy(() => import("../../ExampleApp"));
     }
 
     await DOMReShell.beforeDOMReplace();
