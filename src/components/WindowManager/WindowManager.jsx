@@ -28,7 +28,7 @@ export default function WindowManager({ initialWindows = [] }) {
   /**
    * @type {number[] | string[]} keys
    */
-  const [discardedMapKeys, setDiscardedMapKeys] = useState([]);
+  const [discardedWindowIds, setDiscardedWindowIds] = useState([]);
 
   // TODO: Document
   const [windowControllerMaps, setWindowControllerMaps] = useState({});
@@ -203,7 +203,7 @@ export default function WindowManager({ initialWindows = [] }) {
 
         // Don't try to create a new window controller if the key is already
         // set
-        if (discardedMapKeys.includes(key)) {
+        if (discardedWindowIds.includes(key)) {
           return null;
         }
 
@@ -258,10 +258,12 @@ export default function WindowManager({ initialWindows = [] }) {
 
                     delete next[key];
 
-                    setDiscardedMapKeys((prev) => [...prev, key]);
-
                     return next;
                   });
+
+                  // Prevent re-creating this window if the inbound window data
+                  // array still retains the id
+                  setDiscardedWindowIds((prev) => [...prev, key]);
                 });
               }
             }}
@@ -274,7 +276,7 @@ export default function WindowManager({ initialWindows = [] }) {
   }, [
     initialWindows,
     getWindowControllerWithKey,
-    discardedMapKeys,
+    discardedWindowIds,
     handleSetActiveWindow,
     handleWindowClose,
     handleWindowMinimize,
