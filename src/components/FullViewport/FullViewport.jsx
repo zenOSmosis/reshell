@@ -4,6 +4,8 @@ import React, { Component } from "react";
 
 // NOTE: This intentionally does not make use of *.module.css because it also
 // includes internal styling for the html and body tags
+//
+// TODO: Maybe this can work for adding module support w/ global styles?  https://stackoverflow.com/a/40065474
 import "./FullViewport.css";
 
 const EVT_RESIZE = "resize";
