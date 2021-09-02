@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import BaseView from "../BaseView";
 
+// TODO: Extend PhantomCore and unrender on destruct?
 export default class DOMReShell {
   // TODO: Document
   static async beforeDOMReplace() {}
