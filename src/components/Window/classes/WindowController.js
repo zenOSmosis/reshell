@@ -108,4 +108,23 @@ export default class WindowController extends PhantomCore {
   getTitle() {
     return this._state.title;
   }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async close() {
+    return this.destroy();
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    // TODO: Determine if in dirty state, prior to closing
+    // if (
+    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+    // ) {
+    return super.destroy();
+    //}
+  }
 }

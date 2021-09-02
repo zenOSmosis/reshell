@@ -207,9 +207,9 @@ export default function WindowManager({ initialWindows = [] }) {
           return null;
         }
 
-        const { view: View, title, ...windowProps } = data;
+        const { view: ViewComponent, title, ...windowProps } = data;
 
-        if (!View) {
+        if (!ViewComponent) {
           return null;
         }
 
@@ -268,7 +268,18 @@ export default function WindowManager({ initialWindows = [] }) {
               }
             }}
           >
-            <View />
+            {windowController &&
+              /**
+               * Supply windowController to data object as accessible property.
+               *
+               * i.e.:
+               * {
+               *    id: 'some-id',
+               *    title: 'Some Window Title',
+               *    view: ({windowController}) => <div>...</div>
+               * }
+               */
+              ViewComponent({ windowController })}
           </Window>
         );
       })

@@ -29,8 +29,55 @@ export default function Desktop({ initialWindows }) {
             // where the React components aren't utilized directly by the
             // implementors
           }
-          <Menu portal={true} menuButton={<MenuButton>Desktop</MenuButton>}>
-            <MenuItem onClick={() => window.location.reload()}>Reload</MenuItem>
+          <Menu
+            portal={true}
+            menuButton={
+              <MenuButton>
+                {
+                  // TODO: Make this string configurable
+                }
+                Desktop
+              </MenuButton>
+            }
+          >
+            <MenuItem
+              onClick={() =>
+                alert(
+                  "TODO: Implement window w/ overview of System Information"
+                )
+              }
+            >
+              About / System Information
+            </MenuItem>
+            {
+              // TODO: Show divider
+            }
+            <MenuItem
+              onClick={() =>
+                alert(
+                  "TODO: Implement; Either show fly-out of running services or window with them"
+                )
+              }
+            >
+              Services
+            </MenuItem>
+            {
+              // TODO: Show divider
+            }
+            <MenuItem onClick={() => alert("TODO: Implement ReShell destruct")}>
+              Close
+            </MenuItem>
+            {
+              // TODO: Show divider
+            }
+            <MenuItem
+              onClick={() => {
+                // TODO: Only reload after ReShell destruct
+                window.location.reload();
+              }}
+            >
+              Reload
+            </MenuItem>
           </Menu>
           {activeWindowController && (
             <>
