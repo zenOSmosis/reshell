@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import "./FullViewport.css";
 
 export const EVT_RESIZE = "resize";
+export const EVT_TOUCH_MOVE = "touchmove";
 export const EVT_TOUCH_END = "touchend";
 
 // TODO: Replace a lot of this w/ position fixed; width 100%, height: 100%?
@@ -47,6 +48,16 @@ export default class FullViewport extends Component {
   componentDidMount() {
     this._handleViewportResize();
 
+    /**
+     * IMPORTANT: passive: false is extremely important or else when moving
+     * finger on mobile Safari the page will bounce around
+     *
+     * @see https://stackoverflow.com/a/49853392
+     */
+    window.addEventListener(EVT_TOUCH_MOVE, this._handleTouchMove, {
+      passive: false,
+    });
+
     window.addEventListener(EVT_RESIZE, this._handleViewportResize);
     window.addEventListener(EVT_TOUCH_END, this._handleTap);
 
@@ -65,6 +76,7 @@ export default class FullViewport extends Component {
     document.documentElement.classList.remove("full-viewport");
     document.body.classList.remove("full-viewport");
 
+    window.removeEventListener(EVT_TOUCH_MOVE, this._handleTouchMove);
     window.removeEventListener(EVT_RESIZE, this._handleViewportResize);
     window.removeEventListener(EVT_TOUCH_END, this._handleTap);
 
@@ -74,6 +86,10 @@ export default class FullViewport extends Component {
   componentDidUpdate() {
     this._handleViewportResize();
   }
+
+  _handleTouchMove = (evt) => {
+    evt.preventDefault();
+  };
 
   /**
    * Prevents double-tap zooming on iOS.
