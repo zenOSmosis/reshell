@@ -161,6 +161,12 @@ export default function ExampleApp() {
               >
                 Log
               </button>
+              {
+                // TODO: Remove
+              }
+              <button onClick={() => windowController.setTitle("hello!")}>
+                Change Title
+              </button>
             </Center>
           ),
         },
