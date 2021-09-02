@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
+    "start:wizard": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
