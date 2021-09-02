@@ -9,6 +9,8 @@ import "./FullViewport.css";
 export const EVT_RESIZE = "resize";
 export const EVT_TOUCH_END = "touchend";
 
+// TODO: Replace a lot of this w/ position fixed; width 100%, height: 100%?
+
 /**
  * A React Component which utilizes the entire viewport (or what is available
  * beyond the window chrome) of the device.

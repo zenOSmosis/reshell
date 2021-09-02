@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import FullViewport from "../../FullViewport";
+import FullViewport from "../../components/FullViewport";
+
+import ParadigmProvider from "./providers/ParadigmProvider";
+import DesktopProvider from "./providers/DesktopProvider";
 
 export default function BaseView({ baseApp }) {
   const [areBaseStylesLoaded, setAreBaseStylesLoaded] = useState(false);
@@ -19,8 +22,12 @@ export default function BaseView({ baseApp }) {
 
   const BaseAppView = baseApp;
   return (
-    <FullViewport>
-      <BaseAppView />
-    </FullViewport>
+    <ParadigmProvider>
+      <DesktopProvider>
+        <FullViewport>
+          <BaseAppView />
+        </FullViewport>
+      </DesktopProvider>
+    </ParadigmProvider>
   );
 }
