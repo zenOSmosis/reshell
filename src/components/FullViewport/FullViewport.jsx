@@ -2,17 +2,13 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-// NOTE: This intentionally does not make use of *.module.css and also includes
-// internal styling for the html and body tags
+// NOTE: This intentionally does not make use of *.module.css because it also
+// includes internal styling for the html and body tags
 import "./FullViewport.css";
 
-export const EVT_RESIZE = "resize";
-export const EVT_TOUCH_MOVE = "touchmove";
-export const EVT_TOUCH_END = "touchend";
-
-// TODO: Replace a lot of this w/ position fixed; width 100%, height: 100%?
-// (IMPORTANT: If doing so, expose child Full view as Firefox will relate to
-// document.body for child nodes)
+const EVT_RESIZE = "resize";
+const EVT_TOUCH_MOVE = "touchmove";
+const EVT_TOUCH_END = "touchend";
 
 /**
  * A React Component which utilizes the entire viewport (or what is available
@@ -63,6 +59,7 @@ export default class FullViewport extends Component {
     window.addEventListener(EVT_RESIZE, this._handleViewportResize);
     window.addEventListener(EVT_TOUCH_END, this._handleTap);
 
+    // TODO: Document why this is needed
     this._pollingInterval = setInterval(
       this._handleViewportResize,
       this._pollingTime
@@ -130,6 +127,7 @@ export default class FullViewport extends Component {
       return;
     }
 
+    // TODO: Document
     const isInPollingMode = evt ? false : true;
 
     // Fixes issue where text input fields can disappear behind mobile keyboard
