@@ -129,47 +129,6 @@ export default function ExampleApp() {
             </Layout>
           ),
         },
-
-        // TODO: Add test window which can be changed between widget, clear, etc. modes
-
-        {
-          id: "host-bridge",
-          title: "Host Bridge",
-          style: {
-            left: 100,
-            top: 80,
-            width: 640,
-            height: 480,
-          },
-          // TODO: Use windowController in view context
-          // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
-          // TODO: Show service list in Desktop menu
-          view: ({ windowController }) => (
-            <Center>
-              [Host Bridge]{" "}
-              <button onClick={() => windowController.destroy()}>Close</button>
-              {
-                // TODO: Remove or refactor
-              }
-              <button
-                onClick={() =>
-                  console.log({
-                    windowController,
-                    title: windowController.getTitle(),
-                  })
-                }
-              >
-                Log
-              </button>
-              {
-                // TODO: Remove
-              }
-              <button onClick={() => windowController.setTitle("hello!")}>
-                Change Title
-              </button>
-            </Center>
-          ),
-        },
       ]}
     />
   );
