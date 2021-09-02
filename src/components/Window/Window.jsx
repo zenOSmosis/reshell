@@ -101,17 +101,15 @@ const Window = React.forwardRef(
       // TODO: Refactor dragging logic (i.e. move to WindowManager)
       // TODO: Don't allow dragging out of bounds
       if (isDragging) {
-        requestAnimationFrame(() => {
-          if (!refInitialDragPosition.current) {
-            refInitialDragPosition.current = {
-              x: el.offsetLeft,
-              y: el.offsetTop,
-            };
-          }
+        if (!refInitialDragPosition.current) {
+          refInitialDragPosition.current = {
+            x: el.offsetLeft,
+            y: el.offsetTop,
+          };
+        }
 
-          el.style.left = refInitialDragPosition.current.x + mx + "px";
-          el.style.top = refInitialDragPosition.current.y + my + "px";
-        });
+        el.style.left = refInitialDragPosition.current.x + mx + "px";
+        el.style.top = refInitialDragPosition.current.y + my + "px";
       } else {
         refInitialDragPosition.current = null;
       }
