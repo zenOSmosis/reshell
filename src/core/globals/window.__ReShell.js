@@ -14,7 +14,14 @@ export default class DOMReShell {
   // TODO: Document
   static async initDOM(baseApp = null) {
     if (!baseApp) {
-      baseApp = React.lazy(() => import("../../ExampleApp"));
+      switch (process.env.REACT_APP_PORTAL) {
+        case "setupwizard":
+          baseApp = React.lazy(() => import("../../WizardApp"));
+          break;
+
+        default:
+          baseApp = React.lazy(() => import("../../ExampleApp"));
+      }
     }
 
     await DOMReShell.beforeDOMReplace();
