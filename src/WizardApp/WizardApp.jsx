@@ -36,11 +36,11 @@ export default function WizardApp() {
     <Desktop
       initialWindows={[
         {
-          id: "host-bridge",
-          title: "Host Bridge",
+          id: "reshell-setup-wizard",
+          title: "ReShell Setup Wizard",
           style: {
-            left: 100,
-            top: 80,
+            left: 10,
+            top: 10,
             width: 640,
             height: 480,
           },
@@ -73,6 +73,8 @@ export default function WizardApp() {
             </Center>
           ),
         },
+
+        // TODO: Add test window which can be changed between widget, clear, etc. modes
       ]}
     />
   );
