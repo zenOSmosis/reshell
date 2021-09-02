@@ -28,6 +28,7 @@ import { useDrag } from "react-use-gesture";
 // TODO: https://github.com/pmndrs/react-spring
 
 // TODO: Add prop-types
+// TODO: Include option to be able to drag the window from within the window
 const Window = React.forwardRef(
   (
     {
