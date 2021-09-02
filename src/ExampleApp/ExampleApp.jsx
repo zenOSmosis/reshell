@@ -50,7 +50,6 @@ export default function ExampleApp() {
             width: 320,
             height: 320,
           },
-          // TODO: Use windowController in view context
           view: () => (
             <Center>
               <div>
@@ -76,7 +75,6 @@ export default function ExampleApp() {
             width: 320,
             height: 320,
           },
-          // TODO: Use windowController in view context
           view: () => <WindowMonitorView />,
         },
 
@@ -89,7 +87,6 @@ export default function ExampleApp() {
             width: 640,
             height: 320,
           },
-          // TODO: Use windowController in view context
           view: () => <InputMediaDeviceSelectorView />,
         },
 
@@ -102,7 +99,6 @@ export default function ExampleApp() {
             width: 640,
             height: 480,
           },
-          // TODO: Use windowController in view context
           view: () => (
             <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
               <Content>
@@ -131,6 +127,41 @@ export default function ExampleApp() {
                 </div>
               </Footer>
             </Layout>
+          ),
+        },
+
+        // TODO: Add test window which can be changed between widget, clear, etc. modes
+
+        {
+          id: "host-bridge",
+          title: "Host Bridge",
+          style: {
+            left: 100,
+            top: 80,
+            width: 640,
+            height: 480,
+          },
+          // TODO: Use windowController in view context
+          // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
+          // TODO: Show service list in Desktop menu
+          view: ({ windowController }) => (
+            <Center>
+              [Host Bridge]{" "}
+              <button onClick={() => windowController.destroy()}>Close</button>
+              {
+                // TODO: Remove or refactor
+              }
+              <button
+                onClick={() =>
+                  console.log({
+                    windowController,
+                    title: windowController.getTitle(),
+                  })
+                }
+              >
+                Log
+              </button>
+            </Center>
           ),
         },
       ]}
