@@ -7,11 +7,13 @@ import React, {
 } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
-import { EVT_DESTROYED } from "phantom-core";
+import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 import useDesktopContext from "../../hooks/useDesktopContext";
 
-import WindowController from "../Window/classes/WindowController";
+import WindowController, {
+  windowMonitor,
+} from "../Window/classes/WindowController";
 
 // TODO: Refactor
 let stackingIndex = 0;
@@ -215,16 +217,6 @@ export default function WindowManager({ initialWindows = [] }) {
 
         /** @type {WindowController | void} */
         const windowController = getWindowControllerWithKey(key);
-
-        // ... If we're not a new window
-        if (windowController) {
-          // Enable received data to update window controller title
-          const prevTitle = windowController.getTitle();
-          if (prevTitle !== title) {
-            windowController.setTitle(title);
-          }
-        }
-
         return (
           <Window
             key={key}
@@ -237,6 +229,7 @@ export default function WindowManager({ initialWindows = [] }) {
             ref={(ref) => {
               if (ref && !windowController) {
                 const windowController = new WindowController();
+                windowController.setTitle(title);
 
                 ref.setWindowController(windowController);
 
