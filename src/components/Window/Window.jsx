@@ -149,6 +149,7 @@ const Window = React.forwardRef(
     }
 
     return (
+      // TODO: Implement <ErrorBoundary> wrapper (window error boundary)
       <StackingContext
         onMount={_setEl}
         style={{ ...style, zIndex }}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Center from "../components/Center";
 import Desktop from "../components/Desktop";
+import LED from "../components/LED";
 
 import {
   windowMonitor,
@@ -48,29 +49,31 @@ export default function WizardApp() {
           // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
           // TODO: Show service list in Desktop menu
           view: ({ windowController }) => (
-            <Center>
-              [Host Bridge]{" "}
-              <button onClick={() => windowController.destroy()}>Close</button>
-              {
-                // TODO: Remove or refactor
-              }
-              <button
-                onClick={() =>
-                  console.log({
-                    windowController,
-                    title: windowController.getTitle(),
-                  })
-                }
-              >
-                Log
-              </button>
-              {
-                // TODO: Remove
-              }
-              <button onClick={() => windowController.setTitle("hello!")}>
-                Change Title
-              </button>
-            </Center>
+            <div>
+              <ul>
+                <li>
+                  TODO: Service core
+                  <div>
+                    <LED color="gray" /> <button>Start</button>
+                  </div>
+                </li>
+                <li>
+                  TODO: Socket.io service
+                  <div>
+                    <LED color="gray" />
+                    <button>Connect</button>
+                  </div>
+                </li>
+                <li>
+                  TODO: Host Bridge API / SocketAPI
+                  <div>
+                    <LED color="gray" />
+                    <button>View</button>
+                  </div>
+                </li>
+                <li>TODO: Filesystem bindings</li>
+              </ul>
+            </div>
           ),
         },
 
