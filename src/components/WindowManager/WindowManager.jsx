@@ -180,8 +180,9 @@ export default function WindowManager({ initialWindows = [] }) {
   );
 
   /**
-   * Handles converting initial window data into a renderable component with
-   * associated window controller, per instance.
+   * Determines which windows are rendered to the screen at any given time, as
+   * \well as controls instantiation and association of window controllers with
+   * their respective views.
    *
    * @type {React.Component[]}
    */
