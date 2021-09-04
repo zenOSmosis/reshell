@@ -19,16 +19,9 @@ import classNames from "classnames";
 
 import { useDrag } from "react-use-gesture";
 
-// TODO: Implement CodeSandbox support for development / debugging:  https://codesandbox.io/docs/embedding#embed-options
-// TODO: Implement simple embed of Speaker.app as a window
-// TODO: Lined-paper notes app: https://csslayout.io/patterns/lined-paper
-
-// TODO: See https://csslayout.io/patterns
-// TODO: Implement dragging w/ https://use-gesture.netlify.app/docs?
-// TODO: https://github.com/pmndrs/react-spring
-
 // TODO: Add prop-types
-// TODO: Include option to be able to drag the window from within the window
+// TODO: Document
+// TODO: Include option to be able to drag the window from within the window body (i.e. like a widget)
 const WindowView = ({
   children,
 
