@@ -2,6 +2,9 @@ import UIServiceCore from "../../core/classes/UIServiceCore";
 
 import io from "socket.io-client";
 
+/**
+ * Provides SocketIO servicing for ReShell.
+ */
 export default class SocketIOService extends UIServiceCore {
   constructor(...args) {
     super(...args);

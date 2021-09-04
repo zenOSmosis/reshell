@@ -145,10 +145,12 @@ export default function WindowManager({ initialWindows = [] }) {
         return null;
       }
 
-      // Duplicate service class instantiations are ignored, so this is fine
-      // on every render
+      // TODO: Memoize this handling
+      const windowServices = {};
       for (const serviceClass of serviceClasses) {
-        startService(serviceClass);
+        const service = startService(serviceClass);
+
+        windowServices[service.getClassName()] = service;
       }
 
       return (
@@ -194,7 +196,10 @@ export default function WindowManager({ initialWindows = [] }) {
               }
             }}
           >
-            <ViewComponent windowController={windowController} />
+            <ViewComponent
+              windowController={windowController}
+              windowServices={windowServices}
+            />
           </Window>
         </React.Fragment>
       );

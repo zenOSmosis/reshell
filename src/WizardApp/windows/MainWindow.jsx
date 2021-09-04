@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
 import LED from "../../components/LED";
 
 import SocketIOService from "../services/SocketIOService";
+import SocketAPIMockService from "../services/SocketAPIMockService";
+import HostBridgeAPIMockService from "../services/HostBridgeAPIMockService";
 
 const WizardMainWindow = {
   id: "reshell-setup-wizard",
@@ -12,40 +13,35 @@ const WizardMainWindow = {
     width: 640,
     height: 480,
   },
-  serviceClasses: [SocketIOService],
-  // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
-  // TODO: Show service list in Desktop menu
-  view: function WizardMainView({ windowController }) {
-    const [protoState, _setProtoState] = useState(null);
+  serviceClasses: [
+    SocketIOService,
+    SocketAPIMockService,
+    HostBridgeAPIMockService,
+  ],
+  view: function WizardMainView({ windowController, windowServices }) {
+    const hasSocketIOService = Boolean(windowServices["SocketIOService"]);
+    const isSocketConnected =
+      hasSocketIOService && windowServices["SocketIOService"].getIsOnline();
 
     // TODO: Remove
-    useEffect(() => {
-      // TODO: Remove
-      console.log("useEffect");
-
-      _setProtoState("hello");
-
-      return function unmount() {
-        // TODO: Remove
-        console.log("unmount");
-      };
-    }, []);
+    console.log({
+      windowServices,
+    });
 
     return (
       <div>
-        {protoState}
         <ul>
           <li>
-            TODO: Service core!!
-            <div>
-              <LED color="gray" /> <button>Start</button>
-            </div>
+            <LED color={windowServices ? "green" : "gray"} /> Service core
           </li>
           <li>
-            TODO: Socket.io service
+            <LED color={hasSocketIOService ? "green" : "gray"} /> Socket.io
+            service
             <div>
-              <LED color="gray" />
-              <button>Connect</button>
+              <LED color={isSocketConnected ? "green" : "gray"} />
+              <button disabled={!hasSocketIOService}>
+                {!isSocketConnected ? "Connect" : "Disconnect"}
+              </button>
             </div>
           </li>
           <li>
