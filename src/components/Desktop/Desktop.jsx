@@ -125,9 +125,6 @@ export default function Desktop({ initialWindows }) {
               portal={true}
               menuButton={
                 <MenuButton>
-                  {
-                    // TODO: Make this string configurable
-                  }
                   Service Core{" "}
                   <LED color={Array.isArray(services) ? "green" : "gray"} />
                 </MenuButton>
@@ -163,7 +160,11 @@ export default function Desktop({ initialWindows }) {
         </Content>
         <Footer style={{ borderTop: "1px #ccc solid" }}>
           <div style={{ float: "right" }}>
-            <button>Menu</button>
+            <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
+              <MenuItem onClick={() => alert("TODO: Implement")}>
+                TODO: Window list here
+              </MenuItem>
+            </Menu>
           </div>
         </Footer>
       </Layout>
