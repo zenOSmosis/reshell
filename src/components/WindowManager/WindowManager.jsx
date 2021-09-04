@@ -7,14 +7,11 @@ import React, {
 } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
-import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { EVT_DESTROYED } from "phantom-core";
 
 import useDesktopContext from "../../hooks/useDesktopContext";
-import useForceUpdate from "../../hooks/useForceUpdate";
 
-import WindowController, {
-  windowMonitor,
-} from "../Window/classes/WindowController";
+import WindowController from "../Window/classes/WindowController";
 
 // TODO: Incorporate react-router for window routes?
 
@@ -29,8 +26,6 @@ export default function WindowManager({ initialWindows = [] }) {
     activeWindowController: desktopContextActiveWindowController,
     setActiveWindowController: setDesktopContextActiveWindowController,
   } = useDesktopContext();
-
-  const forceUpdate = useForceUpdate();
 
   /**
    * @type {number[] | string[]} keys
@@ -77,7 +72,7 @@ export default function WindowManager({ initialWindows = [] }) {
       if (key === undefined || key === null) {
         setDesktopContextActiveWindowController(null);
       } else {
-        // TODO: Don't bring to front if already in front
+        // TODO: Don't bring to front if already in front (i.e. is already the active window)
 
         const map = getWindowControllerMapWithKey(key);
 
@@ -210,6 +205,9 @@ export default function WindowManager({ initialWindows = [] }) {
       /** @type {WindowController | void} */
       const windowController = dataMap && dataMap.windowController;
 
+      // If we previously had a window controller running with this id
+      //
+      // TODO: Implement ability to flush this and restart a window with the same id?
       if (dataMap && !dataMap.windowController) {
         return null;
       }
@@ -243,9 +241,6 @@ export default function WindowManager({ initialWindows = [] }) {
                 });
 
                 windowController.once(EVT_DESTROYED, () => {
-                  // FIXME: Lose reference to existing window controller while
-                  // still retaining functionality for windows with embedded
-                  // hooks to be closed without issue
                   setWindowControllerMaps((prev) => {
                     const next = { ...prev };
 
@@ -253,13 +248,6 @@ export default function WindowManager({ initialWindows = [] }) {
 
                     return next;
                   });
-
-                  // Prevent re-creating this window if the inbound window data
-                  // array still retains the id
-                  // setDiscardedWindowIds((prev) => [...prev, key]);
-
-                  // Force the UI to re-render (only if we're not updating any other state)
-                  forceUpdate();
                 });
               }
             }}
