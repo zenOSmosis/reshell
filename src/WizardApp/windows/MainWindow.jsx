@@ -19,7 +19,13 @@ const WizardMainWindow = {
   view: function WizardMainView({ windowController }) {
     // TODO: Remove
     useEffect(() => {
+      // TODO: Remove
       console.log("useEffect");
+
+      return function unmount() {
+        // TODO: Remove
+        console.log("unmount");
+      };
     }, []);
 
     return (

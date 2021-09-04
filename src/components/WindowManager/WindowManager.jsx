@@ -35,7 +35,7 @@ export default function WindowManager({ initialWindows = [] }) {
   /**
    * @type {number[] | string[]} keys
    */
-  const [discardedWindowIds, setDiscardedWindowIds] = useState([]);
+  // const [discardedWindowIds, setDiscardedWindowIds] = useState([]);
 
   // TODO: Document
   const [windowControllerMaps, setWindowControllerMaps] = useState({});
@@ -51,18 +51,6 @@ export default function WindowManager({ initialWindows = [] }) {
       return map;
     },
     [windowControllerMaps]
-  );
-
-  // TODO: Document
-  const getWindowControllerWithKey = useCallback(
-    (key) => {
-      const map = getWindowControllerMapWithKey(key);
-
-      if (map) {
-        return map.windowController;
-      }
-    },
-    [getWindowControllerMapWithKey]
   );
 
   // TODO: Document
@@ -202,18 +190,11 @@ export default function WindowManager({ initialWindows = [] }) {
    *
    * @type {React.Component[]}
    */
+  // TODO: Can this be memoized again even w/ hooks running in window descriptors?
   const windows = initialWindows
     .map((data) => {
       // TODO: Ensure key is unique across the map
       const key = data.id;
-
-      // Don't try to create a new window controller if the key is already
-      // set
-      /*
-      if (discardedWindowIds.includes(key)) {
-        return null;
-      }
-      */
 
       const { view: ViewComponent, title, ...windowProps } = data;
 
@@ -224,8 +205,14 @@ export default function WindowManager({ initialWindows = [] }) {
       // TODO: (mostly for development), determine changed descriptor window
       // title and update the window controller w/ new values
 
+      const dataMap = getWindowControllerMapWithKey(key);
+
       /** @type {WindowController | void} */
-      const windowController = getWindowControllerWithKey(key);
+      const windowController = dataMap && dataMap.windowController;
+
+      if (dataMap && !dataMap.windowController) {
+        return null;
+      }
 
       return (
         <React.Fragment key={key}>
@@ -249,8 +236,7 @@ export default function WindowManager({ initialWindows = [] }) {
                   next[key] = {
                     windowController,
                     key,
-                    el: ref.el,
-                    windowSymbol: ref.windowSymbol,
+                    // windowSymbol: ref.windowSymbol,
                   };
 
                   return next;
@@ -260,15 +246,13 @@ export default function WindowManager({ initialWindows = [] }) {
                   // FIXME: Lose reference to existing window controller while
                   // still retaining functionality for windows with embedded
                   // hooks to be closed without issue
-                  /*
-                setWindowControllerMaps((prev) => {
-                  const next = { ...prev };
+                  setWindowControllerMaps((prev) => {
+                    const next = { ...prev };
 
-                  delete next[key];
+                    next[key].windowController = null;
 
-                  return next;
-                });
-                */
+                    return next;
+                  });
 
                   // Prevent re-creating this window if the inbound window data
                   // array still retains the id
@@ -280,19 +264,15 @@ export default function WindowManager({ initialWindows = [] }) {
               }
             }}
           >
-            {ViewComponent({ windowController })}
+            <ViewComponent windowController={windowController} />
           </Window>
         </React.Fragment>
       );
     })
     .filter((window) => Boolean(window));
 
-  // TODO: Window list doesn't get altered when closing, and if it does,
-  // internal hooks won't successfully deregister in the data descriptor view;
-  // definitely would be a memory leak at the moment this way, but the goal is
-  // to have hook-driven window descriptors, so this is the only apparent way
   // TODO: Remove
-  //console.log({ windows, windowControllerMaps });
+  console.log({ windows, windowControllerMaps });
 
   return (
     <Cover>

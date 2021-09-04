@@ -58,6 +58,19 @@ export default class WindowController extends PhantomCore {
     );
 
     windowMonitor.addChild(this);
+
+    this._domElement = null;
+  }
+
+  // TODO: Document
+  setDOMElement(domElement) {
+    // IMPORTANT: Don't useState state here or an infinite loop can happen
+    this._domElement = domElement;
+  }
+
+  // TODO: Document
+  getDOMElement() {
+    return this._domElement;
   }
 
   // TODO: Document
