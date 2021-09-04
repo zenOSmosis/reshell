@@ -130,15 +130,14 @@ export default function Desktop({ initialWindows }) {
                 </MenuButton>
               }
             >
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                Socket.io Service (mock)
-              </MenuItem>
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                SocketAPI Service (mock)
-              </MenuItem>
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                Host Bridge Service (mock)
-              </MenuItem>
+              {services.map((service) => (
+                <MenuItem
+                  key={service.getUUID()}
+                  onClick={() => alert("TODO: Implement")}
+                >
+                  {service.getClassName()}
+                </MenuItem>
+              ))}
             </Menu>
           </div>
         </Header>

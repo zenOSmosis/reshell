@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import LED from "../../components/LED";
 
-// TODO: Move to service
-import io from "socket.io-client";
+import SocketIOService from "../services/SocketIOService";
 
 const WizardMainWindow = {
   id: "reshell-setup-wizard",
@@ -13,7 +12,7 @@ const WizardMainWindow = {
     width: 640,
     height: 480,
   },
-  // services: []
+  services: [SocketIOService],
   // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
   // TODO: Show service list in Desktop menu
   view: function WizardMainView({ windowController }) {

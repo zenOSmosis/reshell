@@ -1,14 +1,9 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
 import { EVT_DESTROYED } from "phantom-core";
 
+import useServicesContext from "../../hooks/useServicesContext";
 import useDesktopContext from "../../hooks/useDesktopContext";
 
 import WindowController from "../Window/classes/WindowController";
@@ -63,6 +58,8 @@ export default function WindowManager({ initialWindows = [] }) {
       setDesktopContextActiveWindowController,
     ]
   );
+
+  const { startService } = useServicesContext();
 
   // Handle when window manager is clicked on directly (no window interacted with directly)
   const refHandleSetActiveWindow = useRef(handleSetActiveWindow);
@@ -141,6 +138,10 @@ export default function WindowManager({ initialWindows = [] }) {
       // TODO: Implement ability to flush this and restart a window with the same id?
       if (dataMap && !dataMap.windowController) {
         return null;
+      }
+
+      if (!windowController && data.services) {
+        data.services.forEach((serviceClass) => startService(serviceClass));
       }
 
       return (
