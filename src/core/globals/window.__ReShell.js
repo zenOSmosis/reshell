@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import BaseView from "../BaseView";
 
+// TODO: Move class to classes, and expose via globals directory
 // TODO: Extend PhantomCore and unrender on destruct?
 export default class DOMReShell {
   // TODO: Document
@@ -16,11 +17,15 @@ export default class DOMReShell {
     if (!portal) {
       switch (process.env.REACT_APP_PORTAL) {
         case "setupwizard":
-          portal = React.lazy(() => import("@portals/WizardApp"));
+          portal = React.lazy(() => import("@portals/WizardPortal"));
+          break;
+
+        case "test":
+          portal = React.lazy(() => import("@portals/TestPortal"));
           break;
 
         default:
-          portal = React.lazy(() => import("@portals/ExampleApp"));
+          portal = React.lazy(() => import("@portals/ExamplePortal"));
       }
     }
 

@@ -26,6 +26,7 @@
     "start:wizard": "concurrently \"npm run start:wizard.host-bridge\" \"npm run start:wizard.frontend\"",
     "start:wizard.frontend": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
     "start:wizard.host-bridge": "cd host.bridge-prototype && npm start",
+    "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"

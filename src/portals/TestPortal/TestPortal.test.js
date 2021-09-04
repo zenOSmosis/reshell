@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import ExampleApp from "./ExampleApp";
+import ExamplePortal from "./ExamplePortal";
 
 test("renders learn react link", () => {
-  render(<ExampleApp />);
+  render(<ExamplePortal />);
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });

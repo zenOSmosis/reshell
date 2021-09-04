@@ -38,7 +38,7 @@ function WindowMonitorView() {
   );
 }
 
-export default function ExampleApp() {
+export default function ExamplePortal() {
   return (
     <Desktop
       initialWindows={[

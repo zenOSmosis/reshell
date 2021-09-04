@@ -125,18 +125,27 @@ export default function Desktop({ initialWindows }) {
               menuButton={
                 <MenuButton>
                   Service Core{" "}
-                  <LED color={Array.isArray(services) ? "green" : "gray"} />
+                  <LED color={services.length > 0 ? "green" : "gray"} />
                 </MenuButton>
               }
             >
-              {services.map((service) => (
-                <MenuItem
-                  key={service.getUUID()}
-                  onClick={() => alert("TODO: Implement")}
-                >
-                  {service.getClassName()}
+              {services.length === 0 ? (
+                <MenuItem>
+                  <span style={{ fontStyle: "italic" }}>
+                    No running services
+                  </span>
                 </MenuItem>
-              ))}
+              ) : (
+                services.map((service) => (
+                  <MenuItem
+                    key={service.getUUID()}
+                    onClick={() => alert("TODO: Implement")}
+                  >
+                    {service.getClassName()}
+                  </MenuItem>
+                ))
+              )}
+              {}
               {/*
               <MenuItem onClick={() => alert("TODO: Implement")}>
                 Socket.io Service (mock)

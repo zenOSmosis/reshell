@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
-import { EVT_DESTROYED } from "phantom-core";
+import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
@@ -161,6 +161,7 @@ export default function WindowManager({ initialWindows = [] }) {
               desktopContextActiveWindowController,
               windowController
             )}
+            windowServices={windowServices}
             onMouseDown={() => handleSetActiveWindow(windowController)}
             onTouchStart={() => handleSetActiveWindow(windowController)}
             onRequestMinimize={() => handleWindowMinimize(windowController)}
@@ -196,10 +197,18 @@ export default function WindowManager({ initialWindows = [] }) {
               }
             }}
           >
-            <ViewComponent
-              windowController={windowController}
-              windowServices={windowServices}
-            />
+            {
+              // Wrap the view so that it updates when a bound service updates
+              // NOTE: (jh) I originally tried wrapping the window itself, but
+              // it didn't work, and it's a better idea to only update what's
+              // necessary anyway
+            }
+            <WrappedView windowServices={windowServices}>
+              <ViewComponent
+                windowController={windowController}
+                windowServices={windowServices}
+              />
+            </WrappedView>
           </Window>
         </React.Fragment>
       );
@@ -220,4 +229,29 @@ export default function WindowManager({ initialWindows = [] }) {
       </div>
     </Cover>
   );
+}
+
+// TODO: Document
+function WrappedView({ windowServices, ...rest }) {
+  const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
+
+  // Re-render window when a service updates
+  useEffect(() => {
+    const _handleServiceUpdate = () => {
+      setServiceUpdateIdx((prev) => prev + 1);
+    };
+
+    for (const service of Object.values(windowServices)) {
+      // service.on(EVT_UPDATED, forceUpdate);
+      service.on(EVT_UPDATED, _handleServiceUpdate);
+    }
+
+    return function unmount() {
+      for (const service of Object.values(windowServices)) {
+        service.off(EVT_UPDATED, _handleServiceUpdate);
+      }
+    };
+  }, [windowServices]);
+
+  return <React.Fragment key={serviceUpdateIdx} {...rest} />;
 }

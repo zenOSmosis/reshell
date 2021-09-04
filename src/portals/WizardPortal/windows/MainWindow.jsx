@@ -18,7 +18,7 @@ const WizardMainWindow = {
     SocketAPIMockService,
     HostBridgeAPIMockService,
   ],
-  view: function WizardMainView({ windowController, windowServices }) {
+  view: function View({ windowController, windowServices }) {
     const hasSocketIOService = Boolean(windowServices["SocketIOService"]);
     const isSocketConnected =
       hasSocketIOService && windowServices["SocketIOService"].getIsOnline();

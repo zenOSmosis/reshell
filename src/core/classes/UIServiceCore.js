@@ -1,4 +1,6 @@
-import PhantomCore, { EVT_UPDATED } from "phantom-core";
+import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+
+export { EVT_UPDATED, EVT_DESTROYED };
 
 // TODO: Document
 export default class UIServiceCore extends PhantomCore {

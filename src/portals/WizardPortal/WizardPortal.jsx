@@ -35,6 +35,6 @@ function WindowMonitorView() {
 }
 */
 
-export default function WizardApp() {
+export default function WizardPortal() {
   return <Desktop initialWindows={[MainWindow]} />;
 }
