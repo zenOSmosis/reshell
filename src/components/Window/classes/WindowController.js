@@ -44,6 +44,7 @@ class _WindowMonitor extends PhantomCollection {
 export const windowMonitor = new _WindowMonitor();
 
 // TODO: Move into core directory?
+// TODO: Document
 export default class WindowController extends PhantomCore {
   constructor(initialState = {}) {
     const DEFAULT_STATE = {
