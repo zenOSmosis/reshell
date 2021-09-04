@@ -3,8 +3,13 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 export default class AdditionService extends UIServiceCore {
   // TODO: Document
   increment() {
+    this.setValue(this.getValue() + 1);
+  }
+
+  // TODO: Document
+  setValue(value) {
     this.setState({
-      value: this.getValue() + 1,
+      value,
     });
   }
 

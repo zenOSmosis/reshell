@@ -50,6 +50,7 @@ export default function ExamplePortal() {
             top: 80,
             width: 320,
             height: 320,
+            backgroundColor: "transparent",
           },
           view: () => (
             <Center>

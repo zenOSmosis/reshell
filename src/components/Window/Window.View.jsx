@@ -2,7 +2,6 @@ import { EVT_UPDATED } from "./classes/WindowController";
 import React, {
   useCallback,
   useEffect,
-  useImperativeHandle,
   useMemo,
   useRef,
   useState,

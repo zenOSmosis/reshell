@@ -97,14 +97,21 @@ export default function WindowManager({ initialWindows = [] }) {
    * @param {WindowController} windowController
    * @return {void}
    */
-  const handleWindowClose = useCallback((windowController) => {
-    if (windowController) {
-      // TODO: Determine here if window is in a non-saved state, and if the
-      // user should be prompted before closing
+  const handleWindowClose = useCallback(
+    (windowController) => {
+      if (windowController) {
+        // TODO: Determine here if window is in a non-saved state, and if the
+        // user should be prompted before closing
 
-      windowController.destroy();
-    }
-  }, []);
+        windowController.destroy();
+
+        // Make no window the active window
+        // TODO: Make previous window the active window?
+        handleSetActiveWindow(null);
+      }
+    },
+    [handleSetActiveWindow]
+  );
 
   /**
    * Determines which windows are rendered to the screen at any given time, as
@@ -253,5 +260,12 @@ function WrappedView({ windowServices, ...rest }) {
     };
   }, [windowServices]);
 
-  return <React.Fragment key={serviceUpdateIdx} {...rest} />;
+  return (
+    <React.Fragment
+      // TODO: Setting the key this way re-runs the passed view's useEffects (and
+      // other hooks) even if they don't have dependencies
+      key={serviceUpdateIdx}
+      {...rest}
+    />
+  );
 }

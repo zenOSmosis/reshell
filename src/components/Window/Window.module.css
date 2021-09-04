@@ -6,11 +6,12 @@
 
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.8));
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 1);
 }
 
 .window.minimized {

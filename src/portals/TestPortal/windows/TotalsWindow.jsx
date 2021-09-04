@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import Center from "@components/Center";
 
 // import SocketIOService from "../services/SocketIOService";
@@ -20,6 +22,11 @@ const TotalsWindow = {
   view: function View({ windowController, windowServices }) {
     const adder = windowServices["AdditionService"];
     const multiplier = windowServices["MultiplicationService"];
+
+    // TODO: Remove
+    useEffect(() => {
+      console.log("rendered use effect...");
+    }, []);
 
     return (
       <Center>
