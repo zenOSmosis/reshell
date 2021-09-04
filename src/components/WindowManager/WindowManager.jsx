@@ -119,7 +119,12 @@ export default function WindowManager({ initialWindows = [] }) {
       // TODO: Ensure key is unique across the map
       const key = data.id;
 
-      const { view: ViewComponent, title, ...windowProps } = data;
+      const {
+        view: ViewComponent,
+        title,
+        serviceClasses = [],
+        ...windowProps
+      } = data;
 
       if (!ViewComponent) {
         return null;
@@ -140,8 +145,10 @@ export default function WindowManager({ initialWindows = [] }) {
         return null;
       }
 
-      if (!windowController && data.services) {
-        data.services.forEach((serviceClass) => startService(serviceClass));
+      // Duplicate service class instantiations are ignored, so this is fine
+      // on every render
+      for (const serviceClass of serviceClasses) {
+        startService(serviceClass);
       }
 
       return (

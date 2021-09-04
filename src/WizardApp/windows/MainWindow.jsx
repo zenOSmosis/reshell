@@ -12,7 +12,7 @@ const WizardMainWindow = {
     width: 640,
     height: 480,
   },
-  services: [SocketIOService],
+  serviceClasses: [SocketIOService],
   // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
   // TODO: Show service list in Desktop menu
   view: function WizardMainView({ windowController }) {
@@ -36,7 +36,7 @@ const WizardMainWindow = {
         {protoState}
         <ul>
           <li>
-            TODO: Service core
+            TODO: Service core!!
             <div>
               <LED color="gray" /> <button>Start</button>
             </div>
