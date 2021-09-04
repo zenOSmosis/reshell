@@ -3,10 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import ServiceCollection, {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-  EVT_DESTROYED,
+  // EVT_DESTROYED,
 } from "./classes/UIServiceCollection";
 
-import useForceUpdate from "../../../../hooks/useForceUpdate";
+import useForceUpdate from "@hooks/useForceUpdate";
 
 export const UIServicesContext = React.createContext({});
 

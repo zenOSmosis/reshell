@@ -1,4 +1,4 @@
-import LED from "../../components/LED";
+import LED from "@components/LED";
 
 import SocketIOService from "../services/SocketIOService";
 import SocketAPIMockService from "../services/SocketAPIMockService";

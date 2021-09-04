@@ -1,7 +1,7 @@
 import { EVT_UPDATED } from "phantom-core";
 import React, { useEffect, useState } from "react";
 
-import useForceUpdate from "../../../hooks/useForceUpdate";
+import useForceUpdate from "@hooks/useForceUpdate";
 
 export const DesktopContext = React.createContext({});
 

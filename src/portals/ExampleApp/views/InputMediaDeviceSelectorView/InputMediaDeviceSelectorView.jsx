@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LED from "../../../components/LED";
+import LED from "@components/LED";
 
 import { utils } from "media-stream-track-controller";
 

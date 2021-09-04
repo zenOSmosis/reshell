@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Preload from "../../Preload";
+import Preload from "@components/Preload";
 
 import classNames from "classnames";
 import styles from "./VUMeter.module.css";

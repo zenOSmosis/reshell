@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import styles from "./Center.module.css";
 
-import useOverflowDetection from "../../hooks/useOverflowDetection";
+import useOverflowDetection from "@hooks/useOverflowDetection";
 
 import PropTypes from "prop-types";
 

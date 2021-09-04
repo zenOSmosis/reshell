@@ -1,4 +1,4 @@
-import UIServiceCore from "../../core/classes/UIServiceCore";
+import UIServiceCore from "@core/classes/UIServiceCore";
 
 import io from "socket.io-client";
 

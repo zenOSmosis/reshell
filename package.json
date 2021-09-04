@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.2.0",
     "@react-spring/web": "^9.2.4",
     "@szhsin/react-menu": "^2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -21,13 +22,13 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "HTTPS=true craco start",
     "start:wizard": "concurrently \"npm run start:wizard.host-bridge\" \"npm run start:wizard.frontend\"",
-    "start:wizard.frontend": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 react-scripts start",
+    "start:wizard.frontend": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
     "start:wizard.host-bridge": "cd host.bridge-prototype && npm start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": [

@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import Layout, { Content, Footer } from "../components/Layout";
-import Center from "../components/Center";
-import Desktop from "../components/Desktop";
+import Layout, { Content, Footer } from "@components/Layout";
+import Center from "@components/Center";
+import Desktop from "@components/Desktop";
 
-import AudioLevelMeter from "../components/audioMeters/AudioLevelMeter";
-import VUMeter from "../components/audioMeters/VUMeter";
+import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
+import VUMeter from "@components/audioMeters/VUMeter";
 
 import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
 
+// TODO: Update this
 import {
   windowMonitor,
   EVT_UPDATED,
-} from "../components/Window/classes/WindowController";
+} from "@components/Window/classes/WindowController";
 
 function WindowMonitorView() {
   const [lenWindows, setLenWindows] = useState(0);

@@ -2,11 +2,10 @@ import WindowManager from "../WindowManager";
 import Full from "../Full";
 import Layout, { Header, Content, Footer } from "../Layout";
 import Menu, { MenuButton, MenuItem } from "../Menu";
+import LED from "../LED";
 
-import useDesktopContext from "../../hooks/useDesktopContext";
-import useServicesContext from "../../hooks/useServicesContext";
-
-import LED from "../../components/LED";
+import useDesktopContext from "@hooks/useDesktopContext";
+import useServicesContext from "@hooks/useServicesContext";
 
 // TODO: Implement top menu-bar
 // @see https://headlessui.dev/react/menu

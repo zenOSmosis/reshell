@@ -2,7 +2,7 @@ import React from "react";
 import StaggeredWaveLoading from "../StaggeredWaveLoading";
 import PropTypes from "prop-types";
 
-import usePreload from "../../hooks/usePreload";
+import usePreload from "@hooks/usePreload";
 
 Preload.propTypes = {
   /**

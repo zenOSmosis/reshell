@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import FullViewport from "../../components/FullViewport";
+import FullViewport from "@components/FullViewport";
 
 import ParadigmProvider from "./providers/ParadigmProvider";
 import UIServicesProvider from "./providers/UIServicesProvider";
 import DesktopProvider from "./providers/DesktopProvider";
 
-export default function BaseView({ baseApp }) {
+// TODO: Document and add prop-types
+export default function BaseView({ portal }) {
   const [areBaseStylesLoaded, setAreBaseStylesLoaded] = useState(false);
 
   useEffect(() => {
@@ -21,13 +22,13 @@ export default function BaseView({ baseApp }) {
     return null;
   }
 
-  const BaseAppView = baseApp;
+  const PortalView = portal;
   return (
     <ParadigmProvider>
       <UIServicesProvider>
         <DesktopProvider>
           <FullViewport>
-            <BaseAppView />
+            <PortalView />
           </FullViewport>
         </DesktopProvider>
       </UIServicesProvider>

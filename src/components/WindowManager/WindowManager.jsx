@@ -3,8 +3,8 @@ import Cover from "../Cover";
 import Window from "../Window";
 import { EVT_DESTROYED } from "phantom-core";
 
-import useServicesContext from "../../hooks/useServicesContext";
-import useDesktopContext from "../../hooks/useDesktopContext";
+import useServicesContext from "@hooks/useServicesContext";
+import useDesktopContext from "@hooks/useDesktopContext";
 
 import WindowController from "../Window/classes/WindowController";
 

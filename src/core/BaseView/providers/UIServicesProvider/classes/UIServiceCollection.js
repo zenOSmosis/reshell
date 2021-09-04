@@ -1,5 +1,5 @@
 import { PhantomCollection } from "phantom-core";
-import UIServiceCore from "../../../../classes/UIServiceCore";
+import UIServiceCore from "@core/classes/UIServiceCore";
 
 const {
   EVT_CHILD_INSTANCE_ADDED,

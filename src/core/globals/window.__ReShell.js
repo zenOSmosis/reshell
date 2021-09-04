@@ -12,15 +12,15 @@ export default class DOMReShell {
   static async afterDOMReplace() {}
 
   // TODO: Document
-  static async initDOM(baseApp = null) {
-    if (!baseApp) {
+  static async initDOM(portal = null) {
+    if (!portal) {
       switch (process.env.REACT_APP_PORTAL) {
         case "setupwizard":
-          baseApp = React.lazy(() => import("../../WizardApp"));
+          portal = React.lazy(() => import("@portals/WizardApp"));
           break;
 
         default:
-          baseApp = React.lazy(() => import("../../ExampleApp"));
+          portal = React.lazy(() => import("@portals/ExampleApp"));
       }
     }
 
@@ -40,7 +40,7 @@ export default class DOMReShell {
     ReactDOM.render(
       <React.StrictMode>
         <Suspense fallback={<div />}>
-          <BaseView baseApp={baseApp} />
+          <BaseView portal={portal} />
         </Suspense>
       </React.StrictMode>,
       elBase
