@@ -27,17 +27,12 @@ export default function WindowManager({ initialWindows = [] }) {
     setActiveWindowController: setDesktopContextActiveWindowController,
   } = useDesktopContext();
 
-  /**
-   * @type {number[] | string[]} keys
-   */
-  // const [discardedWindowIds, setDiscardedWindowIds] = useState([]);
-
   // TODO: Document
   const [windowControllerMaps, setWindowControllerMaps] = useState({});
 
   /**
    * @param {number | string } key
-   * @return {Object | void}
+   * @return {Object | void} // TODO: Document structure
    */
   const getWindowControllerMapWithKey = useCallback(
     (key) => {
@@ -48,52 +43,24 @@ export default function WindowManager({ initialWindows = [] }) {
     [windowControllerMaps]
   );
 
-  // TODO: Document
-  const getWindowControllerMapWithWindowController = useCallback(
-    (windowController) => {
-      return Object.values(windowControllerMaps).find((predicate) =>
-        Object.is(predicate.windowController, windowController)
-      );
-    },
-    [windowControllerMaps]
-  );
-
-  // TODO: Document
-  const [activeWindowKey, _setActiveWindowKey] = useState(null);
-
   /**
-   * @param {number | string | null} key?
+   * @param {WindowController | null} windowController?
    * @return {void}
    */
   const handleSetActiveWindow = useCallback(
-    (key) => {
-      _setActiveWindowKey(key);
+    (windowController) => {
+      if (!Object.is(windowController, desktopContextActiveWindowController)) {
+        setDesktopContextActiveWindowController(windowController);
 
-      if (key === undefined || key === null) {
-        setDesktopContextActiveWindowController(null);
-      } else {
-        // TODO: Don't bring to front if already in front (i.e. is already the active window)
-
-        const map = getWindowControllerMapWithKey(key);
-
-        if (map) {
-          const { windowController } = map;
-
-          if (
-            !Object.is(windowController, desktopContextActiveWindowController)
-          ) {
-            setDesktopContextActiveWindowController(windowController);
-
-            windowController.setState({ stackingIndex: ++stackingIndex });
-          }
+        if (windowController) {
+          // TODO: Don't bring to front if already in front (i.e. is already the active window)
+          windowController.setState({ stackingIndex: ++stackingIndex });
         }
       }
     },
     [
       desktopContextActiveWindowController,
       setDesktopContextActiveWindowController,
-      getWindowControllerMapWithKey,
-      _setActiveWindowKey,
     ]
   );
 
@@ -119,65 +86,28 @@ export default function WindowManager({ initialWindows = [] }) {
     }
   }, [elBase]);
 
-  // Set active window when desktopContextActiveWindowController changes
-  useEffect(() => {
-    if (desktopContextActiveWindowController) {
-      const map = getWindowControllerMapWithWindowController(
-        desktopContextActiveWindowController
-      );
-
-      if (map) {
-        const { key } = map;
-
-        handleSetActiveWindow(key);
-      } else {
-        // Write back to desktop context that we cannot set this
-        setDesktopContextActiveWindowController(null);
-      }
+  /**
+   * @param {WindowController} windowController
+   * @return {void}
+   */
+  const handleWindowMinimize = useCallback((windowController) => {
+    if (windowController) {
+      windowController.minimize();
     }
-  }, [
-    desktopContextActiveWindowController,
-    getWindowControllerMapWithWindowController,
-    handleSetActiveWindow,
-    setDesktopContextActiveWindowController,
-  ]);
+  }, []);
 
   /**
-   * @param {number | string } key
+   * @param {WindowController} windowController
    * @return {void}
    */
-  const handleWindowMinimize = useCallback(
-    (key) => {
-      const map = getWindowControllerMapWithKey(key);
+  const handleWindowClose = useCallback((windowController) => {
+    if (windowController) {
+      // TODO: Determine here if window is in a non-saved state, and if the
+      // user should be prompted before closing
 
-      if (map) {
-        const { windowController } = map;
-
-        windowController.setState({ isMinimized: true });
-      }
-    },
-    [getWindowControllerMapWithKey]
-  );
-
-  /**
-   * @param {number | string } key
-   * @return {void}
-   */
-  const handleWindowClose = useCallback(
-    (key) => {
-      const map = getWindowControllerMapWithKey(key);
-
-      if (map) {
-        const { windowController } = map;
-
-        // TODO: Determine here if window is in a non-saved state, and if the
-        // user should be prompted before closing
-
-        windowController.destroy();
-      }
-    },
-    [getWindowControllerMapWithKey]
-  );
+      windowController.destroy();
+    }
+  }, []);
 
   /**
    * Determines which windows are rendered to the screen at any given time, as
@@ -217,11 +147,14 @@ export default function WindowManager({ initialWindows = [] }) {
         <React.Fragment key={key}>
           <Window
             {...windowProps}
-            isActive={activeWindowKey === key}
-            onMouseDown={() => handleSetActiveWindow(key)}
-            onTouchStart={() => handleSetActiveWindow(key)}
-            onRequestMinimize={() => handleWindowMinimize(key)}
-            onRequestClose={() => handleWindowClose(key)}
+            isActive={Object.is(
+              desktopContextActiveWindowController,
+              windowController
+            )}
+            onMouseDown={() => handleSetActiveWindow(windowController)}
+            onTouchStart={() => handleSetActiveWindow(windowController)}
+            onRequestMinimize={() => handleWindowMinimize(windowController)}
+            onRequestClose={() => handleWindowClose(windowController)}
             ref={(ref) => {
               if (ref && !windowController) {
                 const windowController = new WindowController();
@@ -259,9 +192,6 @@ export default function WindowManager({ initialWindows = [] }) {
       );
     })
     .filter((window) => Boolean(window));
-
-  // TODO: Remove
-  console.log({ windows, windowControllerMaps });
 
   return (
     <Cover>
