@@ -4,6 +4,9 @@ import Layout, { Header, Content, Footer } from "../Layout";
 import Menu, { MenuButton, MenuItem } from "../Menu";
 
 import useDesktopContext from "../../hooks/useDesktopContext";
+import useServicesContext from "../../hooks/useServicesContext";
+
+import LED from "../../components/LED";
 
 // TODO: Implement top menu-bar
 // @see https://headlessui.dev/react/menu
@@ -13,6 +16,7 @@ import useDesktopContext from "../../hooks/useDesktopContext";
 // @see https://szhsin.github.io/react-menu/#context-menu
 
 export default function Desktop({ initialWindows }) {
+  const { services } = useServicesContext();
   const { activeWindowController } = useDesktopContext();
 
   return (
@@ -22,93 +26,118 @@ export default function Desktop({ initialWindows }) {
         <Header
           style={{ borderBottom: "1px #ccc solid", whiteSpace: "nowrap" }}
         >
-          {
-            // TODO: If menu is open and user scrolls across menubar, open the
-            // relevant scrolled-over menu
-            // TODO: Refactor into menubar utility w/ similar API as Electron,
-            // where the React components aren't utilized directly by the
-            // implementors
-          }
-          <Menu
-            portal={true}
-            menuButton={
-              <MenuButton>
-                {
-                  // TODO: Make this string configurable
-                }
-                Desktop
-              </MenuButton>
+          <div style={{ float: "left" }}>
+            {
+              // TODO: If menu is open and user scrolls across menubar, open the
+              // relevant scrolled-over menu
+              // TODO: Refactor into menubar utility w/ similar API as Electron,
+              // where the React components aren't utilized directly by the
+              // implementors
             }
-          >
-            <MenuItem
-              onClick={() =>
-                alert(
-                  "TODO: Implement window w/ overview of System Information"
-                )
+            <Menu
+              portal={true}
+              menuButton={
+                <MenuButton>
+                  {
+                    // TODO: Make this string configurable
+                  }
+                  Desktop
+                </MenuButton>
               }
             >
-              About / System Information
-            </MenuItem>
-            {
-              // TODO: Show divider
-            }
-            <MenuItem
-              onClick={() =>
-                alert(
-                  "TODO: Implement; Either show fly-out of running services or window with them"
-                )
-              }
-            >
-              Services
-            </MenuItem>
-            {
-              // TODO: Show divider
-            }
-            <MenuItem onClick={() => alert("TODO: Implement ReShell destruct")}>
-              Close
-            </MenuItem>
-            {
-              // TODO: Show divider
-            }
-            <MenuItem
-              onClick={() => {
-                // TODO: Only reload after ReShell destruct
-                window.location.reload();
-              }}
-            >
-              Reload
-            </MenuItem>
-          </Menu>
-          {activeWindowController && (
-            <>
-              <Menu
-                portal={true}
-                menuButton={
-                  <MenuButton>
-                    <span style={{ fontWeight: "bold" }}>
-                      {activeWindowController.getTitle()}
-                    </span>
-                  </MenuButton>
+              <MenuItem
+                onClick={() =>
+                  alert(
+                    "TODO: Implement window w/ overview of System Information"
+                  )
                 }
               >
-                <MenuItem onClick={() => activeWindowController.destroy()}>
-                  Close
-                </MenuItem>
-              </Menu>
-              <Menu portal={true} menuButton={<MenuButton>Window</MenuButton>}>
-                <MenuItem
-                  onClick={() => activeWindowController.setIsMinimized(true)}
+                About / System Information
+              </MenuItem>
+              {
+                // TODO: Show divider
+              }
+              <MenuItem
+                onClick={() =>
+                  alert(
+                    "TODO: Implement; Either show fly-out of running services or window with them"
+                  )
+                }
+              >
+                Services
+              </MenuItem>
+              {
+                // TODO: Show divider
+              }
+              <MenuItem
+                onClick={() => alert("TODO: Implement ReShell destruct")}
+              >
+                Close
+              </MenuItem>
+              {
+                // TODO: Show divider
+              }
+              <MenuItem
+                onClick={() => {
+                  // TODO: Only reload after ReShell destruct
+                  window.location.reload();
+                }}
+              >
+                Reload
+              </MenuItem>
+            </Menu>
+            {activeWindowController && (
+              <>
+                <Menu
+                  portal={true}
+                  menuButton={
+                    <MenuButton>
+                      <span style={{ fontWeight: "bold" }}>
+                        {activeWindowController.getTitle()}
+                      </span>
+                    </MenuButton>
+                  }
                 >
-                  Minimize
-                </MenuItem>
-                <MenuItem
-                  onClick={() => activeWindowController.setIsMaximized(true)}
+                  <MenuItem onClick={() => activeWindowController.destroy()}>
+                    Close
+                  </MenuItem>
+                </Menu>
+                <Menu
+                  portal={true}
+                  menuButton={<MenuButton>Window</MenuButton>}
                 >
-                  Maximize
-                </MenuItem>
-              </Menu>
-            </>
-          )}
+                  <MenuItem
+                    onClick={() => activeWindowController.setIsMinimized(true)}
+                  >
+                    Minimize
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => activeWindowController.setIsMaximized(true)}
+                  >
+                    Maximize
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </div>
+          <div style={{ float: "right" }}>
+            <Menu
+              portal={true}
+              menuButton={
+                <MenuButton>
+                  {
+                    // TODO: Make this string configurable
+                  }
+                  Service Core{" "}
+                  <LED color={Array.isArray(services) ? "green" : "gray"} />
+                </MenuButton>
+              }
+            >
+              <MenuItem onClick={() => alert("TODO: Implement")}>
+                SocketIOService (mock)
+              </MenuItem>
+            </Menu>
+          </div>
         </Header>
         <Content style={{ backgroundColor: "#ccc" }}>
           <div>TODO: Allow videos to play on background</div>

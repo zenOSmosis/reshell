@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LED from "../../components/LED";
 
 // TODO: Move to service
@@ -17,10 +17,14 @@ const WizardMainWindow = {
   // TODO: Enable service spawning for Socket.io connection; show in right-hand side of desktop footer
   // TODO: Show service list in Desktop menu
   view: function WizardMainView({ windowController }) {
+    const [protoState, _setProtoState] = useState(null);
+
     // TODO: Remove
     useEffect(() => {
       // TODO: Remove
       console.log("useEffect");
+
+      _setProtoState("hello");
 
       return function unmount() {
         // TODO: Remove
@@ -30,6 +34,7 @@ const WizardMainWindow = {
 
     return (
       <div>
+        {protoState}
         <ul>
           <li>
             TODO: Service core
