@@ -131,7 +131,13 @@ export default function Desktop({ initialWindows }) {
               }
             >
               <MenuItem onClick={() => alert("TODO: Implement")}>
-                SocketIOService (mock)
+                Socket.io Service (mock)
+              </MenuItem>
+              <MenuItem onClick={() => alert("TODO: Implement")}>
+                SocketAPI Service (mock)
+              </MenuItem>
+              <MenuItem onClick={() => alert("TODO: Implement")}>
+                Host Bridge Service (mock)
               </MenuItem>
             </Menu>
           </div>
