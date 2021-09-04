@@ -20,7 +20,8 @@ import WindowView from "./Window.View";
 // TODO: https://github.com/pmndrs/react-spring
 
 // TODO: Add prop-types
-// TODO: Include option to be able to drag the window from within the window
+// TODO: Document
+// TODO: Include option to be able to drag the window from within the window body (i.e. like a widget)
 const Window = React.forwardRef(
   (
     {
@@ -40,28 +41,11 @@ const Window = React.forwardRef(
   ) => {
     const [windowController, setWindowController] = useState(null);
 
-    /** @type {DOMElement} */
-    // const [el, _setEl] = useState(null);
-    // const [elTitlebar, _setElTitlebar] = useState(null);
-
-    // const [zIndex, setZIndex] = useState(0);
-    // const [title, setTitle] = useState(null);
-
     // These are exposed to the WindowManager
     useImperativeHandle(ref, () => ({
       // windowSymbol: Symbol("window"),
       setWindowController,
     }));
-
-    // Fixes issue where calling components would emit warnings such as "Can't
-    // perform a React state update on an unmounted component," which is likely
-    // caused by the way WindowManager associates the WindowController to this
-    // component
-    /*
-    if (!windowController || windowController.getIsDestroyed()) {
-      return null;
-    }
-    */
 
     return (
       <WindowView
