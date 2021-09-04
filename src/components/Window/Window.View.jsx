@@ -47,12 +47,6 @@ const WindowView = ({
   /** @type {DOMElement} */
   const [el, _setEl] = useState(null);
 
-  useEffect(() => {
-    if (el && windowController) {
-      windowController.setDOMElement(el);
-    }
-  }, [el, windowController]);
-
   const [elTitlebar, _setElTitlebar] = useState(null);
 
   const [zIndex, setZIndex] = useState(0);

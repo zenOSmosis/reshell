@@ -43,6 +43,7 @@ class _WindowMonitor extends PhantomCollection {
 
 export const windowMonitor = new _WindowMonitor();
 
+// TODO: Move into core directory?
 export default class WindowController extends PhantomCore {
   constructor(initialState = {}) {
     const DEFAULT_STATE = {
@@ -58,19 +59,6 @@ export default class WindowController extends PhantomCore {
     );
 
     windowMonitor.addChild(this);
-
-    this._domElement = null;
-  }
-
-  // TODO: Document
-  setDOMElement(domElement) {
-    // IMPORTANT: Don't useState state here or an infinite loop can happen
-    this._domElement = domElement;
-  }
-
-  // TODO: Document
-  getDOMElement() {
-    return this._domElement;
   }
 
   // TODO: Document
