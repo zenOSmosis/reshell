@@ -69,11 +69,19 @@ const Window = React.forwardRef(
             updatedState = windowController.getState() || {};
           }
 
-          if (updatedState.title !== undefined) {
+          if (
+            updatedState.title !== undefined &&
+            // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
+            updatedState.title !== title
+          ) {
             setTitle(updatedState.title);
           }
 
-          if (updatedState.stackingIndex !== undefined) {
+          if (
+            updatedState.stackingIndex !== undefined &&
+            // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
+            updatedState.stackingIndex !== zIndex
+          ) {
             setZIndex(updatedState.stackingIndex);
           }
         };
@@ -87,7 +95,7 @@ const Window = React.forwardRef(
           windowController.off(EVT_UPDATED, _handleWindowControllerUpdate);
         };
       }
-    }, [windowController]);
+    }, [windowController, title, zIndex]);
 
     // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
@@ -144,7 +152,7 @@ const Window = React.forwardRef(
     // perform a React state update on an unmounted component," which is likely
     // caused by the way WindowManager associates the WindowController to this
     // component
-    if (!windowController) {
+    if (!windowController || windowController.getIsDestroyed()) {
       return null;
     }
 

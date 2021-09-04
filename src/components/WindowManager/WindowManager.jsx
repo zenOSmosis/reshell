@@ -10,10 +10,13 @@ import Window from "../Window";
 import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 import useDesktopContext from "../../hooks/useDesktopContext";
+import useForceUpdate from "../../hooks/useForceUpdate";
 
 import WindowController, {
   windowMonitor,
 } from "../Window/classes/WindowController";
+
+// TODO: Incorporate react-router for window routes?
 
 // TODO: Refactor
 let stackingIndex = 0;
@@ -26,6 +29,8 @@ export default function WindowManager({ initialWindows = [] }) {
     activeWindowController: desktopContextActiveWindowController,
     setActiveWindowController: setDesktopContextActiveWindowController,
   } = useDesktopContext();
+
+  const forceUpdate = useForceUpdate();
 
   /**
    * @type {number[] | string[]} keys
@@ -197,29 +202,34 @@ export default function WindowManager({ initialWindows = [] }) {
    *
    * @type {React.Component[]}
    */
-  const windows = useMemo(() => {
-    return initialWindows
-      .map((data) => {
-        // TODO: Ensure key is unique across the map
-        const key = data.id;
+  const windows = initialWindows
+    .map((data) => {
+      // TODO: Ensure key is unique across the map
+      const key = data.id;
 
-        // Don't try to create a new window controller if the key is already
-        // set
-        if (discardedWindowIds.includes(key)) {
-          return null;
-        }
+      // Don't try to create a new window controller if the key is already
+      // set
+      /*
+      if (discardedWindowIds.includes(key)) {
+        return null;
+      }
+      */
 
-        const { view: ViewComponent, title, ...windowProps } = data;
+      const { view: ViewComponent, title, ...windowProps } = data;
 
-        if (!ViewComponent) {
-          return null;
-        }
+      if (!ViewComponent) {
+        return null;
+      }
 
-        /** @type {WindowController | void} */
-        const windowController = getWindowControllerWithKey(key);
-        return (
+      // TODO: (mostly for development), determine changed descriptor window
+      // title and update the window controller w/ new values
+
+      /** @type {WindowController | void} */
+      const windowController = getWindowControllerWithKey(key);
+
+      return (
+        <React.Fragment key={key}>
           <Window
-            key={key}
             {...windowProps}
             isActive={activeWindowKey === key}
             onMouseDown={() => handleSetActiveWindow(key)}
@@ -229,6 +239,7 @@ export default function WindowManager({ initialWindows = [] }) {
             ref={(ref) => {
               if (ref && !windowController) {
                 const windowController = new WindowController();
+
                 windowController.setTitle(title);
 
                 ref.setWindowController(windowController);
@@ -246,49 +257,42 @@ export default function WindowManager({ initialWindows = [] }) {
                 });
 
                 windowController.once(EVT_DESTROYED, () => {
-                  setWindowControllerMaps((prev) => {
-                    const next = { ...prev };
+                  // FIXME: Lose reference to existing window controller while
+                  // still retaining functionality for windows with embedded
+                  // hooks to be closed without issue
+                  /*
+                setWindowControllerMaps((prev) => {
+                  const next = { ...prev };
 
-                    delete next[key];
+                  delete next[key];
 
-                    return next;
-                  });
+                  return next;
+                });
+                */
 
                   // Prevent re-creating this window if the inbound window data
                   // array still retains the id
-                  setDiscardedWindowIds((prev) => [...prev, key]);
+                  // setDiscardedWindowIds((prev) => [...prev, key]);
+
+                  // Force the UI to re-render (only if we're not updating any other state)
+                  forceUpdate();
                 });
               }
             }}
           >
-            {windowController &&
-              /**
-               * Supply windowController to data object as accessible property.
-               *
-               * i.e.:
-               * {
-               *    id: 'some-id',
-               *    title: 'Some Window Title',
-               *    view: ({windowController}) => <div>...</div>
-               * }
-               */
-              ViewComponent({ windowController })}
+            {ViewComponent({ windowController })}
           </Window>
-        );
-      })
-      .filter((window) => Boolean(window));
-  }, [
-    initialWindows,
-    getWindowControllerWithKey,
-    discardedWindowIds,
-    handleSetActiveWindow,
-    handleWindowClose,
-    handleWindowMinimize,
-    activeWindowKey,
-  ]);
+        </React.Fragment>
+      );
+    })
+    .filter((window) => Boolean(window));
 
+  // TODO: Window list doesn't get altered when closing, and if it does,
+  // internal hooks won't successfully deregister in the data descriptor view;
+  // definitely would be a memory leak at the moment this way, but the goal is
+  // to have hook-driven window descriptors, so this is the only apparent way
   // TODO: Remove
-  console.log({ windows, windowControllerMaps });
+  //console.log({ windows, windowControllerMaps });
 
   return (
     <Cover>
