@@ -9,25 +9,42 @@ export default class SocketIOService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    // this._io = //
-
-    // TODO: Bind to Socket.io state
-    this._isConnected = false;
+    this._socket = null;
   }
 
   // TODO: Document
   connect() {
-    // TODO: Connect to Socket.io
+    if (this._socket) {
+      this._socket.connect();
+    } else {
+      const socket = io();
+
+      socket.on("connect", () => {
+        this.setState({
+          isConnected: true,
+        });
+      });
+
+      socket.on("disconnect", () => {
+        this.setState({
+          isConnected: false,
+        });
+      });
+
+      this._socket = socket;
+    }
   }
 
   // TODO: Document
   disconnect() {
-    // TODO: Disconnect from Socket.io
+    this._socket.disconnect();
   }
 
-  // TODO: Document
-  getIsOnline() {
-    return this._isConnected;
+  /**
+   * @return {boolean}
+   */
+  getIsConnected() {
+    return this.getState().isConnected;
   }
 
   /**

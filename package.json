@@ -25,8 +25,10 @@
     "start": "HTTPS=true craco start",
     "start:wizard": "concurrently \"npm run start:wizard.host-bridge\" \"npm run start:wizard.frontend\"",
     "start:wizard.frontend": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
+    "start:wizard.frontend-nossl": "REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
     "start:wizard.host-bridge": "cd host.bridge-prototype && npm start",
     "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
+    "start:wizard.docker-compose": " docker-compose -f docker-compose.dev.yml up",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"

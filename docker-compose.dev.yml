@@ -1,0 +1,43 @@
+###
+# IMPORTANT: This Docker Compose configuration should only be used in
+# development environments and is not suitable for production use.
+###
+
+version: "3"
+
+networks:
+  reshell-development-network:
+
+services:
+  dev-ssl:
+    build: ./dev-ssl
+    # environment:
+    #   PROXY_ADDRESS: http://reshell-host.bridge-prototype:3002
+    networks:
+      - reshell-development-network
+    ports:
+      - 8443:443
+
+  reshell-frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+    networks:
+      - reshell-development-network
+    volumes:
+      - ./:/app
+
+  reshell-host.bridge-prototype:
+    build: ./host.bridge-prototype
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      FRONTEND_PROXY_URL: http://reshell-frontend:3001
+    command: "npm run start:dev"
+    networks:
+      - reshell-development-network
+    volumes:
+      - ./host.bridge-prototype:/app

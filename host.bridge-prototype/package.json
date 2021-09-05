@@ -3,14 +3,22 @@
   "version": "0.0.1-alpha",
   "description": "",
   "main": "src/index.js",
+  "private": true,
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node -r esm src/index.js",
+    "start:dev": "nodemon -r esm -L src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jeremy Harris (info@zenosmosis.com)",
   "license": "MIT",
   "dependencies": {
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
+    "nodemon": "^2.0.12",
     "socket.io": "^4.2.0"
+  },
+  "_moduleAliases": {
+    "@src": "src"
   }
 }

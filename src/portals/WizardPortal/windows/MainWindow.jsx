@@ -19,14 +19,10 @@ const WizardMainWindow = {
     HostBridgeAPIMockService,
   ],
   view: function View({ windowController, windowServices }) {
-    const hasSocketIOService = Boolean(windowServices["SocketIOService"]);
-    const isSocketConnected =
-      hasSocketIOService && windowServices["SocketIOService"].getIsOnline();
+    const socketService = windowServices["SocketIOService"];
 
-    // TODO: Remove
-    console.log({
-      windowServices,
-    });
+    const hasSocketIOService = Boolean(socketService);
+    const isSocketConnected = socketService.getIsConnected();
 
     return (
       <div>
@@ -39,7 +35,14 @@ const WizardMainWindow = {
             service
             <div>
               <LED color={isSocketConnected ? "green" : "gray"} />
-              <button disabled={!hasSocketIOService}>
+              <button
+                onClick={() =>
+                  isSocketConnected
+                    ? socketService.disconnect()
+                    : socketService.connect()
+                }
+                disabled={!hasSocketIOService}
+              >
                 {!isSocketConnected ? "Connect" : "Disconnect"}
               </button>
             </div>
