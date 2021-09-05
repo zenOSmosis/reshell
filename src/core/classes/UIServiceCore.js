@@ -17,8 +17,8 @@ export default class UIServiceCore extends PhantomCore {
   }
 
   // TODO: Document
-  setState(partialNextState) {
-    this._state = PhantomCore.mergeOptions(this._state, partialNextState);
+  setState(partialNextState = {}) {
+    this._state = { ...this._state, ...partialNextState };
 
     this.emit(EVT_UPDATED, partialNextState);
   }

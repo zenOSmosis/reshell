@@ -1,7 +1,7 @@
+import { EVT_UPDATED, EVT_DESTROYED, logger } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
-import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
@@ -140,6 +140,7 @@ export default function WindowManager({ initialWindows = [] }) {
       // TODO: (mostly for development), determine changed descriptor window
       // title and update the window controller w/ new values
 
+      // TODO: Document
       const dataMap = getWindowControllerMapWithKey(key);
 
       /** @type {WindowController | void} */
@@ -161,63 +162,62 @@ export default function WindowManager({ initialWindows = [] }) {
       }
 
       return (
-        <React.Fragment key={key}>
-          <Window
-            {...windowProps}
-            isActive={Object.is(
-              desktopContextActiveWindowController,
-              windowController
-            )}
-            windowServices={windowServices}
-            onMouseDown={() => handleSetActiveWindow(windowController)}
-            onTouchStart={() => handleSetActiveWindow(windowController)}
-            onRequestMinimize={() => handleWindowMinimize(windowController)}
-            onRequestClose={() => handleWindowClose(windowController)}
-            ref={(ref) => {
-              if (ref && !windowController) {
-                const windowController = new WindowController();
+        <Window
+          key={key}
+          {...windowProps}
+          isActive={Object.is(
+            desktopContextActiveWindowController,
+            windowController
+          )}
+          windowServices={windowServices}
+          onMouseDown={() => handleSetActiveWindow(windowController)}
+          onTouchStart={() => handleSetActiveWindow(windowController)}
+          onRequestMinimize={() => handleWindowMinimize(windowController)}
+          onRequestClose={() => handleWindowClose(windowController)}
+          ref={(ref) => {
+            if (ref && !windowController) {
+              const windowController = new WindowController();
 
-                windowController.setTitle(title);
+              windowController.setTitle(title);
 
-                ref.setWindowController(windowController);
+              // Attach the view controller to the window
+              ref.attachWindowController(windowController);
 
+              setWindowControllerMaps((prev) => {
+                const next = { ...prev };
+                next[key] = {
+                  windowController,
+                  key,
+                  // windowSymbol: ref.windowSymbol,
+                };
+
+                return next;
+              });
+
+              windowController.once(EVT_DESTROYED, () => {
                 setWindowControllerMaps((prev) => {
                   const next = { ...prev };
-                  next[key] = {
-                    windowController,
-                    key,
-                    // windowSymbol: ref.windowSymbol,
-                  };
+
+                  next[key].windowController = null;
 
                   return next;
                 });
-
-                windowController.once(EVT_DESTROYED, () => {
-                  setWindowControllerMaps((prev) => {
-                    const next = { ...prev };
-
-                    next[key].windowController = null;
-
-                    return next;
-                  });
-                });
-              }
-            }}
-          >
-            {
-              // Wrap the view so that it updates when a bound service updates
-              // NOTE: (jh) I originally tried wrapping the window itself, but
-              // it didn't work, and it's a better idea to only update what's
-              // necessary anyway
+              });
             }
-            <WrappedView windowServices={windowServices}>
-              <ViewComponent
-                windowController={windowController}
-                windowServices={windowServices}
-              />
-            </WrappedView>
-          </Window>
-        </React.Fragment>
+          }}
+        >
+          {
+            // Wrap the view so that it updates when a bound service updates
+            // NOTE: (jh) I originally tried wrapping the window itself, but
+            // it didn't work, and it's a better idea to only update what's
+            // necessary anyway
+          }
+          <WrappedView
+            windowServices={windowServices}
+            windowController={windowController}
+            view={ViewComponent}
+          />
+        </Window>
       );
     })
     .filter((window) => Boolean(window));
@@ -239,7 +239,12 @@ export default function WindowManager({ initialWindows = [] }) {
 }
 
 // TODO: Document
-function WrappedView({ windowServices, ...rest }) {
+function WrappedView({
+  windowServices,
+  windowController,
+  view: ViewComponent,
+  ...rest
+}) {
   const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
 
   // Re-render window when a service updates
@@ -249,7 +254,6 @@ function WrappedView({ windowServices, ...rest }) {
     };
 
     for (const service of Object.values(windowServices)) {
-      // service.on(EVT_UPDATED, forceUpdate);
       service.on(EVT_UPDATED, _handleServiceUpdate);
     }
 
@@ -261,11 +265,15 @@ function WrappedView({ windowServices, ...rest }) {
   }, [windowServices]);
 
   return (
-    <React.Fragment
-      // TODO: Setting the key this way re-runs the passed view's useEffects (and
-      // other hooks) even if they don't have dependencies
-      key={serviceUpdateIdx}
+    <ViewComponent
       {...rest}
+      windowController={windowController}
+      windowServices={windowServices}
+      // Attach windowController logger to view, using generic logger
+      // as fallback until windowController is available
+      logger={windowController ? windowController.logger : logger}
+      // Force update every time service updates
+      serviceUpdateIdx={serviceUpdateIdx}
     />
   );
 }

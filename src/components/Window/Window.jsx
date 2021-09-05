@@ -32,12 +32,12 @@ const Window = React.forwardRef(
     },
     ref
   ) => {
-    const [windowController, setWindowController] = useState(null);
+    const [windowController, attachWindowController] = useState(null);
 
     // These are exposed to the WindowManager
     useImperativeHandle(ref, () => ({
       // windowSymbol: Symbol("window"),
-      setWindowController,
+      attachWindowController,
     }));
 
     return (
