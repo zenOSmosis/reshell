@@ -14,7 +14,7 @@ const ApplicationMonitor = {
   view: function View({ appRuntime }) {
     const { appRuntimes } = useAppRuntimesContext();
 
-    // TODO: Add process uptime timer
+    // TODO: Group by registration
 
     return (
       <table style={{ width: "100%" }}>
