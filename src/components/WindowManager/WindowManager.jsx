@@ -271,6 +271,7 @@ export default function WindowManager({ appDescriptors = [] }) {
     </Cover>
   );
 }
+
 // TODO: Apply animations to open, close, minimize, maximize, restore, etc.
 // @see https://animate.style/
 // @see https://github.com/miniMAC/magic (what is "magic / puffin"?) (TODO: Create test app to try these libs?)
