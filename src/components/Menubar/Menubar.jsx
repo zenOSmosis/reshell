@@ -1,4 +1,4 @@
-import Menu, { MenuItem, MenuButton, SubMenu } from "../Menu.LibWrapper";
+import Menu from "../Menu";
 
 // @see https://www.electronjs.org/docs/api/menu#examples
 // TODO: Make this data
@@ -10,68 +10,5 @@ export default function Menubar() {
   const appRegistrations = [];
   const startAppRuntime = () => null;
 
-  return (
-    <div>
-      <Menu
-        portal={true}
-        menuButton={
-          <MenuButton>
-            {
-              // TODO: Make this string configurable
-            }
-            Desktop
-          </MenuButton>
-        }
-      >
-        {
-          // TODO: Show divider
-        }
-        <SubMenu label="Applications">
-          {appRegistrations.map((app) => (
-            <MenuItem key={app.getUUID()} onClick={() => startAppRuntime(app)}>
-              {app.getTitle()}
-            </MenuItem>
-          ))}
-        </SubMenu>
-        {
-          // TODO: Show divider
-          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-        }
-        {appRegistrations
-          .filter((app) => app.getIsPinned())
-          .map((app) => (
-            <MenuItem key={app.getUUID()} onClick={() => startAppRuntime(app)}>
-              {app.getTitle()}
-            </MenuItem>
-          ))}
-        {
-          // TODO: Show divider
-        }
-        <MenuItem
-          onClick={() =>
-            alert("TODO: Implement window w/ overview of System Information")
-          }
-        >
-          About / System Information
-        </MenuItem>
-        {
-          // TODO: Show divider
-        }
-        <MenuItem onClick={() => alert("TODO: Implement ReShell destruct")}>
-          Close
-        </MenuItem>
-        {
-          // TODO: Show divider
-        }
-        <MenuItem
-          onClick={() => {
-            // TODO: Only reload after ReShell destruct
-            window.location.reload();
-          }}
-        >
-          Reload
-        </MenuItem>
-      </Menu>
-    </div>
-  );
+  return <Menu />;
 }

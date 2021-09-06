@@ -1,8 +1,10 @@
 import WindowManager from "../WindowManager";
 import Full from "../Full";
 import Layout, { Header, Content, Footer } from "../Layout";
-import Menu, { MenuButton, MenuItem, SubMenu } from "../Menu.LibWrapper";
 import LED from "../LED";
+
+// TODO: Change this to use Menubar
+import Menu, { MenuButton, MenuItem, SubMenu } from "../_Menu.LibWrapper";
 
 import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
