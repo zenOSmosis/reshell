@@ -4,6 +4,14 @@
   border-radius: 8px;
 }
 
+/** Prevent window from being able to be larger than the available space */
+/* TODO: Only enforce this change if the user has not resized the window? */
+.window,
+.window-outer-border {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.8));
   background-color: rgba(0, 0, 0, 0.4);
