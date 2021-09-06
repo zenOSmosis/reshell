@@ -32,6 +32,9 @@ const ApplicationMonitor = {
                 <button
                   onClick={() => runtime.destroy()}
                   style={{ width: "100%" }}
+                  // Disable if the the current runtime (not sure if it should
+                  // be left in, but just testing that the given appRuntime
+                  // matches the app's)
                   disabled={Object.is(appRuntime, runtime)}
                 >
                   Close
