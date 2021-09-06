@@ -18,8 +18,6 @@ const Window = React.forwardRef(
     {
       children,
 
-      windowServices,
-
       // TODO: Obtain via windowController instead?
       isActive,
 

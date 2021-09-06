@@ -1,21 +1,40 @@
+// TODO: Move into core, named WindowManagerProvider
+
 import { EVT_UPDATED, EVT_DESTROYED, logger } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
 
+import WindowCollectionService from "./services/WindowCollectionService";
+
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
+import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
+import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 
 import WindowController from "../Window/classes/WindowController";
 
 // TODO: Incorporate react-router for window routes?
 
-// TODO: Refactor
+// TODO: Refactor (shared across all windows to determine relevant zIndexes)
 let stackingIndex = 0;
 
 // TODO: Document
-export default function WindowManager({ initialWindows = [] }) {
+// TODO: Use prop-types
+export default function WindowManager({ appDescriptors = [] }) {
+  const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
+  const { appRuntimes } = useAppRuntimesContext();
+
   const [elBase, setElBase] = useState(null);
+
+  // TODO: Refactor outside of window manager?
+  useEffect(() => {
+    appDescriptors.forEach((descriptor) =>
+      addOrUpdateAppRegistration(descriptor)
+    );
+
+    // TODO: Add or update these descriptors in the appropriate provider
+  }, [appDescriptors, addOrUpdateAppRegistration]);
 
   const {
     activeWindowController: desktopContextActiveWindowController,
@@ -60,6 +79,13 @@ export default function WindowManager({ initialWindows = [] }) {
   );
 
   const { startService } = useServicesContext();
+
+  // Start window manager services
+  useEffect(() => {
+    startService(WindowCollectionService);
+
+    // FIXME: (jh) Stop services on unmount? WindowManager should never unmount
+  }, [startService]);
 
   // Handle when window manager is clicked on directly (no window interacted with directly)
   const refHandleSetActiveWindow = useRef(handleSetActiveWindow);
@@ -121,17 +147,18 @@ export default function WindowManager({ initialWindows = [] }) {
    * @type {React.Component[]}
    */
   // TODO: Can this be memoized again even w/ hooks running in window descriptors?
-  const windows = initialWindows
-    .map((data) => {
+  // TODO: Don't render off of the descriptors, but off of active AppRegistration instances
+  const windows = appRuntimes
+    .map((runtime) => {
       // TODO: Ensure key is unique across the map
-      const key = data.id;
+      const key = runtime.getUUID();
 
       const {
         view: ViewComponent,
         title,
         serviceClasses = [],
         ...windowProps
-      } = data;
+      } = runtime.getAppDescriptor();
 
       if (!ViewComponent) {
         return null;
@@ -154,11 +181,13 @@ export default function WindowManager({ initialWindows = [] }) {
       }
 
       // TODO: Memoize this handling
+      // TODO: Attach services to window controller so other UI utilities can
+      // reference what is specific to this window
       const windowServices = {};
       for (const serviceClass of serviceClasses) {
         const service = startService(serviceClass);
 
-        windowServices[service.getClassName()] = service;
+        windowServices[serviceClass] = service;
       }
 
       return (
@@ -169,13 +198,13 @@ export default function WindowManager({ initialWindows = [] }) {
             desktopContextActiveWindowController,
             windowController
           )}
-          windowServices={windowServices}
           onMouseDown={() => handleSetActiveWindow(windowController)}
           onTouchStart={() => handleSetActiveWindow(windowController)}
           onRequestMinimize={() => handleWindowMinimize(windowController)}
           onRequestClose={() => handleWindowClose(windowController)}
           ref={(ref) => {
             if (ref && !windowController) {
+              // TODO: Attach to window monitor, once available
               const windowController = new WindowController();
 
               windowController.setTitle(title);

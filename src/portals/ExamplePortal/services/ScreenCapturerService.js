@@ -1,31 +1,34 @@
-import { PhantomCollection, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomCollection } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 import { utils } from "media-stream-track-controller";
 
+// TODO: Build out; ensuring added children are media device controller factories
+class ScreenCaptureFactoryCollection extends PhantomCollection {}
+
+// TODO: Document
 export default class ScreenCapturerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    // TODO: Refactor
-    this._screenCapturerCollection = new PhantomCollection();
-    this.once(EVT_DESTROYED, () => {
-      this._screenCapturerCollection.destroy();
-    });
-    this._screenCapturerCollection.on(EVT_UPDATED, () =>
-      this.emit(EVT_UPDATED)
-    );
+    this.bindCollectionClass(ScreenCaptureFactoryCollection);
   }
 
   // TODO: Document
   async startScreenCapture(constraints = {}, factoryOptions = {}) {
     const factory = await utils.captureScreen(constraints, factoryOptions);
 
-    this._screenCapturerCollection.addChild(factory);
+    this.getCollectionInstance(ScreenCaptureFactoryCollection).addChild(
+      factory
+    );
   }
 
-  // TODO: Document
+  /**
+   * Returns all media stream tracks from all of the factories as a flat array.
+   *
+   * @return {MediaStreamTrack[]}
+   */
   getMediaStreamTracks() {
-    return this._screenCapturerCollection
+    return this.getCollectionInstance(ScreenCaptureFactoryCollection)
       .getChildren()
       .map((factory) =>
         factory

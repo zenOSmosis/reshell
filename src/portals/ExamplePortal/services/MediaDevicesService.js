@@ -1,9 +1,12 @@
-import { PhantomCollection, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomCollection } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 import {
   MediaStreamTrackControllerFactory,
   utils,
 } from "media-stream-track-controller";
+
+// TODO: Build out; ensuring added children are media device controller factories
+class MediaDeviceFactoryCollection extends PhantomCollection {}
 
 export default class MediaDevicesService extends UIServiceCore {
   constructor(...args) {
@@ -12,15 +15,7 @@ export default class MediaDevicesService extends UIServiceCore {
     // TODO: Re-run when devices have been changed
     this.fetchAudioInputDevices();
 
-    // TODO: Work this out
-    this._activeMediaDeviceFactoryCollection = new PhantomCollection();
-    // TODO: Stop all children if _activeMediaDeviceFactoryCollection is destructed
-    this._activeMediaDeviceFactoryCollection.on(EVT_UPDATED, () => {
-      this.emit(EVT_UPDATED);
-    });
-    this.on(EVT_DESTROYED, () => {
-      this._activeMediaDeviceFactoryCollection.destroy();
-    });
+    this.bindCollectionClass(MediaDeviceFactoryCollection);
   }
 
   // TODO: Document
@@ -42,7 +37,9 @@ export default class MediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   getCaptureFactories() {
-    return this._activeMediaDeviceFactoryCollection.getChildren();
+    return this.getCollectionInstance(
+      MediaDeviceFactoryCollection
+    ).getChildren();
   }
 
   // TODO: Document
@@ -59,7 +56,7 @@ export default class MediaDevicesService extends UIServiceCore {
   async captureDefaultAudioInputDevice(constraints = {}, factoryOptions = {}) {
     const factory = await utils.captureMediaDevice(constraints, factoryOptions);
 
-    this._activeMediaDeviceFactoryCollection.addChild(factory);
+    this.getCollectionInstance(MediaDeviceFactoryCollection).addChild(factory);
 
     return factory;
   }
@@ -89,7 +86,7 @@ export default class MediaDevicesService extends UIServiceCore {
       factoryOptions
     );
 
-    this._activeMediaDeviceFactoryCollection.addChild(factory);
+    this.getCollectionInstance(MediaDeviceFactoryCollection).addChild(factory);
 
     return factory;
   }

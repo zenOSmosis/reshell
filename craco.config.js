@@ -2,7 +2,6 @@ const path = require("path");
 
 module.exports = {
   webpack: {
-    // resolve: {
     alias: {
       "@components": path.resolve(__dirname, "src/components"),
       "@core": path.resolve(__dirname, "src/core"),
@@ -10,5 +9,4 @@ module.exports = {
       "@portals": path.resolve(__dirname, "src/portals"),
     },
   },
-  // },
 };

@@ -1,11 +1,13 @@
 import WindowManager from "../WindowManager";
 import Full from "../Full";
 import Layout, { Header, Content, Footer } from "../Layout";
-import Menu, { MenuButton, MenuItem } from "../Menu";
+import Menu, { MenuButton, MenuItem, SubMenu } from "../Menu";
 import LED from "../LED";
 
 import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
+import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
+import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 
 // TODO: Implement top menu-bar
 // @see https://headlessui.dev/react/menu
@@ -14,9 +16,12 @@ import useServicesContext from "@hooks/useServicesContext";
 // TODO: Implement context menu
 // @see https://szhsin.github.io/react-menu/#context-menu
 
-export default function Desktop({ initialWindows }) {
+// TODO: Use prop-types
+export default function Desktop({ appDescriptors }) {
   const { services } = useServicesContext();
   const { activeWindowController } = useDesktopContext();
+  const { appRegistrations } = useAppRegistrationsContext();
+  const { startAppRuntime } = useAppRuntimesContext();
 
   return (
     // NOTE: Typically this would take up the entire viewport
@@ -44,6 +49,22 @@ export default function Desktop({ initialWindows }) {
                 </MenuButton>
               }
             >
+              {
+                // TODO: Show divider
+              }
+              <SubMenu label="Applications">
+                {appRegistrations.map((app) => (
+                  <MenuItem
+                    key={app.getUUID()}
+                    onClick={() => startAppRuntime(app)}
+                  >
+                    {app.getTitle()}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+              {
+                // TODO: Show divider
+              }
               <MenuItem
                 onClick={() =>
                   alert(
@@ -52,18 +73,6 @@ export default function Desktop({ initialWindows }) {
                 }
               >
                 About / System Information
-              </MenuItem>
-              {
-                // TODO: Show divider
-              }
-              <MenuItem
-                onClick={() =>
-                  alert(
-                    "TODO: Implement; Either show fly-out of running services or window with them"
-                  )
-                }
-              >
-                Services
               </MenuItem>
               {
                 // TODO: Show divider
@@ -176,18 +185,23 @@ export default function Desktop({ initialWindows }) {
             }}
           >
             {
-              // TODO: Make dynamic
+              // TODO: Read from package.json
             }
             ReShell 0.0.1-alpha
           </div>
-          <WindowManager initialWindows={initialWindows} />
+          <WindowManager appDescriptors={appDescriptors} />
         </Content>
         <Footer style={{ borderTop: "1px #ccc solid" }}>
           <div style={{ float: "right" }}>
             <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                TODO: Window list here
-              </MenuItem>
+              {appRegistrations.map((app) => (
+                <MenuItem
+                  key={app.getUUID()}
+                  onClick={() => startAppRuntime(app)}
+                >
+                  {app.getTitle()}
+                </MenuItem>
+              ))}
             </Menu>
           </div>
         </Footer>

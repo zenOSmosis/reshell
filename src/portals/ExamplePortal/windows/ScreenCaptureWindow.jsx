@@ -17,13 +17,13 @@ const ScreenCaptureWindow = {
   },
   serviceClasses: [ScreenCapturerService],
   view: function View({ windowServices, logger }) {
-    const scs = windowServices["ScreenCapturerService"];
+    const scs = windowServices[ScreenCapturerService];
 
     const mediaStreamTracks = scs.getMediaStreamTracks();
     // const isActive = Boolean(mediaStreamTracks.length)
 
     // TODO: Remove
-    logger.log({ mediaStreamTracks });
+    // logger.log({ mediaStreamTracks });
 
     return (
       <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
@@ -59,7 +59,8 @@ const ScreenCaptureWindow = {
             </Column>
             <Column>
               <Center>
-                <input type="checkbox" checked /> <span>Show Monitor</span>
+                <input type="checkbox" /* checked */ />{" "}
+                <span>Show Monitor</span>
               </Center>
             </Column>
             <Column>

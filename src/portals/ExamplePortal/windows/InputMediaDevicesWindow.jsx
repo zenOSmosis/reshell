@@ -14,7 +14,7 @@ const InputMediaDevicesWindow = {
   },
   serviceClasses: [MediaDevicesService],
   view: function View({ windowController, windowServices }) {
-    const mds = windowServices["MediaDevicesService"];
+    const mds = windowServices[MediaDevicesService];
 
     const mediaDevices = mds.getMediaDevices();
 

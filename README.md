@@ -1,4 +1,6 @@
-# ReShell Prototype
+# ReShell Prototype ("ESUI")
+
+PRIMARY GOAL: UI should never require a backend to be present; should be easily portable to be used for a variety of frontend-related needs, from small to large projects.
 
 **Work in progress**
 

@@ -13,7 +13,7 @@ const AdditionWindow = {
   },
   serviceClasses: [AdditionService],
   view: function View({ windowController, windowServices }) {
-    const adder = windowServices["AdditionService"];
+    const adder = windowServices[AdditionService];
 
     return (
       <Center>

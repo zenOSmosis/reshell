@@ -1,47 +1,6 @@
-import PhantomCore, {
-  PhantomCollection,
-  EVT_UPDATED,
-  EVT_DESTROYED,
-} from "phantom-core";
+import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
-
-// TODO: Make singleton instance
-class _WindowMonitor extends PhantomCollection {
-  /*
-  constructor(...args) {
-    super(...args);
-
-    this.on(EVT_UPDATED, () => {
-      // TODO: Remove
-      console.log({
-        windowControllers: this.getChildren(),
-      });
-    });
-  }
-  */
-
-  /**
-   * @param {WindowController} windowController
-   * @return {void}
-   */
-  addChild(windowController) {
-    if (!(windowController instanceof WindowController)) {
-      throw new TypeError("windowController is not a WindowController");
-    }
-
-    super.addChild(windowController);
-  }
-
-  /**
-   * @return {void}
-   */
-  destroy() {
-    throw new Error("windowMonitor cannot be destroyed");
-  }
-}
-
-export const windowMonitor = new _WindowMonitor();
 
 // TODO: Move into core directory?
 // TODO: Document
@@ -58,8 +17,6 @@ export default class WindowController extends PhantomCore {
     this._state = Object.seal(
       WindowController.mergeOptions(DEFAULT_STATE, initialState)
     );
-
-    windowMonitor.addChild(this);
   }
 
   // TODO: Document

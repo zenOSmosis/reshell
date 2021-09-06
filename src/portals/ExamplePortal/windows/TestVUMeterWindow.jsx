@@ -16,7 +16,7 @@ const TestVUMeterWindow = {
   },
   serviceClasses: [MediaDevicesService],
   view: ({ windowServices }) => {
-    const mds = windowServices["MediaDevicesService"];
+    const mds = windowServices[MediaDevicesService];
 
     const captureFactories = mds.getCaptureFactories();
     const isCapturing = Boolean(captureFactories.length);

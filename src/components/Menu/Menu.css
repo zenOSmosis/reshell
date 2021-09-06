@@ -5,17 +5,31 @@
   font-weight: normal;
 }
 
-.szh-menu-container li:hover {
-  background-color: #3c8aff;
-  color: #000;
-}
-
+/** Menu button; closed state */
 button.szh-menu-button {
   background-color: transparent;
   border: 0px;
 }
 
+/** Menu button; opened state */
 button.szh-menu-button.szh-menu-button--open {
+  background-color: #3c8aff;
+  color: #000;
+}
+
+/* The individual menu / sub-menus */
+.szh-menu-container ul[role="menu"] {
+  border: 1px rgba(0, 0, 0, 0.4) solid;
+}
+
+/* Sub-menu label in the parent menu */
+.szh-menu-container li.szh-menu__submenu {
+  padding: 0px;
+}
+
+.szh-menu-container li:hover,
+.szh-menu-container li div[role="menuitem"]:hover,
+.szh-menu-container li div[aria-expanded="true"] {
   background-color: #3c8aff;
   color: #000;
 }

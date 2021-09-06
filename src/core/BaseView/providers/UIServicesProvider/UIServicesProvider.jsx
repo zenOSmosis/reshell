@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import ServiceCollection, {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-  // EVT_DESTROYED,
 } from "./classes/UIServiceCollection";
 
 import useForceUpdate from "@hooks/useForceUpdate";
@@ -13,11 +12,14 @@ export const UIServicesContext = React.createContext({});
 export default function UIServicesProvider({ children }) {
   const forceUpdate = useForceUpdate();
 
-  const [_uiServiceCollection, _setUIServiceCollection] = useState(null);
-
-  useEffect(() => {
+  // const [_uiServiceCollection, _setUIServiceCollection] = useState(null);
+  const _uiServiceCollection = useMemo(() => {
     const serviceCollection = new ServiceCollection();
 
+    // Force UI to update when a service has been added or removed
+    //
+    // IMPORTANT: Collection EVT_UPDATED is not mapped here, and is handled
+    // elsewhere, as we don't want the entire UI to update every time
     const _handleServiceAddedOrRemoved = () => {
       // IMPORTANT: This timeout is to prevent trying to re-render while a
       // child component is being updated (i.e. WindowManager currently is
@@ -36,37 +38,35 @@ export default function UIServicesProvider({ children }) {
       EVT_CHILD_INSTANCE_REMOVED,
       _handleServiceAddedOrRemoved
     );
-    // TODO: On update force view update
 
-    _setUIServiceCollection(serviceCollection);
-
-    return function unmount() {
-      serviceCollection.destroy();
-    };
+    return serviceCollection;
   }, [forceUpdate]);
 
   // TODO: Document
   const startService = useCallback(
-    (serviceClass) => _uiServiceCollection.addServiceClass(serviceClass),
+    (ServiceClass) => _uiServiceCollection.addServiceClass(ServiceClass),
     [_uiServiceCollection]
   );
 
   // TODO: Document
-  /*
   const stopService = useCallback(
-    (serviceClass) => _uiServiceCollection.removeService(serviceClass),
+    (ServiceClass) => {
+      const serviceInstance =
+        _uiServiceCollection.getServiceInstance(ServiceClass);
+
+      if (serviceInstance) {
+        return serviceInstance.destroy();
+      }
+    },
     [_uiServiceCollection]
   );
-  */
-
-  // TODO: Document
 
   return (
     <UIServicesContext.Provider
       value={{
         services: _uiServiceCollection && _uiServiceCollection.getChildren(),
         startService,
-        // stopService,
+        stopService,
       }}
     >
       {children}

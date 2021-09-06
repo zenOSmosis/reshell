@@ -3,6 +3,8 @@ import FullViewport from "@components/FullViewport";
 
 import ParadigmProvider from "./providers/ParadigmProvider";
 import UIServicesProvider from "./providers/UIServicesProvider";
+import AppRegistrationsProvider from "./providers/AppRegistrationsProvider";
+import AppRuntimesProvider from "./providers/AppRuntimesProvider";
 import DesktopProvider from "./providers/DesktopProvider";
 
 // TODO: Document and add prop-types
@@ -26,11 +28,15 @@ export default function BaseView({ portal }) {
   return (
     <ParadigmProvider>
       <UIServicesProvider>
-        <DesktopProvider>
-          <FullViewport>
-            <PortalView />
-          </FullViewport>
-        </DesktopProvider>
+        <AppRegistrationsProvider>
+          <AppRuntimesProvider>
+            <DesktopProvider>
+              <FullViewport>
+                <PortalView />
+              </FullViewport>
+            </DesktopProvider>
+          </AppRuntimesProvider>
+        </AppRegistrationsProvider>
       </UIServicesProvider>
     </ParadigmProvider>
   );

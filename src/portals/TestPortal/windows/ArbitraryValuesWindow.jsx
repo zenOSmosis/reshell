@@ -14,8 +14,8 @@ const ArbitraryValuesWindow = {
   },
   serviceClasses: [AdditionService, MultiplicationService],
   view: function View({ windowController, windowServices }) {
-    const adder = windowServices["AdditionService"];
-    const multiplier = windowServices["MultiplicationService"];
+    const adder = windowServices[AdditionService];
+    const multiplier = windowServices[MultiplicationService];
 
     return (
       <Center>

@@ -8,7 +8,7 @@ import ArbitraryValuesWindow from "./windows/ArbitraryValuesWindow";
 export default function WizardPortal() {
   return (
     <Desktop
-      initialWindows={[
+      appDescriptors={[
         AdditionWindow,
         MultiplicationWindow,
         TotalsWindow,
