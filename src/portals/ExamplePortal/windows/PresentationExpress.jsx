@@ -29,7 +29,8 @@ const PresentationExpress = {
                   style={{
                     width: "90%",
                     height: 80,
-                    border: "1px yellow solid",
+                    border: "1px black solid",
+                    backgroundColor: "rgba(0,0,0,.4)",
                     display: "inline-block",
                     margin: "10px auto",
                   }}
