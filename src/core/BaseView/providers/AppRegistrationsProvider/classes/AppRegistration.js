@@ -15,7 +15,7 @@ export default class AppRegistration extends PhantomCore {
 
     if (_registrations[id]) {
       // Automatically update the registration
-      _registrations[id].updateRegistrationDescription(appDescriptor);
+      _registrations[id].updateAppDescriptor(appDescriptor);
 
       return _registrations[id];
     } else {
@@ -39,7 +39,7 @@ export default class AppRegistration extends PhantomCore {
     // TODO: Document type
     this._appDescriptor = appDescriptor;
 
-    _registrations[appDescriptor.id] = appDescriptor;
+    _registrations[appDescriptor.id] = this;
   }
 
   /**
