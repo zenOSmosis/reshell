@@ -5,8 +5,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
 
-import WindowCollectionService from "./services/WindowCollectionService";
-
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
@@ -80,13 +78,6 @@ export default function WindowManager({ appDescriptors = [] }) {
 
   const { startService } = useServicesContext();
 
-  // Start window manager services
-  useEffect(() => {
-    startService(WindowCollectionService);
-
-    // FIXME: (jh) Stop services on unmount? WindowManager should never unmount
-  }, [startService]);
-
   // Handle when window manager is clicked on directly (no window interacted with directly)
   const refHandleSetActiveWindow = useRef(handleSetActiveWindow);
   refHandleSetActiveWindow.current = handleSetActiveWindow;
@@ -149,9 +140,9 @@ export default function WindowManager({ appDescriptors = [] }) {
   // TODO: Can this be memoized again even w/ hooks running in window descriptors?
   // TODO: Don't render off of the descriptors, but off of active AppRegistration instances
   const windows = appRuntimes
-    .map((runtime) => {
+    .map((appRuntime) => {
       // TODO: Ensure key is unique across the map
-      const key = runtime.getUUID();
+      const key = appRuntime.getUUID();
 
       const {
         view: ViewComponent,
@@ -159,7 +150,7 @@ export default function WindowManager({ appDescriptors = [] }) {
         serviceClasses = [],
         isPinned,
         ...windowProps
-      } = runtime.getAppDescriptor();
+      } = appRuntime.getAppDescriptor();
 
       if (!ViewComponent) {
         return null;
@@ -215,7 +206,7 @@ export default function WindowManager({ appDescriptors = [] }) {
 
               // Link app runtime to window controller (so that when the window
               // controller is destructed it will take down the app runtime)
-              windowController.setAppRuntime(runtime);
+              windowController.setAppRuntime(appRuntime);
 
               // Attach the view controller to the window
               ref.attachWindowController(windowController);
@@ -256,6 +247,7 @@ export default function WindowManager({ appDescriptors = [] }) {
             <WrappedView
               windowServices={windowServices}
               windowController={windowController}
+              appRuntime={appRuntime}
               view={ViewComponent}
             />
           )}
@@ -284,6 +276,7 @@ export default function WindowManager({ appDescriptors = [] }) {
 function WrappedView({
   windowServices,
   windowController,
+  appRuntime,
   view: ViewComponent,
   ...rest
 }) {
@@ -311,6 +304,7 @@ function WrappedView({
       {...rest}
       windowController={windowController}
       windowServices={windowServices}
+      appRuntime={appRuntime}
       // Force update every time service updates
       serviceUpdateIdx={serviceUpdateIdx}
     />

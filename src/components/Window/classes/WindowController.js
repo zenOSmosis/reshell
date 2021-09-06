@@ -6,13 +6,13 @@ export { EVT_UPDATED, EVT_DESTROYED };
 // TODO: Document
 export default class WindowController extends PhantomCore {
   constructor(initialState = {}) {
+    super();
+
     const DEFAULT_STATE = {
       isMaximized: false,
       isMinimized: false,
-      title: "[Untitled Window]",
+      title: this.getTitle(),
     };
-
-    super();
 
     this._state = Object.seal(
       WindowController.mergeOptions(DEFAULT_STATE, initialState)
@@ -24,10 +24,22 @@ export default class WindowController extends PhantomCore {
   // TODO: Document
   setAppRuntime(appRuntime) {
     this._appRuntime = appRuntime;
+
+    // TODO: Refactor title to app runtime passing (ensure it can work both ways)
+    this._appRuntime.setTitle(this.getTitle());
   }
 
   // TODO: Document
   setState(partialNextState) {
+    if (typeof partialNextState !== "object") {
+      throw new TypeError("partialNextState is not an object");
+    }
+
+    // TODO: Refactor title to app runtime passing (ensure it can work both ways)
+    if (partialNextState.title !== undefined && this._appRuntime) {
+      this._appRuntime.setTitle(partialNextState.title);
+    }
+
     // Potentially reset polar-opposite states
     if (partialNextState.isMaximized) {
       this._state.isMinimized = false;
@@ -38,6 +50,17 @@ export default class WindowController extends PhantomCore {
     this._state = PhantomCore.mergeOptions(this._state, partialNextState);
 
     this.emit(EVT_UPDATED, partialNextState);
+  }
+
+  /**
+   * @param {string} title
+   * @return {void}
+   */
+  setTitle(title) {
+    // Fixes issue where title does not render in window
+    this.setState({ title });
+
+    super.setTitle(title);
   }
 
   // TODO: Document
@@ -63,16 +86,6 @@ export default class WindowController extends PhantomCore {
   // TODO: Document
   getIsMinimized() {
     return this._state.isMinimized;
-  }
-
-  // TODO: Document
-  setTitle(title) {
-    return this.setState({ title });
-  }
-
-  // TODO: Document
-  getTitle() {
-    return this._state.title;
   }
 
   /**
