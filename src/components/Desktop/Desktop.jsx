@@ -55,14 +55,27 @@ export default function Desktop({ appDescriptors }) {
                 // TODO: Show divider
               }
               <SubMenu label="Applications">
-                {appRegistrations.map((app) => (
-                  <MenuItem
-                    key={app.getUUID()}
-                    onClick={() => startAppRuntime(app)}
-                  >
-                    {app.getTitle()}
-                  </MenuItem>
-                ))}
+                {appRegistrations
+                  .sort((a, b) => {
+                    const aTitle = a.getTitle();
+                    const bTitle = b.getTitle();
+
+                    if (aTitle < bTitle) {
+                      return -1;
+                    } else if (bTitle > aTitle) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  })
+                  .map((app) => (
+                    <MenuItem
+                      key={app.getUUID()}
+                      onClick={() => startAppRuntime(app)}
+                    >
+                      {app.getTitle()}
+                    </MenuItem>
+                  ))}
               </SubMenu>
               {
                 // TODO: Show divider
@@ -70,6 +83,18 @@ export default function Desktop({ appDescriptors }) {
               }
               {appRegistrations
                 .filter((app) => app.getIsPinned())
+                .sort((a, b) => {
+                  const aTitle = a.getTitle();
+                  const bTitle = b.getTitle();
+
+                  if (aTitle < bTitle) {
+                    return -1;
+                  } else if (bTitle > aTitle) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
                 .map((app) => (
                   <MenuItem
                     key={app.getUUID()}
@@ -214,14 +239,27 @@ export default function Desktop({ appDescriptors }) {
               // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
             }
             <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
-              {appRegistrations.map((app) => (
-                <MenuItem
-                  key={app.getUUID()}
-                  onClick={() => startAppRuntime(app)}
-                >
-                  {app.getTitle()}
-                </MenuItem>
-              ))}
+              {appRegistrations
+                .sort((a, b) => {
+                  const aTitle = a.getTitle();
+                  const bTitle = b.getTitle();
+
+                  if (aTitle < bTitle) {
+                    return -1;
+                  } else if (bTitle > aTitle) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
+                .map((app) => (
+                  <MenuItem
+                    key={app.getUUID()}
+                    onClick={() => startAppRuntime(app)}
+                  >
+                    {app.getTitle()}
+                  </MenuItem>
+                ))}
             </Menu>
           </div>
         </Footer>
