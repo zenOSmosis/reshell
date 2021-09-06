@@ -9,6 +9,7 @@ import ServiceMonitor from "./windows/ServiceMonitor";
 import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
 import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
+import MenubarProtoyper from "./windows/MenubarPrototyper";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -26,6 +27,7 @@ export default function ExamplePortal() {
         PresentationExpress,
         SpeakerAppWindow,
         ZenOSmosisWindow,
+        MenubarProtoyper,
         // WindowAPIDiscovererWindow,
       ]}
     />
