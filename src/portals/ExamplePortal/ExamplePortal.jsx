@@ -5,6 +5,7 @@ import InputMediaDevicesWindow from "./windows/InputMediaDevicesWindow";
 import TestVUMeterWindow from "./windows/TestVUMeterWindow";
 import ScreenCaptureWindow from "./windows/ScreenCaptureWindow";
 import ApplicationMonitor from "./windows/ApplicationMonitor";
+import ServiceMonitor from "./windows/ServiceMonitor";
 import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
 import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
@@ -21,6 +22,7 @@ export default function ExamplePortal() {
         TestVUMeterWindow,
         ScreenCaptureWindow,
         ApplicationMonitor,
+        ServiceMonitor,
         PresentationExpress,
         SpeakerAppWindow,
         ZenOSmosisWindow,
