@@ -285,7 +285,9 @@ export default function WindowManager({ appDescriptors = [] }) {
 // transition over to Svelte or any other rendering engine for apps created on
 // top of one of them.
 //
-// TODO: Document
+// TODO: Document; rename? (NOTE: this wrapped view was designed to make it
+// easier to make the wrapping view render out-of-sequence with the containing
+// view, such as when a service updates, etc.)
 function WrappedView({
   windowServices,
   windowController,
