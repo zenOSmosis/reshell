@@ -241,11 +241,13 @@ export default function WindowManager({ appDescriptors = [] }) {
             // it didn't work, and it's a better idea to only update what's
             // necessary anyway
           }
-          <WrappedView
-            windowServices={windowServices}
-            windowController={windowController}
-            view={ViewComponent}
-          />
+          {windowController && (
+            <WrappedView
+              windowServices={windowServices}
+              windowController={windowController}
+              view={ViewComponent}
+            />
+          )}
         </Window>
       );
     })
