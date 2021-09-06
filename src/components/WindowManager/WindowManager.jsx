@@ -204,6 +204,9 @@ export default function WindowManager({ appDescriptors = [] }) {
           onRequestClose={() => handleWindowClose(windowController)}
           ref={(ref) => {
             if (ref && !windowController) {
+              // Begin process of attaching window controller to rendered view
+              // and setting up event bindings
+
               // TODO: Attach to window monitor, once available
               const windowController = new WindowController();
 
@@ -232,6 +235,9 @@ export default function WindowManager({ appDescriptors = [] }) {
                   return next;
                 });
               });
+
+              // Set this new window as the active window
+              handleSetActiveWindow(windowController);
             }
           }}
         >
