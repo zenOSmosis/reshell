@@ -4,6 +4,9 @@ export { EVT_UPDATED, EVT_DESTROYED };
 
 const _registrations = {};
 
+// TODO: Include ability to register preload resources, to preload when runtime is initiated
+// TODO: Include ability to register splash screen, while preloading
+
 // TODO: Document
 // A reference node for the desktop to determine what should be listed in program menus
 export default class AppRegistration extends PhantomCore {
@@ -56,6 +59,15 @@ export default class AppRegistration extends PhantomCore {
    */
   getTitle() {
     return this._appDescriptor.title;
+  }
+
+  /**
+   * TODO: Document
+   *
+   * @return {Object | void}
+   */
+  getMenu() {
+    return this._appDescriptor.menu;
   }
 
   /**

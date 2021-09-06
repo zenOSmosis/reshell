@@ -3,7 +3,8 @@ import AppRegistration from "../../AppRegistrationsProvider/classes/AppRegistrat
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
-// TODO: Handle setting of environment
+// TODO: Include ability to load preload resources, with states representing before / after preloading
+// TODO: Include ability to register splash screen, while preloading
 
 // TODO: Document
 export default class AppRuntime extends PhantomCore {
