@@ -271,7 +271,9 @@ export default function WindowManager({ appDescriptors = [] }) {
     </Cover>
   );
 }
-
+// TODO: Apply animations to open, close, minimize, maximize, restore, etc.
+// @see https://animate.style/
+//
 // TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
 // hooks (keep hooks as more of a low-level thing instead, if possible)
 // - https://svelte.dev/tutorial/onmount
