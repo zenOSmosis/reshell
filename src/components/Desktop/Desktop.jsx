@@ -150,7 +150,7 @@ export default function Desktop({ appDescriptors }) {
                     key={service.getUUID()}
                     onClick={() => alert("TODO: Implement")}
                   >
-                    {service.getClassName()}
+                    {service.getTitle()}
                   </MenuItem>
                 ))
               )}
