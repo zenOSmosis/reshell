@@ -2,7 +2,7 @@ import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
 
 const PresentationExpress = {
-  id: "express-point",
+  id: "presentation-express",
   title: "Presentation Express",
   style: {
     left: "auto",
@@ -10,8 +10,9 @@ const PresentationExpress = {
     width: 640,
     height: 480,
   },
-  isPinned: true,
   view: function View() {
+    // TODO: Build out
+
     return (
       <Layout>
         <Row>
