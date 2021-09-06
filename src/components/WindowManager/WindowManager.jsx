@@ -1,6 +1,6 @@
 // TODO: Move into core, named WindowManagerProvider
 
-import { EVT_UPDATED, EVT_DESTROYED, logger } from "phantom-core";
+import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Cover from "../Cover";
 import Window from "../Window";
@@ -300,9 +300,6 @@ function WrappedView({
       {...rest}
       windowController={windowController}
       windowServices={windowServices}
-      // Attach windowController logger to view, using generic logger
-      // as fallback until windowController is available
-      logger={windowController ? windowController.logger : logger}
       // Force update every time service updates
       serviceUpdateIdx={serviceUpdateIdx}
     />

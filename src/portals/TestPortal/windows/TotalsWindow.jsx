@@ -19,14 +19,16 @@ const TotalsWindow = {
     height: 300,
   },
   serviceClasses: [AdditionService, MultiplicationService],
-  view: function View({ windowController, windowServices, logger }) {
+  view: function View({ windowController, windowServices }) {
     const adder = windowServices[AdditionService];
     const multiplier = windowServices[MultiplicationService];
 
     // TODO: Remove
     useEffect(() => {
-      logger.log("rendered use effect...");
-    }, [logger]);
+      console.log("rendered use effect");
+
+      return () => console.log("unmount");
+    }, []);
 
     return (
       <Center>
