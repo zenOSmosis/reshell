@@ -6,6 +6,7 @@
 
 /** Prevent window from being able to be larger than the available space */
 /* TODO: Only enforce this change if the user has not resized the window? */
+/* TODO: If window is slid off edge, move it, dynamically (i.e. call the appropriate moveTo method in the JS) */
 .window,
 .window-outer-border {
   max-width: 100%;
