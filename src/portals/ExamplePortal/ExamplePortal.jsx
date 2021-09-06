@@ -7,6 +7,7 @@ import ScreenCaptureWindow from "./windows/ScreenCaptureWindow";
 import ApplicationMonitor from "./windows/ApplicationMonitor";
 import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
+import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -22,6 +23,7 @@ export default function ExamplePortal() {
         ApplicationMonitor,
         PresentationExpress,
         SpeakerAppWindow,
+        ZenOSmosisWindow,
         // WindowAPIDiscovererWindow,
       ]}
     />

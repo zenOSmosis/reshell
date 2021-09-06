@@ -1,6 +1,6 @@
-const SpeakerAppWindow = {
-  id: "speaker-app",
-  title: "Speaker.app",
+const ZenOSmosisWindow = {
+  id: "zenOSmosis",
+  title: "zenOSmosis",
   style: {
     left: "auto",
     bottom: 0,
@@ -13,12 +13,12 @@ const SpeakerAppWindow = {
 
     return (
       <iframe
-        title="Speaker.app"
-        src="https://speaker.app"
+        title="zenOSmosis"
+        src="https://zenOSmosis.com"
         style={{ width: "100%", height: "100%", border: 0 }}
       />
     );
   },
 };
 
-export default SpeakerAppWindow;
+export default ZenOSmosisWindow;
