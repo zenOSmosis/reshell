@@ -64,6 +64,7 @@ export default function Desktop({ appDescriptors }) {
               </SubMenu>
               {
                 // TODO: Show divider
+                // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
               }
               {appRegistrations
                 .filter((app) => app.getIsPinned())
@@ -208,6 +209,7 @@ export default function Desktop({ appDescriptors }) {
           <div style={{ float: "right" }}>
             {
               // TODO: Include app locations in app descriptors to help organize applications in menus
+              // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
             }
             <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
               {appRegistrations.map((app) => (
