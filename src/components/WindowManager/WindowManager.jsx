@@ -272,6 +272,19 @@ export default function WindowManager({ appDescriptors = [] }) {
   );
 }
 
+// TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
+// hooks (keep hooks as more of a low-level thing instead, if possible)
+// - https://svelte.dev/tutorial/onmount
+// - https://svelte.dev/tutorial/ondestroy
+// - https://svelte.dev/tutorial/update
+// - https://svelte.dev/tutorial/tick
+// Maybe we can say, "we built a rendering engine on top of React, so that
+// React components can be used, without the complexity of dealing with React
+// hook dependencies, in order to reduce excessive rendering, or stale states,
+// caused by improper user of hook dependencies".... could also smooth the
+// transition over to Svelte or any other rendering engine for apps created on
+// top of one of them.
+//
 // TODO: Document
 function WrappedView({
   windowServices,
