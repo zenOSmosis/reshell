@@ -1,3 +1,5 @@
+import Layout, { Header, Content, Footer } from "@components/Layout";
+import Menubar from "@components/Menubar";
 import Center from "@components/Center";
 
 const ApplicationMonitor = {
@@ -19,13 +21,22 @@ const ApplicationMonitor = {
 
     return (
       // TODO: Add proto menubar here and populate it w/ test structure
-      <Center>
-        <button
-          onClick={() => console.log(createTestMenuStructure(appRuntime, true))}
-        >
-          log(createTestMenuStructure())
-        </button>
-      </Center>
+      <Layout>
+        <Header>
+          <Menubar />
+        </Header>
+        <Content>
+          <Center>
+            <button
+              onClick={() =>
+                console.log(createTestMenuStructure(appRuntime, true))
+              }
+            >
+              log(createTestMenuStructure())
+            </button>
+          </Center>
+        </Content>
+      </Layout>
     );
   },
 };

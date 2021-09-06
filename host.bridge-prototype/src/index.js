@@ -1,4 +1,10 @@
-// TODO: Include note about how this backend should not be used in a production environment
+// TODO: ONLY FOR DEVELOPMENT MODE: Make wrapper script for CRA project, which
+// uses this engine to manipulate / read its own filesystem; add Service API to
+// phantom-core, and extend here, so backend services can be controlled from
+// the frontend
+//
+// TODO: Include note about how this backend should not be used in a production
+// environment
 
 const express = require("express");
 const app = express();

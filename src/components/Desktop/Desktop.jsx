@@ -1,7 +1,7 @@
 import WindowManager from "../WindowManager";
 import Full from "../Full";
 import Layout, { Header, Content, Footer } from "../Layout";
-import Menu, { MenuButton, MenuItem, SubMenu } from "../Menu";
+import Menu, { MenuButton, MenuItem, SubMenu } from "../Menu.LibWrapper";
 import LED from "../LED";
 
 import useDesktopContext from "@hooks/useDesktopContext";
