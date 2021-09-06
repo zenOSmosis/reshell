@@ -17,6 +17,13 @@ export default class WindowController extends PhantomCore {
     this._state = Object.seal(
       WindowController.mergeOptions(DEFAULT_STATE, initialState)
     );
+
+    this._appRuntime = null;
+  }
+
+  // TODO: Document
+  setAppRuntime(appRuntime) {
+    this._appRuntime = appRuntime;
   }
 
   // TODO: Document
@@ -71,14 +78,11 @@ export default class WindowController extends PhantomCore {
   /**
    * @return {Promise<void>}
    */
-  async close() {
-    return this.destroy();
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
   async destroy() {
+    if (this._appRuntime) {
+      await this._appRuntime.destroy();
+    }
+
     // TODO: Determine if in dirty state, prior to closing
     // if (
     // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)

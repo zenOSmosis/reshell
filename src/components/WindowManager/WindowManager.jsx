@@ -212,6 +212,10 @@ export default function WindowManager({ appDescriptors = [] }) {
 
               windowController.setTitle(title);
 
+              // Link app runtime to window controller (so that when the window
+              // controller is destructed it will take down the app runtime)
+              windowController.setAppRuntime(runtime);
+
               // Attach the view controller to the window
               ref.attachWindowController(windowController);
 
