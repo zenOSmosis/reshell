@@ -4,6 +4,7 @@ import AboutReshellWindow from "./windows/AboutReshellWindow";
 import InputMediaDevicesWindow from "./windows/InputMediaDevicesWindow";
 import TestVUMeterWindow from "./windows/TestVUMeterWindow";
 import ScreenCaptureWindow from "./windows/ScreenCaptureWindow";
+import ApplicationMonitor from "./windows/ApplicationMonitor";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -16,6 +17,7 @@ export default function ExamplePortal() {
         InputMediaDevicesWindow,
         TestVUMeterWindow,
         ScreenCaptureWindow,
+        ApplicationMonitor,
         // WindowAPIDiscovererWindow,
       ]}
     />
