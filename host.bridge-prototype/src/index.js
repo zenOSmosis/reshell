@@ -6,6 +6,11 @@
 // TODO: Include note about how this backend should not be used in a production
 // environment
 
+// TODO: Use this filewatcher?  https://github.com/paulmillr/chokidar (it is
+// now used in Microsoft's Visual Studio Code, gulp, karma, PM2, browserify,
+// webpack, BrowserSync, and many others)
+// (Facebook also has one, which is not JS based:  https://github.com/facebook/watchman)
+
 const express = require("express");
 const app = express();
 const http = require("http");
