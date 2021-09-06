@@ -57,6 +57,15 @@ export default class AppRegistration extends PhantomCore {
   }
 
   /**
+   * Returns whether or not the application is pinned to the desktop menu.
+   *
+   * @return {boolean}
+   */
+  getIsPinned() {
+    return Boolean(this._appDescriptor.isPinned);
+  }
+
+  /**
    * @return {Promise<void>}
    */
   async destroy() {

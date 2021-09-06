@@ -65,6 +65,19 @@ export default function Desktop({ appDescriptors }) {
               {
                 // TODO: Show divider
               }
+              {appRegistrations
+                .filter((app) => app.getIsPinned())
+                .map((app) => (
+                  <MenuItem
+                    key={app.getUUID()}
+                    onClick={() => startAppRuntime(app)}
+                  >
+                    {app.getTitle()}
+                  </MenuItem>
+                ))}
+              {
+                // TODO: Show divider
+              }
               <MenuItem
                 onClick={() =>
                   alert(
@@ -193,6 +206,9 @@ export default function Desktop({ appDescriptors }) {
         </Content>
         <Footer style={{ borderTop: "1px #ccc solid" }}>
           <div style={{ float: "right" }}>
+            {
+              // TODO: Include app locations in app descriptors to help organize applications in menus
+            }
             <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
               {appRegistrations.map((app) => (
                 <MenuItem

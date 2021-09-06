@@ -157,6 +157,7 @@ export default function WindowManager({ appDescriptors = [] }) {
         view: ViewComponent,
         title,
         serviceClasses = [],
+        isPinned,
         ...windowProps
       } = runtime.getAppDescriptor();
 

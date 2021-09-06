@@ -9,6 +9,7 @@ const ApplicationMonitor = {
     width: 640,
     height: 480,
   },
+  isPinned: true,
   view: function View() {
     const { appRuntimes } = useAppRuntimesContext();
 
