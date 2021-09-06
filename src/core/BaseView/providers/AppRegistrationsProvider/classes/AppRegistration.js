@@ -34,6 +34,8 @@ export default class AppRegistration extends PhantomCore {
 
   // TODO: Document
   constructor(appDescriptor) {
+    // TODO: Validate appDescriptor before trying to use
+
     super();
 
     // TODO: Document type
