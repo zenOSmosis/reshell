@@ -1,14 +1,20 @@
 import Menu from "../Menu";
 
 // @see https://www.electronjs.org/docs/api/menu#examples
-// TODO: Make this data
 
-export default function Menubar() {
+// TODO: Document
+export default function Menubar({ menuData = [] }) {
+  // TODO: Remove
+  console.log({ menuData });
+
   // TODO: Determine if overflown, and adjust as necessary
 
-  // TODO: Remove these mocks
-  const appRegistrations = [];
-  const startAppRuntime = () => null;
-
-  return <Menu />;
+  // TODO: Dynamically render menu based on data
+  return (
+    <div>
+      {menuData.map((predicate, idx) => (
+        <Menu key={idx} menuData={predicate} />
+      ))}
+    </div>
+  );
 }

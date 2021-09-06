@@ -1,4 +1,4 @@
-import Layout, { Header, Content, Footer } from "@components/Layout";
+import Layout, { Header, Content } from "@components/Layout";
 import Menubar from "@components/Menubar";
 import Center from "@components/Center";
 
@@ -19,11 +19,13 @@ const ApplicationMonitor = {
   view: function View({ appRuntime }) {
     // TODO: Handle dynamic setting of menubar
 
+    const menuData = createTestMenuStructure(appRuntime, true);
+
     return (
       // TODO: Add proto menubar here and populate it w/ test structure
       <Layout>
         <Header>
-          <Menubar />
+          <Menubar menuData={menuData} />
         </Header>
         <Content>
           <Center>

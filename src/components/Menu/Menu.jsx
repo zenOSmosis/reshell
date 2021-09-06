@@ -1,12 +1,11 @@
 import LibMenu, { MenuItem, MenuButton, SubMenu } from "../_Menu.LibWrapper";
 
 // @see https://www.electronjs.org/docs/api/menu#examples
-// TODO: Make this data driven
 
-export default function Menu() {
-  // TODO: Remove these mocks
-  const appRegistrations = [];
-  const startAppRuntime = () => null;
+export default function Menu({ menuData }) {
+  // TODO: Remove
+  console.log({ menuData });
+  //return null;
 
   return (
     <div>
@@ -17,58 +16,29 @@ export default function Menu() {
             {
               // TODO: Make this string configurable
             }
-            Desktop
+            {menuData.label || menuData.role}
           </MenuButton>
         }
       >
-        {
-          // TODO: Show divider
-        }
-        <SubMenu label="Applications">
-          {appRegistrations.map((app) => (
-            <MenuItem key={app.getUUID()} onClick={() => startAppRuntime(app)}>
-              {app.getTitle()}
-            </MenuItem>
-          ))}
-        </SubMenu>
-        {
-          // TODO: Show divider
-          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-        }
-        {appRegistrations
-          .filter((app) => app.getIsPinned())
-          .map((app) => (
-            <MenuItem key={app.getUUID()} onClick={() => startAppRuntime(app)}>
-              {app.getTitle()}
-            </MenuItem>
-          ))}
-        {
-          // TODO: Show divider
-        }
-        <MenuItem
-          onClick={() =>
-            alert("TODO: Implement window w/ overview of System Information")
+        {menuData.submenu.map((subMenuData, idx) => {
+          const label =
+            subMenuData.label || (subMenuData.role && subMenuData.role);
+
+          if (label) {
+            return (
+              <MenuItem key={idx} onClick={subMenuData.click}>
+                {
+                  // TODO: If showing role, ensure it is normalized (role is lower-cased)
+                }
+                {label}
+              </MenuItem>
+            );
           }
-        >
-          About / System Information
-        </MenuItem>
+        })}
+
         {
-          // TODO: Show divider
+          // TODO: Implement support for recursive flyouts
         }
-        <MenuItem onClick={() => alert("TODO: Implement ReShell destruct")}>
-          Close
-        </MenuItem>
-        {
-          // TODO: Show divider
-        }
-        <MenuItem
-          onClick={() => {
-            // TODO: Only reload after ReShell destruct
-            window.location.reload();
-          }}
-        >
-          Reload
-        </MenuItem>
       </LibMenu>
     </div>
   );
