@@ -34,6 +34,8 @@ export default function Menu({ menuData }) {
               {label}
             </MenuItem>
           );
+        } else {
+          return null;
         }
       })}
 
