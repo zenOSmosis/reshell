@@ -24,14 +24,14 @@ const slides = [
   },
   {
     view: function View() {
-      return <Center>ESUI: EcmaScript User Interface)</Center>;
+      return <Center>ESUI: EcmaScript User Interface</Center>;
     },
   },
   {
     view: function View() {
       return (
         <Center>
-          ESUI: EcmaScript User Interface)
+          ESUI: EcmaScript User Interface
           <br />
           (it also means "eat" in Latin)
         </Center>
