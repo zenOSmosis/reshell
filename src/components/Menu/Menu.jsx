@@ -2,7 +2,8 @@ import LibMenu, { MenuItem, MenuButton, SubMenu } from "../_Menu.LibWrapper";
 
 // @see https://www.electronjs.org/docs/api/menu#examples
 
-// TODO: Document; accepts Electron menu data structure and creates an application-level menu
+// TODO: Document; accepts Electron menu data structure and creates an
+// application-level menu (https://www.electronjs.org/docs/api/menu#examples)
 // TODO: Add prop-types
 export default function Menu({ menuData }) {
   // TODO: Remove
