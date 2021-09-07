@@ -14,6 +14,8 @@ import WindowController from "../Window/classes/WindowController";
 
 // TODO: Incorporate react-router for window routes?
 
+// TODO: Add hotkey listener service and map to active window
+
 // TODO: Refactor (shared across all windows to determine relevant zIndexes)
 let stackingIndex = 0;
 
