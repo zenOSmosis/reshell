@@ -61,6 +61,28 @@ const slides = [
       );
     },
   },
+  {
+    view: function View() {
+      return (
+        <iframe
+          title="Speaker.app"
+          src="https://speaker.app"
+          style={{ width: "100%", height: "100%", border: 0 }}
+        />
+      );
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <iframe
+          title="zenOSmosis"
+          src="https://zenOSmosis.com"
+          style={{ width: "100%", height: "100%", border: 0 }}
+        />
+      );
+    },
+  },
 ];
 
 export default slides;

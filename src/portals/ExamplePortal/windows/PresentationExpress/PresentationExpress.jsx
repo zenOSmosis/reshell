@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
+import Cover from "@components/Cover";
+import Center from "@components/Center";
 
 import demoSlides from "./demo.slides";
 
@@ -14,6 +16,7 @@ const PresentationExpress = {
   },
   view: function View() {
     const [slideIdx, setSlideIdx] = useState(0);
+    const [areThumbnailsEnabled, setAreThumbnailsEnabled] = useState(false);
 
     const SlideView = demoSlides[slideIdx].view;
 
@@ -37,9 +40,8 @@ const PresentationExpress = {
                 const isSelected = idx === slideIdx;
 
                 return (
-                  <button
+                  <div
                     key={idx}
-                    onClick={() => setSlideIdx(idx)}
                     style={{
                       width: "90%",
                       height: 80,
@@ -47,10 +49,26 @@ const PresentationExpress = {
                       display: "inline-block",
                       margin: "10px auto",
                       border: `1px ${isSelected ? "red" : "black"} solid`,
+                      position: "relative",
                     }}
                   >
-                    <SlideView />
-                  </button>
+                    <Cover>
+                      {areThumbnailsEnabled ? (
+                        <SlideView />
+                      ) : (
+                        <Center>Slide {idx + 1}</Center>
+                      )}
+                    </Cover>
+                    <Cover>
+                      {
+                        // TODO: Use transparent button component
+                      }
+                      <button
+                        onClick={() => setSlideIdx(idx)}
+                        style={{ width: "100%", height: "100%" }}
+                      ></button>
+                    </Cover>
+                  </div>
                 );
               })}
             </div>
@@ -61,6 +79,12 @@ const PresentationExpress = {
                 <SlideView />
               </Content>
               <Footer style={{ textAlign: "right" }}>
+                <button
+                  style={{ float: "left" }}
+                  onClick={() => setAreThumbnailsEnabled((prev) => !prev)}
+                >
+                  {areThumbnailsEnabled ? "Hide" : "Show"} thumbnails
+                </button>
                 <button
                   onClick={() => setSlideIdx((slideIdx) => slideIdx - 1)}
                   disabled={slideIdx <= 0}
