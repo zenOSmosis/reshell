@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
-import Center from "@components/Center";
 
 import demoSlides from "./demo.slides";
 
@@ -28,6 +27,9 @@ const PresentationExpress = {
               textAlign: "center",
             }}
           >
+            {
+              // TODO: Bump scroll position if user scrolls from outside (after doing so, consider making a separate component for the functionality)
+            }
             <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
               {demoSlides.map((slide, idx) => {
                 const { view: SlideView } = slide;
