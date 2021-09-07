@@ -11,6 +11,8 @@
 // webpack, BrowserSync, and many others)
 // (Facebook also has one, which is not JS based:  https://github.com/facebook/watchman)
 
+// TODO: Use zx package for internal script handling?  https://www.npmjs.com/package/zx
+
 const express = require("express");
 const app = express();
 const http = require("http");
