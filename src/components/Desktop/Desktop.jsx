@@ -19,7 +19,7 @@ import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 // @see https://szhsin.github.io/react-menu/#context-menu
 
 // TODO: Backgrounds?
-// @see https://coolbackgrounds.io/
+// @see https://coolbackgrounds.io (particles: https://github.com/marcbruederlin/particles.js)
 
 // TODO: Use prop-types
 export default function Desktop({ appDescriptors }) {
