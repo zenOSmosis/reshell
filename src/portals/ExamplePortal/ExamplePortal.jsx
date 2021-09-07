@@ -10,6 +10,7 @@ import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
 import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
 import MenubarProtoyper from "./windows/MenubarPrototyper";
+import Box3DPrototype from "./windows/Box3DPrototype";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -28,6 +29,7 @@ export default function ExamplePortal() {
         SpeakerAppWindow,
         ZenOSmosisWindow,
         MenubarProtoyper,
+        Box3DPrototype,
         // WindowAPIDiscovererWindow,
       ]}
     />
