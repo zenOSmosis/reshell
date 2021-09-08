@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
-import "./ColorAdjuster.module.css";
+import styles from "./ColorAdjuster.module.css";
 
 const ColorAdjuster = {
   id: "color-adjuster",
@@ -25,11 +26,46 @@ const ColorAdjuster = {
     }, [isGrayscale]);
 
     return (
-      <Center>
-        <button onClick={() => setIsGrayscale((prev) => !prev)}>
-          {isGrayscale ? "Disable" : "Enable"} Grayscale
-        </button>
-      </Center>
+      <Layout className={styles["color-adjuster"]}>
+        <Content>
+          <Center>
+            <button onClick={() => setIsGrayscale((prev) => !prev)}>
+              {isGrayscale ? "Disable" : "Enable"} Grayscale
+            </button>
+          </Center>
+        </Content>
+        <Footer>
+          {
+            // @see https://color.adobe.com/create/color-wheel
+
+            ["#B04628", "#B9FC6D", "#FC7853", "#3A65FC", "#314EB0"].map(
+              (color, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    backgroundColor: color,
+                    height: 100,
+                    width: "20%",
+                    display: "inline-block",
+                  }}
+                >
+                  <Center>
+                    <span
+                      style={{
+                        padding: 4,
+                        backgroundColor: "rgba(0,0,0,.4)",
+                        borderRadius: 4,
+                      }}
+                    >
+                      {color}
+                    </span>
+                  </Center>
+                </div>
+              )
+            )
+          }
+        </Footer>
+      </Layout>
     );
   },
 };

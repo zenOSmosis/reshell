@@ -1,3 +1,27 @@
 :global body.grayscale {
   filter: grayscale(1);
 }
+
+.color-adjuster {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#93cede+0,75bdd1+41,49a5bf+100;Blue+3D+%235 */
+  background: #93cede; /* Old browsers */
+  background: -moz-linear-gradient(
+    -45deg,
+    #93cede 0%,
+    #75bdd1 41%,
+    #49a5bf 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    -45deg,
+    #93cede 0%,
+    #75bdd1 41%,
+    #49a5bf 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    135deg,
+    #93cede 0%,
+    #75bdd1 41%,
+    #49a5bf 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93cede', endColorstr='#49a5bf',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
