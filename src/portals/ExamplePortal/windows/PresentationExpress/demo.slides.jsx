@@ -2,8 +2,66 @@ import Center from "@components/Center";
 
 const slides = [
   {
+    // TODO: Make common component for "ReShell Architecture Benefits"
     view: function View() {
-      return <Center>ReShell has another project name</Center>;
+      return <Center>ReShell</Center>;
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return <Center>ReShell Architecture Benefits...</Center>;
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return (
+        <Center>
+          <div>ReShell Architecture Benefits:</div>
+          <ul>
+            <li>
+              Mobile / browser inconsistencies debugged in the desktop layer;
+              less cross-platform issues to worry about in the application layer
+              {
+                // TODO: Show a diagram?
+              }
+            </li>
+            <li>
+              Better focus on what individual applications should do; less worry
+              about layout
+            </li>
+            <li>
+              Better focus on state management between related components, and
+              how that information is related
+            </li>
+            <li>Less state management boilerplate (compared to Redux, etc.)</li>
+            <li>
+              Many React projects suffer from losing the ability to hot reload
+              and maintain state due to the way their state management is wired
+              in. ReShell's service architecture retains this ability, by
+              design.
+            </li>
+            <li>
+              Dynamic workflows - Users can have which elements they choose at
+              any given time on the screen at once, and any related data can be
+              synced between those views at the same time
+              {
+                // TODO: Include link to calculator portal?
+              }
+            </li>
+            <li>
+              Improvements to underlying rendering engine and layout affect all
+              applications wrapped in ReShell.
+            </li>
+          </ul>
+        </Center>
+      );
+    },
+  },
+  {
+    view: function View() {
+      return <Center>ReShell also has another project name...</Center>;
     },
   },
   {
@@ -34,6 +92,29 @@ const slides = [
           ESUI: EcmaScript User Interface
           <br />
           (it also means "eat" in Latin)
+        </Center>
+      );
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <p>
+              ECMAScript is the scripting language that forms the basis of
+              JavaScript.
+            </p>
+            <p style={{ fontStyle: "italic" }}>
+              Source:{" "}
+              <a
+                target="_blanks"
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_Resources"
+              >
+                https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_Resources
+              </a>
+            </p>
+          </div>
         </Center>
       );
     },

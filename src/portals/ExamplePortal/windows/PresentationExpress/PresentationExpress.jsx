@@ -5,6 +5,11 @@ import Center from "@components/Center";
 
 import demoSlides from "./demo.slides";
 
+// TODO: Add image scaler for slides
+// TODO: Add counter for slide position (i.e. "x of y")
+// TODO: Fix issue (globally) where mobile cannot scroll windows with fingers (ensure Safari iOS doesn't page bounce)
+// TODO: Include optional slide titles
+
 const PresentationExpress = {
   id: "presentation-express",
   title: "Presentation Express",
@@ -65,7 +70,11 @@ const PresentationExpress = {
                       }
                       <button
                         onClick={() => setSlideIdx(idx)}
-                        style={{ width: "100%", height: "100%" }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: "transparent",
+                        }}
                       ></button>
                     </Cover>
                   </div>
