@@ -6,7 +6,6 @@ import Center from "@components/Center";
 import demoSlides from "./demo.slides";
 
 // TODO: Add image scaler for slides
-// TODO: Add counter for slide position (i.e. "x of y")
 // TODO: Fix issue (globally) where mobile cannot scroll windows with fingers (ensure Safari iOS doesn't page bounce)
 // TODO: Include optional slide titles
 
@@ -94,6 +93,15 @@ const PresentationExpress = {
                 >
                   {areThumbnailsEnabled ? "Hide" : "Show"} thumbnails
                 </button>
+                <span
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontStyle: "italic",
+                    marginRight: 4,
+                  }}
+                >
+                  {slideIdx + 1} of {demoSlides.length}
+                </span>
                 <button
                   onClick={() => setSlideIdx((slideIdx) => slideIdx - 1)}
                   disabled={slideIdx <= 0}
