@@ -6,6 +6,8 @@ import LED from "@components/LED";
 
 import ScreenCapturerService from "../services/ScreenCapturerService";
 
+// TODO: Include ability to screen record and snapshot
+
 const ScreenCaptureWindow = {
   id: "screen-capture-window",
   title: "Screen Capture",
