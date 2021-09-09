@@ -99,6 +99,11 @@ const slides = [
   },
   {
     view: function View() {
+      return <Center>And everything tested</Center>;
+    },
+  },
+  {
+    view: function View() {
       return <Center>ReShell also has another project name...</Center>;
     },
   },
@@ -176,6 +181,20 @@ const slides = [
                 {line}
               </div>
             ))}
+        </Center>
+      );
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <div style={{ fontWeight: "bold" }}>
+              The following slide is NOT how Speaker.app will be integrated.
+            </div>
+            <div style={{ fontStyle: "italic", marginTop: 20 }}>However...</div>
+          </div>
         </Center>
       );
     },
