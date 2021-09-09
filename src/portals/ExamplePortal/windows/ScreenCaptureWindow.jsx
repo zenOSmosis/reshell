@@ -21,7 +21,7 @@ const ScreenCaptureWindow = {
   view: function View({ windowServices, logger }) {
     const scs = windowServices[ScreenCapturerService];
 
-    const mediaStreamTracks = scs.getMediaStreamTracks();
+    // const mediaStreamTracks = scs.getMediaStreamTracks();
     // const isActive = Boolean(mediaStreamTracks.length)
 
     // TODO: Remove

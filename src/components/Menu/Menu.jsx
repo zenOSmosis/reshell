@@ -1,4 +1,7 @@
-import LibMenu, { MenuItem, MenuButton, SubMenu } from "../_Menu.LibWrapper";
+import LibMenu, {
+  MenuItem,
+  MenuButton /* SubMenu */,
+} from "../_Menu.LibWrapper";
 
 // @see https://www.electronjs.org/docs/api/menu#examples
 
