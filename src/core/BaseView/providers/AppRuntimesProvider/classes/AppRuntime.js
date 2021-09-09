@@ -27,6 +27,25 @@ export default class AppRuntime extends PhantomCore {
     this.proxyOn(this._appRegistration, EVT_DESTROYED, () => {
       this.destroy();
     });
+
+    this._windowController = null;
+  }
+
+  // TODO: Document
+  setWindowController(windowController) {
+    // TODO: Verify windowController is a WindowController
+
+    this._windowController = windowController;
+  }
+
+  // TODO: Document
+  getWindowController() {
+    return this._windowController;
+  }
+
+  // TODO: Document
+  getRegistrationID() {
+    return this._appRegistration.getID();
   }
 
   // TODO: Document

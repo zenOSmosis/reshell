@@ -30,6 +30,11 @@ export default class WindowController extends PhantomCore {
   }
 
   // TODO: Document
+  getAppRuntime() {
+    return this._appRuntime;
+  }
+
+  // TODO: Document
   setState(partialNextState) {
     if (typeof partialNextState !== "object") {
       throw new TypeError("partialNextState is not an object");

@@ -2,6 +2,9 @@
 
 import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import WindowManagerRouteProvider, {
+  WindowManagerRouteContext,
+} from "./WindowManager.RouteProvider";
 import Cover from "../Cover";
 import Window from "../Window";
 
@@ -22,6 +25,15 @@ let stackingIndex = 0;
 // TODO: Document
 // TODO: Use prop-types
 export default function WindowManager({ appDescriptors = [] }) {
+  return (
+    <WindowManagerRouteProvider>
+      <WindowManagerView appDescriptors={appDescriptors} />
+    </WindowManagerRouteProvider>
+  );
+}
+
+function WindowManagerView({ appDescriptors = [] }) {
+  const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
   const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
   const { appRuntimes } = useAppRuntimesContext();
 
@@ -57,13 +69,23 @@ export default function WindowManager({ appDescriptors = [] }) {
     [windowControllerMaps]
   );
 
+  // IMPORTANT: Prevents infinite loop of handleSetActiveWindow when used as dependency
+  const refDesktopContextActiveWindowController = useRef(null);
+  refDesktopContextActiveWindowController.current =
+    desktopContextActiveWindowController;
+
   /**
    * @param {WindowController | null} windowController?
    * @return {void}
    */
   const handleSetActiveWindow = useCallback(
     (windowController) => {
-      if (!Object.is(windowController, desktopContextActiveWindowController)) {
+      if (
+        !Object.is(
+          windowController,
+          refDesktopContextActiveWindowController.current
+        )
+      ) {
         setDesktopContextActiveWindowController(windowController);
 
         if (windowController) {
@@ -72,11 +94,38 @@ export default function WindowManager({ appDescriptors = [] }) {
         }
       }
     },
-    [
-      desktopContextActiveWindowController,
-      setDesktopContextActiveWindowController,
-    ]
+    [setDesktopContextActiveWindowController]
   );
+
+  // Handle setting of active window based on locationAppRuntimes
+  // TODO: Fix; currently buggy w/ Safari
+  // TODO: Implement deep linking
+  /*
+  useEffect(() => {
+    const to = setTimeout(() => {
+      const windowControllers = locationAppRuntimes.map((appRuntime) =>
+        appRuntime.getWindowController()
+      );
+
+      if (
+        !windowControllers.includes(
+          refDesktopContextActiveWindowController.current
+        )
+      ) {
+        for (const windowController of windowControllers) {
+          if (windowController) {
+            // Iterate through all locationAppRuntimes and set active window
+            handleSetActiveWindow(windowController);
+          }
+        }
+      }
+    });
+
+    return function unmount() {
+      clearTimeout(to);
+    };
+  }, [locationAppRuntimes, handleSetActiveWindow]);
+  */
 
   const { startService } = useServicesContext();
 
@@ -208,6 +257,7 @@ export default function WindowManager({ appDescriptors = [] }) {
               // Link app runtime to window controller (so that when the window
               // controller is destructed it will take down the app runtime)
               windowController.setAppRuntime(appRuntime);
+              appRuntime.setWindowController(windowController);
 
               // Attach the view controller to the window
               ref.attachWindowController(windowController);
