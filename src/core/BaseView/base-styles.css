@@ -127,10 +127,8 @@ ul {
 ul li {
   text-align: left;
   margin: 4px 0px;
-  border: 1px #ccc solid;
   margin: 0px;
   padding: 8px;
-  font-weight: bold;
 }
 
 /**
