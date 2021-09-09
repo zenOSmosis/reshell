@@ -61,6 +61,44 @@ const slides = [
   },
   {
     view: function View() {
+      return <Center>ReShell Goals...</Center>;
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <div>ReShell [eventual] Goals:</div>
+            <ul>
+              <li>
+                Remote application streaming from host operating systems to all
+                connected peers in a Speaker.app network
+              </li>
+              <li>
+                SEO friendly: Applications wrapped in ReShell, exposed to the
+                native web, will be partially indexable by Google / etc.
+              </li>
+              <li>
+                ReShell applications require less imports than conventional
+                React-based applications with shared state management.
+              </li>
+              <li>
+                File watcher API around create-react-app will monitor for
+                application directory changes within respective portals and
+                automatically populate internal application lists as well as
+                have application paths exposed to OpenFS.
+              </li>
+              <li>Remote UNIX environment when connected to HostBridge</li>
+            </ul>
+            ;
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
+    view: function View() {
       return <Center>ReShell also has another project name...</Center>;
     },
   },
