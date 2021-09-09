@@ -15,6 +15,7 @@ const ColorAdjuster = {
   },
   // serviceClasses: [],
   view: function View({ windowController, windowServices }) {
+    // TODO: Add service state; fix issue where if choosing grayscale, closing, then re-opening disables grayscale
     const [isGrayscale, setIsGrayscale] = useState(false);
 
     useEffect(() => {
