@@ -237,6 +237,8 @@ export default function Desktop({ appDescriptors }) {
             >
               {
                 // TODO: Read from package.json
+                // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
+                // (i.e. REACT_APP_VERSION=$npm_package_version)
               }
               ReShell 0.0.1-alpha
             </div>
