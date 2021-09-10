@@ -10,6 +10,8 @@ export default function Menubar({ menuData = [] }) {
   // TODO: Remove
   console.log({ menuData });
 
+  // TODO: Manage menu state: https://szhsin.github.io/react-menu/docs#use-menu-state
+
   // TODO: Determine if overflown, and adjust as necessary
 
   // TODO: Dynamically render menu based on data
