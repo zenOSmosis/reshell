@@ -120,17 +120,54 @@ const slides = [
                 </li>
                 <li>
                   <a
-                    href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    OS Threading
+                    OS-level multithreading
                   </a>
                 </li>
-                <li>Network; HTTP / WebSockets / WebRTC</li>
+                <li>
+                  <a
+                    href="https://developer.chrome.com/blog/new-in-chrome-93/#url-handlers"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Installed web applications (PWAs)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://developer.chrome.com/blog/new-in-chrome-93/#window-placement"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Multi-screen window placement (control which screen should
+                    render fullscreen content)
+                  </a>{" "}
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Screen"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    (also see Screen API)
+                  </a>
+                </li>
+                <li>
+                  Network; HTTP / WebSockets / WebRTC (...goes without saying)
+                </li>
               </ul>
             </div>
           </div>
+        </Center>
+      );
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <Center>
+          <div>Not to mention, Chrome OS.</div>
         </Center>
       );
     },
@@ -142,7 +179,7 @@ const slides = [
         <Center>
           <div style={{ fontWeight: "bold" }}>
             ReShell is a UI bridge which [either completely or partially]
-            removes the hard part of:
+            removes the hard parts of:
           </div>
           <div style={{ marginTop: 20 }}>
             <ul>
