@@ -173,6 +173,30 @@ const slides = [
     },
   },
   {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <div style={{ fontWeight: "bold" }}>
+              Chromebooks outsold Macs worldwide in 2020, cutting into Windows
+              market share.
+            </div>
+            <div style={{ marginTop: 20, fontStyle: "italic" }}>
+              Source:{" "}
+              <a
+                href="https://www.geekwire.com/2021/chromebooks-outsold-macs-worldwide-2020-cutting-windows-market-share/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                https://www.geekwire.com/2021/chromebooks-outsold-macs-worldwide-2020-cutting-windows-market-share/
+              </a>
+            </div>
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
     // TODO: Make common component for "ReShell Architecture Benefits"
     view: function View() {
       return (
