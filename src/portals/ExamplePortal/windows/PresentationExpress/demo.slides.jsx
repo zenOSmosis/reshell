@@ -44,6 +44,23 @@ const slides = [
     view: function View() {
       return (
         <Center>
+          <div>
+            <div style={{ fontWeight: "bold" }}>
+              ReShell Architecture Benefits...
+            </div>
+            <div style={{ marginTop: 20, fontStyle: "italic" }}>
+              Key point: Faster UI prototyping
+            </div>
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return (
+        <Center>
           <div style={{ fontWeight: "bold" }}>
             ReShell Architecture Benefits
           </div>
@@ -121,7 +138,10 @@ const slides = [
                 automatically populate internal application lists as well as
                 have application paths exposed to OpenFS.
               </li>
-              <li>Remote UNIX environment when connected to HostBridge</li>
+              <li>
+                Mac / Windows / Linux etc. environments when connected via
+                HostBridge
+              </li>
             </ul>
             ;
           </div>
@@ -131,7 +151,11 @@ const slides = [
   },
   {
     view: function View() {
-      return <Center>And everything tested</Center>;
+      return (
+        <Center>
+          <div style={{ fontStyle: "italic" }}>And everything tested</div>
+        </Center>
+      );
     },
   },
   {
