@@ -25,6 +25,14 @@ export default class AppRegistration extends PhantomCore {
   static addOrUpdateAppRegistration(appDescriptor) {
     const { id } = appDescriptor;
 
+    // Registrations may be updated when in development mode, and updating the
+    // source code to a registered application. In most cases, the following
+    // code block will run before the respective application is updated /
+    // re-rendered.
+    //
+    // TODO: Implement some message-bus functionality to let other instances
+    // know of updated registrations (i.e. so this can be piped up to UI
+    // notification)
     if (_registrations[id]) {
       // Automatically update the registration
       _registrations[id].updateAppDescriptor(appDescriptor);
