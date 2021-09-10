@@ -28,6 +28,145 @@ const slides = [
     },
   },
   {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <div style={{ fontWeight: "bold" }}>
+              Web Browsers are like Operating Systems
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <ul>
+                <li>
+                  <a
+                    href="https://github.com/chromium/chromium"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Chromium Source Code
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://en.wikipedia.org/wiki/Chromium_(web_browser)"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    [Chromium is] Mostly written in C++
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://web.dev/file-system-access"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    File System Access
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://web.dev/usb/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    USB Access
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://support.google.com/chrome/answer/6362090?hl=en&co=GENIE.Platform%3DDesktop"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Bluetooth Access
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.techsolutions.support.com/how-to/how-to-create-and-switch-profiles-in-chrome-12564"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    User Profiles
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/chromium/chromium/tree/master/media/ffmpeg"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    A/V Encoding / Decoding / Transcoding (FFMPEG)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/chromium/chromium/tree/master/media/gpu"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    GPU
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Accelerometer"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Accelerometer (detect when device is moved)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    OS Threading
+                  </a>
+                </li>
+                <li>Network; HTTP / WebSockets / WebRTC</li>
+              </ul>
+            </div>
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>
+            ReShell is a UI bridge which [either completely or partially]
+            removes the hard part of:
+          </div>
+          <div style={{ marginTop: 20 }}>
+            <ul>
+              <li>Laying out a fresh application</li>
+              <li>Making web apps feel more like native apps</li>
+              <li>Setting up prototype UIs for development / demonstration</li>
+              <li>State management</li>
+              <li>Dynamic state linking between components</li>
+              <li>
+                Cross-platform testing (the core view framework is actively
+                tested across all major platforms)
+              </li>
+            </ul>
+            <hr />
+            <div>
+              TLDR: Less boilerplate; it's mostly baked into the core and is
+              built on top of React.
+            </div>
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
     // TODO: Make common component for "ReShell Architecture Benefits"
     view: function View() {
       return (
@@ -172,7 +311,11 @@ const slides = [
               </p>
             </div>
             <div style={{ marginTop: 20 }}>
-              <a href="https://docs.github.com/en/developers/overview/github-developer-program">
+              <a
+                href="https://docs.github.com/en/developers/overview/github-developer-program"
+                target="_blank"
+                rel="noreferrer"
+              >
                 https://docs.github.com/en/developers/overview/github-developer-program
               </a>
             </div>
