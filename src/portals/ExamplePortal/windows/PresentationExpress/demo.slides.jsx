@@ -464,6 +464,11 @@ const slides = [
       );
     },
   },
+  {
+    view: function View() {
+      return <Center>Thanks for watching!</Center>;
+    },
+  },
 ];
 
 export default slides;
