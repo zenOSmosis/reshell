@@ -4,6 +4,9 @@
 import { useContext } from "react";
 import { UIServicesContext } from "@core/BaseView/providers/UIServicesProvider";
 
+// TODO: Include (either here, or elsewhere,) ability to monitor running
+// PhantomCore instances (use WeakRef here or there, as well)?
+
 import Timer from "@components/Timer";
 
 const ServiceMonitor = {
