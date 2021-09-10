@@ -4,13 +4,11 @@ const slides = [
   {
     // TODO: Make common component for "ReShell Architecture Benefits"
     view: function View() {
-      return <Center>ReShell</Center>;
-    },
-  },
-  {
-    // TODO: Make common component for "ReShell Architecture Benefits"
-    view: function View() {
-      return <Center>ReShell Architecture Benefits...</Center>;
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>ReShell</div>
+        </Center>
+      );
     },
   },
   {
@@ -18,7 +16,37 @@ const slides = [
     view: function View() {
       return (
         <Center>
-          <div>ReShell Architecture Benefits:</div>
+          <div>
+            <div style={{ fontWeight: "bold" }}>ReShell</div>
+            <div style={{ marginTop: 20 }}>
+              Built on PhantomCore, PhantomCollection, React, and a bunch of
+              things from Speaker.app
+            </div>
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>
+            ReShell Architecture Benefits...
+          </div>
+        </Center>
+      );
+    },
+  },
+  {
+    // TODO: Make common component for "ReShell Architecture Benefits"
+    view: function View() {
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>
+            ReShell Architecture Benefits
+          </div>
           <ul>
             <li>
               Mobile / browser inconsistencies debugged in the desktop layer;
@@ -61,7 +89,11 @@ const slides = [
   },
   {
     view: function View() {
-      return <Center>ReShell Goals...</Center>;
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>ReShell Goals...</div>
+        </Center>
+      );
     },
   },
   {
@@ -69,7 +101,7 @@ const slides = [
       return (
         <Center>
           <div>
-            <div>ReShell [eventual] Goals:</div>
+            <div style={{ fontWeight: "bold" }}>ReShell Goals</div>
             <ul>
               <li>
                 Remote application streaming from host operating systems to all
@@ -100,6 +132,30 @@ const slides = [
   {
     view: function View() {
       return <Center>And everything tested</Center>;
+    },
+  },
+  {
+    view: function View() {
+      return (
+        <Center>
+          <div>
+            <div style={{ fontWeight: "bold" }}>
+              TODO: Tooling for GitHub Developer Program
+            </div>
+            <div>
+              <p>
+                If you build tools that integrate with GitHub, you can join the
+                GitHub Developer Program.
+              </p>
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <a href="https://docs.github.com/en/developers/overview/github-developer-program">
+                https://docs.github.com/en/developers/overview/github-developer-program
+              </a>
+            </div>
+          </div>
+        </Center>
+      );
     },
   },
   {
@@ -162,6 +218,7 @@ const slides = [
       );
     },
   },
+  /*
   {
     view: function View() {
       return (
@@ -184,8 +241,7 @@ const slides = [
         </Center>
       );
     },
-  },
-  {
+  }*/ {
     view: function View() {
       return (
         <Center>
