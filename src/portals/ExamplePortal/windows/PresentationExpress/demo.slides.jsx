@@ -143,7 +143,6 @@ const slides = [
                 HostBridge
               </li>
             </ul>
-            ;
           </div>
         </Center>
       );
