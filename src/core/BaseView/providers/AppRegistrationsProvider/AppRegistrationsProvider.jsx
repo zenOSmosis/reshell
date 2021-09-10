@@ -28,7 +28,14 @@ export default function AppRegistrationsProvider({ children }) {
     };
   }, []);
 
-  // TODO: Document
+  /**
+   * Registers, or updates, the given AppRegistration cache.
+   *
+   * This is used primarily for applications menu population.
+   *
+   * @param {AppRegistration}
+   * @return {void}
+   */
   const addOrUpdateAppRegistration = useCallback(
     (appDescriptor) => {
       const appRegistration =
@@ -39,7 +46,14 @@ export default function AppRegistrationsProvider({ children }) {
     [_appRegistrationCollection]
   );
 
-  // TODO: Document
+  /**
+   * Unregisters the given AppRegistration from the cache.
+   *
+   * This will remove the application from the applications menu.
+   *
+   * @param {AppRegistration}
+   * @return {void}
+   */
   const removeAppRegistration = useCallback(
     (appDescriptorOrId) => {
       // NOTE: This should also remove it from the collection

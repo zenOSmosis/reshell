@@ -2,6 +2,8 @@ import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+// AppRegistration cache
+// TODO: Use Map instead?
 const _registrations = {};
 
 // TODO: Include ability to register preload resources, to preload when runtime is initiated
@@ -12,7 +14,14 @@ const _registrations = {};
 export default class AppRegistration extends PhantomCore {
   // TODO: Validate appDescriptor
 
-  // TODO: Document
+  /**
+   * Registers, or updates, the given AppRegistration cache.
+   *
+   * This is used primarily for applications menu population.
+   *
+   * @param {AppRegistration}
+   * @return {void}
+   */
   static addOrUpdateAppRegistration(appDescriptor) {
     const { id } = appDescriptor;
 
@@ -26,7 +35,14 @@ export default class AppRegistration extends PhantomCore {
     }
   }
 
-  // TODO: Document
+  /**
+   * Unregisters the given AppRegistration from the cache.
+   *
+   * This will remove the application from the applications menu.
+   *
+   * @param {AppRegistration}
+   * @return {void}
+   */
   static async removeAppRegistration(appDescriptor) {
     const { id } = appDescriptor;
 

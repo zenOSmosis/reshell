@@ -21,20 +21,40 @@ export default class WindowController extends PhantomCore {
     this._appRuntime = null;
   }
 
-  // TODO: Document
+  /**
+   * Associates an AppRuntime instance with this window controller.
+   *
+   * @param {AppRuntime} appRuntime
+   * @return {void}
+   */
   setAppRuntime(appRuntime) {
+    // TODO: Ensure appRuntime is an AppRuntime instance
+
     this._appRuntime = appRuntime;
 
     // TODO: Refactor title to app runtime passing (ensure it can work both ways)
     this._appRuntime.setTitle(this.getTitle());
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the associated AppRuntime for this window controller.
+   *
+   * @return {AppRuntime | void}
+   */
   getAppRuntime() {
     return this._appRuntime;
   }
 
-  // TODO: Document
+  /**
+   * Sets a partial next state for this window controller.
+   *
+   * TODO: States are currently deep-merged but may become shallow merged
+   * instead.
+   *
+   * @param {Object} partialNextState
+   * @emits EVT_UPDATED
+   * @return {void}
+   */
   setState(partialNextState) {
     if (typeof partialNextState !== "object") {
       throw new TypeError("partialNextState is not an object");
@@ -52,6 +72,7 @@ export default class WindowController extends PhantomCore {
       this._state.isMaximized = false;
     }
 
+    // TODO: This is buggy with certain types of state objects; should we just do a shallow-merge instead?
     this._state = PhantomCore.mergeOptions(this._state, partialNextState);
 
     this.emit(EVT_UPDATED, partialNextState);
@@ -68,27 +89,45 @@ export default class WindowController extends PhantomCore {
     super.setTitle(title);
   }
 
-  // TODO: Document
+  /**
+   * @return {Object}
+   */
   getState() {
     return this._state;
   }
 
-  // TODO: Document
-  setIsMaximized({ isMaximized }) {
+  /**
+   * @param {boolean} isMaximized
+   * @return {void}
+   */
+  setIsMaximized(isMaximized) {
     return this.setState({ isMaximized });
   }
 
-  // TODO: Document
+  /**
+   * Retrieves whether or not the window is maximized.
+   *
+   * @returns {boolean}
+   */
   getIsMaximized() {
     return this._state.isMaximized;
   }
 
-  // TODO: Document
-  setIsMinimized({ isMinimized }) {
+  /**
+   * Sets whether or not the window is minimized.
+   *
+   * @param {boolean} isMinimized
+   * @return {void}
+   */
+  setIsMinimized(isMinimized) {
     return this.setState({ isMinimized });
   }
 
-  // TODO: Document
+  /**
+   * Retrieves whether or not the window is minimized.
+   *
+   * @return {boolean}
+   */
   getIsMinimized() {
     return this._state.isMinimized;
   }
