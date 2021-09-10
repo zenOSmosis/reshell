@@ -150,7 +150,17 @@ const slides = [
               <li>Making web apps feel more like native apps</li>
               <li>Setting up prototype UIs for development / demonstration</li>
               <li>State management</li>
-              <li>Dynamic state linking between components</li>
+              <li>
+                Dynamic state linking between components [
+                <a
+                  href="https://localhost:3010/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Calculator Messaging Demo
+                </a>
+                ]
+              </li>
               <li>
                 Cross-platform testing (the core view framework is actively
                 tested across all major platforms)
