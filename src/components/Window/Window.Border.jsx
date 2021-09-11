@@ -62,7 +62,7 @@ export default function WindowBorder({
 
   return (
     // TODO: Enable merge-able styles / classNames
-    <Layout {...rest} style={{ width: "100%", height: "100%" }}>
+    <Layout {...rest}>
       <Header>
         <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
           <Column
