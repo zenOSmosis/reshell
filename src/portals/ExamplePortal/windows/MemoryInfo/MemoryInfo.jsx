@@ -74,6 +74,9 @@ const MemoryInfo = {
 
               <tbody>
                 <tr>
+                  {
+                    // TODO: Render as formatted strings (i.e. "... GB")
+                  }
                   <td>{jsHeapSizeLimit}</td>
                   <td>{totalJSHeapSize}</td>
                   <td>{usedJSHeapSize}</td>
