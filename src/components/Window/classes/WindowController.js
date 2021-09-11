@@ -77,6 +77,15 @@ export default class WindowController extends PhantomCore {
   // TODO: Document
   setSize({ width, height }) {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      if (width !== undefined) {
+        windowEl.style.width = width;
+      }
+      if (height !== undefined) {
+        windowEl.style.height = height;
+      }
+    }
   }
 
   // TODO: Implement
@@ -104,6 +113,11 @@ export default class WindowController extends PhantomCore {
         y: windowEl.offsetTop,
       };
     }
+  }
+
+  // TODO: Document
+  getIsBorderDisabled() {
+    return this.getIsMaximized() || this.getIsMinimized();
   }
 
   /**

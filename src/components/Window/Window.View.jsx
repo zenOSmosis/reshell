@@ -81,8 +81,10 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
+  // Binds window dragging functionality
   const dragBind = useWindowDragger({ windowController, elTitlebar });
 
+  // TODO: Refactor into useWindowDragBorder
   const handleBorderDrag = useCallback((direction, { mx, my, isDragging }) => {
     console.log("TODO: Handle border drag", {
       direction,
@@ -92,17 +94,7 @@ const WindowView = ({
     });
   }, []);
 
-  // TODO: Define elsewhere
-  /** @type {boolean} */
-  const isWindowBorderDisabled = useMemo(() => {
-    if (!windowController) {
-      return true;
-    } else {
-      return (
-        windowController.getIsMaximized() || windowController.getIsMinimized()
-      );
-    }
-  }, [windowController]);
+  const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
   return (
     // TODO: Implement <ErrorBoundary> wrapper (window error boundary)

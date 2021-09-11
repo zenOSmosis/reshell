@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 
 import WindowView from "./Window.View";
 
@@ -33,6 +33,16 @@ const Window = React.forwardRef(
       // windowSymbol: Symbol("window"),
       attachWindowController,
     }));
+
+    // The windowController should already be supplied by WindowManager before
+    // rendering is even attempted
+    if (!windowController) {
+      console.warn(
+        "No window controller available; blocking window render attempt"
+      );
+
+      return null;
+    }
 
     return (
       <WindowView
