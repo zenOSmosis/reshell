@@ -9,7 +9,7 @@ import ServiceMonitor from "./windows/ServiceMonitor";
 import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
 import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
-import MenubarProtoyper from "./windows/MenubarPrototyper";
+import MenubarProtoyper from "./windows/MenubarPrototype";
 import Box3DPrototype from "./windows/Box3DPrototype";
 import ColorAdjuster from "./windows/ColorAdjuster";
 import NotesPrototype from "./windows/NotesPrototype";

@@ -4,9 +4,9 @@ import Center from "@components/Center";
 
 const ApplicationMonitor = {
   // TODO: Do we still need "id" if using path? (use path + title concatenation for id)
-  id: "menubar-prototyper",
+  id: "menubar-Prototype",
   // path: "/Applications/Utilities/Prototypes" // TODO: Sync path w/ OpenFS?
-  title: "Menubar Prototyper",
+  title: "Menubar Prototype",
   menu: {
     // TODO: Prototype this
   },
