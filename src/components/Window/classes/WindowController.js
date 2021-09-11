@@ -23,6 +23,7 @@ export default class WindowController extends PhantomCore {
     this._appRuntime = null;
 
     this._windowEl = null;
+    this._windowManagerEl = null;
   }
 
   /**
@@ -41,6 +42,7 @@ export default class WindowController extends PhantomCore {
     this._state = {};
     this._appRuntime = null;
     this._windowEl = null;
+    this._windowManagerEl = null;
 
     return super.destroy();
     //}
@@ -55,6 +57,11 @@ export default class WindowController extends PhantomCore {
   // TODO: Document
   attachWindowElement(el) {
     this._windowEl = el;
+  }
+
+  // TODO: Document
+  attachWindowManagerElement(el) {
+    this._windowManagerEl = el;
   }
 
   /**
@@ -108,6 +115,21 @@ export default class WindowController extends PhantomCore {
         width: parseInt(windowEl.style.width, 10),
         height: parseInt(windowEl.style.height, 10),
       };
+    } else {
+      console.warn("Unable to acquire windowEl");
+    }
+  }
+
+  // TODO: Document
+  getWindowManagerSize() {
+    const windowManagerEl = this._windowManagerEl;
+    if (windowManagerEl) {
+      return {
+        width: parseInt(windowManagerEl.offsetWidth, 10),
+        height: parseInt(windowManagerEl.offsetHeight, 10),
+      };
+    } else {
+      console.warn("Unable to acquire windowManagerEl");
     }
   }
 

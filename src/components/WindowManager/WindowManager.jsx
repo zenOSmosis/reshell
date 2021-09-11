@@ -33,7 +33,8 @@ export default function WindowManager({ appDescriptors = [] }) {
 }
 
 function WindowManagerView({ appDescriptors = [] }) {
-  const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
+  // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
+
   const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
   const { appRuntimes } = useAppRuntimesContext();
 
@@ -251,8 +252,9 @@ function WindowManagerView({ appDescriptors = [] }) {
               // and setting up event bindings
 
               const windowController = new WindowController();
-
               windowController.setTitle(title);
+
+              windowController.attachWindowManagerElement(elBase);
 
               // Link app runtime to window controller (so that when the window
               // controller is destructed it will take down the app runtime)

@@ -15,6 +15,7 @@ import {
 // TODO: Implement ability to turn off dragging
 export default function useWindowDragResizer({ windowController }) {
   const refInitialDragSizePosition = useRef(null);
+  const refInitialWindowManagerSize = useRef(null);
 
   const handleBorderDrag = useCallback(
     (direction, { mx, my, isDragging }) => {
@@ -26,77 +27,108 @@ export default function useWindowDragResizer({ windowController }) {
           };
         }
 
-        let width,
-          height,
-          x,
-          y = null;
+        if (!refInitialWindowManagerSize.current) {
+          refInitialWindowManagerSize.current =
+            windowController.getWindowManagerSize();
+        }
+
+        let width = refInitialDragSizePosition.current.width;
+        let height = refInitialDragSizePosition.current.height;
+        let x = refInitialDragSizePosition.current.x;
+        let y = refInitialDragSizePosition.current.y;
+
+        let windowManagerWidth = refInitialWindowManagerSize.current.width;
+        let windowManagerHeight = refInitialWindowManagerSize.current.height;
 
         switch (direction) {
           case DIR_BORDER_NW:
-            width = refInitialDragSizePosition.current.width - mx;
-            height = refInitialDragSizePosition.current.height - my;
-            windowController.setSize({ width, height });
+            width = width - mx;
+            height = height - my;
 
-            x = refInitialDragSizePosition.current.x + mx;
-            y = refInitialDragSizePosition.current.y + my;
-            windowController.setPosition({ x, y });
+            x = x + mx;
+            y = y + my;
+
             break;
 
           case DIR_BORDER_N:
-            height = refInitialDragSizePosition.current.height - my;
-            windowController.setSize({ height });
-
-            y = refInitialDragSizePosition.current.y + my;
-            windowController.setPosition({ y });
+            height = height - my;
+            y = y + my;
             break;
 
           case DIR_BORDER_NE:
-            height = refInitialDragSizePosition.current.height - my;
-            width = refInitialDragSizePosition.current.width + mx;
-            windowController.setSize({ width, height });
+            height = height - my;
+            width = width + mx;
 
-            y = refInitialDragSizePosition.current.y + my;
-            windowController.setPosition({ y });
+            y = y + my;
             break;
 
           case DIR_BORDER_E:
-            width = refInitialDragSizePosition.current.width + mx;
-            windowController.setSize({ width });
+            width = width + mx;
             break;
 
           case DIR_BORDER_SE:
-            width = refInitialDragSizePosition.current.width + mx;
-            height = refInitialDragSizePosition.current.height + my;
-            windowController.setSize({ width, height });
+            width = width + mx;
+            height = height + my;
             break;
 
           case DIR_BORDER_S:
-            height = refInitialDragSizePosition.current.height + my;
-            windowController.setSize({ height });
+            height = height + my;
             break;
 
           case DIR_BORDER_SW:
-            width = refInitialDragSizePosition.current.width - mx;
-            height = refInitialDragSizePosition.current.height + my;
-            windowController.setSize({ width, height });
+            width = width - mx;
+            height = height + my;
 
-            x = refInitialDragSizePosition.current.x + mx;
-            windowController.setPosition({ x });
+            x = x + mx;
             break;
 
           case DIR_BORDER_W:
-            width = refInitialDragSizePosition.current.width - mx;
-            windowController.setSize({ width });
+            width = width - mx;
 
-            x = refInitialDragSizePosition.current.x + mx;
-            windowController.setPosition({ x });
+            x = x + mx;
             break;
 
           default:
             throw new ReferenceError(`Unknown direction: ${direction}`);
         }
+
+        // TODO: Handle min width / height
+
+        // Prevent left resize from extending left of left threshold
+        if (x < 0) {
+          // This affects window height calculations when cursor is left of
+          // left threshold
+          const diffX = 0 - x;
+          x = 0;
+          width = width - diffX;
+        }
+
+        // Prevent top resize from extending above top threshold
+        if (y < 0) {
+          // IMPORTANT: Order of operations is important here; diffY comes
+          // before y
+          const diffY = 0 - y;
+          y = 0;
+          height = height - diffY;
+        }
+
+        // Prevent right resize from extending right of right threshold
+        if (width + x > windowManagerWidth) {
+          width = windowManagerWidth - x;
+          x = null;
+        }
+
+        // Prevent bottom resize from extending below bottom threshold
+        if (height + y > windowManagerHeight) {
+          height = windowManagerHeight - y;
+          y = null;
+        }
+
+        windowController.setSize({ width, height });
+        windowController.setPosition({ x, y });
       } else {
         refInitialDragSizePosition.current = null;
+        refInitialWindowManagerSize.current = null;
       }
     },
     [windowController]
