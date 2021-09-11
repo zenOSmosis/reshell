@@ -1,0 +1,17 @@
+/** @see https://csslayout.io/patterns/lined-paper */
+.notes {
+  /* Lined background */
+  background-color: yellow;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 0px);
+  background-size: 100% 2em;
+
+  color: black;
+  padding: 0em 1em;
+
+  /*
+      Display the content on top of the lines.
+      The line height must be the same as the background size defined above
+      */
+  background-position-y: 24px;
+  line-height: 2em;
+}
