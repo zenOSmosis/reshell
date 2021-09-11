@@ -96,6 +96,12 @@ const WindowView = ({
 
   const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
+  // Inform the WindowController of new render
+  // TODO: Use nextTick equivalent (or whatever is faster; should come AFTER the render)
+  setTimeout(() => {
+    windowController && windowController.emitRender();
+  });
+
   return (
     // TODO: Implement <ErrorBoundary> wrapper (window error boundary)
     <StackingContext

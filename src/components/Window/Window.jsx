@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 
 import WindowView from "./Window.View";
 

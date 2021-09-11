@@ -2,6 +2,8 @@ import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+export const EVT_RENDERED = "rendered";
+
 // TODO: Move into core directory?
 // TODO: Document
 export default class WindowController extends PhantomCore {
@@ -42,6 +44,12 @@ export default class WindowController extends PhantomCore {
 
     return super.destroy();
     //}
+  }
+
+  // TODO: Document
+  // TODO: Use for debugging (but available in production)
+  emitRender() {
+    this.emit(EVT_RENDERED);
   }
 
   // TODO: Document
