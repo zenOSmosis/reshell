@@ -15,6 +15,7 @@ export const DIR_BORDER_SW = "SW";
 export const DIR_BORDER_W = "W";
 
 // TODO: Use prop-types
+// TODO: Document
 export default function WindowBorder({
   children,
   onBorderDrag,

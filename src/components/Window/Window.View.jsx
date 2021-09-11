@@ -1,11 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 // import { useSpring, animated } from "@react-spring/web";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
@@ -15,9 +9,6 @@ import WindowBorder from "./Window.Border";
 
 import styles from "./Window.module.css";
 import classNames from "classnames";
-
-// TODO: Remove after refactor
-import { useDrag } from "react-use-gesture";
 
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";

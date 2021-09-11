@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useDrag } from "react-use-gesture";
 
 // TODO: Document
+// TODO: Implement ability to turn off dragging
 export default function useWindowDragger({ windowController, elTitlebar }) {
   const refInitialDragPosition = useRef(null);
 
