@@ -3,11 +3,8 @@ import React, { useImperativeHandle, useState } from "react";
 import WindowView from "./Window.View";
 
 // TODO: Implement CodeSandbox support for development / debugging:  https://codesandbox.io/docs/embedding#embed-options
-// TODO: Lined-paper notes app: https://csslayout.io/patterns/lined-paper
 
 // TODO: See https://csslayout.io/patterns
-// TODO: Implement dragging w/ https://use-gesture.netlify.app/docs?
-// TODO: https://github.com/pmndrs/react-spring
 
 // TODO: Add prop-types
 // TODO: Document
