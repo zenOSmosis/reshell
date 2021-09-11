@@ -31,6 +31,7 @@
     "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
     "start:wizard.docker-compose": " docker-compose -f docker-compose.dev.yml up",
     "build": "craco build",
+    "build:with-profiling": "craco build --profile",
     "test": "craco test",
     "eject": "craco eject"
   },

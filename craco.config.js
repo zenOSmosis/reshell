@@ -7,6 +7,7 @@ module.exports = {
       "@core": path.resolve(__dirname, "src/core"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
       "@portals": path.resolve(__dirname, "src/portals"),
+      "@utils": path.resolve(__dirname, "src/utils"),
     },
   },
 };

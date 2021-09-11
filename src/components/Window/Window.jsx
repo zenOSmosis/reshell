@@ -46,9 +46,6 @@ const Window = React.forwardRef(
 
     // TODO: Implement error boundary here
 
-    // TODO: Implement optional React profiling (note, it should be disabled unless actively being used, due to extra overhead):
-    // https://reactjs.org/docs/profiler.html
-
     return (
       <WindowView
         {...rest}

@@ -1,5 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 // import { useSpring, animated } from "@react-spring/web";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
@@ -23,6 +23,9 @@ const WindowView = ({
 
   // TODO: Obtain via windowController instead?
   isActive,
+
+  // TODO: Obtain via windowController
+  isProfiling = true,
 
   onRequestMinimize,
   onRequestMaximize,
@@ -90,56 +93,70 @@ const WindowView = ({
   /** @type {boolean} */
   const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
-  // Inform the WindowController of new render
-  // TODO: Use nextTick equivalent (or whatever is faster; should come AFTER the render)
-  setTimeout(() => {
-    windowController && windowController.emitRender();
-  });
+  const DynamicProfilingWrapper = useMemo(
+    () =>
+      ({ ...args }) =>
+        isProfiling ? (
+          // @see https://reactjs.org/docs/profiler.html
+          <React.Profiler
+            {...args}
+            id={windowController.getUUID()}
+            onRender={(...renderProfile) =>
+              windowController.captureRenderProfile(renderProfile)
+            }
+          />
+        ) : (
+          <React.Fragment {...args} />
+        ),
+    [isProfiling, windowController]
+  );
 
   return (
-    <StackingContext
-      onMount={_setEl}
-      style={{ ...style, zIndex }}
-      className={classNames(
-        styles["window-outer-border"],
-        isActive && styles["active"]
-        // isMinimized && styles["minimized"]
-      )}
-      {...rest}
-    >
-      <WindowView.Border
-        isDisabled={isWindowBorderDisabled}
-        onBorderDrag={handleBorderDrag}
+    <DynamicProfilingWrapper>
+      <StackingContext
+        onMount={_setEl}
+        style={{ ...style, zIndex }}
+        className={classNames(
+          styles["window-outer-border"],
+          isActive && styles["active"]
+          // isMinimized && styles["minimized"]
+        )}
+        {...rest}
       >
-        <Full
-          {...dragBind()}
-          className={classNames(
-            styles["window"],
-            isActive && styles["active"]
-            // isMinimized && styles["minimized"]
-          )}
+        <WindowView.Border
+          isDisabled={isWindowBorderDisabled}
+          onBorderDrag={handleBorderDrag}
         >
-          <Layout>
-            <Header
+          <Full
+            {...dragBind()}
+            className={classNames(
+              styles["window"],
+              isActive && styles["active"]
+              // isMinimized && styles["minimized"]
+            )}
+          >
+            <Layout>
+              <Header
 
-            // onDoubleClick={handleToggleRestoreOrMaximize}
-            >
-              <div ref={_setElTitlebar} className={styles["titlebar"]}>
-                <div className={styles["title"]}>{title}</div>
-                <div className={styles["window-controls"]}>
-                  <button onClick={onRequestMinimize}>_</button>
-                  <button /* onClick={handleToggleRestoreOrMaximize} */>
-                    -
-                  </button>
-                  <button onClick={onRequestClose}>X</button>
+              // onDoubleClick={handleToggleRestoreOrMaximize}
+              >
+                <div ref={_setElTitlebar} className={styles["titlebar"]}>
+                  <div className={styles["title"]}>{title}</div>
+                  <div className={styles["window-controls"]}>
+                    <button onClick={onRequestMinimize}>_</button>
+                    <button /* onClick={handleToggleRestoreOrMaximize} */>
+                      -
+                    </button>
+                    <button onClick={onRequestClose}>X</button>
+                  </div>
                 </div>
-              </div>
-            </Header>
-            <Content>{children}</Content>
-          </Layout>
-        </Full>
-      </WindowView.Border>
-    </StackingContext>
+              </Header>
+              <Content>{children}</Content>
+            </Layout>
+          </Full>
+        </WindowView.Border>
+      </StackingContext>
+    </DynamicProfilingWrapper>
   );
 };
 

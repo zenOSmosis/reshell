@@ -251,7 +251,12 @@ function WindowManagerView({ appDescriptors = [] }) {
               // Begin process of attaching window controller to rendered view
               // and setting up event bindings
 
-              const windowController = new WindowController();
+              const windowController = new WindowController(
+                {},
+                {
+                  onBringToTop: handleSetActiveWindow,
+                }
+              );
               windowController.setTitle(title);
 
               windowController.attachWindowManagerElement(elBase);

@@ -2,12 +2,13 @@ import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
-export const EVT_RENDERED = "rendered";
+// @see https://reactjs.org/docs/profiler.html
+export const EVT_RENDER_PROFILED = "render-profile";
 
 // TODO: Move into core directory?
 // TODO: Document
 export default class WindowController extends PhantomCore {
-  constructor(initialState = {}) {
+  constructor(initialState = {}, { onBringToTop }) {
     super();
 
     const DEFAULT_STATE = {
@@ -24,6 +25,8 @@ export default class WindowController extends PhantomCore {
 
     this._windowEl = null;
     this._windowManagerEl = null;
+
+    this._handleBringToTop = onBringToTop;
   }
 
   /**
@@ -49,9 +52,14 @@ export default class WindowController extends PhantomCore {
   }
 
   // TODO: Document
-  // TODO: Use for debugging (but available in production)
-  emitRender() {
-    this.emit(EVT_RENDERED);
+  bringToTop() {
+    this._handleBringToTop(this);
+  }
+
+  // TODO: Document
+  // @see https://reactjs.org/docs/profiler.html
+  captureRenderProfile(arrRenderProfile) {
+    this.emit(EVT_RENDER_PROFILED, arrRenderProfile);
   }
 
   // TODO: Document

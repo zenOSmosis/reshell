@@ -8,6 +8,7 @@ export { EVT_UPDATED, EVT_DESTROYED };
 
 // TODO: Document
 export default class AppRuntime extends PhantomCore {
+  // TODO: Implement ability to set default environment here
   // TODO: Document
   constructor(appRegistration) {
     if (!(appRegistration instanceof AppRegistration)) {
@@ -51,5 +52,12 @@ export default class AppRuntime extends PhantomCore {
   // TODO: Document
   getAppDescriptor() {
     return this._appRegistration.getAppDescriptor();
+  }
+
+  // TODO: Implement setEnvironment
+
+  getEnvironment() {
+    // TODO: Mix with runtime environment
+    return process.env;
   }
 }

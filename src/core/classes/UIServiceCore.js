@@ -85,6 +85,7 @@ export default class UIServiceCore extends PhantomCore {
     }
   }
 
+  // TODO: Implement optional profiling?
   // TODO: Document
   setState(partialNextState = {}) {
     // IMPORTANT: This state is only shallow merged due to deep merging not

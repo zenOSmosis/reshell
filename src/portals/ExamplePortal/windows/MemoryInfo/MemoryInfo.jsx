@@ -2,14 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
+import bytesToSize from "@utils/bytesToSize";
+
 const MemoryInfo = {
   id: "memory-info",
   title: "Memory Info",
   style: {
     left: "auto",
     bottom: 0,
-    width: 640,
-    height: 480,
+    width: 280,
+    height: 150,
   },
   view: function View() {
     const [
@@ -32,9 +34,9 @@ const MemoryInfo = {
         window.performance.memory;
 
       const memoryInfo = {
-        jsHeapSizeLimit,
-        totalJSHeapSize,
-        usedJSHeapSize,
+        jsHeapSizeLimit: bytesToSize(jsHeapSizeLimit),
+        totalJSHeapSize: bytesToSize(totalJSHeapSize),
+        usedJSHeapSize: bytesToSize(usedJSHeapSize),
       };
 
       _setMemoryInfo(memoryInfo);
@@ -85,7 +87,7 @@ const MemoryInfo = {
             </table>
           </Center>
         </Content>
-        <Footer>
+        <Footer style={{ fontSize: ".8rem" }}>
           <a
             href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory"
             target="_blank"
