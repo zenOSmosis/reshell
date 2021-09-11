@@ -18,6 +18,7 @@ const ApplicationMonitor = {
     // TODO: Show attached services, per application
     // TODO: Show last render time / frequency / graph?
     // TODO: Highlight active window application
+    // TODO: Implement ability to bring application to front
 
     return (
       <table style={{ width: "100%" }}>
