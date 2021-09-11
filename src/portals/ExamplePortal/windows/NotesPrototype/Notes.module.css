@@ -3,7 +3,11 @@
   /* Lined background */
   background-color: yellow;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 0px);
-  background-size: 100% 2em;
+  background-size: 100% 2rem;
+
+  /** Enable background to scroll with element */
+  /** FIXME: This doesn't seem to work with Firefox (at least inside of a textarea element) **/
+  background-attachment: local;
 
   color: black;
   padding: 0em 1em;
@@ -13,5 +17,5 @@
       The line height must be the same as the background size defined above
       */
   background-position-y: 24px;
-  line-height: 2em;
+  line-height: 2rem;
 }

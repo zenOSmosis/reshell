@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Layout, { Header, Content, Footer } from "@components/Layout";
 import Full from "@components/Full";
 import styles from "./Notes.module.css";
 
@@ -13,14 +15,25 @@ const Notes = {
     height: 480,
   },
   view: function View() {
+    const [content, setContent] = useState("");
+
     return (
-      <Full className={styles["notes"]}>
-        Cascading Style Sheets (CSS) is a style sheet language used for
-        describing the presentation of a document written in a markup language
-        like HTML. CSS is a cornerstone technology of the World Wide Web,
-        alongside HTML and JavaScript.
-        <span style={{ float: "right" }}>— Wikipedia</span>
-      </Full>
+      <Layout>
+        <Header>Known issue: Background doesn't scroll w/ Firefox</Header>
+        <Content>
+          <Full>
+            <textarea
+              onChange={(evt) => setContent(evt.target.value)}
+              className={styles["notes"]}
+              value={content}
+              style={{ width: "100%", height: "100%", border: 0 }}
+            />
+          </Full>
+        </Content>
+        <Footer style={{ textAlign: "right" }}>
+          Character count: {content.length}
+        </Footer>
+      </Layout>
     );
   },
 };
