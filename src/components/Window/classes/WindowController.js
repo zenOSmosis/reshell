@@ -19,6 +19,34 @@ export default class WindowController extends PhantomCore {
     );
 
     this._appRuntime = null;
+
+    this._windowEl = null;
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    // TODO: Determine if in dirty state, prior to closing
+    // if (
+    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+    // ) {
+
+    if (this._appRuntime) {
+      await this._appRuntime.destroy();
+    }
+
+    this._state = {};
+    this._appRuntime = null;
+    this._windowEl = null;
+
+    return super.destroy();
+    //}
+  }
+
+  // TODO: Document
+  attachWindowElement(el) {
+    this._windowEl = el;
   }
 
   /**
@@ -43,6 +71,39 @@ export default class WindowController extends PhantomCore {
    */
   getAppRuntime() {
     return this._appRuntime;
+  }
+
+  // TODO: Implement
+  // TODO: Document
+  setSize({ width, height }) {
+    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+  }
+
+  // TODO: Implement
+  // TODO: Document
+  setPosition({ x, y }) {
+    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      if (x !== undefined) {
+        windowEl.style.left = `${x}px`;
+      }
+      if (y !== undefined) {
+        windowEl.style.top = `${y}px`;
+      }
+    }
+  }
+
+  // TODO: Document
+  getPosition() {
+    const windowEl = this._windowEl;
+
+    if (windowEl) {
+      return {
+        x: windowEl.offsetLeft,
+        y: windowEl.offsetTop,
+      };
+    }
   }
 
   /**
@@ -130,21 +191,5 @@ export default class WindowController extends PhantomCore {
    */
   getIsMinimized() {
     return this._state.isMinimized;
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    if (this._appRuntime) {
-      await this._appRuntime.destroy();
-    }
-
-    // TODO: Determine if in dirty state, prior to closing
-    // if (
-    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
-    // ) {
-    return super.destroy();
-    //}
   }
 }

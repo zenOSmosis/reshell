@@ -16,7 +16,11 @@ import WindowBorder from "./Window.Border";
 import styles from "./Window.module.css";
 import classNames from "classnames";
 
+// TODO: Remove after refactor
 import { useDrag } from "react-use-gesture";
+
+import useWindowDragger from "./hooks/useWindowDragger";
+import useWindowDragResizer from "./hooks/useWindowDragResizer";
 
 // TODO: Add prop-types
 // TODO: Document
@@ -43,6 +47,13 @@ const WindowView = ({
 
   const [zIndex, setZIndex] = useState(0);
   const [title, setTitle] = useState(null);
+
+  // Associate window element with window controller
+  useEffect(() => {
+    if (windowController && el) {
+      windowController.attachWindowElement(el);
+    }
+  }, [windowController, el]);
 
   useEffect(() => {
     if (windowController) {
@@ -81,30 +92,7 @@ const WindowView = ({
 
   // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
-  const refInitialDragPosition = useRef(null);
-
-  // @see https://use-gesture.netlify.app/docs/#simple-example
-  const bind = useDrag(({ down: isDragging, movement: [mx, my], event }) => {
-    if (!elTitlebar.contains(event.target)) {
-      return;
-    }
-
-    // TODO: Refactor dragging logic (i.e. move to WindowManager)
-    // TODO: Don't allow dragging out of bounds
-    if (isDragging) {
-      if (!refInitialDragPosition.current) {
-        refInitialDragPosition.current = {
-          x: el.offsetLeft,
-          y: el.offsetTop,
-        };
-      }
-
-      el.style.left = refInitialDragPosition.current.x + mx + "px";
-      el.style.top = refInitialDragPosition.current.y + my + "px";
-    } else {
-      refInitialDragPosition.current = null;
-    }
-  });
+  const dragBind = useWindowDragger({ windowController, elTitlebar });
 
   const handleBorderDrag = useCallback((direction, { mx, my, isDragging }) => {
     console.log("TODO: Handle border drag", {
@@ -144,7 +132,7 @@ const WindowView = ({
         onBorderDrag={handleBorderDrag}
       >
         <Full
-          {...bind()}
+          {...dragBind()}
           className={classNames(
             styles["window"],
             isActive && styles["active"]
