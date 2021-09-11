@@ -1,3 +1,5 @@
+// TODO: Use this for documenting window API
+
 const WindowAPIDiscovererWindow = {
   id: "window-api-discoverer",
   title: "Window API Discoverer",
