@@ -1,5 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // import { useSpring, animated } from "@react-spring/web";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
@@ -85,15 +85,9 @@ const WindowView = ({
   const dragBind = useWindowDragger({ windowController, elTitlebar });
 
   // TODO: Refactor into useWindowDragBorder
-  const handleBorderDrag = useCallback((direction, { mx, my, isDragging }) => {
-    console.log("TODO: Handle border drag", {
-      direction,
-      mx,
-      my,
-      isDragging,
-    });
-  }, []);
+  const handleBorderDrag = useWindowDragResizer({ windowController });
 
+  /** @type {boolean} */
   const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
   // Inform the WindowController of new render

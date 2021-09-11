@@ -88,11 +88,26 @@ export default class WindowController extends PhantomCore {
     const windowEl = this._windowEl;
     if (windowEl) {
       if (width !== undefined) {
-        windowEl.style.width = width;
+        windowEl.style.width = `${width}px`;
       }
       if (height !== undefined) {
-        windowEl.style.height = height;
+        windowEl.style.height = `${height}px`;
       }
+    }
+  }
+
+  // TODO: Document
+  getSize() {
+    // TODO: If unable to acquire style size for any dimension, return the calculated value
+
+    // issues
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      // IMPORTANT: Not always using calculated size due to potential performance
+      return {
+        width: parseInt(windowEl.style.width, 10),
+        height: parseInt(windowEl.style.height, 10),
+      };
     }
   }
 
@@ -117,8 +132,8 @@ export default class WindowController extends PhantomCore {
 
     if (windowEl) {
       return {
-        x: windowEl.offsetLeft,
-        y: windowEl.offsetTop,
+        x: parseInt(windowEl.offsetLeft, 10),
+        y: parseInt(windowEl.offsetTop, 10),
       };
     }
   }
