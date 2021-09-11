@@ -81,8 +81,6 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
-  // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
-
   const dragBind = useWindowDragger({ windowController, elTitlebar });
 
   const handleBorderDrag = useCallback((direction, { mx, my, isDragging }) => {
