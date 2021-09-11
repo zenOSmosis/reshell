@@ -57,6 +57,8 @@ const MemoryInfo = {
       }
     }, [fetchMemoryInfo]);
 
+    // TODO: Incorporate graphing library
+
     return (
       <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
         <Content>
@@ -80,8 +82,18 @@ const MemoryInfo = {
             </table>
           </Center>
         </Content>
-        <Footer style={{ textAlign: "right" }}>
-          Only supported in Chromium-based browsers.
+        <Footer>
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory"
+            target="_blank"
+            rel="noreferrer"
+            style={{ float: "left" }}
+          >
+            MDN Documentation
+          </a>
+          <span style={{ float: "right" }}>
+            Only supported in Chromium-based browsers.
+          </span>
         </Footer>
       </Layout>
     );
