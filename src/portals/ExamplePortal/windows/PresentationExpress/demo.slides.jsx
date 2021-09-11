@@ -33,17 +33,17 @@ const slides = [
         <Center>
           <div>
             <div style={{ fontWeight: "bold" }}>
-              Web Browsers are like Operating Systems
+              Web Browsers are [like] Operating Systems
             </div>
             <div style={{ marginTop: 20 }}>
               <ul>
                 <li>
                   <a
-                    href="https://github.com/chromium/chromium"
+                    href="https://emscripten.org/"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Chromium Source Code
+                    Able to run C / C++ / LLVM toolchain
                   </a>
                 </li>
                 <li>
@@ -126,6 +126,14 @@ const slides = [
                   >
                     OS-level multithreading
                   </a>
+                  ... including ability to share memory between processes{" "}
+                  <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    (see SharedArrayBuffer)
+                  </a>
                 </li>
                 <li>
                   <a
@@ -152,6 +160,11 @@ const slides = [
                   >
                     (also see Screen API)
                   </a>
+                </li>
+                <li>
+                  Access to hardware devices (i.e. camera / microphone / USB /
+                  bluetooth / GPU) with hardware acceleration enabled on most
+                  platforms
                 </li>
                 <li>
                   Network; HTTP / WebSockets / WebRTC (...goes without saying)

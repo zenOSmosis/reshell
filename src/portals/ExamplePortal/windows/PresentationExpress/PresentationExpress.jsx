@@ -15,8 +15,8 @@ const PresentationExpress = {
   style: {
     left: "auto",
     bottom: 0,
-    width: 640 * 1.2,
-    height: 480 * 1.2,
+    width: 640 * 1.5,
+    height: 480 * 1.5,
   },
   view: function View() {
     const [slideIdx, setSlideIdx] = useState(0);
