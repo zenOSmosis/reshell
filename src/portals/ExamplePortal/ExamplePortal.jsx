@@ -13,6 +13,7 @@ import MenubarProtoyper from "./windows/MenubarPrototype";
 import Box3DPrototype from "./windows/Box3DPrototype";
 import ColorAdjuster from "./windows/ColorAdjuster";
 import NotesPrototype from "./windows/NotesPrototype";
+import MemoryInfo from "./windows/MemoryInfo";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -34,6 +35,7 @@ export default function ExamplePortal() {
         Box3DPrototype,
         ColorAdjuster,
         NotesPrototype,
+        MemoryInfo,
         // WindowAPIDiscovererWindow,
       ]}
     />
