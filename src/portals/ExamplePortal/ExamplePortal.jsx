@@ -9,10 +9,11 @@ import ServiceMonitor from "./windows/ServiceMonitor";
 import PresentationExpress from "./windows/PresentationExpress";
 import SpeakerAppWindow from "./windows/SpeakerAppWindow";
 import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
-import MenubarProtoyper from "./windows/MenubarPrototyper";
+import MenubarProtoyper from "./windows/MenubarPrototype";
 import Box3DPrototype from "./windows/Box3DPrototype";
 import ColorAdjuster from "./windows/ColorAdjuster";
 import NotesPrototype from "./windows/NotesPrototype";
+import MemoryInfo from "./windows/MemoryInfo";
 // import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -34,6 +35,7 @@ export default function ExamplePortal() {
         Box3DPrototype,
         ColorAdjuster,
         NotesPrototype,
+        MemoryInfo,
         // WindowAPIDiscovererWindow,
       ]}
     />

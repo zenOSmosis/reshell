@@ -1,11 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // import { useSpring, animated } from "@react-spring/web";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
@@ -16,7 +10,8 @@ import WindowBorder from "./Window.Border";
 import styles from "./Window.module.css";
 import classNames from "classnames";
 
-import { useDrag } from "react-use-gesture";
+import useWindowDragger from "./hooks/useWindowDragger";
+import useWindowDragResizer from "./hooks/useWindowDragResizer";
 
 // TODO: Add prop-types
 // TODO: Document
@@ -43,6 +38,13 @@ const WindowView = ({
 
   const [zIndex, setZIndex] = useState(0);
   const [title, setTitle] = useState(null);
+
+  // Associate window element with window controller
+  useEffect(() => {
+    if (windowController && el) {
+      windowController.attachWindowElement(el);
+    }
+  }, [windowController, el]);
 
   useEffect(() => {
     if (windowController) {
@@ -79,56 +81,22 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
-  // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+  // Binds window dragging functionality
+  const dragBind = useWindowDragger({ windowController, elTitlebar });
 
-  const refInitialDragPosition = useRef(null);
+  // TODO: Refactor into useWindowDragBorder
+  const handleBorderDrag = useWindowDragResizer({ windowController });
 
-  // @see https://use-gesture.netlify.app/docs/#simple-example
-  const bind = useDrag(({ down: isDragging, movement: [mx, my], event }) => {
-    if (!elTitlebar.contains(event.target)) {
-      return;
-    }
+  /** @type {boolean} */
+  const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
-    // TODO: Refactor dragging logic (i.e. move to WindowManager)
-    // TODO: Don't allow dragging out of bounds
-    if (isDragging) {
-      if (!refInitialDragPosition.current) {
-        refInitialDragPosition.current = {
-          x: el.offsetLeft,
-          y: el.offsetTop,
-        };
-      }
-
-      el.style.left = refInitialDragPosition.current.x + mx + "px";
-      el.style.top = refInitialDragPosition.current.y + my + "px";
-    } else {
-      refInitialDragPosition.current = null;
-    }
+  // Inform the WindowController of new render
+  // TODO: Use nextTick equivalent (or whatever is faster; should come AFTER the render)
+  setTimeout(() => {
+    windowController && windowController.emitRender();
   });
 
-  const handleBorderDrag = useCallback((direction, { mx, my, isDragging }) => {
-    console.log("TODO: Handle border drag", {
-      direction,
-      mx,
-      my,
-      isDragging,
-    });
-  }, []);
-
-  // TODO: Define elsewhere
-  /** @type {boolean} */
-  const isWindowBorderDisabled = useMemo(() => {
-    if (!windowController) {
-      return true;
-    } else {
-      return (
-        windowController.getIsMaximized() || windowController.getIsMinimized()
-      );
-    }
-  }, [windowController]);
-
   return (
-    // TODO: Implement <ErrorBoundary> wrapper (window error boundary)
     <StackingContext
       onMount={_setEl}
       style={{ ...style, zIndex }}
@@ -144,7 +112,7 @@ const WindowView = ({
         onBorderDrag={handleBorderDrag}
       >
         <Full
-          {...bind()}
+          {...dragBind()}
           className={classNames(
             styles["window"],
             isActive && styles["active"]

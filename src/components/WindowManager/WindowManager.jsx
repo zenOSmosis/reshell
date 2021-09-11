@@ -360,11 +360,13 @@ function WrappedView({
     };
 
     for (const service of Object.values(windowServices)) {
+      // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
       service.on(EVT_UPDATED, _handleServiceUpdate);
     }
 
     return function unmount() {
       for (const service of Object.values(windowServices)) {
+        // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
         service.off(EVT_UPDATED, _handleServiceUpdate);
       }
     };

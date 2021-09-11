@@ -2,6 +2,8 @@ import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+export const EVT_RENDERED = "rendered";
+
 // TODO: Move into core directory?
 // TODO: Document
 export default class WindowController extends PhantomCore {
@@ -19,6 +21,40 @@ export default class WindowController extends PhantomCore {
     );
 
     this._appRuntime = null;
+
+    this._windowEl = null;
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    // TODO: Determine if in dirty state, prior to closing
+    // if (
+    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+    // ) {
+
+    if (this._appRuntime) {
+      await this._appRuntime.destroy();
+    }
+
+    this._state = {};
+    this._appRuntime = null;
+    this._windowEl = null;
+
+    return super.destroy();
+    //}
+  }
+
+  // TODO: Document
+  // TODO: Use for debugging (but available in production)
+  emitRender() {
+    this.emit(EVT_RENDERED);
+  }
+
+  // TODO: Document
+  attachWindowElement(el) {
+    this._windowEl = el;
   }
 
   /**
@@ -43,6 +79,68 @@ export default class WindowController extends PhantomCore {
    */
   getAppRuntime() {
     return this._appRuntime;
+  }
+
+  // TODO: Implement
+  // TODO: Document
+  setSize({ width, height }) {
+    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      if (width !== undefined) {
+        windowEl.style.width = `${width}px`;
+      }
+      if (height !== undefined) {
+        windowEl.style.height = `${height}px`;
+      }
+    }
+  }
+
+  // TODO: Document
+  getSize() {
+    // TODO: If unable to acquire style size for any dimension, return the calculated value
+
+    // issues
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      // IMPORTANT: Not always using calculated size due to potential performance
+      return {
+        width: parseInt(windowEl.style.width, 10),
+        height: parseInt(windowEl.style.height, 10),
+      };
+    }
+  }
+
+  // TODO: Implement
+  // TODO: Document
+  setPosition({ x, y }) {
+    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+    const windowEl = this._windowEl;
+    if (windowEl) {
+      if (x !== undefined) {
+        windowEl.style.left = `${x}px`;
+      }
+      if (y !== undefined) {
+        windowEl.style.top = `${y}px`;
+      }
+    }
+  }
+
+  // TODO: Document
+  getPosition() {
+    const windowEl = this._windowEl;
+
+    if (windowEl) {
+      return {
+        x: parseInt(windowEl.offsetLeft, 10),
+        y: parseInt(windowEl.offsetTop, 10),
+      };
+    }
+  }
+
+  // TODO: Document
+  getIsBorderDisabled() {
+    return this.getIsMaximized() || this.getIsMinimized();
   }
 
   /**
@@ -130,21 +228,5 @@ export default class WindowController extends PhantomCore {
    */
   getIsMinimized() {
     return this._state.isMinimized;
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    if (this._appRuntime) {
-      await this._appRuntime.destroy();
-    }
-
-    // TODO: Determine if in dirty state, prior to closing
-    // if (
-    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
-    // ) {
-    return super.destroy();
-    //}
   }
 }

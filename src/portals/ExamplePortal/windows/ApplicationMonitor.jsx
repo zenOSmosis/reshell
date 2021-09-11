@@ -11,10 +11,14 @@ const ApplicationMonitor = {
     height: 480,
   },
   isPinned: true,
-  view: function View({ appRuntime }) {
+  view: function View() {
     const { appRuntimes } = useAppRuntimesContext();
 
     // TODO: Group by registration
+    // TODO: Show attached services, per application
+    // TODO: Show last render time / frequency / graph?
+    // TODO: Highlight active window application
+    // TODO: Implement ability to bring application to front
 
     return (
       <table style={{ width: "100%" }}>
@@ -32,10 +36,6 @@ const ApplicationMonitor = {
                 <button
                   onClick={() => runtime.destroy()}
                   style={{ width: "100%" }}
-                  // Disable if the the current runtime (not sure if it should
-                  // be left in, but just testing that the given appRuntime
-                  // matches the app's)
-                  disabled={Object.is(appRuntime, runtime)}
                 >
                   Close
                 </button>

@@ -34,9 +34,25 @@ const Window = React.forwardRef(
       attachWindowController,
     }));
 
+    // The windowController should already be supplied by WindowManager before
+    // rendering is even attempted
+    if (!windowController) {
+      console.warn(
+        "No window controller available; blocking window render attempt"
+      );
+
+      return null;
+    }
+
+    // TODO: Implement error boundary here
+
+    // TODO: Implement optional React profiling (note, it should be disabled unless actively being used, due to extra overhead):
+    // https://reactjs.org/docs/profiler.html
+
     return (
       <WindowView
         {...rest}
+        // TODO: If wrapping w/ optional profiler, use a key here so that internal view state is not lost?
         style={style}
         windowController={windowController}
         onRequestMinimize={onRequestMinimize}
