@@ -3,7 +3,7 @@ import Center from "@components/Center";
 
 const AboutReshellWindow = {
   id: "about-reshell",
-  title: "ReShell",
+  title: "About ReShell",
   style: {
     left: "auto",
     bottom: 0,
