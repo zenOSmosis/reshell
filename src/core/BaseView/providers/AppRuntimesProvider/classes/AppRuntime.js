@@ -33,6 +33,13 @@ export default class AppRuntime extends PhantomCore {
   }
 
   // TODO: Document
+  bringToTop() {
+    if (this._windowController) {
+      return this._windowController.bringToTop();
+    }
+  }
+
+  // TODO: Document
   setWindowController(windowController) {
     // TODO: Verify windowController is a WindowController
 
@@ -42,6 +49,11 @@ export default class AppRuntime extends PhantomCore {
   // TODO: Document
   getWindowController() {
     return this._windowController;
+  }
+
+  // TODO: Document
+  getRegistration() {
+    return this._appRegistration;
   }
 
   // TODO: Document

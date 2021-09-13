@@ -1,6 +1,6 @@
 import Desktop from "@components/Desktop";
 
-import MainWindow from "./windows/MainWindow";
+import MainWindow from "./apps/MainWindow";
 
 /*
 import {

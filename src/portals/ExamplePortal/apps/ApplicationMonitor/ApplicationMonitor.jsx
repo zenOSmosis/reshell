@@ -23,10 +23,9 @@ const ApplicationMonitor = {
     // TODO: Group by registration
     // TODO: Show attached services, per application
     // TODO: Show last render time / frequency / graph?
-    // TODO: Highlight active window application
-    // TODO: Implement ability to bring application to front
-
-    // TODO: Implement ability to do call stack tracing
+    // TODO: Implement ability to record render profile intervals, with the ability to show them in a graph (per application; use legend)
+    // TODO: Implement ability to show how linked services affect render profiles; capture in recordings
+    // TODO: Implement ability to do call stack tracing (only when recording)
 
     return (
       <Layout>

@@ -1,11 +1,12 @@
 import WindowManager from "../WindowManager";
 import Full from "../Full";
-import Layout, { Header, Content, Footer } from "../Layout";
+import Layout, { Header, Content } from "../Layout";
 import LED from "../LED";
+import Dock from "../Dock";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
-// TODO: Change this to use Menubar
+// TODO: Change this to use data-driven Menubar
 import Menu, { MenuButton, MenuItem, SubMenu } from "../_Menu.LibWrapper";
 
 import useDesktopContext from "@hooks/useDesktopContext";
@@ -40,11 +41,7 @@ export default function Desktop({ appDescriptors }) {
           >
             <div style={{ float: "left" }}>
               {
-                // TODO: If menu is open and user scrolls across menubar, open the
-                // relevant scrolled-over menu
-                // TODO: Refactor into menubar utility w/ similar API as Electron,
-                // where the React components aren't utilized directly by the
-                // implementors
+                // TODO: Replace menu with data-driven Menubar component
               }
               <Menu
                 portal={true}
@@ -89,18 +86,6 @@ export default function Desktop({ appDescriptors }) {
                 }
                 {appRegistrations
                   .filter((app) => app.getIsPinned())
-                  .sort((a, b) => {
-                    const aTitle = a.getTitle();
-                    const bTitle = b.getTitle();
-
-                    if (aTitle < bTitle) {
-                      return -1;
-                    } else if (bTitle > aTitle) {
-                      return 1;
-                    } else {
-                      return 0;
-                    }
-                  })
                   .map((app) => (
                     <MenuItem
                       key={app.getUUID()}
@@ -205,18 +190,6 @@ export default function Desktop({ appDescriptors }) {
                     </MenuItem>
                   ))
                 )}
-                {}
-                {/*
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                Socket.io Service (mock)
-              </MenuItem>
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                SocketAPI Service (mock)
-              </MenuItem>
-              <MenuItem onClick={() => alert("TODO: Implement")}>
-                Host Bridge Service (mock)
-              </MenuItem>
-                */}
               </Menu>
             </div>
           </Header>
@@ -242,39 +215,10 @@ export default function Desktop({ appDescriptors }) {
               }
               ReShell 0.0.1-alpha
             </div>
-            <WindowManager appDescriptors={appDescriptors} />
+            <WindowManager appDescriptors={appDescriptors}>
+              <Dock />
+            </WindowManager>
           </Content>
-          <Footer style={{ borderTop: "1px #ccc solid" }}>
-            <div style={{ float: "right" }}>
-              {
-                // TODO: Include app locations in app descriptors to help organize applications in menus
-                // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-              }
-              <Menu portal={true} menuButton={<MenuButton>Menu</MenuButton>}>
-                {appRegistrations
-                  .sort((a, b) => {
-                    const aTitle = a.getTitle();
-                    const bTitle = b.getTitle();
-
-                    if (aTitle < bTitle) {
-                      return -1;
-                    } else if (bTitle > aTitle) {
-                      return 1;
-                    } else {
-                      return 0;
-                    }
-                  })
-                  .map((app) => (
-                    <MenuItem
-                      key={app.getUUID()}
-                      onClick={() => startAppRuntime(app)}
-                    >
-                      {app.getTitle()}
-                    </MenuItem>
-                  ))}
-              </Menu>
-            </div>
-          </Footer>
         </Layout>
       </Full>
     </Router>

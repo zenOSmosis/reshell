@@ -46,6 +46,22 @@ export default class AppRegistrationCollection extends PhantomCollection {
    * @return {AppRegistration[]}
    */
   getAppRegistrations() {
-    return this.getChildren();
+    // FIXME: (jh) The only way I could get this to sort alphabetically on
+    // Firefox was to build a reverse-sorted list, then reverse it again;
+    // Chrome was not affected by this
+    return this.getChildren()
+      .sort((a, b) => {
+        const aTitle = a.getTitle();
+        const bTitle = b.getTitle();
+
+        if (aTitle < bTitle) {
+          return 1;
+        } else if (bTitle > aTitle) {
+          return -1;
+        } else {
+          return 0;
+        }
+      })
+      .reverse();
   }
 }

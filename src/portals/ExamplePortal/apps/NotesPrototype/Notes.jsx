@@ -17,6 +17,8 @@ const Notes = {
   view: function View() {
     const [content, setContent] = useState("");
 
+    // TODO: Implement ability to change rendering engine (i.e. code view, etc.)
+
     return (
       <Layout>
         <Header>Known issue: Background doesn't scroll w/ Firefox</Header>

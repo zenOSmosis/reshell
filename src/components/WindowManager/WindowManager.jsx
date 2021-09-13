@@ -2,9 +2,7 @@
 
 import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import WindowManagerRouteProvider, {
-  WindowManagerRouteContext,
-} from "./WindowManager.RouteProvider";
+import WindowManagerRouteProvider from "./WindowManager.RouteProvider"; // WindowManagerRouteContext,
 import Cover from "../Cover";
 import Window from "../Window";
 
@@ -24,15 +22,17 @@ let stackingIndex = 0;
 
 // TODO: Document
 // TODO: Use prop-types
-export default function WindowManager({ appDescriptors = [] }) {
+export default function WindowManager({ appDescriptors = [], children }) {
   return (
     <WindowManagerRouteProvider>
-      <WindowManagerView appDescriptors={appDescriptors} />
+      <WindowManagerView appDescriptors={appDescriptors}>
+        {children}
+      </WindowManagerView>
     </WindowManagerRouteProvider>
   );
 }
 
-function WindowManagerView({ appDescriptors = [] }) {
+function WindowManagerView({ appDescriptors = [], children }) {
   // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
 
   const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
@@ -143,11 +143,21 @@ function WindowManagerView({ appDescriptors = [] }) {
       };
 
       elBase.addEventListener("mousedown", _handleElBaseTouch);
-      elBase.addEventListener("touchstart", _handleElBaseTouch);
+      elBase.addEventListener("touchstart", _handleElBaseTouch, {
+        // @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+        passive: true,
+      });
 
       return function unmount() {
         elBase.removeEventListener("mousedown", _handleElBaseTouch);
-        elBase.removeEventListener("touchstart", _handleElBaseTouch);
+        elBase.removeEventListener("touchstart", _handleElBaseTouch, {
+          // FIXME: (jh) I'm not positive if this should be on the
+          // removeEventListener (I think not, but erroring on the side of
+          // caution)
+          // @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+          // @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener
+          passive: true,
+        });
       };
     }
   }, [elBase]);
@@ -201,6 +211,7 @@ function WindowManagerView({ appDescriptors = [] }) {
         title,
         serviceClasses = [],
         isPinned,
+        isPinnedToDock,
         ...windowProps
       } = appRuntime.getAppDescriptor();
 
@@ -323,7 +334,12 @@ function WindowManagerView({ appDescriptors = [] }) {
         //
         // setActiveWindowController(null)
       }
-      <div ref={setElBase} style={{ width: "100%", height: "100%" }}>
+      <div
+        ref={setElBase}
+        style={{ width: "100%", height: "100%", position: "relative" }}
+      >
+        {children}
+
         {windows}
       </div>
     </Cover>

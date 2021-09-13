@@ -96,6 +96,15 @@ export default class WindowController extends PhantomCore {
     return this._appRuntime;
   }
 
+  // TODO: Document
+  getAppRegistration() {
+    const runtime = this.getAppRuntime();
+
+    if (runtime) {
+      return runtime.getRegistration();
+    }
+  }
+
   // TODO: Implement
   // TODO: Document
   setSize({ width, height }) {

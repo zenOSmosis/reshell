@@ -1,20 +1,21 @@
 import Desktop from "@components/Desktop";
 
-import AboutReshellWindow from "./windows/AboutReshellWindow";
-import InputMediaDevicesWindow from "./windows/InputMediaDevicesWindow";
-import TestVUMeterWindow from "./windows/TestVUMeterWindow";
-import ScreenCaptureWindow from "./windows/ScreenCaptureWindow";
-import ApplicationMonitor from "./windows/ApplicationMonitor";
-import ServiceMonitor from "./windows/ServiceMonitor";
-import PresentationExpress from "./windows/PresentationExpress";
-import SpeakerAppWindow from "./windows/SpeakerAppWindow";
-import ZenOSmosisWindow from "./windows/zenOSmosisWindow";
-import MenubarProtoyper from "./windows/MenubarPrototype";
-import Box3DPrototype from "./windows/Box3DPrototype";
-import ColorAdjuster from "./windows/ColorAdjuster";
-import NotesPrototype from "./windows/NotesPrototype";
-import MemoryInfo from "./windows/MemoryInfo";
-// import WindowAPIDiscovererWindow from "./windows/WindowAPIDiscovererWindow";
+import Applications from "./apps/Applications";
+import AboutReshellWindow from "./apps/AboutReshellWindow";
+import InputMediaDevicesWindow from "./apps/InputMediaDevicesWindow";
+import TestVUMeterWindow from "./apps/TestVUMeterWindow";
+import ScreenCaptureWindow from "./apps/ScreenCaptureWindow";
+import ApplicationMonitor from "./apps/ApplicationMonitor";
+import ServiceMonitor from "./apps/ServiceMonitor";
+import PresentationExpress from "./apps/PresentationExpress";
+import SpeakerAppWindow from "./apps/SpeakerAppWindow";
+import ZenOSmosisWindow from "./apps/zenOSmosisWindow";
+import MenubarProtoyper from "./apps/MenubarPrototype";
+import Box3DPrototype from "./apps/Box3DPrototype";
+import ColorAdjuster from "./apps/ColorAdjuster";
+import NotesPrototype from "./apps/NotesPrototype";
+import MemoryInfo from "./apps/MemoryInfo";
+// import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
 
@@ -22,6 +23,7 @@ export default function ExamplePortal() {
   return (
     <Desktop
       appDescriptors={[
+        Applications,
         AboutReshellWindow,
         InputMediaDevicesWindow,
         TestVUMeterWindow,

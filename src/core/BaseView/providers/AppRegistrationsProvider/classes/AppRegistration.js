@@ -95,12 +95,19 @@ export default class AppRegistration extends PhantomCore {
   }
 
   /**
+   * TODO: Rename (clarify pin type)
+   *
    * Returns whether or not the application is pinned to the desktop menu.
    *
    * @return {boolean}
    */
   getIsPinned() {
     return Boolean(this._appDescriptor.isPinned);
+  }
+
+  // TODO: Document
+  getIsPinnedToDock() {
+    return Boolean(this._appDescriptor.isPinnedToDock);
   }
 
   /**
