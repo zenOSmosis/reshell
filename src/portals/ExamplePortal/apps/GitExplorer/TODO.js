@@ -4,3 +4,10 @@
 // TODO: Enable source-code changes; branch switching; commits; pushes
 // TODO: Prototype OpenFS usage based on this
 // TODO: Implement file-watching service to update UI with what is in repo
+
+/**
+ * References:
+ *
+ * 1. https://github.com/presslabs/gitfs (FUSE file system for git)
+ * 2. https://github.com/libfuse/libfuse (Filesystem in Userspace)
+ */

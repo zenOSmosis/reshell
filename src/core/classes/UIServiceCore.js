@@ -7,6 +7,12 @@ import PhantomCore, {
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+// TODO: Configure reporter channel (base class PhantomState, SyncObject or
+// equivalent (not sure if SyncObject would be useful here, but could enable
+// remote reporting))
+//
+// TODO: Base off of node.js-able module in PhantomCore (i.e. PhantomServiceCore, or similar)
+//
 // TODO: Document
 //
 // TODO: Consider this: Thought about extending PhantomCollection, instead,

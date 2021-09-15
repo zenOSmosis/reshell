@@ -9,16 +9,20 @@
     "start:dev": "nodemon -r esm -L src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jeremy Harris (info@zenosmosis.com)",
+  "author": "Jeremy Harris <info@zenosmosis.com>",
   "license": "MIT",
   "dependencies": {
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
+    "module-alias": "^2.2.2",
+    "node-pty": "^0.10.1",
     "nodemon": "^2.0.12",
+    "phantom-core": "github:zenosmosis/phantom-core",
     "socket.io": "^4.2.0"
   },
   "_moduleAliases": {
-    "@src": "src"
+    "@src": "src",
+    "@shared": "src/shared"
   }
 }

@@ -10,6 +10,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "classnames": "^2.3.1",
+    "concurrently": "^6.2.1",
+    "debounce": "^1.2.1",
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller",
     "phantom-core": "github:zenosmosis/phantom-core",
     "preload-it": "^1.4.0",
@@ -20,16 +22,20 @@
     "react-use-gesture": "^9.1.3",
     "resize-observer": "^1.0.2",
     "socket.io-client": "^4.2.0",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "xterm": "^4.14.1",
+    "xterm-addon-fit": "^0.5.0",
+    "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
     "start": "HTTPS=true craco start",
-    "start:wizard": "concurrently \"npm run start:wizard.host-bridge\" \"npm run start:wizard.frontend\"",
-    "start:wizard.frontend": "HTTPS=true REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
-    "start:wizard.frontend-nossl": "REACT_APP_PORTAL=setupwizard PORT=3001 craco start",
-    "start:wizard.host-bridge": "cd host.bridge-prototype && npm start",
+    "start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
+    "stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
+    "build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
+    "start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start:nossl\"",
+    "start:nossl": "PORT=3001 craco start",
+    "start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
     "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
-    "start:wizard.docker-compose": " docker-compose -f docker-compose.dev.yml up",
     "build": "craco build",
     "build:with-profiling": "craco build --profile",
     "test": "craco test",
@@ -54,7 +60,6 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^6.2.1",
     "pm2": "^5.1.1"
   }
 }

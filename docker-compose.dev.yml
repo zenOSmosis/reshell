@@ -17,27 +17,19 @@ services:
       - reshell-development-network
     ports:
       - 8443:443
+    logging:
+      driver: none # Disable spammy logs
 
-  reshell-frontend:
+  reshell:
     build:
       context: ./
       dockerfile: Dockerfile.dev
     environment:
       NODE_ENV: development
       PORT: 3001
+      HOST_BRIDGE_PORT: 3002
+      FRONTEND_PROXY_URL: http://reshell:3001
     networks:
       - reshell-development-network
     volumes:
       - ./:/app
-
-  reshell-host.bridge-prototype:
-    build: ./host.bridge-prototype
-    environment:
-      NODE_ENV: development
-      PORT: 3002
-      FRONTEND_PROXY_URL: http://reshell-frontend:3001
-    command: "npm run start:dev"
-    networks:
-      - reshell-development-network
-    volumes:
-      - ./host.bridge-prototype:/app

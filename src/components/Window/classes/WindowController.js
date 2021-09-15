@@ -1,9 +1,12 @@
 import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { debounce } from "debounce";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
 // @see https://reactjs.org/docs/profiler.html
 export const EVT_RENDER_PROFILED = "render-profile";
+
+export const EVT_RESIZED = "resized";
 
 // TODO: Move into core directory?
 // TODO: Document
@@ -27,12 +30,20 @@ export default class WindowController extends PhantomCore {
     this._windowManagerEl = null;
 
     this._handleBringToTop = onBringToTop;
+
+    this._emitDebouncedResized = debounce(
+      this._emitDebouncedResized.bind(this),
+      500
+    );
   }
 
   /**
    * @return {Promise<void>}
    */
   async destroy() {
+    // Clear any currently scheduled resize executions
+    this._emitDebouncedResized.clear();
+
     // TODO: Determine if in dirty state, prior to closing
     // if (
     // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
@@ -118,6 +129,14 @@ export default class WindowController extends PhantomCore {
         windowEl.style.height = `${height}px`;
       }
     }
+
+    // Emit debounced EVT_RESIZED event
+    this._emitDebouncedResized();
+  }
+
+  // TODO: Document
+  _emitDebouncedResized() {
+    this.emit(EVT_RESIZED);
   }
 
   // TODO: Document

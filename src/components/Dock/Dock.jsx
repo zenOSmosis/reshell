@@ -34,7 +34,7 @@ export default function Dock() {
   // TODO: Import type definition
   /** @type {AppRegistration | void} */
   const activeRegistration = useMemo(
-    () => activeWindowController?.getAppRegistration,
+    () => activeWindowController?.getAppRegistration(),
     [activeWindowController]
   );
 
@@ -46,6 +46,8 @@ export default function Dock() {
         startAppRuntime(appRegistration);
       } else {
         // Move grouped windows to top
+        // TODO: Order by window manager stacking order (most recently used
+        // window in group should appear in top)
         // TODO: Refactor into window manager?
         appRuntimes
           .filter((runtime) => runtime.getRegistration() === appRegistration)

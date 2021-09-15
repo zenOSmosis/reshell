@@ -1,6 +1,6 @@
 import WindowManager from "../WindowManager";
 import Full from "../Full";
-import Layout, { Header, Content } from "../Layout";
+import Layout, { Header, Content, Row, Column } from "../Layout";
 import LED from "../LED";
 import Dock from "../Dock";
 
@@ -39,159 +39,175 @@ export default function Desktop({ appDescriptors }) {
           <Header
             style={{ borderBottom: "1px #ccc solid", whiteSpace: "nowrap" }}
           >
-            <div style={{ float: "left" }}>
-              {
-                // TODO: Replace menu with data-driven Menubar component
-              }
-              <Menu
-                portal={true}
-                menuButton={
-                  <MenuButton>
-                    {
-                      // TODO: Make this string configurable
-                    }
-                    Desktop
-                  </MenuButton>
-                }
-              >
+            <Row>
+              <Column style={{ width: "100%" }}>
                 {
-                  // TODO: Show divider
+                  // TODO: Replace menu with data-driven Menubar component
                 }
-                <SubMenu label="Applications">
-                  {appRegistrations
-                    .sort((a, b) => {
-                      const aTitle = a.getTitle();
-                      const bTitle = b.getTitle();
-
-                      if (aTitle < bTitle) {
-                        return -1;
-                      } else if (bTitle > aTitle) {
-                        return 1;
-                      } else {
-                        return 0;
-                      }
-                    })
-                    .map((app) => (
-                      <MenuItem
-                        key={app.getUUID()}
-                        onClick={() => startAppRuntime(app)}
-                      >
-                        {app.getTitle()}
-                      </MenuItem>
-                    ))}
-                </SubMenu>
-                {
-                  // TODO: Show divider
-                  // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-                }
-                {appRegistrations
-                  .filter((app) => app.getIsPinned())
-                  .map((app) => (
-                    <MenuItem
-                      key={app.getUUID()}
-                      onClick={() => startAppRuntime(app)}
-                    >
-                      {app.getTitle()}
-                    </MenuItem>
-                  ))}
-                {
-                  // TODO: Show divider
-                }
-                <MenuItem
-                  onClick={() =>
-                    alert(
-                      "TODO: Implement window w/ overview of System Information"
-                    )
-                  }
-                >
-                  About / System Information
-                </MenuItem>
-                {
-                  // TODO: Show divider
-                }
-                <MenuItem
-                  onClick={() => alert("TODO: Implement ReShell destruct")}
-                >
-                  Close
-                </MenuItem>
-                {
-                  // TODO: Show divider
-                }
-                <MenuItem
-                  onClick={() => {
-                    // TODO: Only reload after ReShell destruct
-                    window.location.reload();
-                  }}
-                >
-                  Reload
-                </MenuItem>
-              </Menu>
-              {activeWindowController && (
-                <>
+                <div>
                   <Menu
                     portal={true}
                     menuButton={
                       <MenuButton>
-                        <span style={{ fontWeight: "bold" }}>
-                          {activeWindowController.getTitle()}
-                        </span>
+                        {
+                          // TODO: Make this string configurable
+                        }
+                        Desktop
                       </MenuButton>
                     }
                   >
-                    <MenuItem onClick={() => activeWindowController.destroy()}>
+                    {
+                      // TODO: Show divider
+                    }
+                    <SubMenu label="Applications">
+                      {appRegistrations
+                        .sort((a, b) => {
+                          const aTitle = a.getTitle();
+                          const bTitle = b.getTitle();
+
+                          if (aTitle < bTitle) {
+                            return -1;
+                          } else if (bTitle > aTitle) {
+                            return 1;
+                          } else {
+                            return 0;
+                          }
+                        })
+                        .map((app) => (
+                          <MenuItem
+                            key={app.getUUID()}
+                            onClick={() => startAppRuntime(app)}
+                          >
+                            {app.getTitle()}
+                          </MenuItem>
+                        ))}
+                    </SubMenu>
+                    {
+                      // TODO: Show divider
+                      // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+                    }
+                    {appRegistrations
+                      .filter((app) => app.getIsPinned())
+                      .map((app) => (
+                        <MenuItem
+                          key={app.getUUID()}
+                          onClick={() => startAppRuntime(app)}
+                        >
+                          {app.getTitle()}
+                        </MenuItem>
+                      ))}
+                    {
+                      // TODO: Show divider
+                    }
+                    <MenuItem
+                      onClick={() =>
+                        alert(
+                          "TODO: Implement window w/ overview of System Information"
+                        )
+                      }
+                    >
+                      About / System Information
+                    </MenuItem>
+                    {
+                      // TODO: Show divider
+                    }
+                    <MenuItem
+                      onClick={() => alert("TODO: Implement ReShell destruct")}
+                    >
                       Close
                     </MenuItem>
+                    {
+                      // TODO: Show divider
+                    }
+                    <MenuItem
+                      onClick={() => {
+                        // TODO: Only reload after ReShell destruct
+                        window.location.reload();
+                      }}
+                    >
+                      Reload
+                    </MenuItem>
                   </Menu>
+                  {activeWindowController && (
+                    <>
+                      {
+                        // TODO: Implement quadrant snapping here
+                      }
+                      <Menu
+                        portal={true}
+                        menuButton={
+                          <MenuButton>
+                            <span style={{ fontWeight: "bold" }}>
+                              {activeWindowController.getTitle()}
+                            </span>
+                          </MenuButton>
+                        }
+                      >
+                        <MenuItem
+                          onClick={() => activeWindowController.destroy()}
+                        >
+                          Close
+                        </MenuItem>
+                      </Menu>
+                      <Menu
+                        portal={true}
+                        menuButton={<MenuButton>Window</MenuButton>}
+                      >
+                        <MenuItem
+                          onClick={() =>
+                            activeWindowController.setIsMinimized(true)
+                          }
+                        >
+                          Minimize
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            activeWindowController.setIsMaximized(true)
+                          }
+                        >
+                          Maximize
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  )}
+                </div>
+              </Column>
+              <Column
+                style={{
+                  // TODO: Rework so column width expands according to content
+                  maxWidth: 100,
+                }}
+              >
+                <div style={{ textAlign: "right" }}>
                   <Menu
                     portal={true}
-                    menuButton={<MenuButton>Window</MenuButton>}
+                    menuButton={
+                      <MenuButton>
+                        Service Core{" "}
+                        <LED color={services.length > 0 ? "green" : "gray"} />
+                      </MenuButton>
+                    }
                   >
-                    <MenuItem
-                      onClick={() =>
-                        activeWindowController.setIsMinimized(true)
-                      }
-                    >
-                      Minimize
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() =>
-                        activeWindowController.setIsMaximized(true)
-                      }
-                    >
-                      Maximize
-                    </MenuItem>
+                    {services.length === 0 ? (
+                      <MenuItem>
+                        <span style={{ fontStyle: "italic" }}>
+                          No running services
+                        </span>
+                      </MenuItem>
+                    ) : (
+                      services.map((service) => (
+                        <MenuItem
+                          key={service.getUUID()}
+                          onClick={() => alert("TODO: Implement")}
+                        >
+                          {service.getTitle()}
+                        </MenuItem>
+                      ))
+                    )}
                   </Menu>
-                </>
-              )}
-            </div>
-            <div style={{ float: "right" }}>
-              <Menu
-                portal={true}
-                menuButton={
-                  <MenuButton>
-                    Service Core{" "}
-                    <LED color={services.length > 0 ? "green" : "gray"} />
-                  </MenuButton>
-                }
-              >
-                {services.length === 0 ? (
-                  <MenuItem>
-                    <span style={{ fontStyle: "italic" }}>
-                      No running services
-                    </span>
-                  </MenuItem>
-                ) : (
-                  services.map((service) => (
-                    <MenuItem
-                      key={service.getUUID()}
-                      onClick={() => alert("TODO: Implement")}
-                    >
-                      {service.getTitle()}
-                    </MenuItem>
-                  ))
-                )}
-              </Menu>
-            </div>
+                </div>
+              </Column>
+            </Row>
           </Header>
           <Content style={{ backgroundColor: "#ccc" }}>
             <div>TODO: Allow videos to play on background</div>

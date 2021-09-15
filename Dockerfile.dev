@@ -1,7 +1,29 @@
-FROM node:14
+FROM ubuntu:20.04
+
+# @see https://grigorkh.medium.com/fix-tzdata-hangs-docker-image-build-cdb52cc3360d
+ENV TZ=America/Managua
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update \
+  && apt-get install -y \
+  npm \
+  openssh-client \
+  && apt-get clean
+
+# @see https://docs.npmjs.com/cli/v7/using-npm/config/
+RUN npm install -g --unsafe-perm node-pty
 
 WORKDIR /app
 
+# This sets the root password!
+# TODO: Make this configurable and do not leave in Dockerfile
+# RUN echo "root:Docker!" | chpasswd
+
+# TODO: Implement ability to obtain dynamic username
+RUN useradd -ms /bin/bash user
+
+USER user
+
 COPY . ./
 
-CMD ["npm", "run", "start:wizard.frontend-nossl"]
+CMD ["npm", "run", "start:frontend-with-hostbridge-proxy"]

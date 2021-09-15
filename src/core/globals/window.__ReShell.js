@@ -16,10 +16,6 @@ export default class DOMReShell {
   static async initDOM(portal = null) {
     if (!portal) {
       switch (process.env.REACT_APP_PORTAL) {
-        case "setupwizard":
-          portal = React.lazy(() => import("@portals/WizardPortal"));
-          break;
-
         case "test":
           portal = React.lazy(() => import("@portals/TestPortal"));
           break;

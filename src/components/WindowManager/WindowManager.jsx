@@ -11,6 +11,8 @@ import useDesktopContext from "@hooks/useDesktopContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 
+import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
+
 import WindowController from "../Window/classes/WindowController";
 
 // TODO: Incorporate react-router for window routes?
@@ -395,12 +397,16 @@ function WrappedView({
     };
   }, [windowServices]);
 
+  // TODO: Document
+  const setResizeHandler = useRegistrationViewOnResized(windowController);
+
   return (
     <ViewComponent
       {...rest}
       windowController={windowController}
       windowServices={windowServices}
       appRuntime={appRuntime}
+      setResizeHandler={setResizeHandler}
       // Force update every time service updates
       serviceUpdateIdx={serviceUpdateIdx}
     />
