@@ -4,6 +4,7 @@ import Full from "../Full";
 import Layout, { Header, Content, Row, Column } from "../Layout";
 import LED from "../LED";
 import Dock from "../Dock";
+import AutoScaler from "../AutoScaler";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -236,6 +237,7 @@ export default function Desktop({
               }
               <div
                 style={{
+                  maxWidth: "30%",
                   position: "absolute",
                   bottom: 10,
                   right: 10,
@@ -248,7 +250,9 @@ export default function Desktop({
                   // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
                   // (i.e. REACT_APP_VERSION=$npm_package_version)
                 }
-                ReShell 0.0.1-alpha
+                <AutoScaler style={{ whiteSpace: "nowrap" }}>
+                  ReShell 0.0.1-alpha
+                </AutoScaler>
               </div>
               <WindowManager appDescriptors={appDescriptors}>
                 <Dock />
