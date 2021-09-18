@@ -2,6 +2,8 @@
 
 PRIMARY GOAL: UI should never require a backend to be present; should be easily portable to be used for a variety of frontend-related needs, from small to large projects.
 
+SECONDARY GOAL: Try not to break CRA nor get too clever
+
 **Work in progress**
 
 # Getting Started with Create React App
