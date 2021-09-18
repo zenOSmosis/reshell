@@ -20,6 +20,10 @@ export default class DOMReShell {
           portal = React.lazy(() => import("@portals/TestPortal"));
           break;
 
+        case "speaker.app":
+          portal = React.lazy(() => import("@portals/SpeakerAppPortal"));
+          break;
+
         default:
           portal = React.lazy(() => import("@portals/ExamplePortal"));
       }
