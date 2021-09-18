@@ -1,1 +1,3 @@
-// TODO: Build
+import VirtualServer from "./VirtualServer";
+
+export default VirtualServer;

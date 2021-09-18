@@ -1,4 +1,7 @@
 import Desktop from "@components/Desktop";
+import Full from "@components/Full";
+import Center from "@components/Center";
+import AutoScaler from "@components/AutoScaler";
 
 import Applications from "../ExamplePortal/apps/Applications";
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
@@ -9,10 +12,22 @@ import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
+// import LocalStorageVaultPrototype from "../ExamplePortal/apps/LocalStorageVaultPrototype";
+//
+import CallCentral from "./apps/CallCentral";
+import VirtualServer from "./apps/VirtualServer";
 
-export default function ExamplePortal() {
+export default function SpeakerAppPortal() {
   return (
     <Desktop
+      // TODO: Refactor
+      backgroundView={
+        <Full style={{ backgroundColor: "#999" }}>
+          <AutoScaler>
+            <div style={{ padding: 20 }}>[Speaker.app]</div>
+          </AutoScaler>
+        </Full>
+      }
       appDescriptors={[
         Applications,
         AboutReShell,
@@ -23,6 +38,10 @@ export default function ExamplePortal() {
         ApplicationMonitor,
         ServiceMonitor,
         ColorAdjuster,
+        // LocalStorageVaultPrototype,
+
+        CallCentral,
+        VirtualServer,
       ]}
     />
   );
