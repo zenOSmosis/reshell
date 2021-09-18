@@ -31,6 +31,22 @@ const ServiceMonitor = {
 
     return (
       <table style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            <td>Service Name</td>
+            <td>Uptime</td>
+            <td>
+              Active
+              <br />
+              App Runtimes
+            </td>
+            <td>
+              Dynamically
+              <br />
+              Linked Providers
+            </td>
+          </tr>
+        </thead>
         <tbody>
           {services.map(service => (
             <tr key={service.getUUID()}>
@@ -48,6 +64,8 @@ const ServiceMonitor = {
                 </button>
               </td>
                 */}
+              <td className="center">N/A</td>
+              <td className="center">N/A</td>
             </tr>
           ))}
         </tbody>
