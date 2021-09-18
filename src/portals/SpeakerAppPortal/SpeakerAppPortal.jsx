@@ -4,8 +4,8 @@ import Applications from "../ExamplePortal/apps/Applications";
 import AboutReshellWindow from "../ExamplePortal/apps/AboutReshellWindow";
 import InputMediaDevicesWindow from "../ExamplePortal/apps/InputMediaDevicesWindow";
 import TestVUMeterWindow from "../ExamplePortal/apps/TestVUMeterWindow";
-import ScreenCaptureWindow from "../ExamplePortal/apps/ScreenCaptureWindow";
-// import ScreenShot from "../ExamplePortal/apps/ScreenShot";
+import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
+import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
@@ -18,8 +18,8 @@ export default function ExamplePortal() {
         AboutReshellWindow,
         InputMediaDevicesWindow,
         TestVUMeterWindow,
-        ScreenCaptureWindow,
-        // ScreenShot,
+        ScreenCapture,
+        ScreenShot,
         ApplicationMonitor,
         ServiceMonitor,
         ColorAdjuster,
