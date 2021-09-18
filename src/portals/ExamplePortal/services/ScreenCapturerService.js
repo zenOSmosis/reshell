@@ -20,6 +20,8 @@ export default class ScreenCapturerService extends UIServiceCore {
     this.getCollectionInstance(ScreenCaptureFactoryCollection).addChild(
       factory
     );
+
+    return factory;
   }
 
   /**

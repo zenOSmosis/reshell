@@ -8,6 +8,9 @@ import os from "os";
 const pty = require("node-pty");
 
 // TODO: Document
+// TODO: Require another socket channel for meta / control communications (i.e.
+// to know when UI terminal is resized, etc.) or use some other internal event
+// on this same socket channel?
 export default function bindPtySocketChannel(socketChannel) {
   const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 

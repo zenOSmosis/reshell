@@ -4,7 +4,8 @@ import Applications from "./apps/Applications";
 import AboutReshellWindow from "./apps/AboutReshellWindow";
 import InputMediaDevicesWindow from "./apps/InputMediaDevicesWindow";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
-import ScreenCaptureWindow from "./apps/ScreenCaptureWindow";
+import ScreenCapture from "./apps/ScreenCapture";
+import ScreenShot from "./apps/ScreenShot";
 import ApplicationMonitor from "./apps/ApplicationMonitor";
 import ServiceMonitor from "./apps/ServiceMonitor";
 import PresentationExpress from "./apps/PresentationExpress";
@@ -18,9 +19,14 @@ import MemoryInfo from "./apps/MemoryInfo";
 import HostBridge from "./apps/HostBridge";
 import Files from "./apps/Files";
 import Terminal from "./apps/Terminal";
+import AppRegistrationMonitor from "./apps/AppRegistrationMonitor";
+import Environment from "./apps/Environment";
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
+
+import PROTOVisualStudioCode from "./apps/ScreenCapture/PROTO.VisualStudioCode";
+import PROTOWindows10 from "./apps/ScreenCapture/PROTO.Windows10";
 
 export default function ExamplePortal() {
   return (
@@ -30,7 +36,8 @@ export default function ExamplePortal() {
         AboutReshellWindow,
         InputMediaDevicesWindow,
         TestVUMeterWindow,
-        ScreenCaptureWindow,
+        ScreenCapture,
+        ScreenShot,
         ApplicationMonitor,
         ServiceMonitor,
         PresentationExpress,
@@ -44,7 +51,12 @@ export default function ExamplePortal() {
         HostBridge,
         Files,
         Terminal,
+        AppRegistrationMonitor,
+        Environment,
         // WindowAPIDiscovererWindow,
+        //
+        PROTOVisualStudioCode,
+        PROTOWindows10,
       ]}
     />
   );

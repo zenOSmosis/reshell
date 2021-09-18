@@ -4,6 +4,7 @@ export { EVT_DESTROYED };
 
 // TODO: Implement support for SocketChannel: https://github.com/zenOSmosis/js-shell/blob/master/backend/src/utils/socketAPI/SocketChannel.js
 
+// TODO: Document
 export default class SocketAPI extends PhantomCore {
   constructor(io, socket) {
     super();
