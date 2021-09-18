@@ -122,6 +122,11 @@ export default class AppRegistration extends PhantomCore {
     return Boolean(this._appDescriptor.isPinnedToDock);
   }
 
+  // TODO: Document
+  getIsAutoStart() {
+    return Boolean(this._appDescriptor.isAutoStart);
+  }
+
   /**
    * @return {Promise<void>}
    */

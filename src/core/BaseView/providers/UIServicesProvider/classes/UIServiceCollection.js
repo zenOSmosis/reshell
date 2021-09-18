@@ -15,10 +15,17 @@ export {
   EVT_DESTROYED,
 };
 
+// TODO: Document
 export default class UIServiceCollection extends PhantomCollection {
-  // addService
-  // removeService
-  // TODO: Destruct all services on collection destruct
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    // Destruct all services on collection destruc
+    await this.destroyAllChildren();
+
+    super.destroy();
+  }
 
   // TODO: Document
   addChild(service, ServiceClass) {

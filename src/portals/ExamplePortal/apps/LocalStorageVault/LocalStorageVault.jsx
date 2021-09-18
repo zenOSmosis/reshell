@@ -30,7 +30,9 @@ const LocalStorageVault = {
         <Content>
           <Center>[TODO: Implement LocalStorageVault]</Center>
         </Content>
-        <Footer>...</Footer>
+        <Footer>
+          <button>Empty</button>
+        </Footer>
       </Layout>
     );
   },

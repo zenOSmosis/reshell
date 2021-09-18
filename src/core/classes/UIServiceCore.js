@@ -35,6 +35,10 @@ export default class UIServiceCore extends PhantomCore {
 
     // Set default title
     this.setTitle(`[non-aliased-service]:${this.getClassName()}`);
+
+    // TODO: Include ability to dynamically link in Providers to a service so
+    // that the same providers will be available to all consumers of the
+    // service
   }
 
   /**
@@ -43,7 +47,7 @@ export default class UIServiceCore extends PhantomCore {
   async destroy() {
     // Destruct all attached collections
     await Promise.all(
-      [...this._collectionMap].map((collection) => collection.destroy())
+      [...this._collectionMap].map(collection => collection.destroy())
     );
 
     return super.destroy();

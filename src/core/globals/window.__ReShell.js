@@ -20,6 +20,10 @@ export default class DOMReShell {
           portal = React.lazy(() => import("@portals/TestPortal"));
           break;
 
+        case "speaker.app":
+          portal = React.lazy(() => import("@portals/SpeakerAppPortal"));
+          break;
+
         default:
           portal = React.lazy(() => import("@portals/ExamplePortal"));
       }
@@ -31,7 +35,7 @@ export default class DOMReShell {
     document.body.innerHTML = "";
 
     // Wipe existing styling
-    [...document.getElementsByTagName("style")].forEach((elStyle) =>
+    [...document.getElementsByTagName("style")].forEach(elStyle =>
       elStyle.parentNode.removeChild(elStyle)
     );
 

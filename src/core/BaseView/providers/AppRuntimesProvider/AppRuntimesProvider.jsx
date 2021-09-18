@@ -3,14 +3,19 @@ import AppRuntimeOrchestrationService, {
   EVT_UPDATED,
 } from "./services/AppRuntimeOrchestrationService";
 
+import { AppRegistrationsContext } from "../AppRegistrationsProvider";
+
 import { UIServicesContext } from "../UIServicesProvider";
 
 import useForceUpdate from "@hooks/useForceUpdate";
+import useAppRuntimesAutoStart from "./useAppRuntimesAutoStart";
 
 export const AppRuntimesContext = React.createContext({});
 
 // TODO: Document
 export default function AppRuntimesProvider({ children }) {
+  const { appRegistrations } = useContext(AppRegistrationsContext);
+
   const { startService } = useContext(UIServicesContext);
   const forceUpdate = useForceUpdate();
 
@@ -29,7 +34,7 @@ export default function AppRuntimesProvider({ children }) {
 
   // TODO: Document
   const startAppRuntime = useCallback(
-    (appRegistration) => {
+    appRegistration => {
       appOrchestrationService.startAppRuntime(appRegistration);
     },
     [appOrchestrationService]
@@ -37,7 +42,7 @@ export default function AppRuntimesProvider({ children }) {
 
   // TODO: Document
   const stopAppRuntime = useCallback(
-    (appRegistration) => {
+    appRegistration => {
       appOrchestrationService.stopAppRuntime(appRegistration);
     },
     [appOrchestrationService]
@@ -48,12 +53,18 @@ export default function AppRuntimesProvider({ children }) {
 
   // TODO: Document
   const getAppRuntimesWithRegistrationID = useCallback(
-    (registrationID) =>
+    registrationID =>
       appRuntimes.filter(
-        (appRuntime) => appRuntime.getRegistrationID() === registrationID
+        appRuntime => appRuntime.getRegistrationID() === registrationID
       ),
     [appRuntimes]
   );
+
+  // TODO: Document
+  useAppRuntimesAutoStart({
+    appRegistrations,
+    startAppRuntime,
+  });
 
   return (
     <AppRuntimesContext.Provider
