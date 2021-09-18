@@ -1,7 +1,5 @@
 import Desktop from "@components/Desktop";
-import Full from "@components/Full";
-import Center from "@components/Center";
-import AutoScaler from "@components/AutoScaler";
+import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import Applications from "../ExamplePortal/apps/Applications";
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
@@ -21,13 +19,7 @@ export default function SpeakerAppPortal() {
   return (
     <Desktop
       // TODO: Refactor
-      backgroundView={
-        <Full style={{ backgroundColor: "#999" }}>
-          <AutoScaler>
-            <div style={{ padding: 20 }}>[Speaker.app]</div>
-          </AutoScaler>
-        </Full>
-      }
+      backgroundView={<SpeakerAppLogoBackground />}
       appDescriptors={[
         Applications,
         AboutReShell,
