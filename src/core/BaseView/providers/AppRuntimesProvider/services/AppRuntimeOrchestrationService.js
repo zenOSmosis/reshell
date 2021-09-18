@@ -8,8 +8,11 @@ import AppRuntimeCollection from "../classes/AppRuntimeCollection";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
-// TODO: Build out
+/**
+ * Manages the starting, stopping, and collection of AppRuntimes.
+ */
 export default class AppRuntimeOrchestrationService extends UIServiceCore {
+  // TODO: Document
   constructor(...args) {
     super(...args);
 
@@ -32,7 +35,7 @@ export default class AppRuntimeOrchestrationService extends UIServiceCore {
     // TODO: Get app runtime w/ descriptor
     // Destruct app runtime
 
-    alert("TODO: Build out");
+    throw new ReferenceError("TODO: Build out closeAppRuntime");
   }
 
   // TODO: Document
