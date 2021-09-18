@@ -1,9 +1,9 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
-const CallCentral = {
-  id: "call-central",
-  title: "Call Central",
+const CallCentralStation = {
+  id: "call-central-station",
+  title: "Call Central Station",
   style: {
     left: "auto",
     bottom: 0,
@@ -13,14 +13,14 @@ const CallCentral = {
   view: function View() {
     return (
       <Layout>
-        <Header>[options]</Header>
+        <Header>[profile] [networks] [create network] [private network]</Header>
         <Content>
-          <Center canOverflow={true}>[networks]</Center>
+          <Center canOverflow={true}>[public networks]</Center>
         </Content>
-        <Footer>[settings / etc]</Footer>
+        <Footer>[configure audio]</Footer>
       </Layout>
     );
   },
 };
 
-export default CallCentral;
+export default CallCentralStation;

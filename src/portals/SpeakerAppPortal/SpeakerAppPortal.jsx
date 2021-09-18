@@ -13,7 +13,7 @@ import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
 // import LocalStorageVaultPrototype from "../ExamplePortal/apps/LocalStorageVaultPrototype";
 //
-import CallCentral from "./apps/CallCentral";
+import CallCentralStation from "./apps/CallCentralStation";
 import VirtualServer from "./apps/VirtualServer";
 
 export default function SpeakerAppPortal() {
@@ -34,7 +34,7 @@ export default function SpeakerAppPortal() {
         ColorAdjuster,
         // LocalStorageVaultPrototype,
 
-        CallCentral,
+        CallCentralStation,
         VirtualServer,
       ]}
     />
