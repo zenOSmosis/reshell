@@ -1,7 +1,7 @@
 import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
-import Applications from "../ExamplePortal/apps/Applications";
+import Applications from "./apps/Applications";
 // import BackgroundSelector from '../ExamplePortal/apps/BackgroundSelector'
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import LocalStorageVault from "../ExamplePortal/apps/LocalStorageVault";
