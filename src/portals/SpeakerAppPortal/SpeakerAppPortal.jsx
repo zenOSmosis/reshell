@@ -2,6 +2,7 @@ import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import Applications from "../ExamplePortal/apps/Applications";
+// import BackgroundSelector from '../ExamplePortal/apps/BackgroundSelector'
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import InputMediaDevicesWindow from "../ExamplePortal/apps/InputMediaDevicesWindow";
 import TestVUMeterWindow from "../ExamplePortal/apps/TestVUMeterWindow";
@@ -22,6 +23,7 @@ export default function SpeakerAppPortal() {
       backgroundView={<SpeakerAppLogoBackground />}
       appDescriptors={[
         Applications,
+        // BackgroundSelector,
         AboutReShell,
         InputMediaDevicesWindow,
         TestVUMeterWindow,
