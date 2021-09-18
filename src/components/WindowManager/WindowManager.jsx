@@ -44,7 +44,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
 
   // TODO: Refactor outside of window manager?
   useEffect(() => {
-    appDescriptors.forEach((descriptor) =>
+    appDescriptors.forEach(descriptor =>
       addOrUpdateAppRegistration(descriptor)
     );
 
@@ -64,7 +64,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
    * @return {Object | void} // TODO: Document structure
    */
   const getWindowControllerMapWithKey = useCallback(
-    (key) => {
+    key => {
       const map = windowControllerMaps[key];
 
       return map;
@@ -82,7 +82,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
    * @return {void}
    */
   const handleSetActiveWindow = useCallback(
-    (windowController) => {
+    windowController => {
       if (
         !Object.is(
           windowController,
@@ -137,7 +137,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
   refHandleSetActiveWindow.current = handleSetActiveWindow;
   useEffect(() => {
     if (elBase) {
-      const _handleElBaseTouch = (evt) => {
+      const _handleElBaseTouch = evt => {
         // Deselect active window if desktop base is touched
         if (evt.target === elBase) {
           refHandleSetActiveWindow.current(null);
@@ -168,7 +168,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
    * @param {WindowController} windowController
    * @return {void}
    */
-  const handleWindowMinimize = useCallback((windowController) => {
+  const handleWindowMinimize = useCallback(windowController => {
     if (windowController) {
       windowController.minimize();
     }
@@ -179,7 +179,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
    * @return {void}
    */
   const handleWindowClose = useCallback(
-    (windowController) => {
+    windowController => {
       if (windowController) {
         // TODO: Determine here if window is in a non-saved state, and if the
         // user should be prompted before closing
@@ -204,7 +204,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
   // TODO: Can this be memoized again even w/ hooks running in window descriptors?
   // TODO: Don't render off of the descriptors, but off of active AppRegistration instances
   const windows = appRuntimes
-    .map((appRuntime) => {
+    .map(appRuntime => {
       // TODO: Ensure key is unique across the map
       const key = appRuntime.getUUID();
 
@@ -214,6 +214,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
         serviceClasses = [],
         isPinned,
         isPinnedToDock,
+        isAutoStart,
         ...windowProps
       } = appRuntime.getAppDescriptor();
 
@@ -259,7 +260,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
           onTouchStart={() => handleSetActiveWindow(windowController)}
           onRequestMinimize={() => handleWindowMinimize(windowController)}
           onRequestClose={() => handleWindowClose(windowController)}
-          ref={(ref) => {
+          ref={ref => {
             if (ref && !windowController) {
               // Begin process of attaching window controller to rendered view
               // and setting up event bindings
@@ -282,7 +283,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
               // Attach the view controller to the window
               ref.attachWindowController(windowController);
 
-              setWindowControllerMaps((prev) => {
+              setWindowControllerMaps(prev => {
                 const next = { ...prev };
                 next[key] = {
                   windowController,
@@ -294,7 +295,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
               });
 
               windowController.once(EVT_DESTROYED, () => {
-                setWindowControllerMaps((prev) => {
+                setWindowControllerMaps(prev => {
                   const next = { ...prev };
 
                   next[key].windowController = null;
@@ -325,7 +326,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
         </Window>
       );
     })
-    .filter((window) => Boolean(window));
+    .filter(window => Boolean(window));
 
   return (
     <Cover>
@@ -381,7 +382,7 @@ function WrappedView({
   // Re-render window when a service updates
   useEffect(() => {
     const _handleServiceUpdate = () => {
-      setServiceUpdateIdx((prev) => prev + 1);
+      setServiceUpdateIdx(prev => prev + 1);
     };
 
     for (const service of Object.values(windowServices)) {

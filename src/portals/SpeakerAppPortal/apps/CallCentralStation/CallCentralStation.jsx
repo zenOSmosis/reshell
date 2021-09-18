@@ -5,11 +5,12 @@ const CallCentralStation = {
   id: "call-central-station",
   title: "Call Central Station",
   style: {
-    left: "auto",
-    bottom: 0,
+    left: 10,
+    top: 20,
     width: 640,
     height: 480,
   },
+  isAutoStart: true,
   view: function View() {
     return (
       <Layout>
