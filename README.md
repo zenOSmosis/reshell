@@ -4,6 +4,8 @@ PRIMARY GOAL: UI should never require a backend to be present; should be easily 
 
 SECONDARY GOAL: Try not to break CRA nor get too clever
 
+Other goals:  Expose all "magic" via documentation; Keep everything understandable; abstract away the hard parts but make it easy to know about the inner-workings of those parts (and why certain decisions were made)
+
 **Work in progress**
 
 # Getting Started with Create React App
