@@ -28,12 +28,12 @@
     "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
-    "start": "HTTPS=true craco start",
+    "start": "craco start",
+    "start:ssl": "HTTPS=true craco start",
     "start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
     "stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
     "build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
     "start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start:nossl\"",
-    "start:nossl": "PORT=3001 craco start",
     "start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
     "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
     "build": "craco build",
