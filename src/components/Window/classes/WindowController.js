@@ -8,6 +8,8 @@ export const EVT_RENDER_PROFILED = "render-profile";
 
 export const EVT_RESIZED = "resized";
 
+// TODO: Implement ability to take snapshot (i.e. save to png, etc) for window previewing
+
 // TODO: Move into core directory?
 // TODO: Document
 export default class WindowController extends PhantomCore {

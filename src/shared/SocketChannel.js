@@ -22,6 +22,30 @@ export {
  */
 export default class SocketChannel extends PhantomCore {
   /**
+   * Utilized to send arbitrary event over static channelId event.
+   *
+   * @param {string} eventName
+   * @param {number | string | boolean | Object | ArrayBuffer} eventData
+   * @return {void}
+   */
+  static marshallEventData(eventName, eventData) {
+    return [eventName, eventData];
+  }
+
+  /**
+   * Utilized to determine arbitrary event name and data from Socket.io socket
+   * data.
+   *
+   * @param {any} socketData
+   * @return {Object<{eventName: string, eventData: any}>}
+   */
+  static unmarshallEventData(socketData) {
+    const [eventName, eventData] = socketData;
+
+    return { eventName, eventData };
+  }
+
+  /**
    * @param {Object} socket socket.io socket.
    * @param {string} channelId? If null, a channel id will be created
    * internally and this instance will become the host instance.
@@ -29,12 +53,13 @@ export default class SocketChannel extends PhantomCore {
   constructor(socket, channelId = null) {
     super();
 
+    this._receiveSocketData = this._receiveSocketData.bind(this);
+
     this._socket = socket;
 
     this._channelId = channelId || `socketChannel/${this.getUUID()}`;
 
-    // Initialize the channel on the socket
-    this._socket.on(this._channelId, this._receiveSocketData.bind(this));
+    this._initSocketHandler();
 
     // Simulate connect in next tick; TODO: Refactor to PhantomCore async init?
     // (process.nextTick may not be available on client, hence the timeout)
@@ -59,30 +84,60 @@ export default class SocketChannel extends PhantomCore {
   }
 
   /**
+   * Adds Socket.io event listener to pass relevant events through this
+   * channel.
+   *
+   * @return {void}
+   */
+  _initSocketHandler() {
+    // Initialize the channel on the socket
+    this._socket.on(this._channelId, this._receiveSocketData);
+  }
+
+  /**
+   * Removes Socket.io event listener which was passing relevant events through
+   * this channel.
+   *
+   * @return {void}
+   */
+  _deinitSocketHandler() {
+    // De-initialize the channel on the socket
+    this._socket.off(this._channelId, this._receiveSocketData);
+  }
+
+  /**
    * @return {Promise<void>}
    */
   async destroy() {
     this.log(`Destructing data channel with id: ${this._channelId}`);
 
-    // De-initialize the channel on the socket
-    this._socket.off(this._channelId, this._receiveSocketData.bind(this));
-    // Rebind this emit on super so that shutdown events can be captured locally
+    this._deinitSocketHandler();
+    // Rebind this emit on super so that shutdown events can be captured
+    // locally
+    // IMPORTANT: Events emit after this statement will emit locally instead of
+    // the other peer
     this.emit = super.emit;
 
+    // Emits locally
     this.emit(EVT_BEFORE_DISCONNECT);
 
+    // Emits locally
     this.emit(EVT_DISCONNECTED);
 
     return super.destroy();
   }
 
-  // TODO: Document
+  /**
+   * Alias for this.destroy().
+   *
+   * @return {Promise<void>}
+   */
   async disconnect() {
     return this.destroy();
   }
 
   /**
-   * @return {string}
+   * @return {string | number}
    */
   getChannelId() {
     return this._channelId;
@@ -94,71 +149,48 @@ export default class SocketChannel extends PhantomCore {
    * IMPORTANT: This does not call super.emit(); it only emits to the other
    * peer.
    *
+   * IMPORTANT: At this time, received event acknowledgement is not supported
+   * over SocketChannel (but probably should be).  It will need to be wired up
+   * to this._receiveSocketData as well, and have bidirectional support.
+   *
    * @param {string} eventName
-   * @param {any} data
+   * @param  {number | string | boolean | Object | ArrayBuffer} eventData
    * @return {void}
    */
-  emit(eventName, data) {
-    // Send artbitrary event data over Socket.io
-    this._socket.emit(this._channelId, [eventName, data]);
+  emit(eventName, eventData) {
+    // Send arbitrary event data over Socket.io
+    this._socket.emit(
+      this._channelId,
+      SocketChannel.marshallEventData(eventName, eventData)
+    );
   }
 
-  // TODO: Document
+  /**
+   * Writes data to the other peer, using EVT_DATA event emission.
+   *
+   * @param  {number | string | boolean | Object | ArrayBuffer} data
+   * @return {void}
+   */
   write(data) {
     return this.emit(EVT_DATA, data);
   }
 
-  // TODO: Document
+  /**
+   * Receives socket data captured from Socket.io event handler, unmarshalls
+   * it, and re-emits it out the socket channel.
+   *
+   * @param {any} socketData
+   * @return {void}
+   */
   _receiveSocketData(socketData) {
-    const [eventName, data] = socketData;
+    const { eventName, eventData } =
+      SocketChannel.unmarshallEventData(socketData);
 
     if (eventName === EVT_BEFORE_DISCONNECT) {
       this.disconnect();
     }
 
     // Pass underneath this instance, so we don't re-emit over Socket.io
-    super.emit(eventName, data);
+    super.emit(eventName, eventData);
   }
-
-  /**
-   * Converts a string to an ArrayBuffer.
-   *
-   * This could be a bad approach...
-   * @see https://github.com/xtermjs/xterm.js/issues/1972
-   *
-   * The original work came from:
-   * @see http://stackoverflow.com/a/11058858 (modified to work w/ Unit8Array)
-   *
-   * @param {string}
-   * @return {ArrayBuffer}
-   */
-  /*
-  str2ab(str) {
-    const buf = new ArrayBuffer(str.length);
-    const bufView = new Uint8Array(buf);
-    for (let i = 0, strLen = str.length; i < strLen; i++) {
-      bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-  }
-  */
-
-  /**
-   * Converts an ArrayBuffer to a string.
-   *
-   * This could be a bad approach...
-   * @see https://github.com/xtermjs/xterm.js/issues/1972
-   *
-   * The original work came from:
-   * @see http://stackoverflow.com/a/11058858 (modified to work w/ Unit8Array)
-   *
-   * @param {ArrayBuffer} buf
-   * @return {string}
-   */
-  /*
-  ab2str(buf) {
-    const str = String.fromCharCode.apply(null, new Uint8Array(buf));
-    return str;
-  }
-  */
 }

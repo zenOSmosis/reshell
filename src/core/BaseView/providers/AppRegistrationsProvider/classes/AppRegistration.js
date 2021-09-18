@@ -9,6 +9,11 @@ const _registrations = {};
 // TODO: Include ability to register preload resources, to preload when runtime is initiated
 // TODO: Include ability to register splash screen, while preloading
 
+// TODO: Include ability to retain window sizes and positions after
+// modification (not sure if that should be here or in AppRuntime)
+
+// TODO: Include ability to test condition before applying registration(?)
+
 // TODO: Document
 // A reference node for the desktop to determine what should be listed in program menus
 export default class AppRegistration extends PhantomCore {
@@ -72,6 +77,13 @@ export default class AppRegistration extends PhantomCore {
   }
 
   /**
+   * @return {Object}
+   */
+  getAppDescriptor() {
+    return this._appDescriptor;
+  }
+
+  /**
    * @return {string | number}
    */
   getID() {
@@ -125,10 +137,5 @@ export default class AppRegistration extends PhantomCore {
 
     // TODO: Only emit if something changed
     this.emit(EVT_UPDATED);
-  }
-
-  // TODO: Document type
-  getAppDescriptor() {
-    return this._appDescriptor;
   }
 }
