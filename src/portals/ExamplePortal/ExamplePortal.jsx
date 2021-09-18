@@ -1,7 +1,7 @@
 import Desktop from "@components/Desktop";
 
 import Applications from "./apps/Applications";
-import AboutReshellWindow from "./apps/AboutReshellWindow";
+import AboutReShell from "./apps/AboutReShell";
 import InputMediaDevicesWindow from "./apps/InputMediaDevicesWindow";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
 import ScreenCapture from "./apps/ScreenCapture";
@@ -33,7 +33,7 @@ export default function ExamplePortal() {
     <Desktop
       appDescriptors={[
         Applications,
-        AboutReshellWindow,
+        AboutReShell,
         InputMediaDevicesWindow,
         TestVUMeterWindow,
         ScreenCapture,

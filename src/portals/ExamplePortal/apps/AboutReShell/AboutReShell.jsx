@@ -1,7 +1,7 @@
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
-const AboutReshellWindow = {
+const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
   style: {
@@ -39,4 +39,4 @@ const AboutReshellWindow = {
   },
 };
 
-export default AboutReshellWindow;
+export default AboutReShell;
