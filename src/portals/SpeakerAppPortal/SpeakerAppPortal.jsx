@@ -1,7 +1,6 @@
 import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
-import Applications from "./apps/Applications";
 // import BackgroundSelector from '../ExamplePortal/apps/BackgroundSelector'
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import LocalStorageVault from "../ExamplePortal/apps/LocalStorageVault";
@@ -14,8 +13,10 @@ import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
 // import LocalStorageVaultPrototype from "../ExamplePortal/apps/LocalStorageVaultPrototype";
 //
+import Applications from "./apps/Applications";
 import CallCentralStation from "./apps/CallCentralStation";
 import VirtualServer from "./apps/VirtualServer";
+import LocalUserProfile from "./apps/LocalUserProfile";
 
 export default function SpeakerAppPortal() {
   return (
@@ -34,6 +35,7 @@ export default function SpeakerAppPortal() {
         ApplicationMonitor,
         ServiceMonitor,
         ColorAdjuster,
+        LocalUserProfile,
         // LocalStorageVaultPrototype,
 
         CallCentralStation,
