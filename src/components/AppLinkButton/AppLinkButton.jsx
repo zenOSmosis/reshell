@@ -9,7 +9,12 @@ export default function AppLinkButton({ id, title = null, ...rest }) {
   }
 
   return (
-    <button onClick={link} {...rest}>
+    <button
+      // IMPORTANT: ...rest is moved before onClick handler so the internal
+      // onClick handler will not be overridden
+      {...rest}
+      onClick={link}
+    >
       {title || registrationTitle}
     </button>
   );
