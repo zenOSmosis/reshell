@@ -1,6 +1,8 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
+import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
+
 const CallCentralStation = {
   id: "call-central-station",
   title: "Call Central Station",
@@ -16,9 +18,11 @@ const CallCentralStation = {
       <Layout>
         <Header>
           <button
-            onClick={() => switchToAppRegistrationID("local-user-profile")}
+            onClick={() =>
+              switchToAppRegistrationID(LOCAL_USER_PROFILE_REGISTRATION_ID)
+            }
           >
-            {getAppRegistrationTitle("local-user-profile")}
+            {getAppRegistrationTitle(LOCAL_USER_PROFILE_REGISTRATION_ID)}
           </button>{" "}
           [networks] [create network] [private network]
         </Header>

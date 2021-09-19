@@ -1,8 +1,10 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
+export const REGISTRATION_ID = "local-user-profile";
+
 const LocalUserProfile = {
-  id: "local-user-profile",
+  id: REGISTRATION_ID,
   title: "User Profile",
   style: {
     left: "auto",
