@@ -1,5 +1,7 @@
 import Center from "@components/Center";
 
+import useNotificationsContext from "@hooks/useNotificationsContext";
+
 const NotificationsPrototype = {
   id: "notifications-prototype",
   title: "Notifications Prototype",
@@ -10,7 +12,22 @@ const NotificationsPrototype = {
     height: 480,
   },
   view: function View() {
-    return <Center>[Notifications Prototype]</Center>;
+    const { showNotification } = useNotificationsContext();
+
+    return (
+      <Center>
+        <button
+          onClick={() =>
+            showNotification({
+              title: "Test Notification Title",
+              body: "Test Notification Body",
+            })
+          }
+        >
+          Generate Test Notification
+        </button>
+      </Center>
+    );
   },
 };
 
