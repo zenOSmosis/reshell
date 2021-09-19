@@ -380,9 +380,6 @@ function WrappedView({
 }) {
   const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
 
-  const { getAppRegistrationTitle } = useAppRegistrationsContext();
-  const { switchToAppRegistrationID } = useAppRuntimesContext();
-
   // Re-render window when a service updates
   useEffect(() => {
     const _handleServiceUpdate = () => {
@@ -414,8 +411,6 @@ function WrappedView({
       setResizeHandler={setResizeHandler}
       // Force update every time service updates
       serviceUpdateIdx={serviceUpdateIdx}
-      switchToAppRegistrationID={switchToAppRegistrationID}
-      getAppRegistrationTitle={getAppRegistrationTitle}
     />
   );
 }

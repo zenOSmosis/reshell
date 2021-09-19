@@ -2,6 +2,7 @@ import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 const CallCentralStation = {
   id: "call-central-station",
@@ -13,16 +14,15 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
-  view: function View({ switchToAppRegistrationID, getAppRegistrationTitle }) {
+  view: function View() {
+    const { title: localUserProfileTitle, link: localUserProfileLink } =
+      useAppRegistrationLink(LOCAL_USER_PROFILE_REGISTRATION_ID);
+
     return (
       <Layout>
         <Header>
-          <button
-            onClick={() =>
-              switchToAppRegistrationID(LOCAL_USER_PROFILE_REGISTRATION_ID)
-            }
-          >
-            {getAppRegistrationTitle(LOCAL_USER_PROFILE_REGISTRATION_ID)}
+          <button onClick={localUserProfileLink}>
+            {localUserProfileTitle}
           </button>{" "}
           [networks] [create network] [private network]
         </Header>
