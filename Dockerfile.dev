@@ -10,8 +10,11 @@ RUN apt-get update \
   openssh-client \
   && apt-get clean
 
+# Mount third-party storage backends (i.e. AWS, Google Drive, Dropbox)
+# @see https://rclone.org/install/
+
 # @see https://docs.npmjs.com/cli/v7/using-npm/config/
-RUN npm install -g --unsafe-perm node-pty
+# RUN npm install -g --unsafe-perm node-pty
 
 WORKDIR /app
 
