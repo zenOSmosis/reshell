@@ -11,10 +11,17 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
-  view: function View() {
+  view: function View({ switchToAppRegistrationID }) {
     return (
       <Layout>
-        <Header>[profile] [networks] [create network] [private network]</Header>
+        <Header>
+          <button
+            onClick={() => switchToAppRegistrationID("local-user-profile")}
+          >
+            [profile]
+          </button>{" "}
+          [networks] [create network] [private network]
+        </Header>
         <Content>
           <Center canOverflow={true}>[public networks]</Center>
         </Content>
