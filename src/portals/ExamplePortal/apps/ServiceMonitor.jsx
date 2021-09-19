@@ -35,16 +35,18 @@ const ServiceMonitor = {
           <tr>
             <td>Service Name</td>
             <td>Uptime</td>
-            <td>
-              Active
-              <br />
-              App Runtimes
-            </td>
-            <td>
-              Dynamically
-              <br />
-              Linked Providers
-            </td>
+            {/**
+              <td>
+                Active
+                <br />
+                App Runtimes
+              </td>
+              <td>
+                Dynamically
+                <br />
+                Linked Providers
+              </td>  
+               */}
           </tr>
         </thead>
         <tbody>
@@ -55,6 +57,10 @@ const ServiceMonitor = {
                 <Timer onTick={() => service.getInstanceUptime()} />
               </td>
               {/*
+                  <td className="center">N/A</td>
+                  <td className="center">N/A</td>
+                  */}
+              {/*
               <td>
                 <button
                   onClick={() => service.destroy()}
@@ -64,8 +70,6 @@ const ServiceMonitor = {
                 </button>
               </td>
                 */}
-              <td className="center">N/A</td>
-              <td className="center">N/A</td>
             </tr>
           ))}
         </tbody>
