@@ -15,6 +15,7 @@ import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import { useEffect } from "react";
 
 // TODO: Implement top menu-bar
 // @see https://headlessui.dev/react/menu
@@ -32,9 +33,19 @@ export default function Desktop({
   appDescriptors,
 }) {
   const { services } = useServicesContext();
-  const { activeWindowController } = useDesktopContext();
+  const { activeWindowController, addBackgroundAsset } = useDesktopContext();
   const { appRegistrations } = useAppRegistrationsContext();
   const { startAppRuntime } = useAppRuntimesContext();
+
+  // TODO: Implement after PhantomWrapper (or equiv.; assets need to be wrapped in
+  // PhantomCore instances in order to be added to background collection)
+  /*
+  useEffect(() => {
+    if (backgroundView) {
+      addBackgroundAsset(backgroundView);
+    }
+  }, [backgroundView, addBackgroundAsset]);
+  */
 
   return (
     // NOTE: Typically this would take up the entire viewport
