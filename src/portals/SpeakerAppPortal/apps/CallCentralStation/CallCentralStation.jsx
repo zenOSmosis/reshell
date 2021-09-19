@@ -3,6 +3,7 @@ import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
+import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 
 const CallCentralStation = {
   id: "call-central-station",
@@ -18,13 +19,18 @@ const CallCentralStation = {
     return (
       <Layout>
         <Header>
-          <AppLinkButton appDescriptorID={LOCAL_USER_PROFILE_REGISTRATION_ID} />
+          <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
           [networks] [create network] [private network]
         </Header>
         <Content>
           <Center canOverflow={true}>[public networks]</Center>
         </Content>
-        <Footer>[configure audio]</Footer>
+        <Footer>
+          <AppLinkButton
+            id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
+            title="Configure Audio"
+          />
+        </Footer>
       </Layout>
     );
   },
