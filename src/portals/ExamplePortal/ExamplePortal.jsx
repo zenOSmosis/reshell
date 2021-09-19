@@ -23,12 +23,10 @@ import Files from "./apps/Files";
 import Terminal from "./apps/Terminal";
 import AppRegistrationMonitor from "./apps/AppRegistrationMonitor";
 import Environment from "./apps/Environment";
+import NotificationsPrototype from "./apps/NotificationsPrototype";
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
-
-import PROTOVisualStudioCode from "./apps/ScreenCapture/PROTO.VisualStudioCode";
-import PROTOWindows10 from "./apps/ScreenCapture/PROTO.Windows10";
 
 export default function ExamplePortal() {
   return (
@@ -57,10 +55,9 @@ export default function ExamplePortal() {
         Terminal,
         AppRegistrationMonitor,
         Environment,
+        NotificationsPrototype,
         // WindowAPIDiscovererWindow,
         //
-        PROTOVisualStudioCode,
-        PROTOWindows10,
       ]}
     />
   );
