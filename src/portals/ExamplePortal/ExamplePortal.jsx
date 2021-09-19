@@ -2,6 +2,7 @@ import Desktop from "@components/Desktop";
 
 import Applications from "./apps/Applications";
 import AboutReShell from "./apps/AboutReShell";
+import BackgroundSelector from "./apps/BackgroundSelector";
 import LocalStorageVault from "./apps/LocalStorageVault";
 import InputMediaDevices from "./apps/InputMediaDevices";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
@@ -35,6 +36,7 @@ export default function ExamplePortal() {
       appDescriptors={[
         Applications,
         AboutReShell,
+        BackgroundSelector,
         LocalStorageVault,
         InputMediaDevices,
         TestVUMeterWindow,

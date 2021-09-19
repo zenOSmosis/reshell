@@ -26,6 +26,16 @@ export default function AppRuntimesProvider({ children }) {
   );
 
   // TODO: Document
+  const appRuntimes = appOrchestrationService.getAppRuntimes();
+
+  // TODO: Import type definition
+  /** @type {AppRegistration[]} */
+  const runningRegistrations = useMemo(
+    () => appRuntimes.map(runtime => runtime.getRegistration()),
+    [appRuntimes]
+  );
+
+  // TODO: Document
   useEffect(() => {
     appOrchestrationService.on(EVT_UPDATED, () => {
       forceUpdate();
@@ -35,21 +45,54 @@ export default function AppRuntimesProvider({ children }) {
   // TODO: Document
   const startAppRuntime = useCallback(
     appRegistration => {
-      appOrchestrationService.startAppRuntime(appRegistration);
+      return appOrchestrationService.startAppRuntime(appRegistration);
     },
     [appOrchestrationService]
+  );
+
+  // TODO: Merge with startAppRuntime after descriptors can specify multiple
+  // window support
+  const bringToFrontOrStartAppRuntime = useCallback(
+    appRegistration => {
+      if (!runningRegistrations.includes(appRegistration)) {
+        // TODO: Open app w/ registration
+        startAppRuntime(appRegistration);
+      } else {
+        // Move grouped windows to top
+        // TODO: Order by window manager stacking order (most recently used
+        // window in group should appear in top)
+        // TODO: Refactor into window manager?
+        appRuntimes
+          .filter(runtime => runtime.getRegistration() === appRegistration)
+          .forEach(runtime => runtime.bringToTop());
+      }
+    },
+    [runningRegistrations, appRuntimes, startAppRuntime]
+  );
+
+  // TODO: Document (for linking to other windows)
+  const switchToAppRegistrationID = useCallback(
+    appRegistrationID => {
+      const appRegistration = appRegistrations.find(
+        predicate => predicate.getID() === appRegistrationID
+      );
+
+      if (!appRegistration) {
+        console.warn(`Unknown appRegistration with id: ${appRegistrationID}`);
+      } else {
+        bringToFrontOrStartAppRuntime(appRegistration);
+      }
+    },
+    [appRegistrations, bringToFrontOrStartAppRuntime]
   );
 
   // TODO: Document
   const stopAppRuntime = useCallback(
     appRegistration => {
-      appOrchestrationService.stopAppRuntime(appRegistration);
+      return appOrchestrationService.stopAppRuntime(appRegistration);
     },
     [appOrchestrationService]
   );
-
-  // TODO: Document
-  const appRuntimes = appOrchestrationService.getAppRuntimes();
 
   // TODO: Document
   const getAppRuntimesWithRegistrationID = useCallback(
@@ -73,6 +116,9 @@ export default function AppRuntimesProvider({ children }) {
         stopAppRuntime,
         appRuntimes,
         getAppRuntimesWithRegistrationID,
+        runningRegistrations,
+        bringToFrontOrStartAppRuntime,
+        switchToAppRegistrationID,
       }}
     >
       {children}

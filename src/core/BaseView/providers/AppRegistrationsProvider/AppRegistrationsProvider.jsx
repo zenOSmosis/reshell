@@ -37,7 +37,7 @@ export default function AppRegistrationsProvider({ children }) {
    * @return {void}
    */
   const addOrUpdateAppRegistration = useCallback(
-    (appDescriptor) => {
+    appDescriptor => {
       const appRegistration =
         AppRegistration.addOrUpdateAppRegistration(appDescriptor);
 
@@ -55,12 +55,30 @@ export default function AppRegistrationsProvider({ children }) {
    * @return {void}
    */
   const removeAppRegistration = useCallback(
-    (appDescriptorOrId) => {
+    appDescriptorOrID => {
       // NOTE: This should also remove it from the collection
-      AppRegistration.removeAppRegistration(appDescriptorOrId);
+      AppRegistration.removeAppRegistration(appDescriptorOrID);
     },
 
     []
+  );
+
+  // TODO: Document
+  const getAppRegistrationTitle = useCallback(
+    appDescriptorID => {
+      const appRegistration = appRegistrations.find(
+        predicate => predicate.getID() === appDescriptorID
+      );
+
+      if (!appRegistration) {
+        console.warn(
+          `Could not locate appRegistration with id: ${appDescriptorID}`
+        );
+      } else {
+        return appRegistration.getTitle();
+      }
+    },
+    [appRegistrations]
   );
 
   return (
@@ -69,6 +87,7 @@ export default function AppRegistrationsProvider({ children }) {
         addOrUpdateAppRegistration,
         removeAppRegistration,
         appRegistrations,
+        getAppRegistrationTitle,
       }}
     >
       {children}
