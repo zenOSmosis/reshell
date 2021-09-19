@@ -38,7 +38,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
   // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
 
   const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
-  const { appRuntimes, switchToAppRegistrationID } = useAppRuntimesContext();
+  const { appRuntimes } = useAppRuntimesContext();
 
   const [elBase, setElBase] = useState(null);
 
@@ -321,7 +321,6 @@ function WindowManagerView({ appDescriptors = [], children }) {
               windowController={windowController}
               appRuntime={appRuntime}
               view={ViewComponent}
-              switchToAppRegistrationID={switchToAppRegistrationID}
             />
           )}
         </Window>
@@ -376,11 +375,13 @@ function WrappedView({
   windowController,
   appRuntime,
   view: ViewComponent,
-  switchToAppRegistrationID,
   windowSwitchToAppRegistrationID,
   ...rest
 }) {
   const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
+
+  const { getAppRegistrationTitle } = useAppRegistrationsContext();
+  const { switchToAppRegistrationID } = useAppRuntimesContext();
 
   // Re-render window when a service updates
   useEffect(() => {
@@ -414,6 +415,7 @@ function WrappedView({
       // Force update every time service updates
       serviceUpdateIdx={serviceUpdateIdx}
       switchToAppRegistrationID={switchToAppRegistrationID}
+      getAppRegistrationTitle={getAppRegistrationTitle}
     />
   );
 }
