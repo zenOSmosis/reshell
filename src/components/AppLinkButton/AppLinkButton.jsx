@@ -1,8 +1,8 @@
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 // TODO: Document
-export default function AppLinkButton({ appDescriptorID, ...rest }) {
-  const { title, link } = useAppRegistrationLink(appDescriptorID);
+export default function AppLinkButton({ id, title = null, ...rest }) {
+  const { title: registrationTitle, link } = useAppRegistrationLink(id);
 
   if (!link) {
     return null;
@@ -10,7 +10,7 @@ export default function AppLinkButton({ appDescriptorID, ...rest }) {
 
   return (
     <button onClick={link} {...rest}>
-      {title}
+      {title || registrationTitle}
     </button>
   );
 }

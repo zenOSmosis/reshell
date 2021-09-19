@@ -3,7 +3,7 @@ import Desktop from "@components/Desktop";
 import Applications from "./apps/Applications";
 import AboutReShell from "./apps/AboutReShell";
 import LocalStorageVault from "./apps/LocalStorageVault";
-import InputMediaDevicesWindow from "./apps/InputMediaDevicesWindow";
+import InputMediaDevices from "./apps/InputMediaDevices";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
 import ScreenCapture from "./apps/ScreenCapture";
 import ScreenShot from "./apps/ScreenShot";
@@ -36,7 +36,7 @@ export default function ExamplePortal() {
         Applications,
         AboutReShell,
         LocalStorageVault,
-        InputMediaDevicesWindow,
+        InputMediaDevices,
         TestVUMeterWindow,
         ScreenCapture,
         ScreenShot,
