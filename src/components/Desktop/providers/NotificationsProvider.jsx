@@ -5,6 +5,8 @@ import { NotificationsStack } from "@components/Notification";
 
 export const NotificationsContext = React.createContext({});
 
+// TODO: Document
+// TODO: Borrow API logic from https://www.npmjs.com/package/react-notifications
 export default function NotificationsProvider({ children }) {
   const [activeNotificationsStack, setActiveNotificationsStack] = useState([]);
 
