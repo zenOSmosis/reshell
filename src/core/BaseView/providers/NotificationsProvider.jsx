@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-// import Notification from "@components/Notification";
+// TODO: Make this dynamic?
+import Notification from "@components/Notification";
 
 export const NotificationsContext = React.createContext({});
 
 export default function NotificationsProvider({ children }) {
   const [activeNotificationsStack, setActiveNotificationsStack] = useState([]);
 
+  // TODO: Document
   const showNotification = useCallback(
     ({ image, title, body, onClick, onClose = () => null }) => {
       setActiveNotificationsStack(
@@ -21,6 +23,7 @@ export default function NotificationsProvider({ children }) {
     []
   );
 
+  // TODO: Document
   const handleNotificationClose = useCallback((uuid) => {
     setActiveNotificationsStack((prev) =>
       prev.filter(({ uuid: prevUUID, onClose }) => {
@@ -53,10 +56,6 @@ export default function NotificationsProvider({ children }) {
               handleNotificationClose(nData.uuid);
             };
 
-        // TODO: Use
-        return null;
-
-        /*
         return (
           <Notification
             key={nData.uuid}
@@ -68,7 +67,6 @@ export default function NotificationsProvider({ children }) {
             onClose={handleNotificationClose}
           />
         );
-        */
       })}
     </NotificationsContext.Provider>
   );
