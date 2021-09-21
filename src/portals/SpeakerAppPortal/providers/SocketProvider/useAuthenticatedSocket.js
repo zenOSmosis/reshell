@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import SocketAPIClient from "@shared/SocketAPIClient";
+import SocketAPIClient from "@portals/SpeakerAppPortal/shared/SocketAPIClient";
 
-import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@shared/socketEvents";
+import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
 import {
   sendCachedAuthorization,
   getMergedAuthorization,
-} from "@shared/adapters/serviceAuthorization/client";
-import { KEY_SERVICE_AUTHORIZATION } from "@local/localStorageKeys";
+} from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
+import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
 import { EVT_CONNECT_ERROR } from "./socketConstants";
 
-import useLocalStorage from "@hooks/useLocalStorage";
+import useLocalStorage from "@portals/SpeakerAppPortal/hooks/useLocalStorage";
 
 const CLIENT_BUILD_HASH = process.env.REACT_APP_GIT_HASH;
 
@@ -36,16 +36,19 @@ export default function useAuthenticatedSocket() {
       },
     });
 
-    socket.on(EVT_CONNECT_ERROR, (err) => {
+    socket.on(EVT_CONNECT_ERROR, err => {
       console.warn("Caught", err);
     });
 
-    const _handleAuthorizationGranted = (receivedAuthorization) => {
+    const _handleAuthorizationGranted = receivedAuthorization => {
       if (receivedAuthorization.serverBuildHash !== CLIENT_BUILD_HASH) {
         // Force reload to try to update to latest hash
         //
         // TODO: Make work w/ service worker once PWA is available
-        window.location.reload(true);
+        // window.location.reload(true);
+        console.warn(
+          `Server build hash "${receivedAuthorization.serverBuildHash}" does not match REACT_APP_GIT_HASH "${CLIENT_BUILD_HASH}"`
+        );
       } else {
         // Merge what's in our cache w/ what was received
         const mergedAuthorization = getMergedAuthorization(

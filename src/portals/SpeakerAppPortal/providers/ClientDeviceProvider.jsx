@@ -9,6 +9,7 @@ import { fetch } from "@shared/SocketAPIClient";
 
 export const ClientDeviceContext = React.createContext({});
 
+// TODO: Refactor into service
 /**
  * Provides context for the given physical device / user-agent.
  *

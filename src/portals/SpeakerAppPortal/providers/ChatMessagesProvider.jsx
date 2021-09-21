@@ -7,6 +7,7 @@ import useSocketContext from "@hooks/useSocketContext";
 
 export const ChatMessagesContext = React.createContext();
 
+// TODO: Refactor into service
 export default function ChatMessagesProvider({ children }) {
   const {
     readOnlySyncObject,
