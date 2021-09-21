@@ -8,7 +8,12 @@
   */
   z-index: 99999;
 
-  height: 100%;
+  /** FIXME: (jh) If this is set to height: 100%, the following inner-wrap is
+   * scrollable, however, that also prevents windows from being able to be
+   * manipulated under this layer.  This may also need to use JS overflow
+   * detection in order to set the CSS state accordingly.
+   */
+  max-height: 100%;
 
   overflow: hidden;
 }
@@ -16,7 +21,8 @@
 /** Enable too many UI notifications to be scrollable */
 .notifications-stack .inner-wrap {
   width: 100%;
-  height: 100%;
+  max-height: 100%;
 
+  overflow-x: hidden;
   overflow-y: auto;
 }
