@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import Animation from "../Animation";
 import ButtonTransparent from "../ButtonTransparent";
-// import Cover from "../Cover";
 
 import styles from "./Notification.module.css";
 
