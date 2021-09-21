@@ -119,7 +119,7 @@ export default function Notification({
       {...rest}
     >
       <Animation
-        animationName={!isClosing ? "slideInUp" : "slideOutDown"}
+        animationName={!isClosing ? "slideInRight" : "slideOutRight"}
         animationDuration=".5s"
       >
         <div className={styles["body-outer-wrap"]}>
