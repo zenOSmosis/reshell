@@ -20,6 +20,9 @@ import CallCentralStation from "./apps/CallCentralStation";
 import VirtualServer from "./apps/VirtualServer";
 import LocalUserProfile from "./apps/LocalUserProfile";
 
+// TODO: Remove
+import NotificationsPrototype from "../ExamplePortal/apps/NotificationsPrototype";
+
 export default function SpeakerAppPortal() {
   return (
     // TODO: Wrap Desktop w/ Speaker.app UI providers (and eventually refactor to use Service-provided Providers?)
@@ -44,6 +47,9 @@ export default function SpeakerAppPortal() {
 
           CallCentralStation,
           VirtualServer,
+
+          // TODO: Remove
+          NotificationsPrototype,
         ]}
       />
     </SocketProvider>
