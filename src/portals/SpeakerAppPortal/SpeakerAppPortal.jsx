@@ -20,6 +20,7 @@ import LocalUserProfile from "./apps/LocalUserProfile";
 
 export default function SpeakerAppPortal() {
   return (
+    // TODO: Wrap Desktop w/ Speaker.app UI providers (and eventually refactor to use Service-provided Providers?)
     <Desktop
       // TODO: Refactor
       backgroundView={<SpeakerAppLogoBackground />}
