@@ -2,9 +2,7 @@
   z-index: 99999;
   width: 310px;
   max-height: 400px;
-  position: absolute;
-  top: 0;
-  right: 0;
+  display: inline-block;
 }
 
 .notification .main-image-wrap {

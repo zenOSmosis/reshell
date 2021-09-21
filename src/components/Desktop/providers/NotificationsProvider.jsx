@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 // TODO: Make this dynamic?
-import Notification from "@components/Notification";
+import { NotificationStack } from "@components/Notification";
 
 export const NotificationsContext = React.createContext({});
 
@@ -13,11 +13,11 @@ export default function NotificationsProvider({ children }) {
   const showNotification = useCallback(
     ({ image, title, body, onClick, onClose = () => null }) => {
       setActiveNotificationsStack(
-        // TODO: Re-implement stack
-        (prev) => [{ image, title, body, onClose, onClick, uuid: uuidv4() }] /*[
-        { image, title, body, uuid: uuidv4(), onClose },
-        ...prev,
-      ]*/
+        // Push notification to top of stack
+        (prev) => [
+          { image, title, body, uuid: uuidv4(), onClick, onClose },
+          ...prev,
+        ]
       );
     },
     []
@@ -47,27 +47,10 @@ export default function NotificationsProvider({ children }) {
     >
       {children}
 
-      {activeNotificationsStack.map((nData) => {
-        const handleClick = !nData.onClick
-          ? null
-          : () => {
-              nData.onClick();
-
-              handleNotificationClose(nData.uuid);
-            };
-
-        return (
-          <Notification
-            key={nData.uuid}
-            image={nData.image}
-            title={nData.title}
-            body={nData.body}
-            uuid={nData.uuid}
-            onClick={handleClick}
-            onClose={handleNotificationClose}
-          />
-        );
-      })}
+      <NotificationStack
+        notifications={activeNotificationsStack}
+        onNotificationClose={handleNotificationClose}
+      />
     </NotificationsContext.Provider>
   );
 }

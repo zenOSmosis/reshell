@@ -18,6 +18,7 @@ export default function Notification({
   autoCloseTime = 4000,
   ...rest
 }) {
+  // TODO: Should this state be managed from the outside?
   const [isClosing, setIsClosing] = useState(false);
 
   const handleClose = useCallback(

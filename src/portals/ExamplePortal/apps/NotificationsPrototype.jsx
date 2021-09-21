@@ -20,7 +20,7 @@ const NotificationsPrototype = {
           onClick={() =>
             showNotification({
               title: "Test Notification Title",
-              body: "Test Notification Body",
+              body: new Date().getTime(),
             })
           }
         >
