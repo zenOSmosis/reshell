@@ -1,11 +1,12 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import getUnixTime from "@shared/time/getUnixTime";
+import getUnixTime from "@portals/SpeakerAppPortal/shared/time/getUnixTime";
 import useAuthenticatedSocket from "./useAuthenticatedSocket";
 
 import { EVT_CONNECT, EVT_DISCONNECT } from "./socketConstants";
 
 export const SocketContext = createContext({});
 
+// TODO: Refactor into Socket Service
 // TODO: Document
 export default function SocketProvider({ children }) {
   const { socket, deviceAddress } = useAuthenticatedSocket();

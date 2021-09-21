@@ -24,6 +24,8 @@ import useSocketContext from "@hooks/useSocketContext";
 
 export const ZenRTCContext = React.createContext({});
 
+// TODO: Document
+// TODO: Refactor into service
 export default function WebZenRTCProvider({
   children,
   ZenRTCClass = WebZenRTCPeer,
