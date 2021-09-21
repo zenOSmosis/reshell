@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { NotificationsContext } from "@core/BaseView/providers/NotificationsProvider";
+import { NotificationsContext } from "@components/Desktop/providers/NotificationsProvider";
 
 export default function useNotificationsContext() {
   return useContext(NotificationsContext);

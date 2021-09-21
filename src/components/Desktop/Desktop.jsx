@@ -15,7 +15,7 @@ import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
-import NotificationsProvider from "@core/BaseView/providers/NotificationsProvider";
+import NotificationsProvider from "./providers/NotificationsProvider";
 
 // import { useEffect } from "react";
 

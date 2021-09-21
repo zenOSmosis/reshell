@@ -6,7 +6,6 @@ import UIServicesProvider from "./providers/UIServicesProvider";
 import AppRegistrationsProvider from "./providers/AppRegistrationsProvider";
 import AppRuntimesProvider from "./providers/AppRuntimesProvider";
 import DesktopProvider from "./providers/DesktopProvider";
-// import NotificationsProvider from "./providers/NotificationsProvider";
 
 // TODO: Document and add prop-types
 export default function BaseView({ portal }) {
