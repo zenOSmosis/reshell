@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-// TODO: Make this dynamic?
-import { NotificationStack } from "@components/Notification";
+import { NotificationsStack } from "@components/Notification";
 
 export const NotificationsContext = React.createContext({});
 
@@ -47,7 +46,7 @@ export default function NotificationsProvider({ children }) {
     >
       {children}
 
-      <NotificationStack
+      <NotificationsStack
         notifications={activeNotificationsStack}
         onNotificationClose={handleNotificationClose}
       />

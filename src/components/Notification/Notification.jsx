@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Animation from "../Animation";
 import ButtonTransparent from "../ButtonTransparent";
 // import Cover from "../Cover";
@@ -21,6 +27,9 @@ export default function Notification({
   // TODO: Should this state be managed from the outside?
   const [isClosing, setIsClosing] = useState(false);
 
+  // IMPORTANT: refOnClose is memoized to fix an issue where generating new
+  // notifications would restart the internal timer
+  const refOnClose = useRef(onClose);
   const handleClose = useCallback(
     (evt) => {
       if (evt) {
@@ -33,13 +42,13 @@ export default function Notification({
       // to do the easy route at first.
       setTimeout(
         () => {
-          onClose(uuid);
+          refOnClose.current(uuid);
         },
         // TODO: Make this value dynamic?
         500
       );
     },
-    [onClose, uuid]
+    [uuid]
   );
 
   const [el, setEl] = useState(null);

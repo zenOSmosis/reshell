@@ -1,0 +1,22 @@
+.notifications-stack {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+
+  /*
+  * TODO: Ensure that modals can be on top of this stack
+  */
+  z-index: 99999;
+
+  height: 100%;
+
+  overflow: hidden;
+}
+
+/** Enable too many UI notifications to be scrollable */
+.notifications-stack .inner-wrap {
+  width: 100%;
+  height: 100%;
+
+  overflow-y: auto;
+}
