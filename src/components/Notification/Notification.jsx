@@ -6,7 +6,7 @@ import ButtonTransparent from "../ButtonTransparent";
 import styles from "./Notification.module.css";
 
 // TODO: Add PropTypes
-
+// TODO: Document
 export default function Notification({
   body,
   image,
@@ -30,14 +30,20 @@ export default function Notification({
 
       // NOTE (jh): We could also listen for Animation ended event, but decided
       // to do the easy route at first.
-      setTimeout(() => {
-        onClose(uuid);
-      }, 500);
+      setTimeout(
+        () => {
+          onClose(uuid);
+        },
+        // TODO: Make this value dynamic?
+        500
+      );
     },
     [onClose, uuid]
   );
 
   const [el, setEl] = useState(null);
+
+  // TODO: Document
   useEffect(() => {
     if (el) {
       let autoCloseTimeout = null;
@@ -66,6 +72,7 @@ export default function Notification({
     }
   }, [el, autoCloseTime, handleClose]);
 
+  // TODO: Refactor into Image component?
   const Image = useMemo(
     () => () => {
       switch (typeof image) {
@@ -83,7 +90,7 @@ export default function Notification({
     },
     [image, title]
   );
-  </NotificationsProvider>
+
   /**
    * Note: Exports a button only if an onClick handler has been defined for
    * the notification.
@@ -105,39 +112,36 @@ export default function Notification({
 
   return (
     <div
-      className={styles["notification-wrap"]}
+      ref={setEl}
       onTouchEnd={handleClose}
       onMouseUp={handleClose}
+      className={styles["notification"]}
+      {...rest}
     >
-      <div ref={setEl} className={styles["notification"]} {...rest}>
-        <Animation
-          animationName={!isClosing ? "slideInUp" : "slideOutDown"}
-          animationDuration=".5s"
-        >
-          <div className={styles["body-outer-wrap"]}>
-            <MessageButton>
-              <div className={styles["body-inner-wrap"]}>
-                {
-                  // Close button
-                }
-                <div className={styles["title"]}>{title}</div>
+      <Animation
+        animationName={!isClosing ? "slideInUp" : "slideOutDown"}
+        animationDuration=".5s"
+      >
+        <div className={styles["body-outer-wrap"]}>
+          <MessageButton>
+            <div className={styles["body-inner-wrap"]}>
+              <div className={styles["title"]}>{title}</div>
 
-                <div className={styles["main-image-wrap"]}>
-                  <Image />
-                </div>
-
-                <div className={styles["body"]}>{body}</div>
+              <div className={styles["main-image-wrap"]}>
+                <Image />
               </div>
-            </MessageButton>
-            <ButtonTransparent
-              onClick={handleClose}
-              className={styles["close-button"]}
-            >
-              X
-            </ButtonTransparent>
-          </div>
-        </Animation>
-      </div>
+
+              <div className={styles["body"]}>{body}</div>
+            </div>
+          </MessageButton>
+          <ButtonTransparent
+            onClick={handleClose}
+            className={styles["close-button"]}
+          >
+            X
+          </ButtonTransparent>
+        </div>
+      </Animation>
     </div>
   );
 }

@@ -15,7 +15,9 @@ import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
-import { useEffect } from "react";
+import NotificationsProvider from "@core/BaseView/providers/NotificationsProvider";
+
+// import { useEffect } from "react";
 
 // TODO: Implement top menu-bar
 // @see https://headlessui.dev/react/menu
@@ -50,14 +52,18 @@ export default function Desktop({
   return (
     // NOTE: Typically this would take up the entire viewport
     <Router>
-      <Cover>
-        {
-          // TODO: Refactor
-        }
-        {backgroundView}
-      </Cover>
-      <Cover>
-        <Full>
+      {
+        // IMPORTANT: Using NotificationsProvider directly on the BaseView does
+        // not apply CSS module styling
+      }
+      <NotificationsProvider>
+        <Cover>
+          {
+            // TODO: Refactor
+          }
+          {backgroundView}
+        </Cover>
+        <Cover>
           <Layout>
             <Header
               style={{
@@ -100,7 +106,7 @@ export default function Desktop({
                               return 0;
                             }
                           })
-                          .map(app => (
+                          .map((app) => (
                             <MenuItem
                               key={app.getUUID()}
                               onClick={() => startAppRuntime(app)}
@@ -114,8 +120,8 @@ export default function Desktop({
                         // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
                       }
                       {appRegistrations
-                        .filter(app => app.getIsPinned())
-                        .map(app => (
+                        .filter((app) => app.getIsPinned())
+                        .map((app) => (
                           <MenuItem
                             key={app.getUUID()}
                             onClick={() => startAppRuntime(app)}
@@ -224,7 +230,7 @@ export default function Desktop({
                           </span>
                         </MenuItem>
                       ) : (
-                        services.map(service => (
+                        services.map((service) => (
                           <MenuItem
                             key={service.getUUID()}
                             onClick={() => alert("TODO: Implement")}
@@ -270,8 +276,8 @@ export default function Desktop({
               </WindowManager>
             </Content>
           </Layout>
-        </Full>
-      </Cover>
+        </Cover>
+      </NotificationsProvider>
     </Router>
   );
 }

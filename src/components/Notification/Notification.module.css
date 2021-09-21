@@ -1,15 +1,10 @@
-.notification-wrap {
-  width: 100%;
-  bottom: 70px;
-  position: absolute;
-  text-align: center;
-}
-
 .notification {
   z-index: 99999;
   width: 310px;
   max-height: 400px;
-  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .notification .main-image-wrap {
@@ -60,5 +55,5 @@
   position: absolute;
   top: 0px;
   right: 0px;
-  font-weight: normal;
+  font-weight: bold;
 }
