@@ -39,7 +39,6 @@
     "start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start:nossl\"",
     "start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
     "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
-    "start:speaker.app.portal": "REACT_APP_PORTAL=speaker.app craco start",
     "build": "craco build",
     "build:with-profiling": "craco build --profile",
     "test": "craco test",
