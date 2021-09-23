@@ -26,18 +26,18 @@ export default function BaseView({ portal }) {
 
   const PortalView = portal;
   return (
-    <ParadigmProvider>
-      <UIServicesProvider>
-        <AppRegistrationsProvider>
-          <AppRuntimesProvider>
-            <DesktopProvider>
-              <FullViewport>
+    <FullViewport>
+      <ParadigmProvider>
+        <UIServicesProvider>
+          <AppRegistrationsProvider>
+            <AppRuntimesProvider>
+              <DesktopProvider>
                 <PortalView />
-              </FullViewport>
-            </DesktopProvider>
-          </AppRuntimesProvider>
-        </AppRegistrationsProvider>
-      </UIServicesProvider>
-    </ParadigmProvider>
+              </DesktopProvider>
+            </AppRuntimesProvider>
+          </AppRegistrationsProvider>
+        </UIServicesProvider>
+      </ParadigmProvider>
+    </FullViewport>
   );
 }

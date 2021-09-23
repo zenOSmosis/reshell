@@ -7,22 +7,20 @@ import useDesktopContext from "@hooks/useDesktopContext";
 
 export default function Dock() {
   const { activeWindowController } = useDesktopContext();
-  const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
+  const {
+    appRuntimes,
+    startAppRuntime,
+    runningRegistrations,
+    bringToFrontOrStartAppRuntime,
+  } = useAppRuntimesContext();
   const { appRegistrations } = useAppRegistrationsContext();
-
-  // TODO: Import type definition
-  /** @type {AppRegistration[]} */
-  const runningRegistrations = useMemo(
-    () => appRuntimes.map((runtime) => runtime.getRegistration()),
-    [appRuntimes]
-  );
 
   // TODO: Import type definition
   /** @type {AppRegistration[]} */
   const dockRegistrations = useMemo(
     () => [
       ...new Set([
-        ...appRegistrations.filter((registration) =>
+        ...appRegistrations.filter(registration =>
           registration.getIsPinnedToDock()
         ),
         ...runningRegistrations,
@@ -36,25 +34,6 @@ export default function Dock() {
   const activeRegistration = useMemo(
     () => activeWindowController?.getAppRegistration(),
     [activeWindowController]
-  );
-
-  // TODO: Refactor into window manager?
-  const handleDockRegistrationClick = useCallback(
-    (appRegistration) => {
-      if (!runningRegistrations.includes(appRegistration)) {
-        // TODO: Open app w/ registration
-        startAppRuntime(appRegistration);
-      } else {
-        // Move grouped windows to top
-        // TODO: Order by window manager stacking order (most recently used
-        // window in group should appear in top)
-        // TODO: Refactor into window manager?
-        appRuntimes
-          .filter((runtime) => runtime.getRegistration() === appRegistration)
-          .forEach((runtime) => runtime.bringToTop());
-      }
-    },
-    [runningRegistrations, startAppRuntime, appRuntimes]
   );
 
   return (
@@ -71,7 +50,7 @@ export default function Dock() {
       }}
     >
       <div style={{ display: "inline-block", color: "black" }}>
-        {dockRegistrations.map((registration) => (
+        {dockRegistrations.map(registration => (
           <button
             style={
               registration === activeRegistration
@@ -82,7 +61,7 @@ export default function Dock() {
                 : {}
             }
             key={registration.getUUID()}
-            onClick={() => handleDockRegistrationClick(registration)}
+            onClick={() => bringToFrontOrStartAppRuntime(registration)}
           >
             {registration.getTitle()} {/* <LED color="gray" /> */}
           </button>

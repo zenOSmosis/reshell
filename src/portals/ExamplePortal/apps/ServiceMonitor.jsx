@@ -7,6 +7,11 @@ import { UIServicesContext } from "@core/BaseView/providers/UIServicesProvider";
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
 
+// TODO: Include ability to render service reporters, once functionality is
+// integrated
+
+// TODO: Include ability to monitor React providers exposed by the service
+
 import Timer from "@components/Timer";
 
 const ServiceMonitor = {
@@ -26,16 +31,35 @@ const ServiceMonitor = {
 
     return (
       <table style={{ width: "100%" }}>
-        <tbody>
-          {services.map((service) => (
-            <tr key={service.getUUID()}>
-              <td className="center">
-                <input type="checkbox" />
+        <thead>
+          <tr>
+            <td>Service Name</td>
+            <td>Uptime</td>
+            {/**
+              <td>
+                Active
+                <br />
+                App Runtimes
               </td>
+              <td>
+                Dynamically
+                <br />
+                Linked Providers
+              </td>  
+               */}
+          </tr>
+        </thead>
+        <tbody>
+          {services.map(service => (
+            <tr key={service.getUUID()}>
               <td>{service.getTitle() || "[Untitled]"}</td>
               <td className="center">
                 <Timer onTick={() => service.getInstanceUptime()} />
               </td>
+              {/*
+                  <td className="center">N/A</td>
+                  <td className="center">N/A</td>
+                  */}
               {/*
               <td>
                 <button

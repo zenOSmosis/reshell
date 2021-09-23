@@ -53,11 +53,16 @@ export default class AppRegistration extends PhantomCore {
    *
    * This will remove the application from the applications menu.
    *
-   * @param {AppRegistration}
+   * @param {AppRegistration | string}
    * @return {void}
    */
-  static async removeAppRegistration(appDescriptor) {
-    const { id } = appDescriptor;
+  static async removeAppRegistration(appDescriptorOrID) {
+    let id = null;
+    if (typeof appDescriptor === "object") {
+      id = appDescriptorOrID.id;
+    } else {
+      id = appDescriptorOrID;
+    }
 
     if (_registrations[id]) {
       return _registrations[id].destroy();
@@ -120,6 +125,11 @@ export default class AppRegistration extends PhantomCore {
   // TODO: Document
   getIsPinnedToDock() {
     return Boolean(this._appDescriptor.isPinnedToDock);
+  }
+
+  // TODO: Document
+  getIsAutoStart() {
+    return Boolean(this._appDescriptor.isAutoStart);
   }
 
   /**

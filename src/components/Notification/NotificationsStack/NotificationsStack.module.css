@@ -1,0 +1,28 @@
+.notifications-stack {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+
+  /*
+  * TODO: Ensure that modals can be on top of this stack
+  */
+  z-index: 99999;
+
+  /** FIXME: (jh) If this is set to height: 100%, the following inner-wrap is
+   * scrollable, however, that also prevents windows from being able to be
+   * manipulated under this layer.  This may also need to use JS overflow
+   * detection in order to set the CSS state accordingly.
+   */
+  max-height: 100%;
+
+  overflow: hidden;
+}
+
+/** Enable too many UI notifications to be scrollable */
+.notifications-stack .inner-wrap {
+  width: 100%;
+  max-height: 100%;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}

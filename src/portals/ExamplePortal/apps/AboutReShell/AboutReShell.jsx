@@ -1,7 +1,12 @@
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
-const AboutReshellWindow = {
+// TODO: Include ReShell documentation here, as well as architecture overview
+
+// TODO: Include in documentation how React providers can be wrapped up in (or
+// as) services and dynamically included in the React tree
+
+const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
   style: {
@@ -39,4 +44,4 @@ const AboutReshellWindow = {
   },
 };
 
-export default AboutReshellWindow;
+export default AboutReShell;

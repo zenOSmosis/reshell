@@ -31,7 +31,7 @@ export default class DOMReShell {
     document.body.innerHTML = "";
 
     // Wipe existing styling
-    [...document.getElementsByTagName("style")].forEach((elStyle) =>
+    [...document.getElementsByTagName("style")].forEach(elStyle =>
       elStyle.parentNode.removeChild(elStyle)
     );
 

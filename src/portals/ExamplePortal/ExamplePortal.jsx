@@ -1,8 +1,10 @@
 import Desktop from "@components/Desktop";
 
 import Applications from "./apps/Applications";
-import AboutReshellWindow from "./apps/AboutReshellWindow";
-import InputMediaDevicesWindow from "./apps/InputMediaDevicesWindow";
+import AboutReShell from "./apps/AboutReShell";
+import BackgroundSelector from "./apps/BackgroundSelector";
+import LocalStorageVault from "./apps/LocalStorageVault";
+import InputMediaDevices from "./apps/InputMediaDevices";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
 import ScreenCapture from "./apps/ScreenCapture";
 import ScreenShot from "./apps/ScreenShot";
@@ -21,20 +23,20 @@ import Files from "./apps/Files";
 import Terminal from "./apps/Terminal";
 import AppRegistrationMonitor from "./apps/AppRegistrationMonitor";
 import Environment from "./apps/Environment";
+import NotificationsPrototype from "./apps/NotificationsPrototype";
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
-
-import PROTOVisualStudioCode from "./apps/ScreenCapture/PROTO.VisualStudioCode";
-import PROTOWindows10 from "./apps/ScreenCapture/PROTO.Windows10";
 
 export default function ExamplePortal() {
   return (
     <Desktop
       appDescriptors={[
         Applications,
-        AboutReshellWindow,
-        InputMediaDevicesWindow,
+        AboutReShell,
+        BackgroundSelector,
+        LocalStorageVault,
+        InputMediaDevices,
         TestVUMeterWindow,
         ScreenCapture,
         ScreenShot,
@@ -53,10 +55,9 @@ export default function ExamplePortal() {
         Terminal,
         AppRegistrationMonitor,
         Environment,
+        NotificationsPrototype,
         // WindowAPIDiscovererWindow,
         //
-        PROTOVisualStudioCode,
-        PROTOWindows10,
       ]}
     />
   );

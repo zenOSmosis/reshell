@@ -9,6 +9,7 @@ import useForceUpdate from "@hooks/useForceUpdate";
 
 export const UIServicesContext = React.createContext({});
 
+// TODO: Document
 export default function UIServicesProvider({ children }) {
   const forceUpdate = useForceUpdate();
 
@@ -44,13 +45,13 @@ export default function UIServicesProvider({ children }) {
 
   // TODO: Document
   const startService = useCallback(
-    (ServiceClass) => _uiServiceCollection.addServiceClass(ServiceClass),
+    ServiceClass => _uiServiceCollection.addServiceClass(ServiceClass),
     [_uiServiceCollection]
   );
 
   // TODO: Document
   const stopService = useCallback(
-    (ServiceClass) => {
+    ServiceClass => {
       const serviceInstance =
         _uiServiceCollection.getServiceInstance(ServiceClass);
 
@@ -69,6 +70,9 @@ export default function UIServicesProvider({ children }) {
         stopService,
       }}
     >
+      {
+        // TODO: For services which contain internal providers, render those providers here, wrapping the children with them
+      }
       {children}
     </UIServicesContext.Provider>
   );

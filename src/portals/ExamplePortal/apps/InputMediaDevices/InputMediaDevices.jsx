@@ -1,10 +1,12 @@
-import MediaDevicesService from "../services/MediaDevicesService";
+import MediaDevicesService from "../../services/MediaDevicesService";
 
 import Layout, { Content, Footer } from "@components/Layout";
 import LED from "@components/LED";
 
-const InputMediaDevicesWindow = {
-  id: "input-media-devices",
+export const REGISTRATION_ID = "input-media-devices";
+
+const InputMediaDevices = {
+  id: REGISTRATION_ID,
   title: "Input Media Devices",
   style: {
     right: 0,
@@ -13,7 +15,7 @@ const InputMediaDevicesWindow = {
     height: 300,
   },
   serviceClasses: [MediaDevicesService],
-  view: function View({ windowController, windowServices }) {
+  view: function View({ windowServices }) {
     const mds = windowServices[MediaDevicesService];
 
     const mediaDevices = mds.getMediaDevices();
@@ -79,4 +81,4 @@ const InputMediaDevicesWindow = {
   },
 };
 
-export default InputMediaDevicesWindow;
+export default InputMediaDevices;
