@@ -1,4 +1,4 @@
-import SocketChannel, { EVT_DATA, EVT_CONNECTED } from "@shared/SocketChannel";
+import SocketChannel, { EVT_CONNECTED } from "@shared/SocketChannel";
 import pty from "./pty";
 
 // TODO: Document
@@ -7,9 +7,6 @@ export default function requestDataChannelRoute(socketAPI) {
   // TODO: Use constant?
   socketAPI.addRoute("request-data-channel", ({ channelId, type }) => {
     const socket = socketAPI.getSocket();
-
-    // TODO: Remove
-    console.log({ type });
 
     // TODO: Refactor
     const socketChannel = new SocketChannel(socket, channelId);
