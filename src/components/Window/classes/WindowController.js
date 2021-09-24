@@ -37,6 +37,8 @@ export default class WindowController extends PhantomCore {
       this._emitDebouncedResized.bind(this),
       500
     );
+
+    this._centerHandler = null;
   }
 
   /**
@@ -62,6 +64,16 @@ export default class WindowController extends PhantomCore {
 
     return super.destroy();
     //}
+  }
+
+  // TODO: Document
+  __INTERNAL__setCenterHandler(_centerHandler) {
+    this._centerHandler = _centerHandler;
+  }
+
+  // TODO: Document
+  center() {
+    this._centerHandler();
   }
 
   // TODO: Document
@@ -179,9 +191,11 @@ export default class WindowController extends PhantomCore {
     if (windowEl) {
       if (x !== undefined) {
         windowEl.style.left = `${x}px`;
+        delete windowEl.style.right;
       }
       if (y !== undefined) {
         windowEl.style.top = `${y}px`;
+        delete windowEl.style.bottom;
       }
     }
   }

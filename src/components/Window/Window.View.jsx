@@ -10,6 +10,9 @@ import WindowBorder from "./Window.Border";
 import styles from "./Window.module.css";
 import classNames from "classnames";
 
+// import useAnimation from "@hooks/useAnimation";
+
+import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
 
@@ -18,6 +21,7 @@ import useWindowDragResizer from "./hooks/useWindowDragResizer";
 // TODO: Include option to be able to drag the window from within the window body (i.e. like a widget)
 const WindowView = ({
   children,
+  elWindowManager,
 
   windowController,
 
@@ -37,6 +41,17 @@ const WindowView = ({
   /** @type {DOMElement} */
   const [el, _setEl] = useState(null);
 
+  /*
+  useAnimation({
+    domElement: el,
+    animationName: "slideInUp",
+    shouldRun: hasInitialAutoPosition,
+  });
+  */
+
+  // TODO: Incorporate
+  useWindowAutoPositioner(elWindowManager, el, windowController);
+
   const [elTitlebar, _setElTitlebar] = useState(null);
 
   const [zIndex, setZIndex] = useState(0);
@@ -51,7 +66,7 @@ const WindowView = ({
 
   useEffect(() => {
     if (windowController) {
-      const _handleWindowControllerUpdate = (updatedState) => {
+      const _handleWindowControllerUpdate = updatedState => {
         if (!updatedState) {
           updatedState = windowController.getState() || {};
         }
@@ -87,12 +102,13 @@ const WindowView = ({
   // Binds window dragging functionality
   const dragBind = useWindowDragger({ windowController, elTitlebar });
 
-  // TODO: Refactor into useWindowDragBorder
+  // Binds border dragging functionality
   const handleBorderDrag = useWindowDragResizer({ windowController });
 
   /** @type {boolean} */
   const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
+  // TODO: Document
   const DynamicProfilingWrapper = useMemo(
     () =>
       ({ ...args }) =>
