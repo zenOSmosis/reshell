@@ -3,6 +3,7 @@ import Desktop from "@components/Desktop";
 import Applications from "./apps/Applications";
 import AboutReShell from "./apps/AboutReShell";
 import BackgroundSelector from "./apps/BackgroundSelector";
+import BeepPrototype from "./apps/BeepPrototype";
 import LocalStorageVault from "./apps/LocalStorageVault";
 import InputMediaDevices from "./apps/InputMediaDevices";
 import TestVUMeterWindow from "./apps/TestVUMeterWindow";
@@ -35,6 +36,7 @@ export default function ExamplePortal() {
         Applications,
         AboutReShell,
         BackgroundSelector,
+        BeepPrototype,
         LocalStorageVault,
         InputMediaDevices,
         TestVUMeterWindow,
