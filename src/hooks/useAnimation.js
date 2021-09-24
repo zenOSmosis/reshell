@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import "animate.css";
 
+// TODO: Document
 export default function useAnimation({
   domElement,
   animationName,
@@ -12,6 +13,7 @@ export default function useAnimation({
   onAnimationEnd,
   animationEngine = "animate.css",
   isDisabled = false,
+  shouldRun = true,
 }) {
   if (typeof animationDuration !== "string") {
     console.warn('animationDuration should be a string (i.e. "1s")');
@@ -24,7 +26,7 @@ export default function useAnimation({
   const refOnAnimationEnd = useRef(onAnimationEnd);
 
   useEffect(() => {
-    if (domElement) {
+    if (shouldRun && domElement) {
       if (isDisabled) {
         // TODO: Can this be used as an exported property instead of directly
         // manipulating here?
@@ -86,5 +88,6 @@ export default function useAnimation({
     animationDelay,
     domElement,
     isDisabled,
+    shouldRun,
   ]);
 }

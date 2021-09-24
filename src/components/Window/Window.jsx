@@ -13,6 +13,7 @@ const Window = React.forwardRef(
   (
     {
       children,
+      elWindowManager,
 
       // TODO: Obtain via windowController instead?
       isActive,
@@ -51,6 +52,7 @@ const Window = React.forwardRef(
         {...rest}
         // TODO: If wrapping w/ optional profiler, use a key here so that internal view state is not lost?
         style={style}
+        elWindowManager={elWindowManager}
         windowController={windowController}
         onRequestMinimize={onRequestMinimize}
         onRequestMaximize={onRequestMaximize}
