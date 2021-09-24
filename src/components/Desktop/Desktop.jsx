@@ -1,6 +1,5 @@
 import WindowManager from "../WindowManager";
 import Cover from "../Cover";
-import Full from "../Full";
 import Layout, { Header, Content, Row, Column } from "../Layout";
 import LED from "../LED";
 import Dock from "../Dock";
@@ -35,7 +34,8 @@ export default function Desktop({
   appDescriptors,
 }) {
   const { services } = useServicesContext();
-  const { activeWindowController, addBackgroundAsset } = useDesktopContext();
+  const { activeWindowController /* addBackgroundAsset */ } =
+    useDesktopContext();
   const { appRegistrations } = useAppRegistrationsContext();
   const { startAppRuntime } = useAppRuntimesContext();
 

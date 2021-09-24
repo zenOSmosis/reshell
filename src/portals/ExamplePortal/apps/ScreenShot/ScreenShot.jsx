@@ -1,11 +1,13 @@
+/*
 import { EVT_DESTROYED } from "phantom-core";
 import { useCallback, useEffect, useState } from "react";
 
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Cover from "@components/Cover";
+*/
 import Center from "@components/Center";
-import { Video } from "@components/audioVideoRenderers";
-import LED from "@components/LED";
+// import { Video } from "@components/audioVideoRenderers";
+// import LED from "@components/LED";
 
 import ScreenCapturerService from "../../services/ScreenCapturerService";
 

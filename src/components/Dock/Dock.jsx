@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 // import LED from "@components/LED";
 
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
@@ -7,12 +7,8 @@ import useDesktopContext from "@hooks/useDesktopContext";
 
 export default function Dock() {
   const { activeWindowController } = useDesktopContext();
-  const {
-    appRuntimes,
-    startAppRuntime,
-    runningRegistrations,
-    bringToFrontOrStartAppRuntime,
-  } = useAppRuntimesContext();
+  const { runningRegistrations, bringToFrontOrStartAppRuntime } =
+    useAppRuntimesContext();
   const { appRegistrations } = useAppRegistrationsContext();
 
   // TODO: Import type definition
