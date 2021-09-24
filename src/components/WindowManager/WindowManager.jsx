@@ -201,8 +201,11 @@ function WindowManagerView({ appDescriptors = [], children }) {
    *
    * @type {React.Component[]}
    */
-  // TODO: Can this be memoized again even w/ hooks running in window descriptors?
-  // TODO: Don't render off of the descriptors, but off of active AppRegistration instances
+  // TODO: Can this be memoized again even w/ hooks running in window
+  // descriptors?
+  // TODO: Fix issue where every window will re-render when another window
+  // actively goes on top (not sure if it's a huge deal, but is seemingly
+  // unnecessary)
   const windows = appRuntimes
     .map(appRuntime => {
       // TODO: Ensure key is unique across the map
@@ -379,6 +382,7 @@ function WrappedView({
   windowSwitchToAppRegistrationID,
   ...rest
 }) {
+  // TODO: Document
   const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
 
   // Re-render window when a service updates
