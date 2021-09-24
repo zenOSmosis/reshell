@@ -49,7 +49,7 @@ const WindowView = ({
   });
   */
 
-  // TODO: Incorporate
+  // TODO: Document
   useWindowAutoPositioner(elWindowManager, el, windowController);
 
   const [elTitlebar, _setElTitlebar] = useState(null);
@@ -64,6 +64,7 @@ const WindowView = ({
     }
   }, [windowController, el]);
 
+  // TODO: Document
   useEffect(() => {
     if (windowController) {
       const _handleWindowControllerUpdate = updatedState => {
@@ -71,6 +72,7 @@ const WindowView = ({
           updatedState = windowController.getState() || {};
         }
 
+        // Only apply view state change when necessary
         if (
           updatedState.title !== undefined &&
           // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
@@ -79,6 +81,7 @@ const WindowView = ({
           setTitle(updatedState.title);
         }
 
+        // Only apply view state change when necessary
         if (
           updatedState.stackingIndex !== undefined &&
           // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
