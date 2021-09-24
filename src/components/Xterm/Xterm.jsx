@@ -1,3 +1,5 @@
+// TODO: Replace with https://www.npmjs.com/package/xterm-for-react?
+
 // This code was lifted from here because it is no longer being maintained there
 // @see https://github.com/farfromrefug/react-xterm/blob/master/src/react-xterm.tsx
 
@@ -149,7 +151,7 @@ export default class Xterm extends Component {
   }
 
   // TODO: Document
-  onInput = (data) => {
+  onInput = data => {
     this.props.onInput && this.props.onInput(data);
   };
 
@@ -194,7 +196,7 @@ export default class Xterm extends Component {
     return (
       <div
         {...propsRest}
-        ref={(ref) => (this._container = ref)}
+        ref={ref => (this._container = ref)}
         // className={terminalClassName}
         style={{ width: "100%", height: "100%", backgroundColor: "#000" }}
       />
