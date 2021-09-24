@@ -14,10 +14,10 @@ export default function NotificationsProvider({ children }) {
   const showNotification = useCallback(
     ({ image, title, body, onClick, onClose = () => null }) => {
       setActiveNotificationsStack(
-        // Push notification to top of stack
+        // Add new notifications to end of stack
         (prev) => [
-          { image, title, body, uuid: uuidv4(), onClick, onClose },
           ...prev,
+          { image, title, body, uuid: uuidv4(), onClick, onClose },
         ]
       );
     },

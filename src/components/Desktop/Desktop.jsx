@@ -106,7 +106,7 @@ export default function Desktop({
                               return 0;
                             }
                           })
-                          .map((app) => (
+                          .map(app => (
                             <MenuItem
                               key={app.getUUID()}
                               onClick={() => startAppRuntime(app)}
@@ -120,8 +120,8 @@ export default function Desktop({
                         // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
                       }
                       {appRegistrations
-                        .filter((app) => app.getIsPinned())
-                        .map((app) => (
+                        .filter(app => app.getIsPinned())
+                        .map(app => (
                           <MenuItem
                             key={app.getUUID()}
                             onClick={() => startAppRuntime(app)}
@@ -202,6 +202,11 @@ export default function Desktop({
                           >
                             Maximize
                           </MenuItem>
+                          <MenuItem
+                            onClick={() => activeWindowController.center()}
+                          >
+                            Center
+                          </MenuItem>
                         </Menu>
                       </>
                     )}
@@ -230,7 +235,7 @@ export default function Desktop({
                           </span>
                         </MenuItem>
                       ) : (
-                        services.map((service) => (
+                        services.map(service => (
                           <MenuItem
                             key={service.getUUID()}
                             onClick={() => alert("TODO: Implement")}

@@ -252,6 +252,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
         <Window
           key={key}
           {...windowProps}
+          elWindowManager={elBase}
           isActive={Object.is(
             desktopContextActiveWindowController,
             windowController
