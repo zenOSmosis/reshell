@@ -2,14 +2,14 @@ import PhantomCore, { EVT_DESTROYED } from "phantom-core";
 
 const EVT_CONNECTED = "connect";
 const EVT_DATA = "data";
-const EVT_BEFORE_DISCONNECT = "beforeDisconnect";
+const EVT_BEFORE_REMOTE_DISCONNECT = "beforeRemoteDisconnect";
 const EVT_DISCONNECTED = "disconnect";
 
 export {
   EVT_DESTROYED,
   EVT_CONNECTED,
   EVT_DATA,
-  EVT_BEFORE_DISCONNECT,
+  EVT_BEFORE_REMOTE_DISCONNECT,
   EVT_DISCONNECTED,
 };
 
@@ -112,7 +112,7 @@ export default class SocketChannel extends PhantomCore {
     this.log(`Destructing data channel with id: ${this._channelId}`);
 
     // IMPORTANT: Emits remotely (let the other peer know we're shutting down)
-    this.emit(EVT_BEFORE_DISCONNECT);
+    this.emit(EVT_BEFORE_REMOTE_DISCONNECT);
 
     this._deinitSocketHandler();
     // Rebind this emit on super so that shutdown events can be captured
@@ -186,7 +186,7 @@ export default class SocketChannel extends PhantomCore {
     const { eventName, eventData } =
       SocketChannel.unmarshallEventData(socketData);
 
-    if (eventName === EVT_BEFORE_DISCONNECT) {
+    if (eventName === EVT_BEFORE_REMOTE_DISCONNECT) {
       this.disconnect();
     }
 
