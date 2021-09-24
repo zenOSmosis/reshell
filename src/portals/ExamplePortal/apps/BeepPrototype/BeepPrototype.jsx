@@ -6,8 +6,8 @@ const BeepPrototype = {
   id: "beep",
   title: "Beep",
   style: {
-    width: 640,
-    height: 480,
+    width: 280,
+    height: 150,
   },
   view: function View() {
     return (
