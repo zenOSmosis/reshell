@@ -2,7 +2,7 @@
 
 import {
   EVT_DATA as EVT_SOCKET_CHANNEL_DATA,
-  EVT_BEFORE_DISCONNECT as EVT_SOCKET_CHANNEL_BEFORE_DISCONNECT,
+  EVT_DESTROYED as EVT_SOCKET_CHANNEL_DESTROYED,
 } from "@shared/SocketChannel";
 import os from "os";
 const pty = require("node-pty");
@@ -29,13 +29,13 @@ export default function bindPtySocketChannel(socketChannel) {
   });
 
   // STDIN from socket
-  socketChannel.on(EVT_SOCKET_CHANNEL_DATA, (data) => {
+  socketChannel.on(EVT_SOCKET_CHANNEL_DATA, data => {
     ptyProcess.write(data);
     // ptyProcess.write(socketChannel.ab2str(data));
   });
 
   // STDOUT from process
-  ptyProcess.on("data", (data) => {
+  ptyProcess.on("data", data => {
     socketChannel.write(data);
     // socketChannel.write(socketChannel.str2ab(data));
   });
@@ -44,11 +44,10 @@ export default function bindPtySocketChannel(socketChannel) {
     socketChannel.disconnect();
   });
 
-  // TODO: Use EVT_DESTROYED instead?
-  socketChannel.on(EVT_SOCKET_CHANNEL_BEFORE_DISCONNECT, () => {
-    // TODO: Is there not a way to directly exit the ptyProcess?
-    const { _pid: ptyProcessPid } = ptyProcess;
-    process.kill(ptyProcessPid, "SIGHUP");
+  socketChannel.on(EVT_SOCKET_CHANNEL_DESTROYED, () => {
+    ptyProcess.kill();
+
+    console.log("bye");
   });
 
   // console.log('socketChannelId', socketChannelId);
