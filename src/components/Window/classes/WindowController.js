@@ -135,7 +135,8 @@ export default class WindowController extends PhantomCore {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
-      // FIXME: (jh) Can these be applied as a single reflow: https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
+      // FIXME: (jh) Can these be applied as a single reflow?
+      // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
 
       if (width !== undefined) {
         windowEl.style.width = `${width}px`;
@@ -189,7 +190,14 @@ export default class WindowController extends PhantomCore {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
-      // FIXME: (jh) Can these be applied as a single reflow: https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
+      // FIXME: (jh) Can these be applied as a single reflow?
+      // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
+      // NOTE: On Xubuntu and Chrome, applying translate seemed to use the same
+      // CPU usage when doing rapid window movements.  What seemed to help was
+      // applying requestAnimationFrame and using a setTimeout to debounce, but
+      // if that solution is utilized, it needs to be checked with seeing how
+      // windows respond when resized in multiple directions, so that they
+      // don't bounce around, etc.
 
       if (x !== undefined) {
         windowEl.style.left = `${x}px`;
