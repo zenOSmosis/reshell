@@ -21,6 +21,8 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
+  isPinned: true,
+  isPinnedToDock: true,
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
     SpeakerAppNetworkService,
