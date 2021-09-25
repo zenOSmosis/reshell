@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
+import LabeledLED from "@components/labeled/LabeledLED";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
@@ -37,6 +38,11 @@ const CallCentralStation = {
           <AppLinkButton
             id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
             title="Configure Audio"
+          />
+          <LabeledLED
+            label="Socket"
+            color={socketService.getIsConnected() ? "green" : "gray"}
+            style={{ float: "right" }}
           />
         </Footer>
       </Layout>
