@@ -3,7 +3,7 @@ import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticat
 
 import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
 
-export default class SpeakerAppVirtualServerService extends UIServiceCore {
+export default class SpeakerAppVirtualServerControllerService extends UIServiceCore {
   constructor() {
     super({
       networks: [],

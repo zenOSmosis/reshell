@@ -1,5 +1,5 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
-import Center from "@components/Center";
+// import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 
@@ -8,7 +8,7 @@ import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
-import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
+import SpeakerAppVirtualServerControllerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerControllerService";
 
 export const REGISTRATION_ID = "virtual-server";
 
@@ -21,11 +21,12 @@ const VirtualServer = {
   },
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
-    SpeakerAppVirtualServerService,
+    SpeakerAppVirtualServerControllerService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
-    const virtualServerService = appServices[SpeakerAppVirtualServerService];
+    const virtualServerService =
+      appServices[SpeakerAppVirtualServerControllerService];
 
     // TODO: Remove
     console.log({ virtualServerService });
