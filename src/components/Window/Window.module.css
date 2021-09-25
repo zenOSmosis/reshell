@@ -33,8 +33,8 @@
 }
 
 .window .titlebar {
-  background-color: rgb(54, 54, 54);
-  color: #fff;
+  background-color: rgb(26, 26, 26);
+  color: #999;
   border-bottom: 1px rgba(0, 0, 0, 0.4) solid;
   width: 100%;
   height: 100%;
@@ -45,7 +45,8 @@
 }
 
 .window.active .titlebar {
-  background-color: rgb(26, 26, 26);
+  background-color: rgb(54, 54, 54);
+  color: #fff;
 }
 
 .window .titlebar .title {
