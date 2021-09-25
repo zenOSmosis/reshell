@@ -73,7 +73,7 @@ const ServiceMonitor = {
                 {
                   // TODO: Remove
                 }
-                <button onClick={() => console.log(service.getState())}>
+                <button onClick={() => service.log(service.getState())}>
                   log(state)
                 </button>
               </td>
