@@ -10,6 +10,7 @@ export default function useAnimation({
   // integers representing milliseconds.
   animationDuration = "1s",
   animationDelay = "0s",
+  // TODO: Ensure onAnimationEnd is triggered on Windows if animations are turned off
   onAnimationEnd,
   animationEngine = "animate.css",
   isDisabled = false,
