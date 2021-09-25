@@ -37,7 +37,7 @@ export default function Desktop({
   const { activeWindowController /* addBackgroundAsset */ } =
     useDesktopContext();
   const { appRegistrations } = useAppRegistrationsContext();
-  const { startAppRuntime } = useAppRuntimesContext();
+  const { bringToFrontOrStartAppRuntime } = useAppRuntimesContext();
 
   // TODO: Implement after PhantomWrapper (or equiv.; assets need to be wrapped in
   // PhantomCore instances in order to be added to background collection)
@@ -109,7 +109,7 @@ export default function Desktop({
                           .map(app => (
                             <MenuItem
                               key={app.getUUID()}
-                              onClick={() => startAppRuntime(app)}
+                              onClick={() => bringToFrontOrStartAppRuntime(app)}
                             >
                               {app.getTitle()}
                             </MenuItem>
@@ -124,7 +124,7 @@ export default function Desktop({
                         .map(app => (
                           <MenuItem
                             key={app.getUUID()}
-                            onClick={() => startAppRuntime(app)}
+                            onClick={() => bringToFrontOrStartAppRuntime(app)}
                           >
                             {app.getTitle()}
                           </MenuItem>
