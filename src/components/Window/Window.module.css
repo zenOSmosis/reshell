@@ -1,3 +1,7 @@
+.window-outer-border.pre-animate {
+  visibility: hidden;
+}
+
 .window-outer-border {
   position: absolute;
 

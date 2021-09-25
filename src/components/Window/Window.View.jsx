@@ -15,6 +15,7 @@ import classNames from "classnames";
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
+import useWindowAnimation from "./hooks/useWindowAnimation";
 
 // TODO: Add prop-types
 // TODO: Document
@@ -40,6 +41,9 @@ const WindowView = ({
 }) => {
   /** @type {DOMElement} */
   const [el, _setEl] = useState(null);
+
+  // TODO: Document
+  const { isReady } = useWindowAnimation(el);
 
   /*
   useAnimation({
@@ -136,8 +140,9 @@ const WindowView = ({
         onMount={_setEl}
         style={{ ...style, zIndex }}
         className={classNames(
-          styles["window-outer-border"],
-          isActive && styles["active"]
+          !isReady && styles["pre-animate"],
+          styles["window-outer-border"]
+          // isActive && styles["active"]
           // isMinimized && styles["minimized"]
         )}
         {...rest}
