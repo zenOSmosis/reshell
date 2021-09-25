@@ -9,10 +9,12 @@ import LED from "@components/LED";
 
 import ScreenCapturerService from "@services/ScreenCapturerService";
 
+export const REGISTRATION_ID = "screen-capture-window";
+
 // TODO: Include ability to screen record and take arbitrary snapshot from video feed (separate from ScreenShot app which is a one-time deal)
 
 const ScreenCaptureWindow = {
-  id: "screen-capture-window",
+  id: REGISTRATION_ID,
   title: "Screen Capture",
   style: {
     width: 640 * 0.8,

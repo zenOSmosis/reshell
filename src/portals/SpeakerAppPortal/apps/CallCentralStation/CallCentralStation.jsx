@@ -6,6 +6,7 @@ import LabeledLED from "@components/labeled/LabeledLED";
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
+import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ScreenCapture";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
@@ -60,6 +61,7 @@ const CallCentralStation = {
             id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
             title="Configure Audio"
           />
+          <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
           <LabeledLED
             label="Socket"
             color={socketService.getIsConnected() ? "green" : "gray"}
