@@ -38,8 +38,8 @@ COPY ./ ./
 #
 # Also builds .cache directory, which is needed by the CRA build process
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  rm src/shared \
-  && mv src/tmp.shared src/shared \
+  rm src/portals/SpeakerAppPortal/shared \
+  && mv src/tmp.shared src/portals/SpeakerAppPortal/shared \
   && mkdir -p /app/frontend.web/node_modules/.cache \
   && chown -R node /app/frontend.web/node_modules/.cache \
   ; fi
