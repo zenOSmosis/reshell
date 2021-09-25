@@ -30,16 +30,6 @@ const VirtualServer = {
 
     const isHosting = virtualServerService.getIsHosting();
 
-    if (isHosting) {
-      return (
-        <Center>
-          <button onClick={() => virtualServerService.stopVirtualServer()}>
-            Stop
-          </button>
-        </Center>
-      );
-    }
-
     return (
       <Layout>
         <Header>
@@ -49,28 +39,37 @@ const VirtualServer = {
           />
         </Header>
         <Content>
-          <NetworkCreatorForm
-            // TODO: Refactor
-            onSubmit={formData =>
-              virtualServerService.createVirtualServer({
-                ...formData,
-                // TODO: Remove hardcoding
-                ...{
-                  deviceAddress: 12345,
-                  buildHash: 123422,
-                  userAgent: "test-user-agent",
-                },
-              })
-            }
-          />
+          {!isHosting ? (
+            <NetworkCreatorForm
+              // TODO: Refactor
+              onSubmit={formData =>
+                virtualServerService.createVirtualServer({
+                  ...formData,
+                  // TODO: Remove hardcoding
+                  ...{
+                    deviceAddress: 12345,
+                    buildHash: 123422,
+                    userAgent: "test-user-agent",
+                  },
+                })
+              }
+            />
+          ) : (
+            <Center>
+              <button onClick={() => virtualServerService.stopVirtualServer()}>
+                Stop
+              </button>
+            </Center>
+          )}
         </Content>
         <Footer>
-          {" "}
-          <LabeledLED
-            label="Socket"
-            color={socketService.getIsConnected() ? "green" : "gray"}
-            style={{ float: "right" }}
-          />
+          <div style={{ float: "right" }}>
+            <LabeledLED
+              label="Socket"
+              color={socketService.getIsConnected() ? "green" : "gray"}
+            />
+            <LabeledLED label="Hosting" color={isHosting ? "green" : "gray"} />
+          </div>
         </Footer>
       </Layout>
     );
