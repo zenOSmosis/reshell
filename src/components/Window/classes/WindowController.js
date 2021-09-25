@@ -130,12 +130,13 @@ export default class WindowController extends PhantomCore {
     }
   }
 
-  // TODO: Implement
   // TODO: Document
   setSize({ width, height }) {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
+      // FIXME: (jh) Can these be applied as a single reflow: https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
+
       if (width !== undefined) {
         windowEl.style.width = `${width}px`;
       }
@@ -183,12 +184,13 @@ export default class WindowController extends PhantomCore {
     }
   }
 
-  // TODO: Implement
   // TODO: Document
   setPosition({ x, y }) {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
+      // FIXME: (jh) Can these be applied as a single reflow: https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
+
       if (x !== undefined) {
         windowEl.style.left = `${x}px`;
         delete windowEl.style.right;
