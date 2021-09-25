@@ -7,7 +7,7 @@ import ButtonPanel from "@components/ButtonPanel";
 import styles from "./NetworkCreatorForm.module.css";
 
 // import useWebPhantomSessionContext from "@hooks/useWebPhantomSessionContext";
-// import useObjectState from "@hooks/useObjectState";
+import useObjectState from "@hooks/useObjectState";
 
 // import useClientDeviceContext from "@hooks/useClientDeviceContext";
 
@@ -57,7 +57,6 @@ export default function CreateNetwork() {
     }
   }, [elInputNetworkName]);
 
-  /*
   const [
     {
       networkName,
@@ -70,20 +69,19 @@ export default function CreateNetwork() {
     },
     setState,
   ] = useObjectState(
-    getItem(KEY_TRANSCODER_LOCAL_STORAGE_CREDS) || {
+    /* getItem(KEY_TRANSCODER_LOCAL_STORAGE_CREDS) || */ {
       // Default form values
       //
       networkName: "",
       networkDescription: "",
       // TODO: Change isPublic default to false after adding in ability to connect to private networks
       isPublic: true,
-      realmId: deviceAddress,
+      // realmId: deviceAddress,
       channelId: "",
       isShowingAdvanced: false,
-      launchTarget: LAUNCH_TARGET_IFRAME,
+      // launchTarget: LAUNCH_TARGET_IFRAME,
     }
   );
-  */
 
   /*
   const {
@@ -192,8 +190,7 @@ export default function CreateNetwork() {
   return (
     <div className={styles["create-network-form"]}>
       <form onSubmit={evt => evt.preventDefault()}>
-        {/*
-                  <Section>
+        <Section>
           <ButtonPanel
             buttons={[
               {
@@ -224,7 +221,6 @@ export default function CreateNetwork() {
             ]}
           />
         </Section>
-          */}
 
         <div
           style={{
@@ -347,7 +343,7 @@ export default function CreateNetwork() {
 
               {
                 // TODO: Provide documentation describing what each of these option mean
-              }
+                /*
               <Section>
                 <h2>Launch Target</h2>
                 <div style={{ textAlign: "center" }}>
@@ -405,6 +401,8 @@ export default function CreateNetwork() {
                   </button>
                 </div>
               </Section>
+                  */
+              }
             </>
           )}
 
@@ -416,7 +414,7 @@ export default function CreateNetwork() {
             <button
               disabled={!networkName.length}
               style={{ backgroundColor: "green" }}
-              onClick={handleSubmit}
+              // onClick={handleSubmit}
             >
               Launch{" "}
               <RocketIcon

@@ -39,9 +39,7 @@ const VirtualServer = {
           />
         </Header>
         <Content>
-          <Center canOverflow={true}>
-            <NetworkCreatorForm />
-          </Center>
+          <NetworkCreatorForm />
         </Content>
         <Footer>
           {" "}
