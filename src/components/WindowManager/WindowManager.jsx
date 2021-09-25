@@ -225,6 +225,9 @@ function WindowManagerView({ appDescriptors = [], children }) {
         return null;
       }
 
+      // TODO: Re-active previously focused element when bringing new window to
+      // top
+
       // TODO: (mostly for development), determine changed descriptor window
       // title and update the window controller w/ new values
 
