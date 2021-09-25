@@ -23,9 +23,9 @@ export default class MediaDevicesService extends UIServiceCore {
     utils
       .fetchMediaDevices(isAggressive)
       .then(utils.fetchMediaDevices.filterAudioInputDevices)
-      .then((devices) => this.setState({ devices }))
+      .then(devices => this.setState({ devices }))
       // TODO: Route error to service; make it pipe out UI; etc.
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
   // TODO: Document
