@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
@@ -37,6 +38,20 @@ const CallCentralStation = {
     const networks = networkService.getNetworks();
     const lenNetworks = networks.length;
 
+    const handleConnectToNetwork = useCallback(
+      network => {
+        networkService.connectToNetwork(network);
+      },
+      [networkService]
+    );
+
+    const handleDisconnectFromNetwork = useCallback(
+      network => {
+        networkService.disconnectFromNetwork(network);
+      },
+      [networkService]
+    );
+
     return (
       <Layout>
         <Header>
@@ -59,10 +74,8 @@ const CallCentralStation = {
                 // isConnected,
                 // realmId,
                 // channelId,
-                onOpenNetwork={({ realmId, channelId }) =>
-                  alert("TODO: Implement onOpenNetwork")
-                }
-                onDisconnect={() => alert("TODO: Implement onDisconnect")}
+                onConnectToNetwork={handleConnectToNetwork}
+                onDisconnectFromNetwork={handleDisconnectFromNetwork}
               />
             )}
           </Center>

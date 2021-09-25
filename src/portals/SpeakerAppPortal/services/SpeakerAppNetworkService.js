@@ -52,4 +52,16 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
   getNetworks() {
     return this.getState().networks;
   }
+
+  // TODO: Document
+  connectToNetwork(network) {
+    // TODO: Map to ZenRTCPeer
+    console.log("TODO: connect to network", { network });
+  }
+
+  // TODO: Document
+  disconnectFromNetwork(network) {
+    // TODO: Map to ZenRTCPeer
+    console.log("TODO: disconnect from network", { network });
+  }
 }

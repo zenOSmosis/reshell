@@ -31,8 +31,8 @@ export default function Networks({
   isConnected,
   realmId,
   channelId,
-  onOpenNetwork,
-  onDisconnect,
+  onConnectToNetwork,
+  onDisconnectFromNetwork,
 }) {
   return (
     <Center canOverflow={true} className={styles["networks"]}>
@@ -61,22 +61,9 @@ export default function Networks({
               className={styles["network"]}
               onClick={() =>
                 !isConnected
-                  ? onOpenNetwork({
-                      realmId: network.realmId,
-                      channelId: network.channelId,
-                    })
-                  : onDisconnect()
+                  ? onConnectToNetwork(network)
+                  : onDisconnectFromNetwork(network)
               }
-              /*
-              onClick={() =>
-                !isConnected
-                  ? openRoute(ROUTE_CALL_URL, {
-                      realmId: network.realmId,
-                      channelId: network.channelId,
-                    })
-                  : disconnect()
-              }
-              */
               title={
                 `[${strPubPrivNetwork}]\n\n` +
                 network.name +
