@@ -32,6 +32,7 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
       },
     });
 
+    // TODO: Build out & refactor
     const _handleAuthorizationGranted = receivedAuthorization => {
       // TODO: Remove
       console.log({ receivedAuthorization });
