@@ -24,6 +24,7 @@ const CallCentralStation = {
   ],
   view: function View({ windowServices }) {
     const socketService = windowServices[SpeakerAppSocketAuthenticationService];
+    const networkService = windowServices[SpeakerAppNetworkService];
 
     useEffect(() => {
       socketService.connect();
@@ -36,7 +37,19 @@ const CallCentralStation = {
           [networks] [create network] [private network]
         </Header>
         <Content>
-          <Center canOverflow={true}>[public networks]</Center>
+          <Center canOverflow={true}>
+            [public networks]
+            <button
+              // TODO: Refactor
+              onClick={() =>
+                networkService
+                  .fetchNetworks()
+                  .then(networks => console.log({ networks }))
+              }
+            >
+              Fetch Networks
+            </button>
+          </Center>
         </Content>
         <Footer>
           <AppLinkButton
