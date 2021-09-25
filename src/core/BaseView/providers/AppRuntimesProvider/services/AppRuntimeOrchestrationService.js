@@ -13,8 +13,8 @@ export { EVT_UPDATED, EVT_DESTROYED };
  */
 export default class AppRuntimeOrchestrationService extends UIServiceCore {
   // TODO: Document
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
 
     this.bindCollectionClass(AppRuntimeCollection);
 

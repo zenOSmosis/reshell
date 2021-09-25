@@ -37,12 +37,22 @@ export default class UIServiceCollection extends PhantomCollection {
   }
 
   // TODO: Document
+  // TODO: Refactor most of this into addChild, directly
   addServiceClass(ServiceClass) {
     const cachedService = this.getChildWithKey(ServiceClass);
 
     if (cachedService) {
       return cachedService;
     }
+
+    // Bind functionality to the service to be able to use other services,
+    // using this service collection as the backend
+    //
+    // NOTE: This was engineered this way in order to not have to pass
+    // arguments to the ServiceClass itself, thus making it easier to extend
+    // services without having to think about needed constructor arguments
+    ServiceClass.prototype._useServiceHandler = ServiceClass =>
+      this.useService(ServiceClass);
 
     const service = new ServiceClass();
 
@@ -60,6 +70,17 @@ export default class UIServiceCollection extends PhantomCollection {
 
       // TODO: Destruct service? (note: If so, it should
       // automatically remove it from the children)
+    }
+  }
+
+  // TODO: Document
+  useService(ServiceClass) {
+    const cachedService = this.getChildWithKey(ServiceClass);
+
+    if (cachedService) {
+      return cachedService;
+    } else {
+      return this.addServiceClass(ServiceClass);
     }
   }
 }

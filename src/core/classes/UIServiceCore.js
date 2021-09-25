@@ -21,14 +21,16 @@ export { EVT_UPDATED, EVT_DESTROYED };
 // managing other types of collection-type data without the possibility of a
 // conflict (i.e. collections based on role, etc.)
 export default class UIServiceCore extends PhantomCore {
-  constructor(initialState = {}) {
-    const DEFAULT_STATE = {};
-
+  constructor() {
     super();
 
-    this._state = Object.seal(
-      UIServiceCore.mergeOptions(DEFAULT_STATE, initialState)
-    );
+    if (typeof this._useServiceHandler !== "function") {
+      throw new ReferenceError(
+        "_useServiceHandler property should be set by the collection this service is collected in"
+      );
+    }
+
+    this._state = {};
 
     // A map of collections, attached to this service core
     this._collectionMap = new Map();
@@ -51,6 +53,11 @@ export default class UIServiceCore extends PhantomCore {
     );
 
     return super.destroy();
+  }
+
+  // TODO: Document
+  useService(ServiceClass) {
+    return this._useServiceHandler(ServiceClass);
   }
 
   /**

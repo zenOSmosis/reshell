@@ -8,6 +8,7 @@ import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalU
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
+import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
 
 const CallCentralStation = {
   id: "call-central-station",
@@ -17,7 +18,10 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
-  serviceClasses: [SpeakerAppSocketAuthenticationService],
+  serviceClasses: [
+    SpeakerAppSocketAuthenticationService,
+    SpeakerAppNetworkService,
+  ],
   view: function View({ windowServices }) {
     const socketService = windowServices[SpeakerAppSocketAuthenticationService];
 
