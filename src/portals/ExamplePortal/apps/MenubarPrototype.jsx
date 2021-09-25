@@ -11,8 +11,6 @@ const ApplicationMonitor = {
     // TODO: Prototype this
   },
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

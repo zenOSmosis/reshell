@@ -5,8 +5,6 @@ const Box3DPrototype = {
   id: "box3d-prototype",
   title: "Box3D Prototype",
   style: {
-    right: 0,
-    top: 0,
     width: 640,
     height: 400,
   },

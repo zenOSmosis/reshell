@@ -8,8 +8,6 @@ const MemoryInfo = {
   id: "memory-info",
   title: "Memory Info",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 280,
     height: 150,
   },

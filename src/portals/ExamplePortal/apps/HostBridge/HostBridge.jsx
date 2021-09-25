@@ -10,8 +10,6 @@ const HostBridge = {
   id: "host-bridge",
   title: "Host Bridge",
   style: {
-    left: 10,
-    top: 10,
     width: 640,
     height: 480,
   },

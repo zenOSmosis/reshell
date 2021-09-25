@@ -18,8 +18,6 @@ const ServiceMonitor = {
   id: "service-monitor",
   title: "Service Monitor",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

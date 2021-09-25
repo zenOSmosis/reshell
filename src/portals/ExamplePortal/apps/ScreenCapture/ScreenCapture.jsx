@@ -15,8 +15,6 @@ const ScreenCaptureWindow = {
   id: "screen-capture-window",
   title: "Screen Capture",
   style: {
-    right: 0,
-    bottom: 0,
     width: 640 * 0.8,
     height: 480 * 0.8,
   },

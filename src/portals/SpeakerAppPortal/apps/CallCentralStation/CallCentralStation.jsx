@@ -9,8 +9,6 @@ const CallCentralStation = {
   id: "call-central-station",
   title: "Call Central Station",
   style: {
-    left: 10,
-    top: 20,
     width: 640,
     height: 480,
   },

@@ -8,8 +8,6 @@ const Files = {
   id: "files",
   title: "Files",
   style: {
-    left: 10,
-    top: 10,
     width: 640,
     height: 480,
   },

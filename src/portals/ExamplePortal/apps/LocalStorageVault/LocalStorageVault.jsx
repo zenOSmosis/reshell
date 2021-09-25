@@ -19,8 +19,6 @@ const LocalStorageVault = {
   id: "local-storage-vault",
   title: "Local Storage Vault",
   style: {
-    right: 0,
-    top: 0,
     width: 640,
     height: 480,
   },

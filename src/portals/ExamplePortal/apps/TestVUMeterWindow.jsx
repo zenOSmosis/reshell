@@ -8,8 +8,6 @@ const TestVUMeterWindow = {
   id: "test-vu-meter",
   title: "Test VU Meter",
   style: {
-    left: 0,
-    top: 0,
     width: 320,
     height: 320,
     backgroundColor: "transparent",

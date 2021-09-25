@@ -4,8 +4,6 @@ const WindowAPIDiscovererWindow = {
   id: "window-api-discoverer",
   title: "Window API Discoverer",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

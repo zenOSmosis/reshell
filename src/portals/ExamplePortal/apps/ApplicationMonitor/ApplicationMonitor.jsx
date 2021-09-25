@@ -9,8 +9,6 @@ const ApplicationMonitor = {
   id: "application-monitor",
   title: "Application Monitor",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

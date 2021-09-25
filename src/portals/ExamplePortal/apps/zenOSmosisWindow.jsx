@@ -2,8 +2,6 @@ const ZenOSmosisWindow = {
   id: "zenOSmosis",
   title: "zenOSmosis",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640 * 1.4,
     height: 480 * 1.4,
   },

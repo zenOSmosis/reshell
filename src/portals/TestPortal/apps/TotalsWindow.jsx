@@ -13,8 +13,6 @@ const TotalsWindow = {
   id: "totals",
   title: "Totals",
   style: {
-    left: 0,
-    bottom: 0,
     width: 300,
     height: 300,
   },

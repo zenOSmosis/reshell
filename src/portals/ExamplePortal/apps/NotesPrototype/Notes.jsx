@@ -9,8 +9,6 @@ const Notes = {
   id: "notes",
   title: "Notes",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },
@@ -25,7 +23,7 @@ const Notes = {
         <Content>
           <Full>
             <textarea
-              onChange={(evt) => setContent(evt.target.value)}
+              onChange={evt => setContent(evt.target.value)}
               className={styles["notes"]}
               value={content}
               style={{ width: "100%", height: "100%", border: 0 }}

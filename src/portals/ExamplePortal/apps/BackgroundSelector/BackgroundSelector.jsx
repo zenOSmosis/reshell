@@ -14,8 +14,6 @@ const BackgroundSelector = {
   id: REGISTRATION_ID,
   title: "Background Selector",
   style: {
-    right: 0,
-    top: 0,
     width: 640,
     height: 300,
   },

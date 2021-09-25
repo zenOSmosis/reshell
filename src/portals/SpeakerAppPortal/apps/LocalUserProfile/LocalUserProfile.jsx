@@ -7,8 +7,6 @@ const LocalUserProfile = {
   id: REGISTRATION_ID,
   title: "User Profile",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

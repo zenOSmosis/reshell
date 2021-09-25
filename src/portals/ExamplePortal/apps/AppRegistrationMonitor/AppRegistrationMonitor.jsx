@@ -11,8 +11,6 @@ const AppRegistrationMonitor = {
   id: "app-registration-monitor",
   title: "App Registration Monitor",
   style: {
-    left: "auto",
-    top: 0,
     width: 640,
     height: 480,
   },
@@ -22,9 +20,9 @@ const AppRegistrationMonitor = {
     const [registration, setRegistration] = useState(null);
 
     const handleSetRegistration = useCallback(
-      (registrationId) => {
+      registrationId => {
         const matchedRegistration = appRegistrations.find(
-          (predicate) => predicate.getID() === registrationId
+          predicate => predicate.getID() === registrationId
         );
 
         console.log({
@@ -79,9 +77,9 @@ function AppRegistrationSelector({ onRegistrationChange }) {
 
   return (
     <div>
-      <select onChange={(evt) => onRegistrationChange(evt.target.value)}>
+      <select onChange={evt => onRegistrationChange(evt.target.value)}>
         <option value="">Select app registration</option>
-        {appRegistrations.map((registration) => (
+        {appRegistrations.map(registration => (
           <option key={registration.getUUID()} value={registration.getID()}>
             {registration.getTitle()}
           </option>

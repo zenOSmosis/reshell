@@ -6,8 +6,6 @@ const NotificationsPrototype = {
   id: "notifications-prototype",
   title: "Notifications Prototype",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

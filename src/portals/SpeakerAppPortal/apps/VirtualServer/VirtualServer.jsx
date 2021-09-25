@@ -5,8 +5,6 @@ const VirtualServer = {
   id: "virtual-server",
   title: "Virtual Server",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

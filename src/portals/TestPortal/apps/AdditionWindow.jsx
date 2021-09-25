@@ -6,8 +6,6 @@ const AdditionWindow = {
   id: "addition",
   title: "Addition",
   style: {
-    left: 0,
-    top: 0,
     width: 300,
     height: 300,
   },

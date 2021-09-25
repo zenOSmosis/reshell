@@ -9,8 +9,6 @@ const InputMediaDevices = {
   id: REGISTRATION_ID,
   title: "Input Media Devices",
   style: {
-    right: 0,
-    top: 0,
     width: 640,
     height: 300,
   },

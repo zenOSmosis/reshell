@@ -10,8 +10,6 @@ const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640,
     height: 480,
   },

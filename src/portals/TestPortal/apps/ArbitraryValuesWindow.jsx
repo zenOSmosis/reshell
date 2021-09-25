@@ -7,8 +7,6 @@ const ArbitraryValuesWindow = {
   id: "arbitrary-values",
   title: "Arbitrary Values",
   style: {
-    right: 0,
-    bottom: 0,
     width: 300,
     height: 300,
   },
@@ -25,7 +23,7 @@ const ArbitraryValuesWindow = {
             <input
               type="number"
               value={adder.getValue()}
-              onChange={(evt) => adder.setValue(evt.target.value)}
+              onChange={evt => adder.setValue(evt.target.value)}
             />
           </div>
           <div style={{ marginTop: 20 }}>
@@ -33,7 +31,7 @@ const ArbitraryValuesWindow = {
             <input
               type="number"
               value={multiplier.getValue()}
-              onChange={(evt) => multiplier.setValue(evt.target.value)}
+              onChange={evt => multiplier.setValue(evt.target.value)}
             />
           </div>
           <div>

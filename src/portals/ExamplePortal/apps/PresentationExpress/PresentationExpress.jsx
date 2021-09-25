@@ -13,8 +13,6 @@ const PresentationExpress = {
   id: "presentation-express",
   title: "Presentation Express",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640 * 1.5,
     height: 480 * 1.5,
   },
@@ -89,7 +87,7 @@ const PresentationExpress = {
               <Footer style={{ textAlign: "right" }}>
                 <button
                   style={{ float: "left" }}
-                  onClick={() => setAreThumbnailsEnabled((prev) => !prev)}
+                  onClick={() => setAreThumbnailsEnabled(prev => !prev)}
                 >
                   {areThumbnailsEnabled ? "Hide" : "Show"} thumbnails
                 </button>
@@ -103,13 +101,13 @@ const PresentationExpress = {
                   {slideIdx + 1} of {demoSlides.length}
                 </span>
                 <button
-                  onClick={() => setSlideIdx((slideIdx) => slideIdx - 1)}
+                  onClick={() => setSlideIdx(slideIdx => slideIdx - 1)}
                   disabled={slideIdx <= 0}
                 >
                   Prev
                 </button>
                 <button
-                  onClick={() => setSlideIdx((slideIdx) => slideIdx + 1)}
+                  onClick={() => setSlideIdx(slideIdx => slideIdx + 1)}
                   disabled={slideIdx >= demoSlides.length - 1}
                 >
                   Next

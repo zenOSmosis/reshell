@@ -7,8 +7,6 @@ const Environment = {
   id: "environment",
   title: "Environment",
   style: {
-    left: "auto",
-    bottom: 0,
     width: 640 * 0.8,
     height: 480 * 0.8,
   },

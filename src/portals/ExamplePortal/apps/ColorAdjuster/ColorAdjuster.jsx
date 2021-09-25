@@ -8,8 +8,6 @@ const ColorAdjuster = {
   id: "color-adjuster",
   title: "Color Adjuster",
   style: {
-    right: 0,
-    top: 0,
     width: 640,
     height: 400,
   },
@@ -30,7 +28,7 @@ const ColorAdjuster = {
       <Layout className={styles["color-adjuster"]}>
         <Content>
           <Center>
-            <button onClick={() => setIsGrayscale((prev) => !prev)}>
+            <button onClick={() => setIsGrayscale(prev => !prev)}>
               {isGrayscale ? "Disable" : "Enable"} Grayscale
             </button>
           </Center>
