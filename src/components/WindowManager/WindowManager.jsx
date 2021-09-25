@@ -244,6 +244,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // TODO: Memoize this handling
       // TODO: Attach services to window controller so other UI utilities can
       // reference what is specific to this window
+      // TODO: Rename to appServices?
       const windowServices = {};
       for (const serviceClass of serviceClasses) {
         const service = startService(serviceClass);
