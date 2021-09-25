@@ -2,6 +2,7 @@
   position: absolute;
 
   border-radius: 8px;
+  border: 1px rgb(54, 54, 54) solid;
 }
 
 /** Prevent window from being able to be larger than the available space */
