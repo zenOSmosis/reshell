@@ -1,5 +1,3 @@
-import SocketProvider from "./providers/SocketProvider";
-
 import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
@@ -25,33 +23,30 @@ import NotificationsPrototype from "../ExamplePortal/apps/NotificationsPrototype
 
 export default function SpeakerAppPortal() {
   return (
-    // TODO: Wrap Desktop w/ Speaker.app UI providers (and eventually refactor to use Service-provided Providers?)
-    <SocketProvider>
-      <Desktop
-        // TODO: Refactor
-        backgroundView={<SpeakerAppLogoBackground />}
-        appDescriptors={[
-          Applications,
-          BackgroundSelector,
-          AboutReShell,
-          LocalStorageVault,
-          InputMediaDevices,
-          TestVUMeterWindow,
-          ScreenCapture,
-          ScreenShot,
-          ApplicationMonitor,
-          ServiceMonitor,
-          ColorAdjuster,
-          LocalUserProfile,
-          // LocalStorageVaultPrototype,
+    <Desktop
+      // TODO: Refactor
+      backgroundView={<SpeakerAppLogoBackground />}
+      appDescriptors={[
+        Applications,
+        BackgroundSelector,
+        AboutReShell,
+        LocalStorageVault,
+        InputMediaDevices,
+        TestVUMeterWindow,
+        ScreenCapture,
+        ScreenShot,
+        ApplicationMonitor,
+        ServiceMonitor,
+        ColorAdjuster,
+        LocalUserProfile,
+        // LocalStorageVaultPrototype,
 
-          CallCentralStation,
-          VirtualServer,
+        CallCentralStation,
+        VirtualServer,
 
-          // TODO: Remove
-          NotificationsPrototype,
-        ]}
-      />
-    </SocketProvider>
+        // TODO: Remove
+        NotificationsPrototype,
+      ]}
+    />
   );
 }
