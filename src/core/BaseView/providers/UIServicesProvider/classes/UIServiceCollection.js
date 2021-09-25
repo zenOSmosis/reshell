@@ -54,6 +54,11 @@ export default class UIServiceCollection extends PhantomCollection {
     ServiceClass.prototype._useServiceHandler = ServiceClass =>
       this.useService(ServiceClass);
 
+    // NOTE: Services are instantiated with the collection without arguments,
+    // but may pass arguments down to the base ServiceCore class (i.e. for
+    // setting initial state) in extension classes.  The extension classes
+    // themselves won't be instantiated with any arguments set, however, by the
+    // collection.
     const service = new ServiceClass();
 
     this.addChild(service, ServiceClass);
