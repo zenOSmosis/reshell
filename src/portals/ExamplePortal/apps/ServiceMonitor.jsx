@@ -33,6 +33,7 @@ const ServiceMonitor = {
           <tr>
             <td>Service Name</td>
             <td>Uptime</td>
+            <td>f(x)</td>
             {/**
               <td>
                 Active
@@ -68,6 +69,14 @@ const ServiceMonitor = {
                 </button>
               </td>
                 */}
+              <td className="center">
+                {
+                  // TODO: Remove
+                }
+                <button onClick={() => console.log(service.getState())}>
+                  log(state)
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
