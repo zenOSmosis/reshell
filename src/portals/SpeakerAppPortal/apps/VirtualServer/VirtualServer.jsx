@@ -1,5 +1,5 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
-// import Center from "@components/Center";
+import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 
@@ -28,8 +28,17 @@ const VirtualServer = {
     const virtualServerService =
       appServices[SpeakerAppVirtualServerControllerService];
 
-    // TODO: Remove
-    console.log({ virtualServerService });
+    const isHosting = virtualServerService.getIsHosting();
+
+    if (isHosting) {
+      return (
+        <Center>
+          <button onClick={() => virtualServerService.stopVirtualServer()}>
+            Stop
+          </button>
+        </Center>
+      );
+    }
 
     return (
       <Layout>
