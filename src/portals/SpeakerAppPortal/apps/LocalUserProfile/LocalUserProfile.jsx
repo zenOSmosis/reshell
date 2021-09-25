@@ -1,5 +1,7 @@
-import Layout, { Header, Content, Footer } from "@components/Layout";
-import Center from "@components/Center";
+import Layout, { Header, Content } from "@components/Layout";
+import LocalUserProfileForm from "./views/LocalUserProfileForm/LocalUserProfileForm";
+
+import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
 export const REGISTRATION_ID = "local-user-profile";
 
@@ -10,14 +12,14 @@ const LocalUserProfile = {
     width: 640,
     height: 480,
   },
+  serviceClasses: [SpeakerAppLocalUserProfileService],
   view: function View() {
     return (
       <Layout>
         <Header>[options]</Header>
         <Content>
-          <Center canOverflow={true}>[local user profile]</Center>
+          <LocalUserProfileForm />
         </Content>
-        <Footer>[settings / etc]</Footer>
       </Layout>
     );
   },
