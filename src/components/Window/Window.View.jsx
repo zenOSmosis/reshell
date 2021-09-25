@@ -43,7 +43,7 @@ const WindowView = ({
   const [el, _setEl] = useState(null);
 
   // TODO: Document
-  const { isReady } = useWindowAnimation(el);
+  const { isHidden } = useWindowAnimation(el);
 
   /*
   useAnimation({
@@ -140,9 +140,9 @@ const WindowView = ({
         onMount={_setEl}
         style={{ ...style, zIndex }}
         className={classNames(
-          !isReady && styles["pre-animate"],
-          styles["window-outer-border"]
-          // isActive && styles["active"]
+          styles["window-outer-border"],
+          isHidden && styles["hidden"],
+          isActive && styles["active"]
           // isMinimized && styles["minimized"]
         )}
         {...rest}
