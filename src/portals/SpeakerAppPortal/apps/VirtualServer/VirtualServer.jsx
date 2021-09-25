@@ -1,8 +1,13 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
+import AppLinkButton from "@components/AppLinkButton";
+
+import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
+
+export const REGISTRATION_ID = "virtual-server";
 
 const VirtualServer = {
-  id: "virtual-server",
+  id: REGISTRATION_ID,
   title: "Virtual Server",
   style: {
     width: 640,
@@ -11,7 +16,12 @@ const VirtualServer = {
   view: function View() {
     return (
       <Layout>
-        <Header>[options]</Header>
+        <Header>
+          <AppLinkButton
+            id={CALL_CENTRAL_STATION_REGISTRATION_ID}
+            title="Networks"
+          />
+        </Header>
         <Content>
           <Center canOverflow={true}>[create a network]</Center>
         </Content>

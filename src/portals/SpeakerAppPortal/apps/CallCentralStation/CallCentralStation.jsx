@@ -5,12 +5,15 @@ import LabeledLED from "@components/labeled/LabeledLED";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
+import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
 
+export const REGISTRATION_ID = "call-central-station";
+
 const CallCentralStation = {
-  id: "call-central-station",
+  id: REGISTRATION_ID,
   title: "Call Central Station",
   style: {
     width: 640,
@@ -29,7 +32,13 @@ const CallCentralStation = {
       <Layout>
         <Header>
           <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-          [networks] [create network] [private network]
+          <AppLinkButton
+            id={VIRTUAL_SERVER_REGISTRATION_ID}
+            title="Create Network"
+          />
+          {
+            // [networks]  [private network]
+          }
         </Header>
         <Content>
           <Center canOverflow={true}>
