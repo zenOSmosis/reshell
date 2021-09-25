@@ -10,7 +10,6 @@ import {
 export default class SpeakerAppVirtualServerControllerService extends UIServiceCore {
   constructor() {
     super({
-      networks: [],
       isHosting: false,
     });
 
