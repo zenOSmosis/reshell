@@ -10,8 +10,8 @@ const AdditionWindow = {
     height: 300,
   },
   serviceClasses: [AdditionService],
-  view: function View({ windowController, windowServices }) {
-    const adder = windowServices[AdditionService];
+  view: function View({ windowController, appServices }) {
+    const adder = appServices[AdditionService];
 
     return (
       <Center>

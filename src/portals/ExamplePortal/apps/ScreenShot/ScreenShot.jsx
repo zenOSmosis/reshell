@@ -21,11 +21,11 @@ const ScreenShot = {
     height: 480 * 0.8,
   },
   serviceClasses: [ScreenCapturerService],
-  view: function View({ windowServices }) {
+  view: function View({ appServices }) {
     return <Center>TODO: Implement</Center>;
 
     /*
-    const scs = windowServices[ScreenCapturerService];
+    const scs = appServices[ScreenCapturerService];
 
     // TODO: Document
     const handleStartScreenCapture = useCallback(

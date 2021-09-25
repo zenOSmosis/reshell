@@ -12,8 +12,8 @@ const Files = {
     height: 480,
   },
   serviceClasses: [SocketIOService],
-  view: function View({ windowController, windowServices }) {
-    const socketService = windowServices[SocketIOService];
+  view: function View({ windowController, appServices }) {
+    const socketService = appServices[SocketIOService];
 
     // TODO: Build out
     return (

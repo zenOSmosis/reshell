@@ -22,9 +22,9 @@ const CallCentralStation = {
     SpeakerAppSocketAuthenticationService,
     SpeakerAppNetworkService,
   ],
-  view: function View({ windowServices }) {
-    const socketService = windowServices[SpeakerAppSocketAuthenticationService];
-    const networkService = windowServices[SpeakerAppNetworkService];
+  view: function View({ appServices }) {
+    const socketService = appServices[SpeakerAppSocketAuthenticationService];
+    const networkService = appServices[SpeakerAppNetworkService];
 
     useEffect(() => {
       socketService.connect();

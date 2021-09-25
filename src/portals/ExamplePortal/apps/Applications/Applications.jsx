@@ -16,21 +16,21 @@ const Applications = {
   },
   isPinnedToDock: true,
   // serviceClasses: [],
-  view: function View({ windowController, windowServices }) {
+  view: function View({ windowController, appServices }) {
     const { appRegistrations } = useAppRegistrationsContext();
     const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
 
     const appRuntimeRegistrations = useMemo(
-      () => appRuntimes.map((runtime) => runtime.getRegistration()),
+      () => appRuntimes.map(runtime => runtime.getRegistration()),
       [appRuntimes]
     );
 
     return (
       <Center canOverflow={true}>
-        {appRegistrations.map((registration) => {
+        {appRegistrations.map(registration => {
           // const isRunning = appRuntimeRegistrations.includes(registration);
           const totalInstances = appRuntimeRegistrations.filter(
-            (predicate) => predicate === registration
+            predicate => predicate === registration
           ).length;
 
           return (

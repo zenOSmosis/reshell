@@ -245,11 +245,11 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // TODO: Attach services to window controller so other UI utilities can
       // reference what is specific to this window
       // TODO: Rename to appServices?
-      const windowServices = {};
+      const appServices = {};
       for (const serviceClass of serviceClasses) {
         const service = startService(serviceClass);
 
-        windowServices[serviceClass] = service;
+        appServices[serviceClass] = service;
       }
 
       return (
@@ -322,7 +322,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
           }
           {windowController && (
             <WrappedView
-              windowServices={windowServices}
+              appServices={appServices}
               windowController={windowController}
               appRuntime={appRuntime}
               view={ViewComponent}
@@ -376,7 +376,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
 // easier to make the wrapping view render out-of-sequence with the containing
 // view, such as when a service updates, etc.)
 function WrappedView({
-  windowServices,
+  appServices,
   windowController,
   appRuntime,
   view: ViewComponent,
@@ -392,18 +392,18 @@ function WrappedView({
       setServiceUpdateIdx(prev => prev + 1);
     };
 
-    for (const service of Object.values(windowServices)) {
+    for (const service of Object.values(appServices)) {
       // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
       service.on(EVT_UPDATED, _handleServiceUpdate);
     }
 
     return function unmount() {
-      for (const service of Object.values(windowServices)) {
+      for (const service of Object.values(appServices)) {
         // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
         service.off(EVT_UPDATED, _handleServiceUpdate);
       }
     };
-  }, [windowServices]);
+  }, [appServices]);
 
   // TODO: Document
   const setResizeHandler = useRegistrationViewOnResized(windowController);
@@ -412,7 +412,7 @@ function WrappedView({
     <ViewComponent
       {...rest}
       windowController={windowController}
-      windowServices={windowServices}
+      appServices={appServices}
       appRuntime={appRuntime}
       setResizeHandler={setResizeHandler}
       // Force update every time service updates

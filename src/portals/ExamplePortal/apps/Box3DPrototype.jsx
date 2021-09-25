@@ -9,7 +9,7 @@ const Box3DPrototype = {
     height: 400,
   },
   // serviceClasses: [],
-  view: function View({ windowController, windowServices }) {
+  view: function View({ windowController, appServices }) {
     return (
       <Center>
         <Box3D />

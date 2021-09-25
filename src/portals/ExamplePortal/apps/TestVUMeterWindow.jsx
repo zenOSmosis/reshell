@@ -13,8 +13,8 @@ const TestVUMeterWindow = {
     backgroundColor: "transparent",
   },
   serviceClasses: [MediaDevicesService],
-  view: ({ windowServices }) => {
-    const mds = windowServices[MediaDevicesService];
+  view: ({ appServices }) => {
+    const mds = appServices[MediaDevicesService];
 
     const captureFactories = mds.getCaptureFactories();
     const isCapturing = Boolean(captureFactories.length);

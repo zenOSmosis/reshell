@@ -10,8 +10,8 @@ const MultiplicationWindow = {
     height: 300,
   },
   serviceClasses: [MultiplicationService],
-  view: function View({ windowController, windowServices }) {
-    const multiplier = windowServices[MultiplicationService];
+  view: function View({ windowController, appServices }) {
+    const multiplier = appServices[MultiplicationService];
 
     return (
       <Center>

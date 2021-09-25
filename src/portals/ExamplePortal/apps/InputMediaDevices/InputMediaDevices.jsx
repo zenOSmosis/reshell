@@ -13,8 +13,8 @@ const InputMediaDevices = {
     height: 300,
   },
   serviceClasses: [MediaDevicesService],
-  view: function View({ windowServices }) {
-    const mds = windowServices[MediaDevicesService];
+  view: function View({ appServices }) {
+    const mds = appServices[MediaDevicesService];
 
     const mediaDevices = mds.getMediaDevices();
 

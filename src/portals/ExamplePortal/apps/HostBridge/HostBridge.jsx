@@ -18,8 +18,8 @@ const HostBridge = {
     SocketAPIMockService,
     HostBridgeAPIMockService,
   ],
-  view: function View({ windowController, windowServices }) {
-    const socketService = windowServices[SocketIOService];
+  view: function View({ windowController, appServices }) {
+    const socketService = appServices[SocketIOService];
 
     const hasSocketIOService = Boolean(socketService);
     const isSocketConnected = socketService.getIsConnected();
@@ -28,7 +28,7 @@ const HostBridge = {
       <div>
         <ul>
           <li>
-            <LED color={windowServices ? "green" : "gray"} /> Service core
+            <LED color={appServices ? "green" : "gray"} /> Service core
           </li>
           <li>
             <LED color={hasSocketIOService ? "green" : "gray"} /> Socket.io

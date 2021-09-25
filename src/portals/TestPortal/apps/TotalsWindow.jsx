@@ -17,9 +17,9 @@ const TotalsWindow = {
     height: 300,
   },
   serviceClasses: [AdditionService, MultiplicationService],
-  view: function View({ windowController, windowServices }) {
-    const adder = windowServices[AdditionService];
-    const multiplier = windowServices[MultiplicationService];
+  view: function View({ windowController, appServices }) {
+    const adder = appServices[AdditionService];
+    const multiplier = appServices[MultiplicationService];
 
     // TODO: Remove
     useEffect(() => {

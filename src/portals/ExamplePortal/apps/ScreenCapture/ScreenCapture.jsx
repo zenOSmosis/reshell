@@ -19,8 +19,8 @@ const ScreenCaptureWindow = {
     height: 480 * 0.8,
   },
   serviceClasses: [ScreenCapturerService],
-  view: function View({ windowServices }) {
-    const scs = windowServices[ScreenCapturerService];
+  view: function View({ appServices }) {
+    const scs = appServices[ScreenCapturerService];
 
     const [screenCaptureFactory, setScreenCaptureFactory] = useState(null);
 
