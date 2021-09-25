@@ -13,7 +13,7 @@
     "classnames": "^2.3.1",
     "concurrently": "^6.2.1",
     "debounce": "^1.2.1",
-    "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller",
+    "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v1.0.1",
     "phantom-core": "github:zenosmosis/phantom-core#v1.0.1",
     "preload-it": "^1.4.0",
     "react": "^17.0.2",
