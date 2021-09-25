@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . ./
 
-RUN npm install
+RUN npm install --loglevel verbose
 
 USER node
 
