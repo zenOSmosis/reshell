@@ -1,8 +1,9 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 
-import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
+import { SOCKET_API_ROUTE_INIT_TRANSCODER_SESSION } from "../shared/socketAPIRoutes";
 
+// TODO: Document
 export default class SpeakerAppVirtualServerControllerService extends UIServiceCore {
   constructor() {
     super({
@@ -15,16 +16,18 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
   }
 
   // TODO: Document
-  async createVirtualServer() {
-    /*
-    const networks = await this._socketService.fetchSocketAPICall(
-      SOCKET_API_ROUTE_FETCH_NETWORKS
+  async createVirtualServer(params) {
+    const res = await this._socketService.fetchSocketAPICall(
+      SOCKET_API_ROUTE_INIT_TRANSCODER_SESSION,
+      params
     );
 
-    this.setState({ networks });
+    // this.setState({ networks });
 
-    return networks;
-    */
+    // return networks;
+
+    // TODO: Remove
+    console.log({ res });
   }
 
   // TODO: Document

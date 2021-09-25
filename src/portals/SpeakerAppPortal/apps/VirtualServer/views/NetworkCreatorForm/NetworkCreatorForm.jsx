@@ -42,7 +42,7 @@ import useTranscoderSandboxContext, {
 //  TODO: Include literature of how a browser tab is utilized as a virtual
 // machine in order to host the room
 
-export default function CreateNetwork() {
+export default function CreateNetwork({ onSubmit }) {
   // const { getItem, setItem } = useLocalStorage();
   // const { openRoute } = useAppRoutesContext();
 
@@ -65,7 +65,7 @@ export default function CreateNetwork() {
       realmId,
       channelId,
       isShowingAdvanced,
-      launchTarget,
+      // launchTarget,
     },
     setState,
   ] = useObjectState(
@@ -91,45 +91,24 @@ export default function CreateNetwork() {
   } = useTranscoderSandboxContext();
   */
 
-  /*
-  const handleSubmit = useCallback(async () => {
-    try {
-      await initTranscoder({
-        networkName,
-        networkDescription,
-        isPublic,
-        realmId,
-        channelId,
-        launchTarget,
-      });
-
-      // Cache form values for next time
-      setItem(KEY_TRANSCODER_LOCAL_STORAGE_CREDS, {
-        networkName,
-        networkDescription,
-        isPublic,
-        realmId,
-        channelId,
-        isShowingAdvanced,
-        launchTarget,
-      });
-    } catch (err) {
-      // TODO: Handle connect errors
-
-      console.warn("Caught", err);
-    }
+  const handleSubmit = useCallback(() => {
+    onSubmit({
+      networkName,
+      networkDescription,
+      isPublic,
+      realmId,
+      channelId,
+      isShowingAdvanced,
+    });
   }, [
-    initTranscoder,
     networkName,
     networkDescription,
     isPublic,
     realmId,
     channelId,
-    launchTarget,
     isShowingAdvanced,
-    setItem,
+    onSubmit,
   ]);
-  */
 
   // Auto-populate channel id based on network name
   /*
@@ -190,7 +169,18 @@ export default function CreateNetwork() {
   return (
     <div className={styles["create-network-form"]}>
       <form onSubmit={evt => evt.preventDefault()}>
-        <Section>
+        <Section style={{ textAlign: "center" }}>
+          <div className="note" style={{ textAlign: "center", margin: 20 }}>
+            <p>
+              All traffic in / out of this network will be routed through your
+              device.
+            </p>
+            <p>
+              Networks created here are temporary and only active while this
+              device is online.
+            </p>
+          </div>
+
           <ButtonPanel
             buttons={[
               {
@@ -225,22 +215,11 @@ export default function CreateNetwork() {
         <div
           style={{
             width: "100%",
-            maxWidth: 640,
-            display: "inline-block",
-            textAlign: "left",
+            // maxWidth: 640,
+            // display: "inline-block",
+            // textAlign: "left",
           }}
         >
-          <div className="note" style={{ textAlign: "center", margin: 20 }}>
-            <p>
-              All traffic in / out of this network will be routed through your
-              device.
-            </p>
-            <p>
-              Networks created here are temporary and only active while this
-              device is online.
-            </p>
-          </div>
-
           <Section>
             {
               // TODO:: Use htmlFor attributes on the labels
@@ -414,7 +393,7 @@ export default function CreateNetwork() {
             <button
               disabled={!networkName.length}
               style={{ backgroundColor: "green" }}
-              // onClick={handleSubmit}
+              onClick={handleSubmit}
             >
               Launch{" "}
               <RocketIcon

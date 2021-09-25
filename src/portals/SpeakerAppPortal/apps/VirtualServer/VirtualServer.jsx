@@ -40,7 +40,20 @@ const VirtualServer = {
           />
         </Header>
         <Content>
-          <NetworkCreatorForm />
+          <NetworkCreatorForm
+            // TODO: Refactor
+            onSubmit={formData =>
+              virtualServerService.createVirtualServer({
+                ...formData,
+                // TODO: Remove hardcoding
+                ...{
+                  deviceAddress: 12345,
+                  buildHash: 123422,
+                  userAgent: "test-user-agent",
+                },
+              })
+            }
+          />
         </Content>
         <Footer>
           {" "}
