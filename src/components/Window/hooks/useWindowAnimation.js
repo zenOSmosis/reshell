@@ -11,9 +11,12 @@ export default function useWindowAnimation(el) {
   useAnimation({
     domElement: el,
     animationName: "zoomInUp",
+    animationDuration: ".5s",
     shouldRun: Boolean(el),
     onAnimationEnd: () => setIsHidden(false),
   });
+
+  // TODO: Handle minimize / maximize transitions
 
   return { isHidden };
 }
