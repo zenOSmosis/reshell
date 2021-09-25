@@ -1,8 +1,14 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
+import LabeledLED from "@components/labeled/LabeledLED";
+
+import NetworkCreatorForm from "./views/NetworkCreatorForm";
 
 import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
+
+import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
+import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
 
 export const REGISTRATION_ID = "virtual-server";
 
@@ -13,7 +19,17 @@ const VirtualServer = {
     width: 640,
     height: 480,
   },
-  view: function View() {
+  serviceClasses: [
+    SpeakerAppSocketAuthenticationService,
+    SpeakerAppVirtualServerService,
+  ],
+  view: function View({ appServices }) {
+    const socketService = appServices[SpeakerAppSocketAuthenticationService];
+    const virtualServerService = appServices[SpeakerAppVirtualServerService];
+
+    // TODO: Remove
+    console.log({ virtualServerService });
+
     return (
       <Layout>
         <Header>
@@ -23,9 +39,18 @@ const VirtualServer = {
           />
         </Header>
         <Content>
-          <Center canOverflow={true}>[create a network]</Center>
+          <Center canOverflow={true}>
+            <NetworkCreatorForm />
+          </Center>
         </Content>
-        <Footer>[settings / etc]</Footer>
+        <Footer>
+          {" "}
+          <LabeledLED
+            label="Socket"
+            color={socketService.getIsConnected() ? "green" : "gray"}
+            style={{ float: "right" }}
+          />
+        </Footer>
       </Layout>
     );
   },
