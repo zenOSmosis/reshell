@@ -15,7 +15,11 @@ import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/Exam
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
 
-export const REGISTRATION_ID = "call-central-station";
+export const REGISTRATION_ID = "network";
+
+// TODO: Listen for GET requests and automatically connect to network if
+// request is similar to:
+// network/0x678308810e1087A3aED280d0feB957C9fcEd1C8B/48k-lounge
 
 const CallCentralStation = {
   id: REGISTRATION_ID,
