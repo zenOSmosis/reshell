@@ -3,6 +3,9 @@ import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 
+import Networks from "./views/Networks";
+import NoNetworks from "./views/NoNetworks";
+
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
@@ -31,6 +34,9 @@ const CallCentralStation = {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkService = appServices[SpeakerAppNetworkService];
 
+    const networks = networkService.getNetworks();
+    const lenNetworks = networks.length;
+
     return (
       <Layout>
         <Header>
@@ -45,17 +51,20 @@ const CallCentralStation = {
         </Header>
         <Content>
           <Center canOverflow={true}>
-            [public networks]
-            <button
-              // TODO: Refactor
-              onClick={() =>
-                networkService
-                  .fetchNetworks()
-                  .then(networks => console.log({ networks }))
-              }
-            >
-              Fetch Networks
-            </button>
+            {lenNetworks === 0 ? (
+              <NoNetworks />
+            ) : (
+              <Networks
+                networks={networks}
+                // isConnected,
+                // realmId,
+                // channelId,
+                onOpenNetwork={({ realmId, channelId }) =>
+                  alert("TODO: Implement onOpenNetwork")
+                }
+                onDisconnect={() => alert("TODO: Implement onDisconnect")}
+              />
+            )}
           </Center>
         </Content>
         <Footer>

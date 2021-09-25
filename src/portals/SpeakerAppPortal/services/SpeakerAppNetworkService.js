@@ -46,4 +46,10 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
 
     return networks;
   }
+
+  // TODO: Document
+  // Cached state of fetchNetworks call
+  getNetworks() {
+    return this.getState().networks;
+  }
 }
