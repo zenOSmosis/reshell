@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
@@ -25,10 +24,6 @@ const CallCentralStation = {
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkService = appServices[SpeakerAppNetworkService];
-
-    useEffect(() => {
-      socketService.connect();
-    }, [socketService]);
 
     return (
       <Layout>

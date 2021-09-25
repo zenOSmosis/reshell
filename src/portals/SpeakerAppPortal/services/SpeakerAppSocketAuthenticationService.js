@@ -23,6 +23,13 @@ const CLIENT_BUILD_HASH = process.env.REACT_APP_GIT_HASH;
 */
 
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {
+  constructor() {
+    super();
+
+    // Automatically connect
+    this.connect();
+  }
+
   // TODO: Document
   connect() {
     super.connect({
