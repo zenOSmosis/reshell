@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
+
+import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 
 const CallCentralStation = {
   id: "call-central-station",
@@ -13,8 +16,14 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
-  // serviceClasses: [MediaDevicesService],
-  view: function View() {
+  serviceClasses: [SpeakerAppSocketAuthenticationService],
+  view: function View({ windowServices }) {
+    const socketService = windowServices[SpeakerAppSocketAuthenticationService];
+
+    useEffect(() => {
+      socketService.connect();
+    }, [socketService]);
+
     return (
       <Layout>
         <Header>

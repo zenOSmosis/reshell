@@ -17,12 +17,16 @@ export default class SocketIOService extends UIServiceCore {
   }
 
   // TODO: Document
-  connect() {
+  connect(params = {}) {
+    if (this.getIsConnected()) {
+      return;
+    }
+
     if (this._socket) {
       this._socket.connect();
     } else {
       // TODO: Include ability to specify io namespace
-      const socket = io();
+      const socket = io(params.url, params.auth);
 
       socket.on("connect", () => {
         this.setState({
