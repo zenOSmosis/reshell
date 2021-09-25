@@ -1,4 +1,4 @@
-import MediaDevicesService from "../services/MediaDevicesService";
+import MediaDevicesService from "@services/MediaDevicesService";
 
 import Center from "@components/Center";
 import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
@@ -22,10 +22,10 @@ const TestVUMeterWindow = {
     const isCapturing = Boolean(captureFactories.length);
 
     const mediaStreamTracks = captureFactories
-      .map((factory) =>
+      .map(factory =>
         factory
           .getAudioTrackControllers()
-          .map((controller) => controller.getOutputMediaStreamTrack())
+          .map(controller => controller.getOutputMediaStreamTrack())
       )
       .flat();
 
@@ -45,7 +45,7 @@ const TestVUMeterWindow = {
             onClick={() => {
               !isCapturing
                 ? mds.captureDefaultAudioInputDevice()
-                : captureFactories.forEach((factory) => factory.destroy());
+                : captureFactories.forEach(factory => factory.destroy());
             }}
             style={{ backgroundColor: isCapturing ? "red" : null }}
           >

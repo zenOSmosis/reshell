@@ -15,6 +15,7 @@ const CallCentralStation = {
     height: 480,
   },
   isAutoStart: true,
+  // serviceClasses: [MediaDevicesService],
   view: function View() {
     return (
       <Layout>

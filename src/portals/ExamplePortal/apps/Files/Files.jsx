@@ -1,5 +1,5 @@
 import Center from "@components/Center";
-import SocketIOService from "../HostBridge/services/SocketIOService";
+import SocketIOService from "@services/SocketIOService";
 
 // TODO: Look into https://rclone.org for server-side mount-points with
 // third-party storage providers

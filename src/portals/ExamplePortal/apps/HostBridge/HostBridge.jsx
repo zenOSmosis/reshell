@@ -1,6 +1,6 @@
 import LED from "@components/LED";
 
-import SocketIOService from "./services/SocketIOService";
+import SocketIOService from "@services/SocketIOService";
 import SocketAPIMockService from "./services/SocketAPIMockService";
 import HostBridgeAPIMockService from "./services/HostBridgeAPIMockService";
 
@@ -55,7 +55,7 @@ const HostBridge = {
                 onClick={() =>
                   socketService
                     .fetchSocketAPICall("request-data-channel")
-                    .then((resp) => {
+                    .then(resp => {
                       const { channelId } = resp;
 
                       // TODO: Refactor
@@ -65,7 +65,7 @@ const HostBridge = {
                       );
 
                       // TODO: Remove
-                      socketChannel.on(EVT_DATA, (data) => {
+                      socketChannel.on(EVT_DATA, data => {
                         console.log({ received: data });
 
                         // socketChannel.destroy();

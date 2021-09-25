@@ -7,7 +7,7 @@ import Center from "@components/Center";
 import { Video } from "@components/audioVideoRenderers";
 import LED from "@components/LED";
 
-import ScreenCapturerService from "../../services/ScreenCapturerService";
+import ScreenCapturerService from "@services/ScreenCapturerService";
 
 // TODO: Include ability to screen record and take arbitrary snapshot from video feed (separate from ScreenShot app which is a one-time deal)
 

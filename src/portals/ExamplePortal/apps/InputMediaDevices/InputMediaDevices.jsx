@@ -1,4 +1,4 @@
-import MediaDevicesService from "../../services/MediaDevicesService";
+import MediaDevicesService from "@services/MediaDevicesService";
 
 import Layout, { Content, Footer } from "@components/Layout";
 import LED from "@components/LED";
