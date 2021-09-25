@@ -4,11 +4,9 @@ FROM node:14
 
 WORKDIR /app
 
-USER user
-
 COPY . ./
 
-RUN npm install --loglevel verbose
+RUN npm install
 
 USER node
 
