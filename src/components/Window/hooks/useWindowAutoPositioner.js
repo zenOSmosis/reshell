@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef } from "react";
 import getElCenterPoint from "@utils/getElCenterPoint";
 import getElSize from "@utils/getElSize";
 
+import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+
 // TODO: Document
 export default function useWindowAutoPositioner(
   elWindowManager,
@@ -45,6 +47,10 @@ export default function useWindowAutoPositioner(
     // TODO:Implement
   }, [elWindowManager, elWindow, windowController]);
 
+  // TODO: Refactor; Determine current app runtimes so we can determine if we're going to center or scatter new windows
+  const { appRuntimes } = useAppRuntimesContext();
+  const refInitialAppRuntimes = useRef(appRuntimes);
+
   // Apply initial auto-position
   useEffect(() => {
     if (elWindowManager && elWindow && windowController) {
@@ -54,7 +60,14 @@ export default function useWindowAutoPositioner(
 
       // IMPORTANT: This must be called asynchronously or it will not set
       requestAnimationFrame(() => {
-        handleCenter();
+        // Determine initial window position
+        // TODO: Obtain previous value from local storage, or from window registration
+        if (refInitialAppRuntimes.current.length < 2) {
+          // If first window
+          handleCenter();
+        } else {
+          handleScatter();
+        }
 
         // IMPORTANT: This must be called in a subsequent asynchronous call or
         // it may execute before the previous
