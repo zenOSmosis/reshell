@@ -112,7 +112,7 @@ const WindowView = ({
     elTitlebar,
   });
 
-  // Binds border dragging functionality
+  // Binds border resizing functionality
   const [handleBorderDrag, isUserResizing] = useWindowDragResizer({
     windowController,
   });
