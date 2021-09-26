@@ -233,6 +233,7 @@ export default function Desktop({
                           >
                             Maximize
                           </MenuItem>
+                          <MenuDivider />
                           <MenuItem
                             onClick={() => activeWindowController.center()}
                           >
