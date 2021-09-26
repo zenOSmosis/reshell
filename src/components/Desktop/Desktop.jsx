@@ -8,7 +8,13 @@ import AutoScaler from "../AutoScaler";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // TODO: Change this to use data-driven Menubar
-import Menu, { MenuButton, MenuItem, SubMenu } from "../_Menu.LibWrapper";
+import Menu, {
+  MenuButton,
+  MenuItem,
+  MenuHeader,
+  MenuDivider,
+  SubMenu,
+} from "../_Menu.LibWrapper";
 
 import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
@@ -117,7 +123,6 @@ export default function Desktop({
                           ))}
                       </SubMenu>
                       {
-                        // TODO: Show divider
                         // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
                       }
                       {appRegistrations
@@ -130,9 +135,6 @@ export default function Desktop({
                             {app.getTitle()}
                           </MenuItem>
                         ))}
-                      {
-                        // TODO: Show divider
-                      }
                       <MenuItem
                         onClick={() =>
                           alert(
@@ -142,6 +144,8 @@ export default function Desktop({
                       >
                         About / System Information
                       </MenuItem>
+                      <MenuDivider />
+                      <MenuHeader>Global Window Management</MenuHeader>
                       <MenuItem
                         // TODO: Refactor
                         onClick={() =>
@@ -172,9 +176,8 @@ export default function Desktop({
                       >
                         Center Windows
                       </MenuItem>
-                      {
-                        // TODO: Show divider
-                      }
+                      <MenuDivider />
+                      <MenuHeader>Desktop Operations</MenuHeader>
                       <MenuItem
                         onClick={() =>
                           alert("TODO: Implement ReShell destruct")
@@ -182,9 +185,6 @@ export default function Desktop({
                       >
                         Close
                       </MenuItem>
-                      {
-                        // TODO: Show divider
-                      }
                       <MenuItem
                         onClick={() => {
                           // TODO: Only reload after ReShell destruct
