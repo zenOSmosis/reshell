@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDrag } from "react-use-gesture";
 
 const TOP_THRESHOLD = 0;
@@ -12,9 +12,15 @@ export default function useWindowDragger({ windowController, elTitlebar }) {
   const refInitialDragPosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
 
+  const [isUserDragging, setIsUserDragging] = useState(false);
+
   // @see https://use-gesture.netlify.app/docs/#simple-example
   const bind = useDrag(
     ({ down: isDragging, movement: [mx, my], xy, event }) => {
+      if (isDragging !== isUserDragging) {
+        setIsUserDragging(isDragging);
+      }
+
       if (!elTitlebar.contains(event.target)) {
         return;
       }
@@ -69,5 +75,5 @@ export default function useWindowDragger({ windowController, elTitlebar }) {
     }
   );
 
-  return bind;
+  return [bind, isUserDragging];
 }

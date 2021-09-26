@@ -9,6 +9,11 @@
   border: 1px rgb(54, 54, 54) solid;
 }
 
+/** Enable slower transitions when user is not dragging or resizing the window */
+.window-outer-border:not(.dragging) {
+  transition: 0.1s linear;
+}
+
 /** Prevent window from being able to be larger than the available space */
 /* TODO: Only enforce this change if the user has not resized the window? */
 /* TODO: If window is slid off edge, move it, dynamically (i.e. call the appropriate moveTo method in the JS) */

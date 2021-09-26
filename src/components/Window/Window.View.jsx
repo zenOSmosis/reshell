@@ -107,10 +107,15 @@ const WindowView = ({
   }, [windowController, title, zIndex]);
 
   // Binds window dragging functionality
-  const dragBind = useWindowDragger({ windowController, elTitlebar });
+  const [dragBind, isUserDragging] = useWindowDragger({
+    windowController,
+    elTitlebar,
+  });
 
   // Binds border dragging functionality
-  const handleBorderDrag = useWindowDragResizer({ windowController });
+  const [handleBorderDrag, isUserResizing] = useWindowDragResizer({
+    windowController,
+  });
 
   /** @type {boolean} */
   const isWindowBorderDisabled = windowController.getIsBorderDisabled();
@@ -142,7 +147,8 @@ const WindowView = ({
         className={classNames(
           styles["window-outer-border"],
           isHidden && styles["hidden"],
-          isActive && styles["active"]
+          isActive && styles["active"],
+          (isUserDragging || isUserResizing) && styles["dragging"]
           // isMinimized && styles["minimized"]
         )}
         {...rest}
