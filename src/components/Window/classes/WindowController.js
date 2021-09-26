@@ -44,6 +44,9 @@ export default class WindowController extends PhantomCore {
       500
     );
 
+    // TODO: Retain last size / moved and enable reverting back to previous settings
+    // TODO: Enable percentage calculation and adjust when resizing viewport (this should prevent windows from being able to leave the viewport)
+
     this._centerHandler = null;
   }
 
