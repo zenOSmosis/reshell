@@ -207,6 +207,11 @@ export default function Desktop({
                           >
                             Center
                           </MenuItem>
+                          <MenuItem
+                            onClick={() => activeWindowController.scatter()}
+                          >
+                            Scatter
+                          </MenuItem>
                         </Menu>
                       </>
                     )}

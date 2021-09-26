@@ -48,6 +48,7 @@ export default class WindowController extends PhantomCore {
     // TODO: Enable percentage calculation and adjust when resizing viewport (this should prevent windows from being able to leave the viewport)
 
     this._centerHandler = null;
+    this._scatterHandler = null;
   }
 
   /**
@@ -76,13 +77,23 @@ export default class WindowController extends PhantomCore {
   }
 
   // TODO: Document
-  __INTERNAL__setCenterHandler(_centerHandler) {
-    this._centerHandler = _centerHandler;
+  __INTERNAL__setCenterHandler(centerHandler) {
+    this._centerHandler = centerHandler;
   }
 
   // TODO: Document
   center() {
-    this._centerHandler();
+    return this._centerHandler();
+  }
+
+  // TODO: Document
+  __INTERNAL__setScatterHandler(scatterHandler) {
+    this._scatterHandler = scatterHandler;
+  }
+
+  // TODO: Document
+  scatter() {
+    return this._scatterHandler();
   }
 
   // TODO: Document
@@ -166,15 +177,11 @@ export default class WindowController extends PhantomCore {
 
   // TODO: Document
   getSize() {
-    // TODO: If unable to acquire style size for any dimension, return the calculated value
-
-    // issues
     const windowEl = this._windowEl;
     if (windowEl) {
-      // IMPORTANT: Not always using calculated size due to potential performance issues
       return {
-        width: parseInt(windowEl.style.width, 10),
-        height: parseInt(windowEl.style.height, 10),
+        width: windowEl.offsetWidth,
+        height: windowEl.offsetHeight,
       };
     } else {
       console.warn("Unable to acquire windowEl");
