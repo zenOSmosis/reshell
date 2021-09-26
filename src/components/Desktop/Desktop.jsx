@@ -37,7 +37,8 @@ export default function Desktop({
   const { activeWindowController /* addBackgroundAsset */ } =
     useDesktopContext();
   const { appRegistrations } = useAppRegistrationsContext();
-  const { bringToFrontOrStartAppRuntime } = useAppRuntimesContext();
+  const { bringToFrontOrStartAppRuntime, appRuntimes } =
+    useAppRuntimesContext();
 
   // TODO: Implement after PhantomWrapper (or equiv.; assets need to be wrapped in
   // PhantomCore instances in order to be added to background collection)
@@ -140,6 +141,36 @@ export default function Desktop({
                         }
                       >
                         About / System Information
+                      </MenuItem>
+                      <MenuItem
+                        // TODO: Refactor
+                        onClick={() =>
+                          appRuntimes.forEach(runtime => {
+                            const windowController =
+                              runtime.getWindowController();
+
+                            if (windowController) {
+                              windowController.scatter();
+                            }
+                          })
+                        }
+                      >
+                        Scatter Windows
+                      </MenuItem>
+                      <MenuItem
+                        // TODO: Refactor
+                        onClick={() =>
+                          appRuntimes.forEach(runtime => {
+                            const windowController =
+                              runtime.getWindowController();
+
+                            if (windowController) {
+                              windowController.center();
+                            }
+                          })
+                        }
+                      >
+                        Center Windows
                       </MenuItem>
                       {
                         // TODO: Show divider
