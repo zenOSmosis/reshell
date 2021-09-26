@@ -7,6 +7,7 @@ export { EVT_UPDATED, EVT_DESTROYED };
 export const EVT_RENDER_PROFILED = "render-profile";
 
 export const EVT_RESIZED = "resized";
+export const EVT_MOVED = "moved";
 
 // TODO: Implement ability to take snapshot (i.e. save to png, etc) for window previewing
 
@@ -35,6 +36,11 @@ export default class WindowController extends PhantomCore {
 
     this._emitDebouncedResized = debounce(
       this._emitDebouncedResized.bind(this),
+      500
+    );
+
+    this._emitDebouncedMoved = debounce(
+      this._emitDebouncedMoved.bind(this),
       500
     );
 
@@ -207,7 +213,14 @@ export default class WindowController extends PhantomCore {
         windowEl.style.top = `${y}px`;
         delete windowEl.style.bottom;
       }
+
+      this._emitDebouncedMoved();
     }
+  }
+
+  // TODO: Document
+  _emitDebouncedMoved() {
+    this.emit(EVT_MOVED);
   }
 
   // TODO: Document
