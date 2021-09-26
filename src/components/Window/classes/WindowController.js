@@ -171,7 +171,7 @@ export default class WindowController extends PhantomCore {
     // issues
     const windowEl = this._windowEl;
     if (windowEl) {
-      // IMPORTANT: Not always using calculated size due to potential performance
+      // IMPORTANT: Not always using calculated size due to potential performance issues
       return {
         width: parseInt(windowEl.style.width, 10),
         height: parseInt(windowEl.style.height, 10),
