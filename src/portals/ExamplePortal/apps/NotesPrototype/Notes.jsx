@@ -5,6 +5,8 @@ import styles from "./Notes.module.css";
 
 // https://csslayout.io/patterns/lined-paper/
 
+// TODO: [English syntax parsing [server-side; when feature is included to build out SEO for applications / portal]; maybe for different text-processing app] See https://github.com/retextjs/retext/tree/main/packages/retext-english
+
 const Notes = {
   id: "notes",
   title: "Notes",
