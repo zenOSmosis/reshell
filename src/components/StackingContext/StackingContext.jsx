@@ -3,6 +3,7 @@ import classNames from "classnames";
 import styles from "./StackingContext.module.css";
 
 // TODO: Document
+// Also see: https://tiffanybbrown.com/2015/09/css-stacking-contexts-wtf/index.html
 const StackingContext = ({ className, children, onMount, ...propsRest }) => {
   return (
     <div
