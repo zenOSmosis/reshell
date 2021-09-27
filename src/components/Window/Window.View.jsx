@@ -16,6 +16,7 @@ import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
 import useWindowAnimation from "./hooks/useWindowAnimation";
+import WindowTitlebar from "./Window.Titlebar";
 
 // TODO: Add prop-types
 // TODO: Document
@@ -166,20 +167,13 @@ const WindowView = ({
             )}
           >
             <Layout>
-              <Header
-
-              // onDoubleClick={handleToggleRestoreOrMaximize}
-              >
-                <div ref={_setElTitlebar} className={styles["titlebar"]}>
-                  <div className={styles["title"]}>{title}</div>
-                  <div className={styles["window-controls"]}>
-                    <button onClick={onRequestMinimize}>_</button>
-                    <button /* onClick={handleToggleRestoreOrMaximize} */>
-                      -
-                    </button>
-                    <button onClick={onRequestClose}>X</button>
-                  </div>
-                </div>
+              <Header>
+                <WindowTitlebar
+                  onElTitlebar={_setElTitlebar}
+                  title={title}
+                  onRequestMinimize={onRequestMinimize}
+                  onRequestClose={onRequestClose}
+                />
               </Header>
               <Content>{children}</Content>
             </Layout>
