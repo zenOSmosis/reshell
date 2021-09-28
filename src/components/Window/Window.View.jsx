@@ -18,6 +18,9 @@ import useWindowDragResizer from "./hooks/useWindowDragResizer";
 import useWindowAnimation from "./hooks/useWindowAnimation";
 import WindowTitlebar from "./Window.Titlebar";
 
+// TODO: Apply considerations from Apple's Human Interface Guidelines:
+// https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/
+
 // TODO: Add prop-types
 // TODO: Document
 // TODO: Include option to be able to drag the window from within the window body (i.e. like a widget)
