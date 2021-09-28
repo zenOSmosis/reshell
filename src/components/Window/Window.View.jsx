@@ -1,6 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
 import React, { useEffect, useMemo, useState } from "react";
-// import { useSpring, animated } from "@react-spring/web";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
@@ -10,8 +9,6 @@ import WindowTitlebar from "./Window.Titlebar";
 
 import styles from "./Window.module.css";
 import classNames from "classnames";
-
-// import useAnimation from "@hooks/useAnimation";
 
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
@@ -46,14 +43,6 @@ const WindowView = ({
   // TODO: Document
   const { isHidden } = useWindowAnimation(el);
 
-  /*
-  useAnimation({
-    domElement: el,
-    animationName: "slideInUp",
-    shouldRun: hasInitialAutoPosition,
-  });
-  */
-
   // TODO: Document
   useWindowAutoPositioner(elWindowManager, el, windowController);
 
@@ -63,6 +52,7 @@ const WindowView = ({
   const [title, setTitle] = useState(null);
 
   // Associate window element with window controller
+  // TODO: Refactor into useWindowController hook
   useEffect(() => {
     if (windowController && el) {
       windowController.attachWindowElement(el);
@@ -70,6 +60,7 @@ const WindowView = ({
   }, [windowController, el]);
 
   // TODO: Document
+  // TODO: Refactor into useWindowController hook
   useEffect(() => {
     if (windowController) {
       const _handleWindowControllerUpdate = updatedState => {
