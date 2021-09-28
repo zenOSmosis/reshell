@@ -107,7 +107,7 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
-  const { onRestoreOrMaximize, onRestoreOrMinimize, onClose } =
+  const { onRestoreOrMaximize, onMinimize, onClose } =
     useWindowControls(windowController);
 
   // Binds window dragging functionality
@@ -175,7 +175,7 @@ const WindowView = ({
                   onElTitlebar={_setElTitlebar}
                   title={title}
                   onRestoreOrMaximize={onRestoreOrMaximize}
-                  onRestoreOrMinimize={onRestoreOrMinimize}
+                  onMinimize={onMinimize}
                   onClose={onClose}
                 />
               </Header>

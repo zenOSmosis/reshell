@@ -10,8 +10,8 @@ export default function useWindowControls(windowController) {
 
   // TODO: Document
   // TODO: Implement
-  const handleRestoreOrMinimize = useCallback(() => {
-    alert("TODO: Handle restore or minimize");
+  const handleMinimize = useCallback(() => {
+    alert("TODO: Handle minimize");
   }, []);
 
   // TODO: Document
@@ -22,7 +22,7 @@ export default function useWindowControls(windowController) {
 
   return {
     onRestoreOrMaximize: handleRestoreOrMaximize,
-    onRestoreOrMinimize: handleRestoreOrMinimize,
+    onMinimize: handleMinimize,
     onClose: handleClose,
   };
 }

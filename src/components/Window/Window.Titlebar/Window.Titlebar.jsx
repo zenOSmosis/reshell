@@ -10,7 +10,7 @@ export default function WindowTitlebar({
   onElTitlebar,
   title,
   onRestoreOrMaximize,
-  onRestoreOrMinimize,
+  onMinimize,
   onClose,
 }) {
   // onDoubleClick={handleToggleRestoreOrMaximize}
@@ -20,7 +20,7 @@ export default function WindowTitlebar({
       <div className={styles["title"]}>{title}</div>
       <div className={styles["window-controls"]}>
         <WindowTitlebarMaximizeButton onClick={onRestoreOrMaximize} />
-        <WindowTitlebarMinimizeButton onClick={onRestoreOrMinimize} />
+        <WindowTitlebarMinimizeButton onClick={onMinimize} />
         <WindowTitlebarCloseButton onClick={onClose} />
       </div>
     </div>
