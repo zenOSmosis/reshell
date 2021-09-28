@@ -5,6 +5,11 @@ import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 
+// TODO: Incorporate this logic
+// "The user can also click an app’s Dock icon to bring all of that app’s windows forward; the most recently accessed app window becomes the key window."
+// (Ref. "Activating Windows": https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/)
+
+// TODO: Document
 export default function Dock() {
   const { activeWindowController } = useDesktopContext();
   const { runningRegistrations, bringToFrontOrStartAppRuntime } =
@@ -34,6 +39,7 @@ export default function Dock() {
 
   return (
     <div
+      // TODO: Move to module.css
       style={{
         position: "absolute",
         bottom: 0,

@@ -4,6 +4,8 @@ import SocketIOService from "@services/SocketIOService";
 // TODO: Look into https://rclone.org for server-side mount-points with
 // third-party storage providers
 
+// TODO: Save As view: https://developer.apple.com/design/human-interface-guidelines/macos/buttons/disclosure-controls/
+
 const Files = {
   id: "files",
   title: "Files",
