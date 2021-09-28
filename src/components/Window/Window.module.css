@@ -70,3 +70,24 @@
 .window .titlebar .window-controls button {
   font-weight: bold;
 }
+
+.window .titlebar .window-controls button {
+  padding: 0px;
+  margin: 4px;
+  border-radius: 12px;
+  width: 12px;
+  height: 12px;
+  background-color: #ccc;
+}
+
+.window.active .titlebar .window-controls button.maximize {
+  background-color: #00cd1e;
+}
+
+.window.active .titlebar .window-controls button.minimize {
+  background-color: #ffbc00;
+}
+
+.window.active .titlebar .window-controls button.close {
+  background-color: #ff5250;
+}

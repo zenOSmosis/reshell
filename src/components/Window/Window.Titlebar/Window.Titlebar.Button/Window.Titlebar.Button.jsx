@@ -1,18 +1,19 @@
-export default function WindowTitlebarButton({ ...rest }) {
+import styles from "../../Window.module.css";
+
+export function WindowTitlebarMaximizeButton({ ...rest }) {
+  return <WindowTitlebarButton {...rest} className={styles["maximize"]} />;
+}
+
+export function WindowTitlebarMinimizeButton({ ...rest }) {
+  return <WindowTitlebarButton {...rest} className={styles["minimize"]} />;
+}
+
+export function WindowTitlebarCloseButton({ ...rest }) {
+  return <WindowTitlebarButton {...rest} className={styles["close"]} />;
+}
+
+function WindowTitlebarButton({ ...rest }) {
   // TODO: Compose with specific buttons for "green", "yellow", and "red".
 
-  return (
-    <button
-      // TODO: Move to module.css
-      style={{
-        padding: 0,
-        margin: 4,
-        borderRadius: 12,
-        width: 12,
-        height: 12,
-        backgroundColor: "#ccc",
-      }}
-      {...rest}
-    ></button>
-  );
+  return <button {...rest}></button>;
 }

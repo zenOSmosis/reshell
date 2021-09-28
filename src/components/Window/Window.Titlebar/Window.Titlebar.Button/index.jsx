@@ -1,3 +1,11 @@
-import WindowTitlebarButton from "./Window.Titlebar.Button";
+import {
+  WindowTitlebarMaximizeButton,
+  WindowTitlebarMinimizeButton,
+  WindowTitlebarCloseButton,
+} from "./Window.Titlebar.Button";
 
-export default WindowTitlebarButton;
+export {
+  WindowTitlebarMaximizeButton,
+  WindowTitlebarMinimizeButton,
+  WindowTitlebarCloseButton,
+};
