@@ -18,10 +18,6 @@ const Window = React.forwardRef(
       // TODO: Obtain via windowController instead?
       isActive,
 
-      onRequestMinimize,
-      onRequestMaximize,
-      onRequestRestore,
-      onRequestClose,
       style = {},
       ...rest
     },
@@ -54,10 +50,6 @@ const Window = React.forwardRef(
         style={style}
         elWindowManager={elWindowManager}
         windowController={windowController}
-        onRequestMinimize={onRequestMinimize}
-        onRequestMaximize={onRequestMaximize}
-        onRequestRestore={onRequestRestore}
-        onRequestClose={onRequestClose}
         isActive={isActive}
       >
         {children}

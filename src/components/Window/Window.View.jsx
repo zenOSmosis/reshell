@@ -6,6 +6,7 @@ import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
 
 import WindowBorder from "./Window.Border";
+import WindowTitlebar from "./Window.Titlebar";
 
 import styles from "./Window.module.css";
 import classNames from "classnames";
@@ -16,7 +17,7 @@ import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
 import useWindowAnimation from "./hooks/useWindowAnimation";
-import WindowTitlebar from "./Window.Titlebar";
+import useWindowControls from "./hooks/useWindowControls";
 
 // TODO: Apply considerations from Apple's Human Interface Guidelines:
 // https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/
@@ -36,10 +37,6 @@ const WindowView = ({
   // TODO: Obtain via windowController
   isProfiling = true,
 
-  onRequestMinimize,
-  onRequestMaximize,
-  onRequestRestore,
-  onRequestClose,
   style = {},
   ...rest
 }) => {
@@ -110,6 +107,9 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
+  const { onRestoreOrMaximize, onRestoreOrMinimize, onClose } =
+    useWindowControls(windowController);
+
   // Binds window dragging functionality
   const [dragBind, isUserDragging] = useWindowDragger({
     windowController,
@@ -174,8 +174,9 @@ const WindowView = ({
                 <WindowTitlebar
                   onElTitlebar={_setElTitlebar}
                   title={title}
-                  onRequestMinimize={onRequestMinimize}
-                  onRequestClose={onRequestClose}
+                  onRestoreOrMaximize={onRestoreOrMaximize}
+                  onRestoreOrMinimize={onRestoreOrMinimize}
+                  onClose={onClose}
                 />
               </Header>
               <Content>{children}</Content>

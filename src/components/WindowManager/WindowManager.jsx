@@ -165,36 +165,6 @@ function WindowManagerView({ appDescriptors = [], children }) {
   }, [elBase]);
 
   /**
-   * @param {WindowController} windowController
-   * @return {void}
-   */
-  const handleWindowMinimize = useCallback(windowController => {
-    if (windowController) {
-      windowController.minimize();
-    }
-  }, []);
-
-  /**
-   * @param {WindowController} windowController
-   * @return {void}
-   */
-  const handleWindowClose = useCallback(
-    windowController => {
-      if (windowController) {
-        // TODO: Determine here if window is in a non-saved state, and if the
-        // user should be prompted before closing
-
-        windowController.destroy();
-
-        // Make no window the active window
-        // TODO: Make previous window the active window?
-        handleSetActiveWindow(null);
-      }
-    },
-    [handleSetActiveWindow]
-  );
-
-  /**
    * Determines which windows are rendered to the screen at any given time, as
    * \well as controls instantiation and association of window controllers with
    * their respective views.
@@ -266,8 +236,6 @@ function WindowManagerView({ appDescriptors = [], children }) {
           )}
           onMouseDown={() => handleSetActiveWindow(windowController)}
           onTouchStart={() => handleSetActiveWindow(windowController)}
-          onRequestMinimize={() => handleWindowMinimize(windowController)}
-          onRequestClose={() => handleWindowClose(windowController)}
           ref={ref => {
             if (ref && !windowController) {
               // Begin process of attaching window controller to rendered view

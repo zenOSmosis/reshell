@@ -1,10 +1,13 @@
 import styles from "../Window.module.css";
 
+import WindowTitlebarButton from "./Window.Titlebar.Button";
+
 export default function WindowTitlebar({
   onElTitlebar,
   title,
-  onRequestMinimize,
-  onRequestClose,
+  onRestoreOrMaximize,
+  onRestoreOrMinimize,
+  onClose,
 }) {
   // onDoubleClick={handleToggleRestoreOrMaximize}
 
@@ -12,9 +15,9 @@ export default function WindowTitlebar({
     <div ref={onElTitlebar} className={styles["titlebar"]}>
       <div className={styles["title"]}>{title}</div>
       <div className={styles["window-controls"]}>
-        <button onClick={onRequestMinimize}>_</button>
-        <button /* onClick={handleToggleRestoreOrMaximize} */>-</button>
-        <button onClick={onRequestClose}>X</button>
+        <WindowTitlebarButton onClick={onRestoreOrMaximize} />
+        <WindowTitlebarButton onClick={onRestoreOrMinimize} />
+        <WindowTitlebarButton onClick={onClose} />
       </div>
     </div>
   );
