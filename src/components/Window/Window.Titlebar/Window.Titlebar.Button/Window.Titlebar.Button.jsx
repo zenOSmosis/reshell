@@ -3,6 +3,7 @@ export default function WindowTitlebarButton({ ...rest }) {
 
   return (
     <button
+      // TODO: Move to module.css
       style={{
         padding: 0,
         margin: 4,
