@@ -5,14 +5,18 @@ export default function useWindowControls(windowController) {
   // TODO: Document
   // TODO: Implement
   const handleRestoreOrMaximize = useCallback(() => {
-    alert("TODO: Handle restore or maximize");
-  }, []);
+    if (windowController.getIsMaximized()) {
+      windowController.restore();
+    } else {
+      windowController.maximize();
+    }
+  }, [windowController]);
 
   // TODO: Document
   // TODO: Implement
   const handleMinimize = useCallback(() => {
-    alert("TODO: Handle minimize");
-  }, []);
+    windowController.minimize();
+  }, [windowController]);
 
   // TODO: Document
   // TODO: Implement

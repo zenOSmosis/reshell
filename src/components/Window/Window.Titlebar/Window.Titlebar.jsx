@@ -16,7 +16,11 @@ export default function WindowTitlebar({
   // onDoubleClick={handleToggleRestoreOrMaximize}
 
   return (
-    <div ref={onElTitlebar} className={styles["titlebar"]}>
+    <div
+      ref={onElTitlebar}
+      className={styles["titlebar"]}
+      onDoubleClick={onRestoreOrMaximize}
+    >
       <div className={styles["title"]}>{title}</div>
       <div className={styles["window-controls"]}>
         <WindowTitlebarMaximizeButton onClick={onRestoreOrMaximize} />

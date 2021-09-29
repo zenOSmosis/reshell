@@ -1,5 +1,5 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
@@ -48,8 +48,8 @@ const WindowView = ({
 
   const [elTitlebar, _setElTitlebar] = useState(null);
 
-  const [zIndex, setZIndex] = useState(0);
-  const [title, setTitle] = useState(null);
+  const [zIndex, _setZIndex] = useState(0);
+  const [title, _setTitle] = useState(null);
 
   // Associate window element with window controller
   // TODO: Refactor into useWindowController hook
@@ -58,6 +58,11 @@ const WindowView = ({
       windowController.attachWindowElement(el);
     }
   }, [windowController, el]);
+
+  /** @type {boolean} */
+  const [isWindowBorderDisabled, _setIsWindowBorderDisabled] = useState(false);
+  const refIsWindowBorderDisabled = useRef(null);
+  refIsWindowBorderDisabled.current = isWindowBorderDisabled;
 
   // TODO: Document
   // TODO: Refactor into useWindowController hook
@@ -74,7 +79,7 @@ const WindowView = ({
           // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
           updatedState.title !== title
         ) {
-          setTitle(updatedState.title);
+          _setTitle(updatedState.title);
         }
 
         // Only apply view state change when necessary
@@ -83,7 +88,32 @@ const WindowView = ({
           // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
           updatedState.stackingIndex !== zIndex
         ) {
-          setZIndex(updatedState.stackingIndex);
+          _setZIndex(updatedState.stackingIndex);
+        }
+
+        if (updatedState.isMaximized) {
+          alert("TODO: Apply maximized CSS style");
+        }
+
+        if (updatedState.isMinimized) {
+          alert("TODO: Apply minimized CSS style");
+        }
+
+        if (
+          updatedState.isMaximized !== undefined &&
+          !updatedState.isMaximized &&
+          updatedState.isMinimized !== undefined &&
+          !updatedState.isMinimized
+        ) {
+          alert("TODO: Apply restored CSS style");
+        }
+
+        const shouldWindowBorderBeDisabled =
+          windowController.getIsBorderDisabled();
+        if (
+          refIsWindowBorderDisabled.current !== shouldWindowBorderBeDisabled
+        ) {
+          _setIsWindowBorderDisabled(shouldWindowBorderBeDisabled);
         }
       };
 
@@ -105,15 +135,13 @@ const WindowView = ({
   const [dragBind, isUserDragging] = useWindowDragger({
     windowController,
     elTitlebar,
+    isDisabled: isWindowBorderDisabled,
   });
 
   // Binds border resizing functionality
   const [handleBorderDrag, isUserResizing] = useWindowDragResizer({
     windowController,
   });
-
-  /** @type {boolean} */
-  const isWindowBorderDisabled = windowController.getIsBorderDisabled();
 
   // TODO: Document
   const DynamicProfilingWrapper = useMemo(

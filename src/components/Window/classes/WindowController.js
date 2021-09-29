@@ -272,13 +272,18 @@ export default class WindowController extends PhantomCore {
 
     // Potentially reset polar-opposite states
     if (partialNextState.isMaximized) {
-      this._state.isMinimized = false;
+      partialNextState.isMinimized = false;
     } else if (partialNextState.isMinimized) {
-      this._state.isMaximized = false;
+      partialNextState.isMaximized = false;
     }
 
     // TODO: This is buggy with certain types of state objects; should we just do a shallow-merge instead?
     this._state = PhantomCore.mergeOptions(this._state, partialNextState);
+
+    // TODO: Remove
+    console.log({
+      nextState: this._state,
+    });
 
     this.emit(EVT_UPDATED, partialNextState);
   }
@@ -309,6 +314,10 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMaximized });
   }
 
+  maximize() {
+    return this.setIsMaximized(true);
+  }
+
   /**
    * Retrieves whether or not the window is maximized.
    *
@@ -328,6 +337,10 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMinimized });
   }
 
+  minimize() {
+    return this.setIsMinimized(true);
+  }
+
   /**
    * Retrieves whether or not the window is minimized.
    *
@@ -335,5 +348,12 @@ export default class WindowController extends PhantomCore {
    */
   getIsMinimized() {
     return this._state.isMinimized;
+  }
+
+  restore() {
+    this.setState({
+      isMaximized: false,
+      isMinimized: false,
+    });
   }
 }

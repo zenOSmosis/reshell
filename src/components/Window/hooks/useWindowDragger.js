@@ -8,7 +8,11 @@ const RIGHT_THRESHOLD = 0;
 
 // TODO: Document
 // TODO: Implement ability to turn off dragging
-export default function useWindowDragger({ windowController, elTitlebar }) {
+export default function useWindowDragger({
+  windowController,
+  elTitlebar,
+  isDisabled,
+}) {
   const refInitialDragPosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
 
@@ -17,6 +21,10 @@ export default function useWindowDragger({ windowController, elTitlebar }) {
   // @see https://use-gesture.netlify.app/docs/#simple-example
   const bind = useDrag(
     ({ down: isDragging, movement: [mx, my], xy, event }) => {
+      if (isDisabled) {
+        return;
+      }
+
       if (isDragging !== isUserDragging) {
         setIsUserDragging(isDragging);
       }
