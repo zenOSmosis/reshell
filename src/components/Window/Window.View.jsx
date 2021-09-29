@@ -64,6 +64,9 @@ const WindowView = ({
   const refIsWindowBorderDisabled = useRef(null);
   refIsWindowBorderDisabled.current = isWindowBorderDisabled;
 
+  const [isMaximized, _setIsMaximized] = useState(false);
+  const [isMinimized, _setIsMinimized] = useState(false);
+
   // TODO: Document
   // TODO: Refactor into useWindowController hook
   useEffect(() => {
@@ -91,21 +94,12 @@ const WindowView = ({
           _setZIndex(updatedState.stackingIndex);
         }
 
-        if (updatedState.isMaximized) {
-          alert("TODO: Apply maximized CSS style");
+        if (updatedState.isMaximized !== undefined) {
+          _setIsMaximized(updatedState.isMaximized);
         }
 
-        if (updatedState.isMinimized) {
-          alert("TODO: Apply minimized CSS style");
-        }
-
-        if (
-          updatedState.isMaximized !== undefined &&
-          !updatedState.isMaximized &&
-          updatedState.isMinimized !== undefined &&
-          !updatedState.isMinimized
-        ) {
-          alert("TODO: Apply restored CSS style");
+        if (updatedState.isMinimized !== undefined) {
+          _setIsMinimized(updatedState.isMinimized);
         }
 
         const shouldWindowBorderBeDisabled =
@@ -162,15 +156,25 @@ const WindowView = ({
     [isProfiling, windowController]
   );
 
+  const userStyleOverride = (() => {
+    if (isMaximized || isMinimized) {
+      return {};
+    } else {
+      return { ...style };
+    }
+  })();
+
   return (
     <DynamicProfilingWrapper>
       <StackingContext
         onMount={_setEl}
-        style={{ ...style, zIndex }}
+        style={{ ...userStyleOverride, zIndex }}
         className={classNames(
           styles["window-outer-border"],
           isHidden && styles["hidden"],
           isActive && styles["active"],
+          isMaximized && styles["maximized"],
+          isMinimized && styles["minimized"],
           (isUserDragging || isUserResizing) && styles["dragging"]
           // isMinimized && styles["minimized"]
         )}
