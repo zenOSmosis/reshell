@@ -14,6 +14,7 @@ export const EVT_MOVED = "moved";
 // TODO: Move into core directory?
 // TODO: Document
 export default class WindowController extends PhantomCore {
+  // TODO: Document
   constructor(initialState = {}, { onBringToTop }) {
     super();
 
