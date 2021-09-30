@@ -280,11 +280,6 @@ export default class WindowController extends PhantomCore {
     // TODO: This is buggy with certain types of state objects; should we just do a shallow-merge instead?
     this._state = PhantomCore.mergeOptions(this._state, partialNextState);
 
-    // TODO: Remove
-    console.log({
-      nextState: this._state,
-    });
-
     this.emit(EVT_UPDATED, partialNextState);
   }
 
