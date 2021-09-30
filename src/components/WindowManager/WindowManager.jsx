@@ -83,6 +83,14 @@ function WindowManagerView({ appDescriptors = [], children }) {
    */
   const handleSetActiveWindow = useCallback(
     windowController => {
+      // Restore minimized windows
+      // IMPORTANT: This should come before the is-current-window determination
+      // so that the Dock (and other activators) can un-minimize, regardless of
+      // the active window
+      if (windowController?.getIsMinimized()) {
+        windowController.setIsMinimized(false);
+      }
+
       if (
         !Object.is(
           windowController,
