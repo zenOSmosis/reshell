@@ -51,6 +51,15 @@ export default function Dock() {
         zIndex: 99999999,
       }}
     >
+      {
+        // TODO: Add tooltip functionality
+        // - https://www.npmjs.com/package/rc-tooltip
+        // - https://www.npmjs.com/package/react-tooltip
+        // - Note: Original Shell's Antd theme used rc-tooltip as the base (https://github.com/zenOSmosis/js-shell/blob/master/frontend/src/components/Desktop/Dock/DockItem.jsx)
+        //
+        // TODO: Add button menu
+        // - See original Shell implementation: https://github.com/zenOSmosis/js-shell/blob/master/frontend/src/components/Desktop/Dock/DockItem.jsx
+      }
       <div style={{ display: "inline-block", color: "black" }}>
         {dockRegistrations.map(registration => (
           <button
