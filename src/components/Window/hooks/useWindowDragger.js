@@ -7,7 +7,6 @@ const LEFT_THRESHOLD = 0;
 const RIGHT_THRESHOLD = 0;
 
 // TODO: Document
-// TODO: Implement ability to turn off dragging
 export default function useWindowDragger({
   windowController,
   elTitlebar,
