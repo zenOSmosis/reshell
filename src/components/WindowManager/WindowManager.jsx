@@ -108,6 +108,20 @@ function WindowManagerView({ appDescriptors = [], children }) {
     [setDesktopContextActiveWindowController]
   );
 
+  // TODO: Document
+  const handleGetIsActiveWindow = useCallback(
+    windowController => {
+      // TODO: Remove
+      console.log({
+        desktopContextActiveWindowController,
+        windowController,
+      });
+
+      return Object.is(desktopContextActiveWindowController, windowController);
+    },
+    [desktopContextActiveWindowController]
+  );
+
   // Handle setting of active window based on locationAppRuntimes
   // TODO: Fix; currently buggy w/ Safari
   // TODO: Implement deep linking
@@ -215,6 +229,12 @@ function WindowManagerView({ appDescriptors = [], children }) {
       /** @type {WindowController | void} */
       const windowController = dataMap && dataMap.windowController;
 
+      if (windowController) {
+        windowController.__INTERNAL__setIsActive(
+          handleGetIsActiveWindow(windowController)
+        );
+      }
+
       // If we previously had a window controller running with this id
       //
       // TODO: Implement ability to flush this and restart a window with the same id?
@@ -238,10 +258,8 @@ function WindowManagerView({ appDescriptors = [], children }) {
           key={key}
           {...windowProps}
           elWindowManager={elBase}
-          isActive={Object.is(
-            desktopContextActiveWindowController,
-            windowController
-          )}
+          // TODO: Remove isActive and pass in from WindowController to the window
+          isActive={handleGetIsActiveWindow(windowController)}
           onMouseDown={() => handleSetActiveWindow(windowController)}
           onTouchStart={() => handleSetActiveWindow(windowController)}
           ref={ref => {

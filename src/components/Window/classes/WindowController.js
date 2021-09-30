@@ -22,6 +22,7 @@ export default class WindowController extends PhantomCore {
       isMaximized: false,
       isMinimized: false,
       title: this.getTitle(),
+      isActive: false,
     };
 
     this._state = Object.seal(
@@ -48,6 +49,7 @@ export default class WindowController extends PhantomCore {
     // TODO: Retain last size / moved and enable reverting back to previous settings
     // TODO: Enable percentage calculation and adjust when resizing viewport (this should prevent windows from being able to leave the viewport)
 
+    // TODO: Ensure these are unbound when controller is destructed
     this._centerHandler = null;
     this._scatterHandler = null;
   }
@@ -100,6 +102,18 @@ export default class WindowController extends PhantomCore {
   // TODO: Document
   bringToTop() {
     this._handleBringToTop(this);
+  }
+
+  // TODO: Document
+  __INTERNAL__setIsActive(isActive) {
+    if (isActive !== this.getIsActive()) {
+      this.setState({ isActive });
+    }
+  }
+
+  // TODO: Document
+  getIsActive() {
+    return this.getState().isActive;
   }
 
   // TODO: Document
