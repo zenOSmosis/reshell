@@ -23,8 +23,8 @@
 }
 
 .window-outer-border.minimized {
-  top: 100% !important;
-  width: 0% !important;
+  top: 120% !important;
+  width: 10% !important;
   left: 50% !important;
 }
 
