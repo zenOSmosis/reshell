@@ -166,8 +166,6 @@ const WindowView = ({
     }
   })();
 
-  // TODO: Ensure maximized windows clear the dock
-
   return (
     <DynamicProfilingWrapper>
       <StackingContext
