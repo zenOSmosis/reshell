@@ -13,7 +13,7 @@ import classNames from "classnames";
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
-import useWindowAnimation from "./hooks/useWindowAnimation";
+import useWindowOpenAnimation from "./hooks/useWindowOpenAnimation";
 import useWindowControls from "./hooks/useWindowControls";
 
 // TODO: Apply considerations from Apple's Human Interface Guidelines:
@@ -41,7 +41,7 @@ const WindowView = ({
   const [el, _setEl] = useState(null);
 
   // TODO: Document
-  const { isHidden } = useWindowAnimation(el);
+  const { isOpenAnimationEnded } = useWindowOpenAnimation(el);
 
   // TODO: Document
   useWindowAutoPositioner(elWindowManager, el, windowController);
@@ -171,7 +171,10 @@ const WindowView = ({
         style={{ ...userStyleOverride, zIndex }}
         className={classNames(
           styles["window-outer-border"],
-          isHidden && styles["hidden"],
+
+          // Prevents "popping" of window before open animation ends
+          !isOpenAnimationEnded && styles["hidden"],
+
           isActive && styles["active"],
           isMaximized && styles["maximized"],
           isMinimized && styles["minimized"],

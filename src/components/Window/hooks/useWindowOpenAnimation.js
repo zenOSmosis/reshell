@@ -2,10 +2,10 @@ import { useState } from "react";
 import useAnimation from "@hooks/useAnimation";
 
 // TODO: Document
-export default function useWindowAnimation(el) {
+export default function useWindowOpenAnimation(el) {
   //const [phase, setPhase] = useState("transition-in");
 
-  const [isHidden, setIsHidden] = useState(true);
+  const [isOpenAnimationEnded, _setIsOpenAnimationEnded] = useState(false);
 
   // Window opening transition
   useAnimation({
@@ -13,10 +13,8 @@ export default function useWindowAnimation(el) {
     animationName: "zoomInUp",
     animationDuration: ".5s",
     shouldRun: Boolean(el),
-    onAnimationEnd: () => setIsHidden(false),
+    onAnimationEnd: () => _setIsOpenAnimationEnded(true),
   });
 
-  // TODO: Handle minimize / maximize transitions
-
-  return { isHidden };
+  return { isOpenAnimationEnded };
 }
