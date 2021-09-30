@@ -110,15 +110,8 @@ function WindowManagerView({ appDescriptors = [], children }) {
 
   // TODO: Document
   const handleGetIsActiveWindow = useCallback(
-    windowController => {
-      // TODO: Remove
-      console.log({
-        desktopContextActiveWindowController,
-        windowController,
-      });
-
-      return Object.is(desktopContextActiveWindowController, windowController);
-    },
+    windowController =>
+      Object.is(desktopContextActiveWindowController, windowController),
     [desktopContextActiveWindowController]
   );
 
@@ -229,11 +222,13 @@ function WindowManagerView({ appDescriptors = [], children }) {
       /** @type {WindowController | void} */
       const windowController = dataMap && dataMap.windowController;
 
+      /*
       if (windowController) {
         windowController.__INTERNAL__setIsActive(
           handleGetIsActiveWindow(windowController)
         );
       }
+      */
 
       // If we previously had a window controller running with this id
       //

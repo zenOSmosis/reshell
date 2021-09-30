@@ -22,7 +22,7 @@ export default class WindowController extends PhantomCore {
       isMaximized: false,
       isMinimized: false,
       title: this.getTitle(),
-      isActive: false,
+      // isActive: false,
     };
 
     this._state = Object.seal(
@@ -105,16 +105,20 @@ export default class WindowController extends PhantomCore {
   }
 
   // TODO: Document
+  /*
   __INTERNAL__setIsActive(isActive) {
     if (isActive !== this.getIsActive()) {
       this.setState({ isActive });
     }
   }
+  */
 
   // TODO: Document
+  /*
   getIsActive() {
     return this.getState().isActive;
   }
+  */
 
   // TODO: Document
   // @see https://reactjs.org/docs/profiler.html
