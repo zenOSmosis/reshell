@@ -49,7 +49,8 @@ export default class WindowController extends PhantomCore {
     // TODO: Retain last size / moved and enable reverting back to previous settings
     // TODO: Enable percentage calculation and adjust when resizing viewport (this should prevent windows from being able to leave the viewport)
 
-    // TODO: Ensure these are unbound when controller is destructed
+    // TODO: Ensure these are unbound when controller is destructed (related issue: https://github.com/zenOSmosis/phantom-core/issues/68)
+    // (For manually triggering Chrome's built-in Garbage Collector, see: https://github.com/facebook/react/issues/22471)
     this._centerHandler = null;
     this._scatterHandler = null;
   }
