@@ -222,6 +222,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
       /** @type {WindowController | void} */
       const windowController = dataMap && dataMap.windowController;
 
+      // TODO: Fix issues with rendering errors related to the usage of this
       /*
       if (windowController) {
         windowController.__INTERNAL__setIsActive(
