@@ -13,6 +13,10 @@
   border-radius: 8px;
 }
 
+.szh-menu-container li[aria-disabled="true"] {
+  color: #999;
+}
+
 /** Menu button; closed state */
 button.szh-menu-button {
   background-color: transparent;
