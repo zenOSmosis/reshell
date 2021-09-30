@@ -34,10 +34,6 @@ const Window = React.forwardRef(
     // The windowController should already be supplied by WindowManager before
     // rendering is even attempted
     if (!windowController) {
-      console.warn(
-        "No window controller available; blocking window render attempt"
-      );
-
       return null;
     }
 
@@ -46,7 +42,6 @@ const Window = React.forwardRef(
     return (
       <WindowView
         {...rest}
-        // TODO: If wrapping w/ optional profiler, use a key here so that internal view state is not lost?
         style={style}
         elWindowManager={elWindowManager}
         windowController={windowController}
