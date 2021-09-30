@@ -219,10 +219,14 @@ export default function Desktop({
                           portal={true}
                           menuButton={<MenuButton>Window</MenuButton>}
                         >
+                          {
+                            // TODO: Refresh items when activeWindowController updates
+                          }
                           <MenuItem
                             onClick={() =>
                               activeWindowController.setIsMinimized(true)
                             }
+                            // disabled={activeWindowController?.getIsMinimized()}
                           >
                             Minimize
                           </MenuItem>
@@ -230,8 +234,15 @@ export default function Desktop({
                             onClick={() =>
                               activeWindowController.setIsMaximized(true)
                             }
+                            // disabled={activeWindowController?.getIsMaximized()}
                           >
                             Maximize
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => activeWindowController.restore()}
+                            // disabled={}
+                          >
+                            Restore
                           </MenuItem>
                           <MenuDivider />
                           <MenuItem
