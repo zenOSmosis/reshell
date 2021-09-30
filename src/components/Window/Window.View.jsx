@@ -156,11 +156,13 @@ const WindowView = ({
     [isProfiling, windowController]
   );
 
+  // Conditionally overrides style property when window is maximized or
+  // minimized so that they do not conflict with the CSS classes
   const userStyleOverride = (() => {
     if (isMaximized || isMinimized) {
       return {};
     } else {
-      return { ...style };
+      return style;
     }
   })();
 
