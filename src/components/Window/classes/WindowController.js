@@ -347,6 +347,8 @@ export default class WindowController extends PhantomCore {
   }
 
   restore() {
+    // IMPORTANT: The maximized / minimized states need to be set at the same
+    // time here; don't call the individual methods directly
     this.setState({
       isMaximized: false,
       isMinimized: false,
