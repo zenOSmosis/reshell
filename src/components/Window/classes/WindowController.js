@@ -238,6 +238,8 @@ export default class WindowController extends PhantomCore {
       // Additional reading:
       //  - https://medium.com/iporaitech/css-background-animation-avoiding-high-cpu-usage-58947ff50900
       //  - https://wesleyhales.com/blog/2013/10/26/Jank-Busting-Apples-Home-Page/
+      //
+      // High CPU usage during window movements DOES NOT seem to be an issue w/ Firefox on Xubuntu
 
       if (x !== undefined) {
         windowEl.style.left = `${x}px`;
