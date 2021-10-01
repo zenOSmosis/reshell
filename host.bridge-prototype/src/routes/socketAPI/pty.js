@@ -7,6 +7,9 @@ import {
 import os from "os";
 const pty = require("node-pty");
 
+// TODO: Implement ability to open GUI apps in ReShell application, from command-line
+// Ex. 1: https://xplorer.vercel.app/docs/guides/cli
+
 // TODO: Document
 // TODO: Require another socket channel for meta / control communications (i.e.
 // to know when UI terminal is resized, etc.) or use some other internal event
