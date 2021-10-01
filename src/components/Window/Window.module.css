@@ -6,9 +6,17 @@
   position: absolute;
 }
 
+/** TODO: Add adjustable padding to outer-border cells (will probably need a
+class set on the individual elements).  This padding will determine the width
+of the drag zone outside of the windows. */
+
+/** TODO: Rename window-outer-border to window-drag-resize-border (or equiv.) */
+
+/*
 .window-outer-border:not(.maximized) {
   border: 4px transparent solid;
 }
+*/
 
 .window-outer-border.maximized {
   top: 0px !important;
