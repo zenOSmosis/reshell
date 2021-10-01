@@ -234,6 +234,10 @@ export default class WindowController extends PhantomCore {
       // if that solution is utilized, it needs to be checked with seeing how
       // windows respond when resized in multiple directions, so that they
       // don't bounce around, etc.
+      //
+      // Additional reading:
+      //  - https://medium.com/iporaitech/css-background-animation-avoiding-high-cpu-usage-58947ff50900
+      //  - https://wesleyhales.com/blog/2013/10/26/Jank-Busting-Apples-Home-Page/
 
       if (x !== undefined) {
         windowEl.style.left = `${x}px`;
