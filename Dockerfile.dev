@@ -1,3 +1,7 @@
+# NOTE: This Dockerfile, or portions within, will probably wind up becoming part of HostBridge
+
+# TODO: Look into https://devopscube.com/run-docker-in-docker
+
 FROM ubuntu:20.04
 
 # @see https://grigorkh.medium.com/fix-tzdata-hangs-docker-image-build-cdb52cc3360d
