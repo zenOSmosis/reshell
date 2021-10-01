@@ -1,8 +1,10 @@
 import { useCallback } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
+import Full from "@components/Full";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
+import ContentArea from "@components/ContentArea";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
@@ -69,20 +71,22 @@ const CallCentralStation = {
           }
         </Header>
         <Content>
-          <Center canOverflow={true}>
-            {lenNetworks === 0 ? (
-              <NoNetworks />
-            ) : (
-              <Networks
-                networks={networks}
-                // isConnected,
-                // realmId,
-                // channelId,
-                onConnectToNetwork={handleConnectToNetwork}
-                onDisconnectFromNetwork={handleDisconnectFromNetwork}
-              />
-            )}
-          </Center>
+          <ContentArea>
+            <Center canOverflow={true}>
+              {lenNetworks === 0 ? (
+                <NoNetworks />
+              ) : (
+                <Networks
+                  networks={networks}
+                  // isConnected,
+                  // realmId,
+                  // channelId,
+                  onConnectToNetwork={handleConnectToNetwork}
+                  onDisconnectFromNetwork={handleDisconnectFromNetwork}
+                />
+              )}
+            </Center>
+          </ContentArea>
         </Content>
         <Footer>
           <AppLinkButton

@@ -69,7 +69,7 @@ export default function Dock() {
                     backgroundColor: "rgba(38, 157, 255, .8)",
                     color: "#000",
                   }
-                : {}
+                : { backgroundColor: "#000" }
             }
             key={registration.getUUID()}
             onClick={() => bringToFrontOrStartAppRuntime(registration)}

@@ -4,9 +4,10 @@
 
 .window-outer-border {
   position: absolute;
+}
 
-  border-radius: 8px;
-  border: 1px rgb(54, 54, 54) solid;
+.window-outer-border:not(.maximized) {
+  border: 4px transparent solid;
 }
 
 .window-outer-border.maximized {
@@ -42,14 +43,20 @@
   max-height: 100%;
 }
 
+.window {
+  border: 1px rgba(255, 255, 255, 0.2) solid;
+  border-radius: 8px;
+  overflow: hidden;
+
+  background-color: #1f2022;
+}
+
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.8));
-  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
-  background-color: rgba(0, 0, 0, 1);
 }
 
 .window .titlebar {
@@ -66,7 +73,7 @@
 }
 
 .window.active .titlebar {
-  background-color: rgb(54, 54, 54);
+  background-color: #3e3f41;
   color: #fff;
 }
 
