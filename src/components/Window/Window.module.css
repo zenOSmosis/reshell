@@ -52,7 +52,7 @@
 }
 
 .window-outer-border:not(.active) {
-  filter: drop-shadow(0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
 }
 
 .window-outer-border.active {
