@@ -135,11 +135,11 @@ ul li {
 */
 button {
   outline: none;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #ccc;
+  background-color: #696a6d;
+  color: #eceded;
   font-weight: bold;
   border: 1px rgba(255, 255, 255, 0.2) solid;
+  border-radius: 4px;
   cursor: pointer;
 }
 

@@ -20,7 +20,7 @@
    * Ensure maximized windows clear the Dock
    * TODO: Refactor as necessary to handle dynamic Dock layouts
    */
-  padding-bottom: 28px !important;
+  padding-bottom: 30px !important;
 }
 
 .window-outer-border.minimized {
