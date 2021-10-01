@@ -26,6 +26,11 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
   const [isOverflown, setIsOverflown] = useState(getIsOverflown());
 
+  // Force check on every render, if is detecting
+  if (isDetecting && isOverflown !== getIsOverflown()) {
+    setIsOverflown(!isOverflown);
+  }
+
   const refPrevIsOverflown = useRef(isOverflown);
   refPrevIsOverflown.current = isOverflown;
 
@@ -38,7 +43,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
       const checkIsOverflown = () => {
         const prevIsOverflown = refPrevIsOverflown.current;
 
-        const newIsOverflown = getIsOverflown();
+        const nextIsOverflown = getIsOverflown();
 
         const focusedTagName =
           document.activeElement && document.activeElement.tagName;
@@ -53,16 +58,16 @@ export default function useOverflowDetection(element, isDetecting = true) {
           focusedTagName.toLowerCase() !== "input" &&
           focusedTagName.toLowerCase() !== "textarea"
         ) {
-          if (prevIsOverflown !== newIsOverflown) {
-            setIsOverflown(newIsOverflown);
+          if (prevIsOverflown !== nextIsOverflown) {
+            setIsOverflown(nextIsOverflown);
           }
         }
       };
 
-      const ro = new ResizeObserver((entries) => {
+      const ro = new ResizeObserver(entries => {
         /**
          * IMPORTANT: requestAnimationFrame is used here to prevent possible
-         * "resize-observer loop limit exceeeded error."
+         * "resize-observer loop limit exceeded error."
          *
          * "This error means that ResizeObserver was not able to deliver all
          * observations within a single animation frame. It is benign (your site
