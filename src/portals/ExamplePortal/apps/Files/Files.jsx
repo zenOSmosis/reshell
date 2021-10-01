@@ -6,6 +6,11 @@ import SocketIOService from "@services/SocketIOService";
 
 // TODO: Save As view: https://developer.apple.com/design/human-interface-guidelines/macos/buttons/disclosure-controls/
 
+// TODO: See reference project (these links are for an Electon-based file explorer written w/ TypeScript)
+// - [dev.to] https://dev.to/kimlimjustin/i-wrote-a-fully-functioning-file-explorer-using-typescript-1e4n
+// - [github] https://github.com/kimlimjustin/xplorer
+// - [gitpod] https://gitpod.io/#/https://github.com/kimlimjustin/xplorer
+
 const Files = {
   id: "files",
   title: "Files",
