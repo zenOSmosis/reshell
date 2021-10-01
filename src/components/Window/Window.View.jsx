@@ -207,7 +207,10 @@ const WindowView = ({
                   onClose={onClose}
                 />
               </Header>
-              <Content>{children}</Content>
+              {
+                // TODO: Enable window body padding to be user-overridable
+              }
+              <Content className={styles["body"]}>{children}</Content>
             </Layout>
           </Full>
         </WindowView.Border>

@@ -121,3 +121,7 @@ of the drag zone outside of the windows. */
 .window.active .titlebar .window-controls button.close {
   background-color: #ff5250;
 }
+
+.window .body {
+  padding: 8px;
+}
