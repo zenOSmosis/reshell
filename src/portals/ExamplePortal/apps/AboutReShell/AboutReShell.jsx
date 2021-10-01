@@ -12,10 +12,11 @@ const AboutReShell = {
   style: {
     width: 640,
     height: 480,
+    backgroundColor: "#424242",
   },
   view: function View() {
     return (
-      <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
+      <Layout>
         <Content>
           <Center>
             <div style={{ fontSize: "8rem", fontStyle: "italic" }}>ReShell</div>

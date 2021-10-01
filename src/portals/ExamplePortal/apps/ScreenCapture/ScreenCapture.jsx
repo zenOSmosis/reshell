@@ -19,6 +19,7 @@ const ScreenCaptureWindow = {
   style: {
     width: 640 * 0.8,
     height: 480 * 0.8,
+    padding: 0,
   },
   serviceClasses: [ScreenCapturerService],
   view: function View({ appServices }) {

@@ -10,6 +10,7 @@ import WindowTitlebar from "./Window.Titlebar";
 import styles from "./Window.module.css";
 import classNames from "classnames";
 
+import useWindowStyles from "./hooks/useWindowStyles";
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
@@ -156,21 +157,18 @@ const WindowView = ({
     [isProfiling, windowController]
   );
 
-  // Conditionally overrides style property when window is maximized or
-  // minimized so that they do not conflict with the CSS classes
-  const userStyleOverride = (() => {
-    if (isMaximized || isMinimized) {
-      return {};
-    } else {
-      return style;
-    }
-  })();
+  // Delegate style properties to their respective sub-components
+  const { outerBorderStyle, windowStyle, bodyStyle } = useWindowStyles({
+    style,
+    isMaximized,
+    isMinimized,
+  });
 
   return (
     <DynamicProfilingWrapper>
       <StackingContext
         onMount={_setEl}
-        style={{ ...userStyleOverride, zIndex }}
+        style={{ ...outerBorderStyle, zIndex }}
         className={classNames(
           styles["window-outer-border"],
 
@@ -181,7 +179,6 @@ const WindowView = ({
           isMaximized && styles["maximized"],
           isMinimized && styles["minimized"],
           (isUserDragging || isUserResizing) && styles["dragging"]
-          // isMinimized && styles["minimized"]
         )}
         {...rest}
       >
@@ -194,8 +191,8 @@ const WindowView = ({
             className={classNames(
               styles["window"],
               isActive && styles["active"]
-              // isMinimized && styles["minimized"]
             )}
+            style={windowStyle}
           >
             <Layout>
               <Header>
@@ -207,10 +204,9 @@ const WindowView = ({
                   onClose={onClose}
                 />
               </Header>
-              {
-                // TODO: Enable window body padding to be user-overridable
-              }
-              <Content className={styles["body"]}>{children}</Content>
+              <Content className={styles["body"]} style={bodyStyle}>
+                {children}
+              </Content>
             </Layout>
           </Full>
         </WindowView.Border>

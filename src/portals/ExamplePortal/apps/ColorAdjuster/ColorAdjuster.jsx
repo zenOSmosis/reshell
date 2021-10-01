@@ -10,6 +10,7 @@ const ColorAdjuster = {
   style: {
     width: 640,
     height: 400,
+    padding: 0,
   },
   // serviceClasses: [],
   view: function View({ windowController, appServices }) {
