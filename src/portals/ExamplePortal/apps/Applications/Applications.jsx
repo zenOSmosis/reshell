@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
+import Link from "@components/Link";
 
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
@@ -37,11 +38,25 @@ const Applications = {
             <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
               {!isDisplayingPortals ? "Portals" : "Applications"}
             </button>{" "}
-            {!isDisplayingPortals && (
-              <span className="note">
-                Other applications may be available in another portal
-              </span>
-            )}
+            <span className="note">
+              {!isDisplayingPortals ? (
+                <>
+                  Other applications may be available in{" "}
+                  <Link onClick={() => setIsDisplayingPortals(true)}>
+                    another portal
+                  </Link>
+                  .
+                </>
+              ) : (
+                <>
+                  Return to{" "}
+                  <Link onClick={() => setIsDisplayingPortals(false)}>
+                    application list
+                  </Link>
+                  .
+                </>
+              )}
+            </span>
           </Padding>
         </Footer>
       </Layout>
