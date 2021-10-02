@@ -14,8 +14,16 @@ export default class ReShellCore {
   // TODO: Document
   static async afterDOMReplace() {}
 
-  // TODO:
+  // TODO: Document
   static #portals = {};
+
+  // TODO: Document
+  static #activePortalName = null;
+
+  // TODO: Document
+  static getPortalName() {
+    return this.#activePortalName;
+  }
 
   // TODO: Document
   static registerPortals(portals) {
@@ -30,19 +38,21 @@ export default class ReShellCore {
   static #isReShellDOMInitStarted = false;
 
   // TODO: Document
-  static async init(portalName) {
+  static async init(portalName = "default") {
     if (ReShellCore.#isReShellDOMInitStarted) {
       return ReShellCore.switchToPortal(portalName);
     }
 
     ReShellCore.#isReShellDOMInitStarted = true;
 
-    const portal = ReShellCore.#portals[portalName || "default"];
+    const portal = ReShellCore.#portals[portalName];
 
     if (!portal) {
       throw new ReferenceError(
         `Unable to init portal with name: ${portalName}`
       );
+    } else {
+      ReShellCore.#activePortalName = portalName;
     }
 
     await ReShellCore.beforeDOMReplace();

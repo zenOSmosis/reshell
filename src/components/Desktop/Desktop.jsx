@@ -7,6 +7,8 @@ import AutoScaler from "../AutoScaler";
 
 import { BrowserRouter as Router } from "react-router-dom";
 
+import ReShellCore from "@core";
+
 // TODO: Change this to use data-driven Menubar
 import Menu, {
   MenuButton,
@@ -322,7 +324,12 @@ export default function Desktop({
                   // (i.e. REACT_APP_VERSION=$npm_package_version)
                 }
                 <AutoScaler style={{ whiteSpace: "nowrap" }}>
-                  ReShell 0.0.1-alpha
+                  <div style={{ textAlign: "left" }}>
+                    <div>ReShell 0.0.1-alpha</div>
+                    <div style={{ fontSize: ".8em" }}>
+                      Portal: {ReShellCore.getPortalName()}
+                    </div>
+                  </div>
                 </AutoScaler>
               </div>
               <WindowManager appDescriptors={appDescriptors}>
