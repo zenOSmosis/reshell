@@ -62,11 +62,13 @@ const CallCentralStation = {
       <Layout>
         <Header>
           <Padding>
-            <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-            <AppLinkButton
-              id={VIRTUAL_SERVER_REGISTRATION_ID}
-              title="Create Network"
-            />
+            <span className="button-group">
+              <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
+              <AppLinkButton
+                id={VIRTUAL_SERVER_REGISTRATION_ID}
+                title="Create Network"
+              />
+            </span>
             {
               // [networks]  [private network]
             }
@@ -92,16 +94,18 @@ const CallCentralStation = {
         </Content>
         <Footer>
           <Padding>
-            <AppLinkButton
-              id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
-              title="Configure Audio"
-            />
-            <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
-            <LabeledLED
-              label="Socket"
-              color={socketService.getIsConnected() ? "green" : "gray"}
-              style={{ float: "right" }}
-            />
+            <span className="button-group">
+              <AppLinkButton
+                id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
+                title="Configure Audio"
+              />
+              <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
+              <LabeledLED
+                label="Socket"
+                color={socketService.getIsConnected() ? "green" : "gray"}
+                style={{ float: "right" }}
+              />
+            </span>
           </Padding>
         </Footer>
       </Layout>

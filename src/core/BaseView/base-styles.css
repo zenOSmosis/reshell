@@ -135,12 +135,36 @@ ul li {
 */
 button {
   outline: none;
-  background-color: #424242;
-  color: #eceded;
+  background-color: rgba(66, 66, 66, 0.4);
+  color: #c4c4c4;
   font-weight: bold;
   border: 1px rgba(255, 255, 255, 0.2) solid;
-  border-radius: 4px;
   cursor: pointer;
+
+  border-radius: 8px;
+}
+
+.button-group button {
+  border-radius: 0px;
+}
+
+.button-group button:first-of-type {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.button-group button:last-of-type {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.button-group button:only-of-type {
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: rgba(66, 66, 66, 0.8);
+  color: #fff;
 }
 
 button:disabled {

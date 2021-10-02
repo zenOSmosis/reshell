@@ -68,6 +68,7 @@ export default function Dock() {
           maxWidth: "100%",
           overflowX: "auto",
         }}
+        className="button-group"
       >
         {dockRegistrations.map(registration => (
           <button
