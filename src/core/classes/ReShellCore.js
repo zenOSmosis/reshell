@@ -96,6 +96,9 @@ export default class ReShellCore {
 
 // Auto-init if query string
 (() => {
+  // IMPORTANT: This setTimeout (or any other async equiv.) is necessary to
+  // allow the parsing of registerPortals.js before trying to run the init on
+  // them
   setTimeout(() => {
     const urlQuery = queryString.parse(window.location.search);
 
