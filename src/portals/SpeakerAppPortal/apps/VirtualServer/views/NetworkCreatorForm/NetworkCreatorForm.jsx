@@ -167,162 +167,166 @@ export default function CreateNetwork({ onSubmit }) {
   */
 
   return (
-    <div className={styles["create-network-form"]}>
-      <form onSubmit={evt => evt.preventDefault()}>
-        <Section style={{ textAlign: "center" }}>
-          <div className="note" style={{ textAlign: "center", margin: 20 }}>
-            <p>
-              All traffic in / out of this network will be routed through your
-              device.
-            </p>
-            <p>
-              Networks created here are temporary and only active while this
-              device is online.
-            </p>
-          </div>
+    <Center canOverflow={true} style={{ maxWidth: 720 }}>
+      <div className={styles["create-network-form"]}>
+        <form onSubmit={evt => evt.preventDefault()}>
+          <Section style={{ textAlign: "center" }}>
+            <div className="note" style={{ textAlign: "center", margin: 20 }}>
+              <p>
+                All traffic in / out of this network will be routed through your
+                device.
+              </p>
+              <p>
+                Networks created here are temporary and only active while this
+                device is online.
+              </p>
+            </div>
 
-          <ButtonPanel
-            buttons={[
-              {
-                content: () => (
-                  <span>
-                    Simple{" "}
-                    <SimpleIcon style={{ marginLeft: 4, fontSize: "1.2em" }} />
-                  </span>
-                ),
-                onClick: () =>
-                  setState({
-                    isShowingAdvanced: false,
-                  }),
-                isSelected: !isShowingAdvanced,
-              },
-              {
-                content: () => (
-                  <span>
-                    Advanced{" "}
-                    <AdvancedIcon
-                      style={{ marginLeft: 4, fontSize: "1.2em" }}
-                    />
-                  </span>
-                ),
-                onClick: () => setState({ isShowingAdvanced: true }),
-                isSelected: isShowingAdvanced,
-              },
-            ]}
-          />
-        </Section>
-
-        <div
-          style={{
-            width: "100%",
-            // maxWidth: 640,
-            // display: "inline-block",
-            // textAlign: "left",
-          }}
-        >
-          <Section>
-            {
-              // TODO:: Use htmlFor attributes on the labels
-              // TODO: Add error handling / messages
-            }
-            <label>Network Name</label>
-            <input
-              ref={setElInputNetworkName}
-              type="text"
-              value={networkName}
-              onChange={evt =>
-                setState({
-                  networkName: evt.target.value,
-                })
-              }
+            <ButtonPanel
+              buttons={[
+                {
+                  content: () => (
+                    <span>
+                      Simple{" "}
+                      <SimpleIcon
+                        style={{ marginLeft: 4, fontSize: "1.2em" }}
+                      />
+                    </span>
+                  ),
+                  onClick: () =>
+                    setState({
+                      isShowingAdvanced: false,
+                    }),
+                  isSelected: !isShowingAdvanced,
+                },
+                {
+                  content: () => (
+                    <span>
+                      Advanced{" "}
+                      <AdvancedIcon
+                        style={{ marginLeft: 4, fontSize: "1.2em" }}
+                      />
+                    </span>
+                  ),
+                  onClick: () => setState({ isShowingAdvanced: true }),
+                  isSelected: isShowingAdvanced,
+                },
+              ]}
             />
           </Section>
 
-          <Section>
-            <div style={{ textAlign: "center" }}>
-              <div className="note">Select network type:</div>
-              <ButtonPanel
-                buttons={[
-                  {
-                    content: () => (
-                      <span>
-                        Public <PadlockOpenIcon style={{ fontSize: "1.2em" }} />
-                      </span>
-                    ),
-                    onClick: () => setState({ isPublic: true }),
-                    isSelected: isPublic,
-                  },
-                  {
-                    content: () => (
-                      <span>
-                        Private{" "}
-                        <PadlockCloseIcon style={{ fontSize: "1.2em" }} />
-                      </span>
-                    ),
-                    onClick: () => setState({ isPublic: false }),
-                    isSelected: !isPublic,
-                  },
-                ]}
-              />
-            </div>
-            <div className="note" style={{ marginTop: 10 }}>
-              Public networks can be seen by everyone and are displayed within
-              the "Networks" tab.
-            </div>
-          </Section>
-
-          <Section>
-            <label>Description (optional)</label>
-            <textarea
-              value={networkDescription}
-              onChange={evt =>
-                setState({
-                  networkDescription: evt.target.value,
-                })
-              }
-              placeholder="The topic or some other interesting detail to let others know what this network is about"
-            ></textarea>
-          </Section>
-
-          {isShowingAdvanced && (
-            <>
-              <Section style={{ overflow: "auto" }}>
-                <h2>Routing</h2>
-                <div style={{ width: "48%", float: "left" }}>
-                  <label>Realm</label>
-                  <input
-                    type="text"
-                    value={realmId}
-                    onChange={evt =>
-                      setState({
-                        realmId: evt.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div
-                  style={{
-                    width: "48%",
-                    float: "right",
-                  }}
-                >
-                  <label>Channel</label>
-                  <input
-                    type="text"
-                    value={channelId}
-                    onChange={evt =>
-                      setState({
-                        channelId: evt.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </Section>
-
+          <div
+            style={{
+              width: "100%",
+              // maxWidth: 640,
+              // display: "inline-block",
+              // textAlign: "left",
+            }}
+          >
+            <Section>
               {
-                // TODO: Provide documentation describing what each of these option mean
-                /*
+                // TODO:: Use htmlFor attributes on the labels
+                // TODO: Add error handling / messages
+              }
+              <label>Network Name</label>
+              <input
+                ref={setElInputNetworkName}
+                type="text"
+                value={networkName}
+                onChange={evt =>
+                  setState({
+                    networkName: evt.target.value,
+                  })
+                }
+              />
+            </Section>
+
+            <Section>
+              <div style={{ textAlign: "center" }}>
+                <div className="note">Select network type:</div>
+                <ButtonPanel
+                  buttons={[
+                    {
+                      content: () => (
+                        <span>
+                          Public{" "}
+                          <PadlockOpenIcon style={{ fontSize: "1.2em" }} />
+                        </span>
+                      ),
+                      onClick: () => setState({ isPublic: true }),
+                      isSelected: isPublic,
+                    },
+                    {
+                      content: () => (
+                        <span>
+                          Private{" "}
+                          <PadlockCloseIcon style={{ fontSize: "1.2em" }} />
+                        </span>
+                      ),
+                      onClick: () => setState({ isPublic: false }),
+                      isSelected: !isPublic,
+                    },
+                  ]}
+                />
+              </div>
+              <div className="note" style={{ marginTop: 10 }}>
+                Public networks can be seen by everyone and are displayed within
+                the "Networks" tab.
+              </div>
+            </Section>
+
+            <Section>
+              <label>Description (optional)</label>
+              <textarea
+                value={networkDescription}
+                onChange={evt =>
+                  setState({
+                    networkDescription: evt.target.value,
+                  })
+                }
+                placeholder="The topic or some other interesting detail to let others know what this network is about"
+              ></textarea>
+            </Section>
+
+            {isShowingAdvanced && (
+              <>
+                <Section style={{ overflow: "auto" }}>
+                  <h2>Routing</h2>
+                  <div style={{ width: "48%", float: "left" }}>
+                    <label>Realm</label>
+                    <input
+                      type="text"
+                      value={realmId}
+                      onChange={evt =>
+                        setState({
+                          realmId: evt.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      width: "48%",
+                      float: "right",
+                    }}
+                  >
+                    <label>Channel</label>
+                    <input
+                      type="text"
+                      value={channelId}
+                      onChange={evt =>
+                        setState({
+                          channelId: evt.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </Section>
+
+                {
+                  // TODO: Provide documentation describing what each of these option mean
+                  /*
               <Section>
                 <h2>Launch Target</h2>
                 <div style={{ textAlign: "center" }}>
@@ -381,28 +385,29 @@ export default function CreateNetwork({ onSubmit }) {
                 </div>
               </Section>
                   */
+                }
+              </>
+            )}
+
+            <Section style={{ textAlign: "center" }}>
+              {
+                // TODO: After launching, show share URL / QR code
               }
-            </>
-          )}
 
-          <Section style={{ textAlign: "center" }}>
-            {
-              // TODO: After launching, show share URL / QR code
-            }
-
-            <button
-              disabled={!networkName.length}
-              style={{ backgroundColor: "green" }}
-              onClick={handleSubmit}
-            >
-              Launch{" "}
-              <RocketIcon
-                style={{ fontSize: "1.8rem", verticalAlign: "middle" }}
-              />
-            </button>
-          </Section>
-        </div>
-      </form>
-    </div>
+              <button
+                disabled={!networkName.length}
+                style={{ backgroundColor: "green" }}
+                onClick={handleSubmit}
+              >
+                Launch{" "}
+                <RocketIcon
+                  style={{ fontSize: "1.8rem", verticalAlign: "middle" }}
+                />
+              </button>
+            </Section>
+          </div>
+        </form>
+      </div>
+    </Center>
   );
 }
