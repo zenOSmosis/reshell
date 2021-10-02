@@ -11,6 +11,8 @@ import {
   DIR_BORDER_W,
 } from "../Window.Border";
 
+import { BOTTOM_THRESHOLD } from "./useWindowDragger";
+
 // TODO: Document
 // TODO: Implement ability to turn off dragging
 export default function useWindowDragResizer({ windowController }) {
@@ -126,8 +128,21 @@ export default function useWindowDragResizer({ windowController }) {
 
         // Prevent bottom resize from extending below bottom threshold
         if (height + y > windowManagerHeight) {
-          height = windowManagerHeight - y;
-          y = null;
+          if (
+            // Fix issue where resizing windows from the top, which extended
+            // below the bottom threshold, would move the bottom edge up
+            direction === DIR_BORDER_S ||
+            direction === DIR_BORDER_SE ||
+            direction === DIR_BORDER_SW
+          ) {
+            height = windowManagerHeight - y;
+            y = null;
+          }
+        }
+
+        // Prevent drags from the top to be able to drag below bottom threshold
+        if (windowManagerHeight - y < BOTTOM_THRESHOLD) {
+          return;
         }
 
         windowController.setSize({ width, height });

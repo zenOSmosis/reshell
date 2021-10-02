@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { useDrag } from "react-use-gesture";
 
-const TOP_THRESHOLD = 0;
-const BOTTOM_THRESHOLD = 58;
-const LEFT_THRESHOLD = 0;
-const RIGHT_THRESHOLD = 0;
+export const TOP_THRESHOLD = 0;
+export const BOTTOM_THRESHOLD = 58;
+export const LEFT_THRESHOLD = 0;
+export const RIGHT_THRESHOLD = 0;
 
 // TODO: Document
 export default function useWindowDragger({
