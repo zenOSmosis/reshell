@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useDrag } from "react-use-gesture";
 
 const TOP_THRESHOLD = 0;
-const BOTTOM_THRESHOLD = 40;
+const BOTTOM_THRESHOLD = 58;
 const LEFT_THRESHOLD = 0;
 const RIGHT_THRESHOLD = 0;
 
