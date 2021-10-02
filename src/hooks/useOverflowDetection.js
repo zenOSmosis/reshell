@@ -26,10 +26,13 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
   const [isOverflown, setIsOverflown] = useState(getIsOverflown());
 
+  // TODO: Debounce this (every render, debounce, use leading and trailing edges)
   // Force check on every render, if is detecting
+  /*
   if (isDetecting && isOverflown !== getIsOverflown()) {
     setIsOverflown(!isOverflown);
   }
+  */
 
   const refPrevIsOverflown = useRef(isOverflown);
   refPrevIsOverflown.current = isOverflown;
