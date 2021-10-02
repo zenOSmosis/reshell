@@ -1,3 +1,4 @@
+import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
@@ -33,10 +34,12 @@ const VirtualServer = {
     return (
       <Layout>
         <Header>
-          <AppLinkButton
-            id={CALL_CENTRAL_STATION_REGISTRATION_ID}
-            title="Networks"
-          />
+          <Padding>
+            <AppLinkButton
+              id={CALL_CENTRAL_STATION_REGISTRATION_ID}
+              title="Networks"
+            />
+          </Padding>
         </Header>
         <Content>
           {!isHosting ? (
@@ -63,13 +66,18 @@ const VirtualServer = {
           )}
         </Content>
         <Footer>
-          <div style={{ float: "right" }}>
-            <LabeledLED
-              label="Socket"
-              color={socketService.getIsConnected() ? "green" : "gray"}
-            />
-            <LabeledLED label="Hosting" color={isHosting ? "green" : "gray"} />
-          </div>
+          <Padding>
+            <div style={{ float: "right" }}>
+              <LabeledLED
+                label="Socket"
+                color={socketService.getIsConnected() ? "green" : "gray"}
+              />
+              <LabeledLED
+                label="Hosting"
+                color={isHosting ? "green" : "gray"}
+              />
+            </div>
+          </Padding>
         </Footer>
       </Layout>
     );

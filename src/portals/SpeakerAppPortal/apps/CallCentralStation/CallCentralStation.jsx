@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
-import Full from "@components/Full";
+import Padding from "@components/Padding";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
@@ -61,14 +61,16 @@ const CallCentralStation = {
     return (
       <Layout>
         <Header>
-          <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-          <AppLinkButton
-            id={VIRTUAL_SERVER_REGISTRATION_ID}
-            title="Create Network"
-          />
-          {
-            // [networks]  [private network]
-          }
+          <Padding>
+            <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
+            <AppLinkButton
+              id={VIRTUAL_SERVER_REGISTRATION_ID}
+              title="Create Network"
+            />
+            {
+              // [networks]  [private network]
+            }
+          </Padding>
         </Header>
         <Content>
           <ContentArea>
@@ -89,16 +91,18 @@ const CallCentralStation = {
           </ContentArea>
         </Content>
         <Footer>
-          <AppLinkButton
-            id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
-            title="Configure Audio"
-          />
-          <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
-          <LabeledLED
-            label="Socket"
-            color={socketService.getIsConnected() ? "green" : "gray"}
-            style={{ float: "right" }}
-          />
+          <Padding>
+            <AppLinkButton
+              id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
+              title="Configure Audio"
+            />
+            <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
+            <LabeledLED
+              label="Socket"
+              color={socketService.getIsConnected() ? "green" : "gray"}
+              style={{ float: "right" }}
+            />
+          </Padding>
         </Footer>
       </Layout>
     );

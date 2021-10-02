@@ -7,6 +7,7 @@
 
 // TODO: Implement ability to export / import local storage data
 
+import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
@@ -29,7 +30,9 @@ const LocalStorageVault = {
           <Center>[TODO: Implement LocalStorageVault]</Center>
         </Content>
         <Footer>
-          <button>Empty</button>
+          <Padding>
+            <button>Empty</button>
+          </Padding>
         </Footer>
       </Layout>
     );
