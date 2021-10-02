@@ -60,7 +60,15 @@ export default function Dock() {
         // TODO: Add button menu
         // - See original Shell implementation: https://github.com/zenOSmosis/js-shell/blob/master/frontend/src/components/Desktop/Dock/DockItem.jsx
       }
-      <div style={{ display: "inline-block", color: "black" }}>
+      <div
+        style={{
+          display: "inline-block",
+          color: "black",
+          whiteSpace: "nowrap",
+          maxWidth: "100%",
+          overflowX: "auto",
+        }}
+      >
         {dockRegistrations.map(registration => (
           <button
             style={
