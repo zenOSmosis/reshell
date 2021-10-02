@@ -42,6 +42,8 @@ import useTranscoderSandboxContext, {
 //  TODO: Include literature of how a browser tab is utilized as a virtual
 // machine in order to host the room
 
+// TODO: Implement auto-connect-to-network toggle (perhaps in advanced; default to true)
+
 export default function CreateNetwork({ onSubmit }) {
   // const { getItem, setItem } = useLocalStorage();
   // const { openRoute } = useAppRoutesContext();
