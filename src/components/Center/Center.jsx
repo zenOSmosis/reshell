@@ -30,6 +30,7 @@ export default function Center({
     return (
       <div
         ref={_setCenterEl}
+        {...rest}
         className={classNames(
           styles["overflown"],
           styles["inner-wrap"],
@@ -42,12 +43,10 @@ export default function Center({
   }
 
   return (
-    <div
-      ref={_setCenterEl}
-      {...rest}
-      className={classNames(styles["center"], className)}
-    >
-      <div className={styles["inner-wrap"]}>{children}</div>
+    <div ref={_setCenterEl} className={classNames(styles["center"], className)}>
+      <div {...rest} className={styles["inner-wrap"]}>
+        {children}
+      </div>
     </div>
   );
 }
