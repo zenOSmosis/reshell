@@ -14,6 +14,7 @@ const Applications = {
     width: 640,
     height: 400,
   },
+  isAutoStart: true,
   isPinnedToDock: true,
   view: function View() {
     const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
