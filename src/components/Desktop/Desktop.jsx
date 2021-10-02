@@ -310,11 +310,11 @@ export default function Desktop({
               }
               <div
                 style={{
-                  maxWidth: "30%",
+                  maxWidth: "50%",
                   position: "absolute",
-                  bottom: 10,
+                  bottom: 28,
                   right: 10,
-                  color: "#fff",
+                  color: "rgba(255,255,255,.2)",
                   fontSize: "2rem",
                 }}
               >
@@ -324,11 +324,10 @@ export default function Desktop({
                   // (i.e. REACT_APP_VERSION=$npm_package_version)
                 }
                 <AutoScaler style={{ whiteSpace: "nowrap" }}>
-                  <div style={{ textAlign: "left" }}>
+                  <div style={{ textAlign: "left", fontSize: ".7em" }}>
                     <div>ReShell 0.0.1-alpha</div>
-                    <div style={{ fontSize: ".8em" }}>
-                      Portal: {ReShellCore.getPortalName()}
-                    </div>
+                    <div>Portal: {ReShellCore.getPortalName()}</div>
+                    <div>Env: {process.env.NODE_ENV}</div>
                   </div>
                 </AutoScaler>
               </div>
