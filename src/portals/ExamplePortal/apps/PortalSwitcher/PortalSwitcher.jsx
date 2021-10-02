@@ -1,6 +1,8 @@
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 
+import ReShellCore from "@core";
+
 // TODO: Include ReShell documentation here, as well as architecture overview
 
 // TODO: Include in documentation how React providers can be wrapped up in (or
@@ -21,7 +23,16 @@ const PortalSwitcher = {
     return (
       <Layout>
         <Content>
-          <Center>[Portal Switcher]</Center>
+          <Center>
+            {Object.entries(ReShellCore.getPortals()).map(([portalName]) => (
+              <button
+                key={portalName}
+                onClick={() => ReShellCore.init(portalName)}
+              >
+                {portalName}
+              </button>
+            ))}
+          </Center>
         </Content>
         <Footer>[Footer]</Footer>
       </Layout>
