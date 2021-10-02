@@ -1,11 +1,9 @@
-import { useMemo } from "react";
-import Center from "@components/Center";
-import LED from "@components/LED";
+import { useState } from "react";
+import Layout, { Content, Footer } from "@components/Layout";
+import Padding from "@components/Padding";
 
-import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
-
-import consume from "@utils/consume";
+import ApplicationSelector from "./views/ApplicationSelector";
+import PortalSwitcher from "./views/PortalSelector";
 
 const Applications = {
   id: "applications",
@@ -15,54 +13,25 @@ const Applications = {
     height: 400,
   },
   isPinnedToDock: true,
-  // serviceClasses: [],
-  view: function View({ windowController, appServices }) {
-    const { appRegistrations } = useAppRegistrationsContext();
-    const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
-
-    const appRuntimeRegistrations = useMemo(
-      () => appRuntimes.map(runtime => runtime.getRegistration()),
-      [appRuntimes]
-    );
+  view: function View() {
+    const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
 
     return (
-      <Center canOverflow={true}>
-        {appRegistrations.map(registration => {
-          // const isRunning = appRuntimeRegistrations.includes(registration);
-          const totalInstances = appRuntimeRegistrations.filter(
-            predicate => predicate === registration
-          ).length;
-
-          return (
-            <button
-              key={registration.getUUID()}
-              style={{
-                width: 100,
-                height: 100,
-                overflow: "none",
-                backgroundColor: "transparent",
-                borderColor: totalInstances > 0 ? "green" : "",
-              }}
-              onClick={() => startAppRuntime(registration)}
-            >
-              {registration.getTitle()}
-              <div style={{ position: "absolute", bottom: 0, right: 0 }}>
-                {[...new Array(totalInstances)].map((nonUsed, idx) => {
-                  consume(nonUsed);
-
-                  return (
-                    <LED
-                      key={idx}
-                      color={totalInstances > 0 ? "green" : "gray"}
-                      style={{ margin: "0px 2px" }}
-                    />
-                  );
-                })}
-              </div>
-            </button>
-          );
-        })}
-      </Center>
+      <Layout>
+        <Content>
+          {!isDisplayingPortals ? <ApplicationSelector /> : <PortalSwitcher />}
+        </Content>
+        <Footer>
+          <Padding>
+            <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
+              {!isDisplayingPortals ? "Portals" : "Applications"}
+            </button>{" "}
+            <span className="note">
+              Other applications may be available in another portal
+            </span>
+          </Padding>
+        </Footer>
+      </Layout>
     );
   },
 };

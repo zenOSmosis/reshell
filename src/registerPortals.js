@@ -9,9 +9,9 @@ dayjs.extend(relativeTime);
 
 // The portals defined here are what are selectable inside of the application
 const portals = {
-  default: React.lazy(() => import("@portals/ExamplePortal")),
+  default: React.lazy(() => import("@portals/SpeakerAppPortal")),
 
-  "speaker.app": React.lazy(() => import("@portals/SpeakerAppPortal")),
+  example: React.lazy(() => import("@portals/ExamplePortal")),
 
   test: React.lazy(() => import("@portals/TestPortal")),
 };

@@ -25,7 +25,6 @@ import Terminal from "./apps/Terminal";
 import AppRegistrationMonitor from "./apps/AppRegistrationMonitor";
 import Environment from "./apps/Environment";
 import NotificationsPrototype from "./apps/NotificationsPrototype";
-import PortalSwitcher from "./apps/PortalSwitcher/PortalSwitcher";
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
 // import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
@@ -59,7 +58,6 @@ export default function ExamplePortal() {
         AppRegistrationMonitor,
         Environment,
         NotificationsPrototype,
-        PortalSwitcher,
         // WindowAPIDiscovererWindow,
         //
       ]}
