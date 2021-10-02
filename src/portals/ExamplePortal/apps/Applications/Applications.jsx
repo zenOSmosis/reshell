@@ -5,6 +5,8 @@ import Padding from "@components/Padding";
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
 
+// TODO: Implement application search
+
 const Applications = {
   id: "applications",
   title: "Applications",
