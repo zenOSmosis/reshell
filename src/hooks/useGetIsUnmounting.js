@@ -8,7 +8,7 @@ export default function useGetIsUnmounting() {
     return function unmount() {
       refIsUnmounting.current = true;
     };
-  });
+  }, []);
 
   const getIsUnmounting = useCallback(() => refIsUnmounting.current, []);
 
