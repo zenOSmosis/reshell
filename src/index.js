@@ -10,7 +10,21 @@ dayjs.extend(relativeTime);
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//
+// Additional reading for "name" element:
+//  - [FCP] https://web.dev/fcp/
+//  - [TTFB] https://web.dev/time-to-first-byte/
+//  - [FID] https://web.dev/fid/
+reportWebVitals(({ id, name, value }) => {
+  // TODO: Remove
+  console.log({
+    webVitalsReport: {
+      id,
+      name,
+      value,
+    },
+  });
+});
 
 // TODO: Include ability to parse out an HTML file and dynamically link it to
 // the public directory during runtime (and during build) for SEO
