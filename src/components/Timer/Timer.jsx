@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+import NoWrap from "../NoWrap";
+
 import PropTypes from "prop-types";
 
 Timer.propTypes = {
@@ -6,7 +8,7 @@ Timer.propTypes = {
 };
 
 // TODO: Document
-export default function Timer({ onTick, ...rest }) {
+export default function Timer({ onTick, className, ...rest }) {
   const [seconds, _setSeconds] = useState(onTick());
 
   const getSeconds = useCallback(() => {
@@ -28,7 +30,7 @@ export default function Timer({ onTick, ...rest }) {
     };
   }, [getSeconds]);
 
-  return <span {...rest}>{getSecondsToHHMMSS(seconds)}</span>;
+  return <NoWrap {...rest}>{getSecondsToHHMMSS(seconds)}</NoWrap>;
 }
 
 // TODO: Refactor

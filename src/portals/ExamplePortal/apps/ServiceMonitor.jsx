@@ -12,7 +12,9 @@ import { UIServicesContext } from "@core/BaseView/providers/UIServicesProvider";
 
 // TODO: Include ability to monitor React providers exposed by the service
 
+import Padding from "@components/Padding";
 import Timer from "@components/Timer";
+import NoWrap from "@components/NoWrap";
 
 const ServiceMonitor = {
   id: "service-monitor",
@@ -28,13 +30,14 @@ const ServiceMonitor = {
     // TODO: Group by runtime
 
     return (
-      <table style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <td>Service Name</td>
-            <td>Uptime</td>
-            <td>f(x)</td>
-            {/**
+      <Padding style={{ overflowY: "auto" }}>
+        <table style={{ width: "100%" }}>
+          <thead>
+            <tr>
+              <td>Service Name</td>
+              <td>Uptime</td>
+              <td>f(x)</td>
+              {/**
               <td>
                 Active
                 <br />
@@ -46,20 +49,20 @@ const ServiceMonitor = {
                 Linked Providers
               </td>  
                */}
-          </tr>
-        </thead>
-        <tbody>
-          {services.map(service => (
-            <tr key={service.getUUID()}>
-              <td>{service.getTitle() || "[Untitled]"}</td>
-              <td className="center">
-                <Timer onTick={() => service.getInstanceUptime()} />
-              </td>
-              {/*
+            </tr>
+          </thead>
+          <tbody>
+            {services.map(service => (
+              <tr key={service.getUUID()}>
+                <td>{service.getTitle() || "[Untitled]"}</td>
+                <td className="center">
+                  <Timer onTick={() => service.getInstanceUptime()} />
+                </td>
+                {/*
                   <td className="center">N/A</td>
                   <td className="center">N/A</td>
                   */}
-              {/*
+                {/*
               <td>
                 <button
                   onClick={() => service.destroy()}
@@ -69,18 +72,19 @@ const ServiceMonitor = {
                 </button>
               </td>
                 */}
-              <td className="center">
-                {
-                  // TODO: Remove
-                }
-                <button onClick={() => service.log(service.getState())}>
-                  log(state)
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td className="center">
+                  {
+                    // TODO: Remove
+                  }
+                  <button onClick={() => service.log(service.getState())}>
+                    <NoWrap>log(state)</NoWrap>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Padding>
     );
   },
 };

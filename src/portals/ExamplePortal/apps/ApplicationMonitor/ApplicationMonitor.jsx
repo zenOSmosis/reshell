@@ -1,4 +1,6 @@
 import PhantomCore from "phantom-core";
+
+import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import AppRuntimeTable from "./AppRuntime.Table";
 import Timer from "@components/Timer";
@@ -27,11 +29,16 @@ const ApplicationMonitor = {
 
     return (
       <Layout>
-        <Content style={{ overflowY: "auto" }}>
-          <AppRuntimeTable appRuntimes={appRuntimes} />
+        <Content>
+          <Padding style={{ overflowY: "auto" }}>
+            <AppRuntimeTable appRuntimes={appRuntimes} />
+          </Padding>
         </Content>
         <Footer style={{ fontSize: ".8rem" }}>
-          Phantom Core uptime: <Timer onTick={() => PhantomCore.getUptime()} />
+          <Padding>
+            Phantom Core uptime:{" "}
+            <Timer onTick={() => PhantomCore.getUptime()} />
+          </Padding>
         </Footer>
       </Layout>
     );
