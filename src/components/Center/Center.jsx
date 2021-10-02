@@ -19,7 +19,7 @@ export default function Center({
   children,
   className,
   canOverflow = false,
-  ...propsRest
+  ...rest
 }) {
   const [centerEl, _setCenterEl] = useState(null);
 
@@ -30,7 +30,11 @@ export default function Center({
     return (
       <div
         ref={_setCenterEl}
-        className={classNames(styles["overflown"], className)}
+        className={classNames(
+          styles["overflown"],
+          styles["inner-wrap"],
+          className
+        )}
       >
         {children}
       </div>
@@ -40,12 +44,9 @@ export default function Center({
   return (
     <div
       ref={_setCenterEl}
-      {...propsRest}
+      {...rest}
       className={classNames(styles["center"], className)}
     >
-      {
-        // TODO: Once overflowed container, don't keep stretching
-      }
       <div className={styles["inner-wrap"]}>{children}</div>
     </div>
   );
