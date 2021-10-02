@@ -45,15 +45,6 @@ const ScreenCaptureWindow = {
       [scs]
     );
 
-    // TODO: Debug why this unmounts when maximizing / restoring
-    /*
-    useEffect(() => {
-      return function unmount() {
-        alert("..");
-      };
-    }, []);
-    */
-
     useEffect(() => {
       if (screenCaptureFactory) {
         return () => {
