@@ -149,6 +149,11 @@ button:disabled {
   cursor: inherit;
 }
 
+a,
+button.link {
+  color: orange;
+}
+
 /** TODO: Use :active CSS property as well? */
 button.active {
   color: orange;
