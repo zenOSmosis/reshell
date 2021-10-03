@@ -16,7 +16,7 @@
   * This forces GPU acceleration of the stacked context and massively reduces
   * CPU usage when moving windows around.
   *
-  * Additional reading: https://www.google.com/search?q=translate+z+gpu&oq=translate+z+gpu&aqs=chrome..69i57j69i64.3185j0j7&sourceid=chrome&ie=UTF-8
+  * Additional reading: https://www.google.com/search?q=translate+z+gpu&oq=translate+z+gpu
   */
   transform: translateZ(0);
 }
