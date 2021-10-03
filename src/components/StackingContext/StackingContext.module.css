@@ -11,12 +11,14 @@
 	* IE does not support this property
 	*/
   isolation: isolate;
+}
 
+.stacking-context.accelerated {
   /**
   * This forces GPU acceleration of the stacked context and massively reduces
   * CPU usage when moving windows around.
   *
   * Additional reading: https://www.google.com/search?q=translate+z+gpu&oq=translate+z+gpu
   */
-  transform: translateZ(0);
+  transform: translateZ(0px);
 }
