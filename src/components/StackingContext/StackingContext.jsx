@@ -25,7 +25,7 @@ const StackingContext = ({
     if (el) {
       const onMount = refOnMount.current;
       const onDOMMatrix = refOnDOMMatrix.current;
-      const isAccelerated = refIsAccelerated.curent;
+      const isAccelerated = refIsAccelerated.current;
 
       if (isAccelerated) {
         // Handle 3D space detection and onDOMMatrix callback
