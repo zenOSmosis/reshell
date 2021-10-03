@@ -60,7 +60,7 @@ of the drag zone outside of the windows. */
 }
 
 .window.active {
-  border: 1px rgba(255, 255, 255, 0.4) solid;
+  border: 1px rgba(255, 255, 255, 0.3) solid;
 }
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
@@ -68,10 +68,12 @@ of the drag zone outside of the windows. */
   cursor: grabbing;
 }
 
+/** Inactive window shading */
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
 }
 
+/** Active window shading window shading */
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
 }
