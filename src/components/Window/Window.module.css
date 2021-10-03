@@ -52,11 +52,15 @@ of the drag zone outside of the windows. */
 }
 
 .window {
-  border: 1px rgba(255, 255, 255, 0.2) solid;
+  border: 1px rgba(255, 255, 255, 0.1) solid;
   border-radius: 8px;
   overflow: hidden;
 
   background-color: #1f2022;
+}
+
+.window.active {
+  border: 1px rgba(255, 255, 255, 0.3) solid;
 }
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
@@ -64,10 +68,12 @@ of the drag zone outside of the windows. */
   cursor: grabbing;
 }
 
+/** Inactive window shading */
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
 }
 
+/** Active window shading window shading */
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
 }
@@ -112,17 +118,31 @@ of the drag zone outside of the windows. */
   border-radius: 12px;
   width: 12px;
   height: 12px;
-  background-color: #ccc;
+  background-color: #504e52;
 }
 
-.window.active .titlebar .window-controls button.maximize {
+.window.active .titlebar .window-controls button.maximize,
+.window .titlebar .window-controls:hover button.maximize {
   background-color: #00cd1e;
+  filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.minimize {
+.window.active .titlebar .window-controls button.minimize,
+.window .titlebar .window-controls:hover button.minimize {
   background-color: #ffbc00;
+  filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.close {
+.window.active .titlebar .window-controls button.close,
+.window .titlebar .window-controls:hover button.close {
   background-color: #ff5250;
+  filter: grayscale(0);
+}
+
+/** Apply partial grayscale to some inactive window elements */
+.window:not(.active) button,
+.window:not(.active) input,
+.window:not(.active) textarea,
+.window:not(.active) a {
+  filter: grayscale(0.5);
 }
