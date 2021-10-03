@@ -146,6 +146,7 @@ button {
 
 .button-group button {
   border-radius: 0px;
+  margin: 0px;
 }
 
 .button-group button:first-of-type {
