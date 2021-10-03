@@ -116,7 +116,7 @@ of the drag zone outside of the windows. */
   border-radius: 12px;
   width: 12px;
   height: 12px;
-  background-color: #ccc;
+  background-color: #504e52;
 }
 
 .window.active .titlebar .window-controls button.maximize {
@@ -129,4 +129,12 @@ of the drag zone outside of the windows. */
 
 .window.active .titlebar .window-controls button.close {
   background-color: #ff5250;
+}
+
+/** Apply partial grayscale to some inactive window elements */
+.window:not(.active) button,
+.window:not(.active) input,
+.window:not(.active) textarea,
+.window:not(.active) a {
+  filter: grayscale(0.9);
 }
