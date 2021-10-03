@@ -266,7 +266,7 @@ export default function Desktop({
                 <Column
                   style={{
                     // TODO: Rework so column width expands according to content
-                    maxWidth: 100,
+                    maxWidth: 110,
                   }}
                 >
                   <div style={{ textAlign: "right" }}>
