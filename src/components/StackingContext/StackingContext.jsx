@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import styles from "./StackingContext.module.css";
 
@@ -14,11 +14,18 @@ const StackingContext = ({
 }) => {
   const refOnMount = useRef(onMount);
   const refOnDOMMatrix = useRef(onDOMMatrix);
+  const refIsAccelerated = useRef(isAccelerated);
 
-  const handleMount = useCallback(
-    el => {
+  const refEl = useRef(null);
+
+  // Handle onMount and onDOMMatrix callbacks
+  useEffect(() => {
+    const el = refEl.current;
+
+    if (el) {
       const onMount = refOnMount.current;
       const onDOMMatrix = refOnDOMMatrix.current;
+      const isAccelerated = refIsAccelerated.curent;
 
       if (isAccelerated) {
         // Handle 3D space detection and onDOMMatrix callback
@@ -38,9 +45,9 @@ const StackingContext = ({
            * @see https://zellwk.com/blog/css-translate-values-in-javascript/
            **/
           /*
-          const matrixValues = computedStyle.transform
-            .match(/matrix.*\((.+)\)/)[1]
-            .split(", ");*/
+            const matrixValues = computedStyle.transform
+              .match(/matrix.*\((.+)\)/)[1]
+              .split(", ");*/
 
           // NOTE: (jh) It seems that the matrix can be 3D and still not be
           // accelerated, so some further considerations may need to be made
@@ -57,13 +64,12 @@ const StackingContext = ({
       }
 
       onMount(el);
-    },
-    [isAccelerated]
-  );
+    }
+  }, []);
 
   return (
     <div
-      ref={handleMount}
+      ref={refEl}
       {...rest}
       className={classNames(
         styles["stacking-context"],

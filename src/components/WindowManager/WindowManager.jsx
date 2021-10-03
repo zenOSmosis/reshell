@@ -191,6 +191,10 @@ function WindowManagerView({ appDescriptors = [], children }) {
   // TODO: Fix issue where every window will re-render when another window
   // actively goes on top (not sure if it's a huge deal, but is seemingly
   // unnecessary)
+  //
+  // TODO: Somehow figure out support for reparenting if needing to change
+  // window manager layouts: https://github.com/facebook/react/issues/3965
+  // (maybe this? https://www.npmjs.com/package/react-reverse-portal)
   const windows = appRuntimes
     .map(appRuntime => {
       // TODO: Ensure key is unique across the map
