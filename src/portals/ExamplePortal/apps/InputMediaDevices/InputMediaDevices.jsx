@@ -3,6 +3,10 @@ import MediaDevicesService from "@services/MediaDevicesService";
 import Layout, { Content, Footer } from "@components/Layout";
 import LED from "@components/LED";
 import Padding from "@components/Padding";
+import AppLinkButton from "@components/AppLinkButton";
+
+import { REGISTRATION_ID as VU_METER_REGISTRATION_ID } from "../VUMeter";
+import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "../ScreenCapture";
 
 export const REGISTRATION_ID = "input-media-devices";
 
@@ -23,7 +27,7 @@ const InputMediaDevices = {
       <Padding>
         <Layout>
           <Content>
-            <div>
+            <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
               <table style={{ width: "100%" }}>
                 <thead>
                   <tr>
@@ -75,6 +79,11 @@ const InputMediaDevices = {
             >
               Refetch
             </button>
+
+            <span className="button-group">
+              <AppLinkButton id={VU_METER_REGISTRATION_ID} />
+              <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
+            </span>
           </Footer>
         </Layout>
       </Padding>

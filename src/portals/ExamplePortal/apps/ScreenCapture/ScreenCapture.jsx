@@ -6,10 +6,14 @@ import Cover from "@components/Cover";
 import Center from "@components/Center";
 import { Video } from "@components/audioVideoRenderers";
 import LED from "@components/LED";
+import Padding from "@components/Padding";
+import AppLinkButton from "@components/AppLinkButton";
 
 import useGetIsUnmounting from "@hooks/useGetIsUnmounting";
 
 import ScreenCapturerService from "@services/ScreenCapturerService";
+
+import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "../InputMediaDevices";
 
 export const REGISTRATION_ID = "screen-capture-window";
 
@@ -94,37 +98,53 @@ const ScreenCaptureWindow = {
           )}
         </Content>
         <Footer>
-          <Row>
-            <Column>
-              <Center>
-                <LED color={screenCaptureFactory ? "green" : "gray"} />{" "}
-                {screenCaptureFactory ? "Capturing" : "Not capturing"}
-              </Center>
-            </Column>
-            <Column>
-              <Center>
-                <button
-                  style={{
-                    backgroundColor: !screenCaptureFactory ? "green" : "red",
-                  }}
-                  onClick={() => {
-                    if (screenCaptureFactory) {
-                      screenCaptureFactory.destroy();
-                    } else {
-                      handleStartScreenCapture();
-                    }
-                  }}
-                >
-                  {!screenCaptureFactory ? "Capture" : "Stop"}
-                </button>
-              </Center>
-            </Column>
-            <Column>
-              <Center>
-                <button disabled>Video Stats</button>
-              </Center>
-            </Column>
-          </Row>
+          <Padding>
+            <Row>
+              <Column>
+                <Center>
+                  <AppLinkButton id={INPUT_MEDIA_DEVICES_REGISTRATION_ID} />
+                </Center>
+              </Column>
+              <Column>
+                <Center>
+                  <button
+                    style={{
+                      backgroundColor: !screenCaptureFactory ? "green" : "red",
+                      whiteSpace: "nowrap",
+                    }}
+                    onClick={() => {
+                      if (screenCaptureFactory) {
+                        screenCaptureFactory.destroy();
+                      } else {
+                        handleStartScreenCapture();
+                      }
+                    }}
+                  >
+                    {!screenCaptureFactory ? "Capture" : "Stop"}
+                  </button>
+                </Center>
+              </Column>
+              <Column>
+                <Row>
+                  <Column>
+                    <Center>
+                      <LED
+                        color={screenCaptureFactory ? "green" : "gray"}
+                        style={{ float: "left", marginLeft: 8 }}
+                      />
+                    </Center>
+                  </Column>
+                  <Column>
+                    <Center>
+                      <button disabled style={{ whiteSpace: "nowrap" }}>
+                        Video Stats
+                      </button>
+                    </Center>
+                  </Column>
+                </Row>
+              </Column>
+            </Row>
+          </Padding>
         </Footer>
       </Layout>
     );
