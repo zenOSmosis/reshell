@@ -10,6 +10,7 @@ import "./registerPortals";
 //  - [FCP] https://web.dev/fcp/
 //  - [TTFB] https://web.dev/time-to-first-byte/
 //  - [FID] https://web.dev/fid/
+//  - [CLS] https://web.dev/cls/
 reportWebVitals(({ id, name, value }) => {
   // TODO: Remove
   console.log({
