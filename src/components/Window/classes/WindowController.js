@@ -225,10 +225,14 @@ export default class WindowController extends PhantomCore {
 
   // TODO: Document
   setPosition({ x, y }) {
-    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
-      // FIXME: (jh) While using translate would be better here, it is buggier to use with some of the window animations
+      // FIXME: (jh) While using translate would be better here, it is buggier
+      // to use with some of the window animations
+      //
+      // However, if able to tie directly into matrix operations provided by
+      // accelerated StackingContext, it might improve acceleration even
+      // further
 
       window.requestAnimationFrame(() => {
         if (x !== undefined) {
@@ -244,6 +248,8 @@ export default class WindowController extends PhantomCore {
           delete windowEl.style.bottom;
         }
 
+        // IMPORTANT!: Do not update state on each iteration (if at all)
+        // because that would cause excessive re-rendering
         this._emitDebouncedMoved();
       });
     }

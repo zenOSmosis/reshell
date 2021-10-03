@@ -168,6 +168,7 @@ const WindowView = ({
     <DynamicProfilingWrapper>
       <StackingContext
         onMount={_setEl}
+        {...rest}
         style={{ ...outerBorderStyle, zIndex }}
         className={classNames(
           styles["window-outer-border"],
@@ -180,7 +181,8 @@ const WindowView = ({
           isMinimized && styles["minimized"],
           (isUserDragging || isUserResizing) && styles["dragging"]
         )}
-        {...rest}
+        // Enable hardware acceleration of window stacking context
+        isAccelerated={true}
       >
         <WindowView.Border
           isDisabled={isWindowBorderDisabled}
