@@ -119,16 +119,22 @@ of the drag zone outside of the windows. */
   background-color: #504e52;
 }
 
-.window.active .titlebar .window-controls button.maximize {
+.window.active .titlebar .window-controls button.maximize,
+.window .titlebar .window-controls:hover button.maximize {
   background-color: #00cd1e;
+  filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.minimize {
+.window.active .titlebar .window-controls button.minimize,
+.window .titlebar .window-controls:hover button.minimize {
   background-color: #ffbc00;
+  filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.close {
+.window.active .titlebar .window-controls button.close,
+.window .titlebar .window-controls:hover button.close {
   background-color: #ff5250;
+  filter: grayscale(0);
 }
 
 /** Apply partial grayscale to some inactive window elements */
