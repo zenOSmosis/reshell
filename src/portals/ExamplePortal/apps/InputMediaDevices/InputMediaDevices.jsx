@@ -3,6 +3,9 @@ import MediaDevicesService from "@services/MediaDevicesService";
 import Layout, { Content, Footer } from "@components/Layout";
 import LED from "@components/LED";
 import Padding from "@components/Padding";
+import AppLinkButton from "@components/AppLinkButton";
+
+import { REGISTRATION_ID as VU_METER_REGISTRATION_ID } from "../VUMeter";
 
 export const REGISTRATION_ID = "input-media-devices";
 
@@ -23,7 +26,7 @@ const InputMediaDevices = {
       <Padding>
         <Layout>
           <Content>
-            <div>
+            <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
               <table style={{ width: "100%" }}>
                 <thead>
                   <tr>
@@ -69,6 +72,7 @@ const InputMediaDevices = {
             </div>
           </Content>
           <Footer>
+            <AppLinkButton id={VU_METER_REGISTRATION_ID} />
             <button
               onClick={() => mds.fetchAudioInputDevices(true)}
               style={{ float: "right" }}

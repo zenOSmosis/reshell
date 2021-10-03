@@ -5,7 +5,7 @@ import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
 import LocalStorageVault from "../ExamplePortal/apps/LocalStorageVault";
 import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
-import TestVUMeterWindow from "../ExamplePortal/apps/TestVUMeterWindow";
+import VUMeter from "../ExamplePortal/apps/VUMeter";
 import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
 import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
@@ -32,7 +32,7 @@ export default function SpeakerAppPortal() {
         AboutReShell,
         LocalStorageVault,
         InputMediaDevices,
-        TestVUMeterWindow,
+        VUMeter,
         ScreenCapture,
         ScreenShot,
         ApplicationMonitor,

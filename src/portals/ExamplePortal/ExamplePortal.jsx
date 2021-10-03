@@ -6,7 +6,7 @@ import BackgroundSelector from "./apps/BackgroundSelector";
 import BeepPrototype from "./apps/BeepPrototype";
 import LocalStorageVault from "./apps/LocalStorageVault";
 import InputMediaDevices from "./apps/InputMediaDevices";
-import TestVUMeterWindow from "./apps/TestVUMeterWindow";
+import VUMeter from "./apps/VUMeter";
 import ScreenCapture from "./apps/ScreenCapture";
 import ScreenShot from "./apps/ScreenShot";
 import ApplicationMonitor from "./apps/ApplicationMonitor";
@@ -39,7 +39,7 @@ export default function ExamplePortal() {
         BeepPrototype,
         LocalStorageVault,
         InputMediaDevices,
-        TestVUMeterWindow,
+        VUMeter,
         ScreenCapture,
         ScreenShot,
         ApplicationMonitor,
