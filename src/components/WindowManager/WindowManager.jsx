@@ -196,8 +196,20 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // TODO: Ensure key is unique across the map
       const key = appRuntime.getUUID();
 
+      // NOTE: The variables absorbed by this decompositor (except for
+      // windowProps) are NOT passed down to the underlying DOM element of the
+      // window
+      //
+      // FIXME: (jh) Perhaps this logic should be refactored and most props not
+      // utilized on every single render (maybe the complete wrapped window
+      // could be a separate component instead of re-calcuating all of this
+      // stuff on every render)
       const {
         view: ViewComponent,
+
+        // This one is tricky, don't pass up registration ID as DOM element ID
+        id,
+
         title,
         serviceClasses = [],
         isPinned,
