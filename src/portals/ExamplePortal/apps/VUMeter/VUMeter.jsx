@@ -4,6 +4,7 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
 import { AudioMediaStreamTrackLevelVUMeter } from "@components/audioMeters/VUMeter";
+import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "../InputMediaDevices";
@@ -14,8 +15,8 @@ const VUMeter = {
   id: REGISTRATION_ID,
   title: "VU Meter",
   style: {
-    width: 400,
-    height: 400,
+    width: 360,
+    height: 360,
     backgroundColor: "rgba(0,0,0,.4)",
   },
   serviceClasses: [MediaDevicesService],
@@ -60,9 +61,10 @@ const VUMeter = {
             </div>
           </Center>
         </Content>
-
         <Footer>
-          <AppLinkButton id={INPUT_MEDIA_DEVICES_REGISTRATION_ID} />
+          <Padding>
+            <AppLinkButton id={INPUT_MEDIA_DEVICES_REGISTRATION_ID} />
+          </Padding>
         </Footer>
       </Layout>
     );
