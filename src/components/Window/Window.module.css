@@ -136,5 +136,5 @@ of the drag zone outside of the windows. */
 .window:not(.active) input,
 .window:not(.active) textarea,
 .window:not(.active) a {
-  filter: grayscale(0.9);
+  filter: grayscale(0.5);
 }
