@@ -37,7 +37,7 @@ const VirtualServer = {
           <Padding>
             <AppLinkButton
               id={CALL_CENTRAL_STATION_REGISTRATION_ID}
-              title="Networks"
+              title="Network"
             />
           </Padding>
         </Header>
