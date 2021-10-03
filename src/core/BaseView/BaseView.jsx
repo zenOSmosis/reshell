@@ -17,7 +17,7 @@ export default function BaseView({ portal }) {
     // TODO: Use preload
     import("./base-styles.css")
       .then(() => setAreBaseStylesLoaded(true))
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }, []);
 
   if (!areBaseStylesLoaded) {

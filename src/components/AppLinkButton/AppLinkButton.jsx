@@ -1,5 +1,7 @@
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
+// TODO: Apply "active" class to button whenever registration is active?
+
 // TODO: Document
 export default function AppLinkButton({ id, title = null, ...rest }) {
   const { title: registrationTitle, link } = useAppRegistrationLink(id);

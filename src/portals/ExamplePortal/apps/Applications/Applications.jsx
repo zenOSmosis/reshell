@@ -1,11 +1,13 @@
-import { useMemo } from "react";
-import Center from "@components/Center";
-import LED from "@components/LED";
+import { useState } from "react";
+import Layout, { Content, Footer } from "@components/Layout";
+import Padding from "@components/Padding";
+import Link from "@components/Link";
 
-import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import ApplicationSelector from "./views/ApplicationSelector";
+import PortalSwitcher from "./views/PortalSelector";
+import { useEffect } from "react/cjs/react.development";
 
-import consume from "@utils/consume";
+// TODO: Implement application search
 
 const Applications = {
   id: "applications",
@@ -14,55 +16,50 @@ const Applications = {
     width: 640,
     height: 400,
   },
+  isAutoStart: true,
   isPinnedToDock: true,
-  // serviceClasses: [],
-  view: function View({ windowController, appServices }) {
-    const { appRegistrations } = useAppRegistrationsContext();
-    const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
+  view: function View({ windowController }) {
+    const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
 
-    const appRuntimeRegistrations = useMemo(
-      () => appRuntimes.map(runtime => runtime.getRegistration()),
-      [appRuntimes]
-    );
+    // Auto-switch window title depending on "Applications" or "Portals" mode
+    useEffect(() => {
+      windowController.setTitle(
+        !isDisplayingPortals ? "Applications" : "Portals"
+      );
+    }, [windowController, isDisplayingPortals]);
 
     return (
-      <Center canOverflow={true}>
-        {appRegistrations.map(registration => {
-          // const isRunning = appRuntimeRegistrations.includes(registration);
-          const totalInstances = appRuntimeRegistrations.filter(
-            predicate => predicate === registration
-          ).length;
-
-          return (
-            <button
-              key={registration.getUUID()}
-              style={{
-                width: 100,
-                height: 100,
-                overflow: "none",
-                backgroundColor: "transparent",
-                borderColor: totalInstances > 0 ? "green" : "",
-              }}
-              onClick={() => startAppRuntime(registration)}
-            >
-              {registration.getTitle()}
-              <div style={{ position: "absolute", bottom: 0, right: 0 }}>
-                {[...new Array(totalInstances)].map((nonUsed, idx) => {
-                  consume(nonUsed);
-
-                  return (
-                    <LED
-                      key={idx}
-                      color={totalInstances > 0 ? "green" : "gray"}
-                      style={{ margin: "0px 2px" }}
-                    />
-                  );
-                })}
-              </div>
-            </button>
-          );
-        })}
-      </Center>
+      <Layout>
+        <Content>
+          {!isDisplayingPortals ? <ApplicationSelector /> : <PortalSwitcher />}
+        </Content>
+        <Footer>
+          <Padding>
+            <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
+              {!isDisplayingPortals ? "Portals" : "Applications"}
+            </button>{" "}
+            <span className="note">
+              {!isDisplayingPortals ? (
+                <>
+                  Other applications may be available in{" "}
+                  <Link onClick={() => setIsDisplayingPortals(true)}>
+                    another portal
+                  </Link>
+                  .
+                </>
+              ) : (
+                <>
+                  Return to{" "}
+                  <Link onClick={() => setIsDisplayingPortals(false)}>
+                    application list
+                  </Link>
+                  .
+                </>
+              )}
+            </span>
+          </Padding>
+        </Footer>
+      </Layout>
     );
   },
 };

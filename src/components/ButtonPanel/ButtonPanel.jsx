@@ -25,7 +25,7 @@ ButtonPanel.propTypes = {
   ),
 };
 
-export default function ButtonPanel({ buttons, ...rest }) {
+export default function ButtonPanel({ buttons, className, ...rest }) {
   const [selectedIdx, setSelectedIdx] = useState(() => {
     let selectedIdx = 0;
 
@@ -42,7 +42,7 @@ export default function ButtonPanel({ buttons, ...rest }) {
   ++refRenderIdx.current;
 
   return (
-    <div {...rest}>
+    <div className={classNames("button-group", className)} {...rest}>
       {buttons.map(
         (
           {

@@ -7,6 +7,8 @@ import Center from "@components/Center";
 import { Video } from "@components/audioVideoRenderers";
 import LED from "@components/LED";
 
+import useGetIsUnmounting from "@hooks/useGetIsUnmounting";
+
 import ScreenCapturerService from "@services/ScreenCapturerService";
 
 export const REGISTRATION_ID = "screen-capture-window";
@@ -26,6 +28,8 @@ const ScreenCaptureWindow = {
 
     const [screenCaptureFactory, setScreenCaptureFactory] = useState(null);
 
+    const getIsUnmounting = useGetIsUnmounting();
+
     // TODO: Document
     const handleStartScreenCapture = useCallback(
       async (constraints = {}, factoryOptions = {}) => {
@@ -37,14 +41,19 @@ const ScreenCaptureWindow = {
         setScreenCaptureFactory(factory);
 
         factory.once(EVT_DESTROYED, () => {
-          setScreenCaptureFactory(null);
+          // Unmounting check fixes an issue where memory-leak error is
+          // presented when closing the window with an active screen capture
+          if (!getIsUnmounting()) {
+            setScreenCaptureFactory(null);
+          }
         });
 
         return factory;
       },
-      [scs]
+      [scs, getIsUnmounting]
     );
 
+    // Stop the screen capture on unmount
     useEffect(() => {
       if (screenCaptureFactory) {
         return () => {
@@ -52,12 +61,6 @@ const ScreenCaptureWindow = {
         };
       }
     }, [screenCaptureFactory]);
-
-    // const mediaStreamTracks = scs.getMediaStreamTracks();
-    // const isActive = Boolean(mediaStreamTracks.length)
-
-    // TODO: Remove
-    // logger.log({ mediaStreamTracks });
 
     const videoTrack = screenCaptureFactory
       ?.getVideoTrackControllers()[0]

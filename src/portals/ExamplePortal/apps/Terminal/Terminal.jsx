@@ -18,8 +18,8 @@ const Terminal = {
     height: 480,
   },
   serviceClasses: [SocketIOService],
-  view: function View({ windowServices, setResizeHandler }) {
-    const socketService = windowServices[SocketIOService];
+  view: function View({ appServices, setResizeHandler }) {
+    const socketService = appServices[SocketIOService];
     const [xterm, setXterm] = useState(null);
 
     const [socketChannel, setSocketChannel] = useState(null);

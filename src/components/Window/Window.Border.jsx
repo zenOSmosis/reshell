@@ -56,56 +56,61 @@ export default function WindowBorder({
     onBorderDrag(DIR_BORDER_W, { mx, my, isDragging });
   });
 
-  if (isDisabled) {
-    return children;
-  }
-
   return (
     // TODO: Enable merge-able styles / classNames
     <Layout {...rest}>
       <Header>
-        <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
-          <Column
-            {...bindNW()}
-            style={{ maxWidth: borderWidth, cursor: "nw-resize" }}
-          ></Column>
-          <Column {...bindN()} style={{ cursor: "n-resize" }}></Column>
-          <Column
-            {...bindNE()}
-            style={{ maxWidth: borderWidth, cursor: "ne-resize" }}
-          ></Column>
-        </Row>
+        {!isDisabled && (
+          <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
+            <Column
+              {...bindNW()}
+              style={{ maxWidth: borderWidth, cursor: "nw-resize" }}
+            ></Column>
+            <Column {...bindN()} style={{ cursor: "n-resize" }}></Column>
+            <Column
+              {...bindNE()}
+              style={{ maxWidth: borderWidth, cursor: "ne-resize" }}
+            ></Column>
+          </Row>
+        )}
       </Header>
       <Content>
         <Row>
-          <Column
-            {...bindW()}
-            style={{ maxWidth: borderWidth, cursor: "w-resize" }}
-          ></Column>
+          {!isDisabled && (
+            <Column
+              {...bindW()}
+              style={{ maxWidth: borderWidth, cursor: "w-resize" }}
+            ></Column>
+          )}
+
           <Column>
             {
               // TODO: Use layout to wrap the child in a frame, w/ diagonal positions included
             }
             {children}
           </Column>
-          <Column
-            {...bindE()}
-            style={{ maxWidth: borderWidth, cursor: "e-resize" }}
-          ></Column>
+          {!isDisabled && (
+            <Column
+              {...bindE()}
+              style={{ maxWidth: borderWidth, cursor: "e-resize" }}
+            ></Column>
+          )}
         </Row>
       </Content>
       <Footer>
-        <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
-          <Column
-            {...bindSW()}
-            style={{ maxWidth: borderWidth, cursor: "sw-resize" }}
-          ></Column>
-          <Column {...bindS()} style={{ cursor: "s-resize" }}></Column>
-          <Column
-            {...bindSE()}
-            style={{ maxWidth: borderWidth, cursor: "se-resize" }}
-          ></Column>
-        </Row>
+        {!isDisabled && (
+          <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
+            <Column
+              {...bindSW()}
+              style={{ maxWidth: borderWidth, cursor: "sw-resize" }}
+            ></Column>
+            <Column {...bindS()} style={{ cursor: "s-resize" }}></Column>
+            <Column
+              {...bindSE()}
+              style={{ maxWidth: borderWidth, cursor: "se-resize" }}
+            ></Column>
+          </Row>
+        )}
       </Footer>
     </Layout>
   );

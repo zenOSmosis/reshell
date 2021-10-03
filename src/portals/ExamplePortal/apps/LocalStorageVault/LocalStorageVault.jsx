@@ -8,8 +8,10 @@
 // TODO: Implement ability to export / import local storage data
 
 import Padding from "@components/Padding";
-import Layout, { Content, Footer } from "@components/Layout";
-import Center from "@components/Center";
+import Layout, { Header, Content, Footer } from "@components/Layout";
+import LocalStorageItems from "./views/LocalStorageItems";
+
+import LocalStorageService from "@services/LocalStorageService";
 
 // TODO: Include ReShell documentation here, as well as architecture overview
 
@@ -23,11 +25,30 @@ const LocalStorageVault = {
     width: 640,
     height: 480,
   },
-  view: function View() {
+  serviceClasses: [LocalStorageService],
+  view: function View({ appServices }) {
+    const localStorageService = appServices[LocalStorageService];
+
+    // TODO: Remove
+    console.log({ localStorageService });
+
     return (
       <Layout>
+        <Header>
+          <Padding>
+            {/*
+              <button>Session Storage</button>
+            <button>IndexedDB</button>
+            <button>Local Storage</button>
+            <button>Memory</button>
+              */}
+            <button>(+) New Item</button>
+          </Padding>
+        </Header>
         <Content>
-          <Center>[TODO: Implement LocalStorageVault]</Center>
+          <Padding>
+            <LocalStorageItems />
+          </Padding>
         </Content>
         <Footer>
           <Padding>

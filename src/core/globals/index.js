@@ -6,4 +6,4 @@
  * servicing (instead of default automatic).
  */
 
-import "./window.__ReShell.js";
+import "./window.ReShell.js";

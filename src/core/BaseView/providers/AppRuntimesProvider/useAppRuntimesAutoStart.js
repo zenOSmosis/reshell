@@ -9,14 +9,26 @@ export default function useAppRuntimesAutoStart({
 
   // Automatically start registrations with isAutoStart set to true
   useEffect(() => {
-    if (appRegistrations.length && !refHasAutoStarted.current) {
-      for (const registration of appRegistrations) {
-        if (registration.getIsAutoStart()) {
-          startAppRuntime(registration);
+    // NOTE: This timeout fixes an issue where two or more registrations could
+    // not open at once
+    const openTimeout = setTimeout(() => {
+      if (appRegistrations.length && !refHasAutoStarted.current) {
+        // FIXME: (jh) The reversed registrations seems to open apps in forward
+        // order, based on how they are defined in the desktop array.  I
+        // haven't done a lot of testing against this, so this may need to be
+        // redefined as necessary
+        for (const registration of [...appRegistrations].reverse()) {
+          if (registration.getIsAutoStart()) {
+            startAppRuntime(registration);
+          }
         }
-      }
 
-      refHasAutoStarted.current = true;
-    }
+        refHasAutoStarted.current = true;
+      }
+    });
+
+    return function unmount() {
+      clearTimeout(openTimeout);
+    };
   }, [appRegistrations, startAppRuntime]);
 }

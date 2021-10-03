@@ -24,11 +24,11 @@ export default function usePreload(resources) {
     if (resources.length) {
       const preload = new Preload();
 
-      preload.onprogress = (evt) => {
+      preload.onprogress = evt => {
         _setProgress(evt.progress);
       };
 
-      preload.oncomplete = (items) => {
+      preload.oncomplete = (/* items */) => {
         _setIsPreloaded(true);
       };
 

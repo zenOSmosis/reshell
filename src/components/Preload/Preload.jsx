@@ -16,7 +16,7 @@ Preload.propTypes = {
 export default function Preload({
   children,
   preloadResources,
-  onError = (err) => console.warn("Caught", err),
+  onError = err => console.warn("Caught", err),
   ...rest
 }) {
   const { isPreloaded /* progress */ } = usePreload(preloadResources);

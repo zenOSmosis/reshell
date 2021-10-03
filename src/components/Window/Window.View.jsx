@@ -190,7 +190,10 @@ const WindowView = ({
             {...dragBind()}
             className={classNames(
               styles["window"],
-              isActive && styles["active"]
+              isActive && styles["active"],
+              // NOTE: This check intentionally is not taking resizing into
+              // consideration
+              isUserDragging && styles["dragging"]
             )}
             style={windowStyle}
           >

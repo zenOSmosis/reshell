@@ -15,9 +15,9 @@ import PadlockOpenIcon from "@icons/PadlockOpenIcon";
 import PadlockCloseIcon from "@icons/PadlockCloseIcon";
 import SimpleIcon from "@icons/SimpleIcon";
 import AdvancedIcon from "@icons/AdvancedIcon";
-import EmbeddedIcon from "@icons/EmbeddedIcon";
-import NewTabIcon from "@icons/NewTabIcon";
-import ReplaceIcon from "@icons/ReplaceIcon";
+// import EmbeddedIcon from "@icons/EmbeddedIcon";
+// import NewTabIcon from "@icons/NewTabIcon";
+// import ReplaceIcon from "@icons/ReplaceIcon";
 import RocketIcon from "@icons/RocketIcon";
 // import ServerIcon from "@icons/ServerIcon";
 
@@ -41,6 +41,8 @@ import useTranscoderSandboxContext, {
 
 //  TODO: Include literature of how a browser tab is utilized as a virtual
 // machine in order to host the room
+
+// TODO: Implement auto-connect-to-network toggle (perhaps in advanced; default to true)
 
 export default function CreateNetwork({ onSubmit }) {
   // const { getItem, setItem } = useLocalStorage();
