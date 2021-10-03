@@ -178,16 +178,18 @@ export default class WindowController extends PhantomCore {
       // FIXME: (jh) Can these be applied as a single reflow?
       // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
 
-      if (width !== undefined) {
-        windowEl.style.width = `${width}px`;
-      }
-      if (height !== undefined) {
-        windowEl.style.height = `${height}px`;
-      }
-    }
+      window.requestAnimationFrame(() => {
+        if (width !== undefined) {
+          windowEl.style.width = `${width}px`;
+        }
+        if (height !== undefined) {
+          windowEl.style.height = `${height}px`;
+        }
 
-    // Emit debounced EVT_RESIZED event
-    this._emitDebouncedResized();
+        // Emit debounced EVT_RESIZED event
+        this._emitDebouncedResized();
+      });
+    }
   }
 
   // TODO: Document
@@ -226,31 +228,24 @@ export default class WindowController extends PhantomCore {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
-      // FIXME: (jh) Can these be applied as a single reflow?
-      // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
-      // NOTE: On Xubuntu and Chrome, applying translate seemed to use the same
-      // CPU usage when doing rapid window movements.  What seemed to help was
-      // applying requestAnimationFrame and using a setTimeout to debounce, but
-      // if that solution is utilized, it needs to be checked with seeing how
-      // windows respond when resized in multiple directions, so that they
-      // don't bounce around, etc.
-      //
-      // Additional reading:
-      //  - https://medium.com/iporaitech/css-background-animation-avoiding-high-cpu-usage-58947ff50900
-      //  - https://wesleyhales.com/blog/2013/10/26/Jank-Busting-Apples-Home-Page/
-      //
-      // High CPU usage during window movements DOES NOT seem to be an issue w/ Firefox on Xubuntu
+      // FIXME: (jh) While using translate would be better here, it is buggier to use with some of the window animations
 
-      if (x !== undefined) {
-        windowEl.style.left = `${x}px`;
-        delete windowEl.style.right;
-      }
-      if (y !== undefined) {
-        windowEl.style.top = `${y}px`;
-        delete windowEl.style.bottom;
-      }
+      window.requestAnimationFrame(() => {
+        if (x !== undefined) {
+          windowEl.style.left = `${x}px`;
 
-      this._emitDebouncedMoved();
+          // Delete opposing right style
+          delete windowEl.style.right;
+        }
+        if (y !== undefined) {
+          windowEl.style.top = `${y}px`;
+
+          // Delete opposing bottom style
+          delete windowEl.style.bottom;
+        }
+
+        this._emitDebouncedMoved();
+      });
     }
   }
 
