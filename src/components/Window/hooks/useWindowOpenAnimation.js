@@ -1,6 +1,11 @@
 import { useState } from "react";
 import useAnimation from "@hooks/useAnimation";
 
+// TODO: Apply animations to open, close, minimize, maximize, restore, etc.
+// @see https://animate.style/
+// @see https://github.com/miniMAC/magic (what is "magic / puffin"?) (TODO: Create test app to try these libs?)
+// # mac minimize genie effect warp
+
 // TODO: Document
 export default function useWindowOpenAnimation(el) {
   //const [phase, setPhase] = useState("transition-in");

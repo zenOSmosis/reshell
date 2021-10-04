@@ -1,6 +1,7 @@
 import Desktop from "@components/Desktop";
 
 import Applications from "../ExamplePortal/apps/Applications";
+import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import AdditionWindow from "./apps/AdditionWindow";
 import MultiplicationWindow from "./apps/MultiplicationWindow";
 import TotalsWindow from "./apps/TotalsWindow";
@@ -11,6 +12,7 @@ export default function WizardPortal() {
     <Desktop
       appDescriptors={[
         Applications,
+        ApplicationMonitor,
         AdditionWindow,
         MultiplicationWindow,
         TotalsWindow,

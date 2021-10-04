@@ -10,6 +10,7 @@ import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useForceUpdate from "@hooks/useForceUpdate";
 
 import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
 
@@ -363,11 +364,6 @@ function WindowManagerView({ appDescriptors = [], children }) {
   );
 }
 
-// TODO: Apply animations to open, close, minimize, maximize, restore, etc.
-// @see https://animate.style/
-// @see https://github.com/miniMAC/magic (what is "magic / puffin"?) (TODO: Create test app to try these libs?)
-// # mac minimize genie effect warp
-//
 // TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
 // hooks (keep hooks as more of a low-level thing instead, if possible)
 // - https://svelte.dev/tutorial/onmount
@@ -384,21 +380,18 @@ function WindowManagerView({ appDescriptors = [], children }) {
 // TODO: Document; rename? (NOTE: this wrapped view was designed to make it
 // easier to make the wrapping view render out-of-sequence with the containing
 // view, such as when a service updates, etc.)
-function WrappedView({
+const WrappedView = React.memo(function WrappedView({
   appServices,
   windowController,
   appRuntime,
   view: ViewComponent,
-  windowSwitchToAppRegistrationID,
-  ...rest
 }) {
-  // TODO: Document
-  const [serviceUpdateIdx, setServiceUpdateIdx] = useState(0);
+  const forceUpdate = useForceUpdate();
 
   // Re-render window when a service updates
   useEffect(() => {
     const _handleServiceUpdate = () => {
-      setServiceUpdateIdx(prev => prev + 1);
+      forceUpdate();
     };
 
     for (const service of Object.values(appServices)) {
@@ -412,20 +405,17 @@ function WrappedView({
         service.off(EVT_UPDATED, _handleServiceUpdate);
       }
     };
-  }, [appServices]);
+  }, [appServices, forceUpdate]);
 
   // TODO: Document
   const setResizeHandler = useRegistrationViewOnResized(windowController);
 
   return (
     <ViewComponent
-      {...rest}
       windowController={windowController}
       appServices={appServices}
       appRuntime={appRuntime}
       setResizeHandler={setResizeHandler}
-      // Force update every time service updates
-      serviceUpdateIdx={serviceUpdateIdx}
     />
   );
-}
+});
