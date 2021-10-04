@@ -364,11 +364,6 @@ function WindowManagerView({ appDescriptors = [], children }) {
   );
 }
 
-// TODO: Apply animations to open, close, minimize, maximize, restore, etc.
-// @see https://animate.style/
-// @see https://github.com/miniMAC/magic (what is "magic / puffin"?) (TODO: Create test app to try these libs?)
-// # mac minimize genie effect warp
-//
 // TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
 // hooks (keep hooks as more of a low-level thing instead, if possible)
 // - https://svelte.dev/tutorial/onmount
