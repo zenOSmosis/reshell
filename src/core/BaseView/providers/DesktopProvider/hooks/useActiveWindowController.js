@@ -2,14 +2,30 @@ import { EVT_UPDATED } from "phantom-core";
 import { useEffect, useState } from "react";
 
 import useForceUpdate from "@hooks/useForceUpdate";
+// import useServicesContext from "@hooks/useServicesContext";
+// import AppRuntimeOrchestrationService from "../../AppRuntimesProvider/services/AppRuntimeOrchestrationService";
 
 // TODO: Refactor [native] window title setting
 const DEFAULT_DOCUMENT_TITLE = document.title;
+
+// TODO: [consider using active element to help determine active controller in certain situations]
+// https://github.com/facebook/react/blob/main/packages/react-dom/src/client/getActiveElement.js
 
 // TODO: Document
 export default function useActiveWindowController() {
   const [activeWindowController, setActiveWindowController] = useState(null);
   // const [backgroundVideoMediaStreamTrack, setBackgroundVideoMediaStreamTrack] = useState(null);
+
+  /*
+  const appOrchestrationService = useServiceClass(
+    AppRuntimeOrchestrationService
+  );
+  */
+
+  // TODO: Remove
+  // TODO: Mirror active window controller w/ AppRuntimeOrchestrationService (maybe have useActiveWindowController reflect orchestration state)
+  // const { services } = useServicesContext();
+  // console.log({ services });
 
   // IMPORTANT! This should not be called often as it will force the entire app
   // to re-render

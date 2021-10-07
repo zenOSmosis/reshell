@@ -21,7 +21,7 @@ export default class AppRuntimeOrchestrationService extends UIServiceCore {
     this.setTitle("AppRuntime Orchestration Service");
   }
 
-  // TODO: Build out
+  // TODO: Document
   startAppRuntime(appDescriptor) {
     const appRuntime = new AppRuntime(appDescriptor);
 
@@ -30,12 +30,11 @@ export default class AppRuntimeOrchestrationService extends UIServiceCore {
     return appRuntime;
   }
 
-  // TODO: Build out
-  closeAppRuntime(appDescriptor) {
-    // TODO: Get app runtime w/ descriptor
-    // Destruct app runtime
-
-    throw new ReferenceError("TODO: Build out closeAppRuntime");
+  // TODO: Document
+  // Helper method; does not have to be called directly on this service if
+  // destructing the instance directly
+  async closeAppRuntime(appRuntime) {
+    return appRuntime.destroy();
   }
 
   // TODO: Document

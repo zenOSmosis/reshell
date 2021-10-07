@@ -322,6 +322,9 @@ export default function Desktop({
                   // TODO: Read from package.json
                   // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
                   // (i.e. REACT_APP_VERSION=$npm_package_version)
+                  //
+                  // TODO: If wanting to overlay completely on top of all other windows, and ignore mouse, etc:
+                  // use CSS [pointer-events: none]
                 }
                 <AutoScaler style={{ whiteSpace: "nowrap" }}>
                   <div style={{ textAlign: "left", fontSize: ".7em" }}>
