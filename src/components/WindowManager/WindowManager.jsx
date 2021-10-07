@@ -266,6 +266,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
         appServices[serviceClass] = service;
       }
 
+      // TODO: Memoize this component, when refactoring outer map
       return (
         <Window
           key={key}
@@ -380,7 +381,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
 // TODO: Document; rename? (NOTE: this wrapped view was designed to make it
 // easier to make the wrapping view render out-of-sequence with the containing
 // view, such as when a service updates, etc.)
-const WrappedView = React.memo(function WrappedView({
+const WrappedView = function WrappedView({
   appServices,
   windowController,
   appRuntime,
@@ -418,4 +419,4 @@ const WrappedView = React.memo(function WrappedView({
       setResizeHandler={setResizeHandler}
     />
   );
-});
+};
