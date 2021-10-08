@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { debounce } from "debounce";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -7,6 +8,9 @@ import { install } from "resize-observer";
 if (!window.ResizeObserver) {
   install();
 }
+
+// Number of milliseconds checkIsOverflown should wait between subsequent calls
+const CHECK_DEBOUNCE_TIME = 20;
 
 /**
  * Determines if the given element is overflowing its container.
@@ -52,7 +56,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
     }
   }, [element]);
 
-  const [isOverflown, setIsOverflown] = useState(getIsOverflown());
+  const [isOverflown, setIsOverflown] = useState(() => getIsOverflown());
 
   refPrevIsOverflown.current = isOverflown;
 
@@ -61,8 +65,12 @@ export default function useOverflowDetection(element, isDetecting = true) {
       /**
        * Handles checking of overflown, comparing it with previous state, and
        * determining if the hook state should be updated.
+       *
+       * Sets hook state once detection has been performed.
+       *
+       * @return {void}
        */
-      const checkIsOverflown = () => {
+      const checkIsOverflown = debounce(() => {
         const prevIsOverflown = refPrevIsOverflown.current;
 
         const nextIsOverflown = getIsOverflown();
@@ -70,7 +78,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
         if (prevIsOverflown !== nextIsOverflown) {
           setIsOverflown(nextIsOverflown);
         }
-      };
+      }, CHECK_DEBOUNCE_TIME);
 
       const ro = new ResizeObserver((/* entries */) => {
         /**
@@ -107,6 +115,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
         ro.observe(element);
         ro.unobserve(element.parentNode);
         // mo.disconnect();
+
+        checkIsOverflown.clear();
       };
     }
   }, [isDetecting, element, getIsOverflown]);
