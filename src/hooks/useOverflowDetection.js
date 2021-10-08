@@ -9,7 +9,10 @@ if (!window.ResizeObserver) {
 }
 
 /**
+ * Determines if the given element is overflowing its container.
+ *
  * @see https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
+ * @see https://github.com/wojtekmaj/detect-element-overflow/blob/main/src/index.js
  *
  * @param {HTMLElement} element
  * @param {Object} isDetecting? [optional; default = true] Whether or not the
@@ -20,16 +23,19 @@ export default function useOverflowDetection(element, isDetecting = true) {
   const refPrevIsOverflown = useRef(null);
 
   const getIsOverflown = useCallback(() => {
-    if (!element) {
-      return false;
-    } else {
-      const yDiff = element.scrollHeight - element.clientHeight;
-      const xDiff = element.scrollWidth - element.clientWidth;
+    if (element) {
+      const offsetHeight = element.offsetHeight;
+      const offsetWidth = element.offsetWidth;
 
-      if (refPrevIsOverflown.current && (yDiff === 0 || xDiff === 0)) {
+      const parentNode = element.parentNode;
+
+      const parentHeight = parentNode?.clientHeight;
+      const parentWidth = parentNode?.clientWidth;
+
+      if (parentHeight < offsetHeight || parentWidth < offsetWidth) {
         return true;
       } else {
-        return yDiff > 1 || xDiff > 1;
+        return false;
       }
     }
   }, [element]);
@@ -49,6 +55,13 @@ export default function useOverflowDetection(element, isDetecting = true) {
   useEffect(() => {
     if (isDetecting && element) {
       /**
+       * Utilized for determining if overflown state should altered.
+       *
+       * @type {DOMElement | null}
+       **/
+      // let activeElement = null;
+
+      /**
        * Handles checking of overflown, comparing it with previous state, and
        * determining if the hook state should be updated.
        */
@@ -57,8 +70,9 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
         const nextIsOverflown = getIsOverflown();
 
-        const focusedTagName =
-          document.activeElement && document.activeElement.tagName;
+        // activeElement = document.activeElement;
+
+        // const focusedTagName = activeElement && activeElement.tagName;
 
         // Ignore overflow adjustments if there is a focused input which can
         // drive the software keyboard on mobile devices.
@@ -66,14 +80,16 @@ export default function useOverflowDetection(element, isDetecting = true) {
         // This fixes an issue where it is not possible to type on Android in
         // an input / textarea which is a child of an overflow-able <Center />
         // component.
-        if (
-          focusedTagName.toLowerCase() !== "input" &&
-          focusedTagName.toLowerCase() !== "textarea"
-        ) {
-          if (prevIsOverflown !== nextIsOverflown) {
-            setIsOverflown(nextIsOverflown);
-          }
+        // if (
+        //  focusedTagName?.toLowerCase() !== "input" &&
+        //  focusedTagName?.toLowerCase() !== "textarea"
+        //) {
+        if (prevIsOverflown !== nextIsOverflown) {
+          setIsOverflown(nextIsOverflown);
         }
+        //} else if (activeElement) {
+        // activeElement.addEventListener("blur", checkIsOverflown);
+        //}
       };
 
       const ro = new ResizeObserver(entries => {
@@ -91,19 +107,26 @@ export default function useOverflowDetection(element, isDetecting = true) {
       });
 
       ro.observe(element);
+      ro.observe(element.parentNode);
 
       const mo = new MutationObserver(() => {
         window.requestAnimationFrame(checkIsOverflown);
       });
 
+      // TODO: Re-enable
+      /*
       mo.observe(element, {
         childList: true,
         subtree: true,
       });
+      */
 
       return function unmount() {
-        ro.unobserve(element);
+        ro.observe(element);
+        ro.unobserve(element.parentNode);
         mo.disconnect();
+
+        // activeElement.removeEventListener("blur", checkIsOverflown);
       };
     }
   }, [isDetecting, element, getIsOverflown]);
