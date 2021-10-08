@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import styles from "./ButtonTransparent.module.css";
 
+// TODO: Rename to ButtonUnstyled?
 function ButtonTransparent({ children, className, ...rest }) {
   return (
     <button
