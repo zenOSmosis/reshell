@@ -17,12 +17,22 @@ if (!window.ResizeObserver) {
  * @return {boolean}
  */
 export default function useOverflowDetection(element, isDetecting = true) {
-  const getIsOverflown = useCallback(
-    () =>
-      (element && element.scrollHeight > element.clientHeight) ||
-      (element && element.scrollWidth > element.clientWidth),
-    [element]
-  );
+  const refPrevIsOverflown = useRef(null);
+
+  const getIsOverflown = useCallback(() => {
+    if (!element) {
+      return false;
+    } else {
+      const yDiff = element.scrollHeight - element.clientHeight;
+      const xDiff = element.scrollWidth - element.clientWidth;
+
+      if (refPrevIsOverflown.current && (yDiff === 0 || xDiff === 0)) {
+        return true;
+      } else {
+        return yDiff > 1 || xDiff > 1;
+      }
+    }
+  }, [element]);
 
   const [isOverflown, setIsOverflown] = useState(getIsOverflown());
 
@@ -34,7 +44,6 @@ export default function useOverflowDetection(element, isDetecting = true) {
   }
   */
 
-  const refPrevIsOverflown = useRef(isOverflown);
   refPrevIsOverflown.current = isOverflown;
 
   useEffect(() => {
@@ -83,8 +92,18 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
       ro.observe(element);
 
+      const mo = new MutationObserver(() => {
+        window.requestAnimationFrame(checkIsOverflown);
+      });
+
+      mo.observe(element, {
+        childList: true,
+        subtree: true,
+      });
+
       return function unmount() {
         ro.unobserve(element);
+        mo.disconnect();
       };
     }
   }, [isDetecting, element, getIsOverflown]);
