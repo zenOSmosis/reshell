@@ -10,9 +10,9 @@ export default function ContentArea({ children, ...rest }) {
     >
       <Full
         style={{
-          border: "1px #ccc solid",
+          border: "1px #868686 solid",
           borderRadius: 4,
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          backgroundColor: "rgba(86, 86, 86, .4)",
         }}
       >
         {children}
