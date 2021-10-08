@@ -9,7 +9,12 @@ if (!window.ResizeObserver) {
 }
 
 /**
+ * Determines if the given element is overflowing its container.
+ *
+ * Note: Some ideas were taken from these links, however the final solution
+ * was not found within.
  * @see https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
+ * @see https://github.com/wojtekmaj/detect-element-overflow/blob/main/src/index.js
  *
  * @param {HTMLElement} element
  * @param {Object} isDetecting? [optional; default = true] Whether or not the
@@ -19,30 +24,35 @@ if (!window.ResizeObserver) {
 export default function useOverflowDetection(element, isDetecting = true) {
   const refPrevIsOverflown = useRef(null);
 
+  /**
+   * @return {boolean} Whether or not the element is overflowing its parent.
+   */
   const getIsOverflown = useCallback(() => {
-    if (!element) {
-      return false;
-    } else {
-      const yDiff = element.scrollHeight - element.clientHeight;
-      const xDiff = element.scrollWidth - element.clientWidth;
+    if (element) {
+      // Height / width of the inner element, including padding and borders
+      // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight
+      const innerOffsetHeight = element.offsetHeight;
+      const innerOffsetWidth = element.offsetWidth;
 
-      if (refPrevIsOverflown.current && (yDiff === 0 || xDiff === 0)) {
+      const parentNode = element.parentNode;
+
+      // Height / width of the outer element, including padding but excluding
+      // borders, margins, and scrollbars
+      // @see https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight
+      const outerHeight = parentNode?.clientHeight;
+      const outerWidth = parentNode?.clientWidth;
+
+      if (outerHeight < innerOffsetHeight || outerWidth < innerOffsetWidth) {
         return true;
       } else {
-        return yDiff > 1 || xDiff > 1;
+        return false;
       }
+    } else {
+      return false;
     }
   }, [element]);
 
   const [isOverflown, setIsOverflown] = useState(getIsOverflown());
-
-  // TODO: Debounce this (every render, debounce, use leading and trailing edges)
-  // Force check on every render, if is detecting
-  /*
-  if (isDetecting && isOverflown !== getIsOverflown()) {
-    setIsOverflown(!isOverflown);
-  }
-  */
 
   refPrevIsOverflown.current = isOverflown;
 
@@ -57,26 +67,12 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
         const nextIsOverflown = getIsOverflown();
 
-        const focusedTagName =
-          document.activeElement && document.activeElement.tagName;
-
-        // Ignore overflow adjustments if there is a focused input which can
-        // drive the software keyboard on mobile devices.
-        //
-        // This fixes an issue where it is not possible to type on Android in
-        // an input / textarea which is a child of an overflow-able <Center />
-        // component.
-        if (
-          focusedTagName.toLowerCase() !== "input" &&
-          focusedTagName.toLowerCase() !== "textarea"
-        ) {
-          if (prevIsOverflown !== nextIsOverflown) {
-            setIsOverflown(nextIsOverflown);
-          }
+        if (prevIsOverflown !== nextIsOverflown) {
+          setIsOverflown(nextIsOverflown);
         }
       };
 
-      const ro = new ResizeObserver(entries => {
+      const ro = new ResizeObserver((/* entries */) => {
         /**
          * IMPORTANT: requestAnimationFrame is used here to prevent possible
          * "resize-observer loop limit exceeded error."
@@ -91,19 +87,26 @@ export default function useOverflowDetection(element, isDetecting = true) {
       });
 
       ro.observe(element);
+      ro.observe(element.parentNode);
 
+      /*
       const mo = new MutationObserver(() => {
         window.requestAnimationFrame(checkIsOverflown);
       });
+      */
 
+      // FIXME: (jh) Re-enable?
+      /*
       mo.observe(element, {
         childList: true,
         subtree: true,
       });
+      */
 
       return function unmount() {
-        ro.unobserve(element);
-        mo.disconnect();
+        ro.observe(element);
+        ro.unobserve(element.parentNode);
+        // mo.disconnect();
       };
     }
   }, [isDetecting, element, getIsOverflown]);
