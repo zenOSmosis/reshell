@@ -11,6 +11,8 @@ if (!window.ResizeObserver) {
 /**
  * Determines if the given element is overflowing its container.
  *
+ * Note: Some ideas were taken from these links, however the final solution
+ * was not found within.
  * @see https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
  * @see https://github.com/wojtekmaj/detect-element-overflow/blob/main/src/index.js
  *
@@ -22,45 +24,40 @@ if (!window.ResizeObserver) {
 export default function useOverflowDetection(element, isDetecting = true) {
   const refPrevIsOverflown = useRef(null);
 
+  /**
+   * @return {boolean} Whether or not the element is overflowing its parent.
+   */
   const getIsOverflown = useCallback(() => {
     if (element) {
-      const offsetHeight = element.offsetHeight;
-      const offsetWidth = element.offsetWidth;
+      // Height / width of the inner element, including padding and borders
+      // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight
+      const innerOffsetHeight = element.offsetHeight;
+      const innerOffsetWidth = element.offsetWidth;
 
       const parentNode = element.parentNode;
 
-      const parentHeight = parentNode?.clientHeight;
-      const parentWidth = parentNode?.clientWidth;
+      // Height / width of the outer element, including padding but excluding
+      // borders, margins, and scrollbars
+      // @see https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight
+      const outerHeight = parentNode?.clientHeight;
+      const outerWidth = parentNode?.clientWidth;
 
-      if (parentHeight < offsetHeight || parentWidth < offsetWidth) {
+      if (outerHeight < innerOffsetHeight || outerWidth < innerOffsetWidth) {
         return true;
       } else {
         return false;
       }
+    } else {
+      return false;
     }
   }, [element]);
 
   const [isOverflown, setIsOverflown] = useState(getIsOverflown());
 
-  // TODO: Debounce this (every render, debounce, use leading and trailing edges)
-  // Force check on every render, if is detecting
-  /*
-  if (isDetecting && isOverflown !== getIsOverflown()) {
-    setIsOverflown(!isOverflown);
-  }
-  */
-
   refPrevIsOverflown.current = isOverflown;
 
   useEffect(() => {
     if (isDetecting && element) {
-      /**
-       * Utilized for determining if overflown state should altered.
-       *
-       * @type {DOMElement | null}
-       **/
-      // let activeElement = null;
-
       /**
        * Handles checking of overflown, comparing it with previous state, and
        * determining if the hook state should be updated.
@@ -70,29 +67,12 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
         const nextIsOverflown = getIsOverflown();
 
-        // activeElement = document.activeElement;
-
-        // const focusedTagName = activeElement && activeElement.tagName;
-
-        // Ignore overflow adjustments if there is a focused input which can
-        // drive the software keyboard on mobile devices.
-        //
-        // This fixes an issue where it is not possible to type on Android in
-        // an input / textarea which is a child of an overflow-able <Center />
-        // component.
-        // if (
-        //  focusedTagName?.toLowerCase() !== "input" &&
-        //  focusedTagName?.toLowerCase() !== "textarea"
-        //) {
         if (prevIsOverflown !== nextIsOverflown) {
           setIsOverflown(nextIsOverflown);
         }
-        //} else if (activeElement) {
-        // activeElement.addEventListener("blur", checkIsOverflown);
-        //}
       };
 
-      const ro = new ResizeObserver(entries => {
+      const ro = new ResizeObserver((/* entries */) => {
         /**
          * IMPORTANT: requestAnimationFrame is used here to prevent possible
          * "resize-observer loop limit exceeded error."
@@ -109,11 +89,13 @@ export default function useOverflowDetection(element, isDetecting = true) {
       ro.observe(element);
       ro.observe(element.parentNode);
 
+      /*
       const mo = new MutationObserver(() => {
         window.requestAnimationFrame(checkIsOverflown);
       });
+      */
 
-      // TODO: Re-enable
+      // FIXME: (jh) Re-enable?
       /*
       mo.observe(element, {
         childList: true,
@@ -124,9 +106,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
       return function unmount() {
         ro.observe(element);
         ro.unobserve(element.parentNode);
-        mo.disconnect();
-
-        // activeElement.removeEventListener("blur", checkIsOverflown);
+        // mo.disconnect();
       };
     }
   }, [isDetecting, element, getIsOverflown]);
