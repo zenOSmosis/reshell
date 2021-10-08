@@ -4,7 +4,7 @@ import Padding from "@components/Padding";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
-import ContentArea from "@components/ContentArea";
+import NoWrap from "@components/NoWrap";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
@@ -13,6 +13,8 @@ import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalU
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
 import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ScreenCapture";
+
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
@@ -58,24 +60,42 @@ const CallCentralStation = {
       [networkService]
     );
 
+    const { link: virtualServerLink } = useAppRegistrationLink(
+      VIRTUAL_SERVER_REGISTRATION_ID
+    );
+
+    const handleCreateNetwork = useCallback(virtualServerLink, [
+      virtualServerLink,
+    ]);
+
+    const handleOpenPrivateNetwork = useCallback(() => {
+      alert("TODO: Implement handleOpenPrivateNetwork");
+    }, []);
+
     return (
       <Layout>
         <Header>
           <Padding>
-            <span className="button-group">
+            <NoWrap className="button-group">
               <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
               <AppLinkButton
                 id={VIRTUAL_SERVER_REGISTRATION_ID}
                 title="Create Network"
               />
-            </span>
+            </NoWrap>
             {
               // [networks]  [private network]
             }
+            <NoWrap style={{ float: "right" }} className="button-group">
+              <button>Private Network</button>
+              {/*
+                <button>Search</button>
+                */}
+            </NoWrap>
           </Padding>
         </Header>
         <Content>
-          <ContentArea>
+          <Padding>
             <Center canOverflow={true}>
               {lenNetworks === 0 ? (
                 <NoNetworks />
@@ -90,7 +110,7 @@ const CallCentralStation = {
                 />
               )}
             </Center>
-          </ContentArea>
+          </Padding>
         </Content>
         <Footer>
           <Padding>

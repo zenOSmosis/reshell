@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
@@ -31,6 +33,8 @@ const VirtualServer = {
 
     const isHosting = virtualServerService.getIsHosting();
 
+    const handleStopVirtualServer = useCallback(() => {});
+
     return (
       <Layout>
         <Header>
@@ -39,6 +43,14 @@ const VirtualServer = {
               id={CALL_CENTRAL_STATION_REGISTRATION_ID}
               title="Network"
             />
+            {isHosting && (
+              <button
+                onClick={() => virtualServerService.stopVirtualServer()}
+                style={{ backgroundColor: "red", float: "right" }}
+              >
+                Stop
+              </button>
+            )}
           </Padding>
         </Header>
         <Content>
@@ -59,7 +71,10 @@ const VirtualServer = {
             />
           ) : (
             <Center>
-              <button onClick={() => virtualServerService.stopVirtualServer()}>
+              <button
+                onClick={() => virtualServerService.stopVirtualServer()}
+                style={{ backgroundColor: "red" }}
+              >
                 Stop
               </button>
             </Center>
