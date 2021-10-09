@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Layout, { Content, Footer } from "@components/Layout";
+import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
+import Center from "@components/Center";
 import Link from "@components/Link";
 
 import ApplicationSelector from "./views/ApplicationSelector";
@@ -28,10 +29,29 @@ const Applications = {
       );
     }, [windowController, isDisplayingPortals]);
 
+    const [searchQuery, setSearchQuery] = useState(null);
+
     return (
       <Layout>
+        <Header>
+          {!isDisplayingPortals && (
+            <Padding>
+              <Center>
+                <input
+                  placeholder="Search Applications"
+                  onChange={evt => setSearchQuery(evt.target.value)}
+                  defaultValue={searchQuery}
+                />
+              </Center>
+            </Padding>
+          )}
+        </Header>
         <Content>
-          {!isDisplayingPortals ? <ApplicationSelector /> : <PortalSwitcher />}
+          {!isDisplayingPortals ? (
+            <ApplicationSelector searchQuery={searchQuery} />
+          ) : (
+            <PortalSwitcher />
+          )}
         </Content>
         <Footer>
           <Padding>
