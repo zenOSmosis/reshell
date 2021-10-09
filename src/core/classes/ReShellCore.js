@@ -64,6 +64,7 @@ export default class ReShellCore extends PhantomCore {
     this._init(portalName);
   }
 
+  // TODO: Document
   async _init(portalName) {
     const sessionStorageEngine = this._uiServiceCollection
       .getService(LocalDataPersistenceService)
@@ -72,6 +73,7 @@ export default class ReShellCore extends PhantomCore {
     // If no portalName is passed and there is a session storage (not local) variable set for portal, use it
     if (!portalName) {
       portalName =
+        // Retrieve portal name from session storage
         (await sessionStorageEngine.fetchItem(
           KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME
         )) || "default";
@@ -85,6 +87,7 @@ export default class ReShellCore extends PhantomCore {
       );
     }
 
+    // Save portal name in session storage
     sessionStorageEngine.setItem(
       KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME,
       portalName
