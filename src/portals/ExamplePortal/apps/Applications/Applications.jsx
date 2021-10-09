@@ -42,6 +42,7 @@ const Applications = {
       <Padding>
         {
           // TODO: Automatically focus when window is activated (unless on mobile)
+          // TODO: Switch to Applications view on change
         }
         <input
           placeholder="Search Applications"
