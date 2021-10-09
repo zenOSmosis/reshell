@@ -6,6 +6,9 @@ import WindowManagerRouteProvider from "./WindowManager.RouteProvider"; // Windo
 import Cover from "../Cover";
 import Window from "../Window";
 
+import WindowProvider from "../Window/Window.Provider";
+import useWindowContext from "../Window/hooks/useWindowContext";
+
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
@@ -211,7 +214,8 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // stuff on every render)
       const {
         view: ViewComponent,
-        titleBarView: TitleBarViewComponent,
+        titleBarView,
+        initialSharedState,
 
         // This one is tricky, don't pass up registration ID as DOM element ID
         id,
@@ -269,79 +273,89 @@ function WindowManagerView({ appDescriptors = [], children }) {
 
       // TODO: Memoize this component, when refactoring outer map
       return (
-        <Window
-          key={key}
-          {...windowProps}
-          elWindowManager={elBase}
-          // TODO: Remove isActive and pass in from WindowController to the window
-          isActive={handleGetIsActiveWindow(windowController)}
-          onMouseDown={() => handleSetActiveWindow(windowController)}
-          onTouchStart={() => handleSetActiveWindow(windowController)}
-          titleBarView={TitleBarViewComponent}
-          ref={ref => {
-            if (ref && !windowController) {
-              // Begin process of attaching window controller to rendered view
-              // and setting up event bindings
+        <WindowProvider key={key} initialSharedState={initialSharedState}>
+          <Window
+            {...windowProps}
+            elWindowManager={elBase}
+            // TODO: Remove isActive and pass in from WindowController to the window
+            isActive={handleGetIsActiveWindow(windowController)}
+            onMouseDown={() => handleSetActiveWindow(windowController)}
+            onTouchStart={() => handleSetActiveWindow(windowController)}
+            titleBarView={
+              titleBarView ? (
+                <WrappedTitleBarView
+                  titleBarView={titleBarView}
+                  appServices={appServices}
+                  windowController={windowController}
+                  appRuntime={appRuntime}
+                />
+              ) : null
+            }
+            ref={ref => {
+              if (ref && !windowController) {
+                // Begin process of attaching window controller to rendered view
+                // and setting up event bindings
 
-              const windowController = new WindowController(
-                {},
-                {
-                  onBringToTop: handleSetActiveWindow,
-                }
-              );
-              windowController.setTitle(title);
+                const windowController = new WindowController(
+                  {},
+                  {
+                    onBringToTop: handleSetActiveWindow,
+                  }
+                );
+                windowController.setTitle(title);
 
-              windowController.attachWindowManagerElement(elBase);
+                windowController.attachWindowManagerElement(elBase);
 
-              // Link app runtime to window controller (so that when the window
-              // controller is destructed it will take down the app runtime)
-              windowController.setAppRuntime(appRuntime);
-              appRuntime.setWindowController(windowController);
+                // Link app runtime to window controller (so that when the window
+                // controller is destructed it will take down the app runtime)
+                windowController.setAppRuntime(appRuntime);
+                appRuntime.setWindowController(windowController);
 
-              // Attach the view controller to the window
-              ref.attachWindowController(windowController);
+                // Attach the view controller to the window
+                ref.attachWindowController(windowController);
 
-              setWindowControllerMaps(prev => {
-                const next = { ...prev };
-                next[key] = {
-                  windowController,
-                  key,
-                  // windowSymbol: ref.windowSymbol,
-                };
-
-                return next;
-              });
-
-              windowController.once(EVT_DESTROYED, () => {
                 setWindowControllerMaps(prev => {
                   const next = { ...prev };
-
-                  next[key].windowController = null;
+                  next[key] = {
+                    windowController,
+                    key,
+                    // windowSymbol: ref.windowSymbol,
+                  };
 
                   return next;
                 });
-              });
 
-              // Set this new window as the active window
-              handleSetActiveWindow(windowController);
+                windowController.once(EVT_DESTROYED, () => {
+                  setWindowControllerMaps(prev => {
+                    const next = { ...prev };
+
+                    next[key].windowController = null;
+
+                    return next;
+                  });
+                });
+
+                // Set this new window as the active window
+                handleSetActiveWindow(windowController);
+              }
+            }}
+          >
+            {
+              // Wrap the view so that it updates when a bound service updates
+              // NOTE: (jh) I originally tried wrapping the window itself, but
+              // it didn't work, and it's a better idea to only update what's
+              // necessary anyway
             }
-          }}
-        >
-          {
-            // Wrap the view so that it updates when a bound service updates
-            // NOTE: (jh) I originally tried wrapping the window itself, but
-            // it didn't work, and it's a better idea to only update what's
-            // necessary anyway
-          }
-          {windowController && (
-            <WrappedView
-              appServices={appServices}
-              windowController={windowController}
-              appRuntime={appRuntime}
-              view={ViewComponent}
-            />
-          )}
-        </Window>
+            {windowController && (
+              <WrappedView
+                appServices={appServices}
+                windowController={windowController}
+                appRuntime={appRuntime}
+                view={ViewComponent}
+              />
+            )}
+          </Window>
+        </WindowProvider>
       );
     })
     .filter(window => Boolean(window));
@@ -367,6 +381,11 @@ function WindowManagerView({ appDescriptors = [], children }) {
   );
 }
 
+// TODO: Document
+const WrappedTitleBarView = function ({ titleBarView, ...rest }) {
+  return <WrappedView {...rest} view={titleBarView} />;
+};
+
 // TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
 // hooks (keep hooks as more of a low-level thing instead, if possible)
 // - https://svelte.dev/tutorial/onmount
@@ -390,6 +409,8 @@ const WrappedView = function WrappedView({
   view: ViewComponent,
 }) {
   const forceUpdate = useForceUpdate();
+
+  const { sharedState, setSharedState } = useWindowContext();
 
   // Re-render window when a service updates
   useEffect(() => {
@@ -419,6 +440,8 @@ const WrappedView = function WrappedView({
       appServices={appServices}
       appRuntime={appRuntime}
       setResizeHandler={setResizeHandler}
+      sharedState={sharedState}
+      setSharedState={setSharedState}
     />
   );
 };

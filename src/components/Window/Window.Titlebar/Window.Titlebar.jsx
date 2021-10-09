@@ -16,7 +16,7 @@ export default function WindowTitlebar({
   onClose,
   titleBarView: TitleBarView,
 }) {
-  // onDoubleClick={handleToggleRestoreOrMaximize}
+  // onDoubleClick={handleToggleRestoreOrMaximize})
 
   return (
     <div
@@ -25,7 +25,7 @@ export default function WindowTitlebar({
       onDoubleClick={onRestoreOrMaximize}
     >
       {TitleBarView ? (
-        <TitleBarView title={title} />
+        TitleBarView
       ) : (
         <div className={styles["title"]}>{title}</div>
       )}

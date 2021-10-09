@@ -9,6 +9,8 @@ import { useEffect } from "react/cjs/react.development";
 
 // TODO: Implement application search
 
+const DEFAULT_SEARCH_QUERY = "";
+
 const Applications = {
   id: "applications",
   title: "Applications",
@@ -18,16 +20,27 @@ const Applications = {
   },
   isAutoStart: true,
   isPinnedToDock: true,
-  titleBarView: function TitleBarView() {
+  initialSharedState: {
+    searchQuery: DEFAULT_SEARCH_QUERY,
+  },
+  titleBarView: function TitleBarView({ sharedState, setSharedState }) {
+    const handleSetSearchQuery = useCallback(
+      evt => setSharedState({ searchQuery: evt.target.value }),
+      [setSharedState]
+    );
+
     return (
-      <input
-        placeholder="Search Applications"
-        // onChange={evt => setSearchQuery(evt.target.value)}
-        // value={searchQuery}
-      />
+      <Padding>
+        <input
+          placeholder="Search Applications"
+          onChange={handleSetSearchQuery}
+          value={sharedState.searchQuery}
+          style={{ width: "100%" }}
+        />
+      </Padding>
     );
   },
-  view: function View({ windowController }) {
+  view: function View({ windowController, sharedState, setSharedState }) {
     const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
 
     // Auto-switch window title depending on "Applications" or "Portals" mode
@@ -37,9 +50,12 @@ const Applications = {
       );
     }, [windowController, isDisplayingPortals]);
 
-    const [searchQuery, setSearchQuery] = useState("");
+    const searchQuery = sharedState?.searchQuery;
 
-    const handleResetSearchQuery = useCallback(() => setSearchQuery(""), []);
+    const handleResetSearchQuery = useCallback(
+      () => setSharedState({ searchQuery: DEFAULT_SEARCH_QUERY }),
+      [setSharedState]
+    );
 
     return (
       <Layout>
