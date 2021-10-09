@@ -27,7 +27,17 @@ export default function useObjectState(defaultState = {}) {
     // Check type validity / apply type coercion, etc.
     switch (typeof updatedState) {
       case "string":
-        updatedState = JSON.parse(updatedState);
+        try {
+          updatedState = JSON.parse(updatedState);
+        } catch (err) {
+          console.error(
+            "Unable to parse string.  Did you forget to use an Object when setting object state?",
+            {
+              err,
+            }
+          );
+        }
+
         break;
 
       case "function":
