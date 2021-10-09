@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState, useRef } from "react";
 export default function AVBase({
   mediaStreamTrack,
   mediaType = "video",
-  onEl = (el) => null,
+  onEl = el => null,
   ...rest
 }) {
   const [el, setEl] = useState(null);
@@ -19,7 +19,14 @@ export default function AVBase({
   );
 
   useEffect(() => {
-    if (!el || !mediaStream) {
+    if (!el) {
+      return;
+    }
+
+    // Fixes issue in Firefox where setting mediaStream to undefined would keep
+    // video on last frame
+    if (!mediaStream) {
+      el.srcObject = null;
       return;
     }
 
@@ -29,7 +36,7 @@ export default function AVBase({
 
     el.play()
       .then(() => (el.muted = false))
-      .catch((err) => console.warn("Caught", err));
+      .catch(err => console.warn("Caught", err));
   }, [el, mediaStream]);
 
   const refOnEl = useRef(onEl);
