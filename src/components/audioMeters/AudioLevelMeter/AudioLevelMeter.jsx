@@ -20,7 +20,7 @@ export default function AudioLevelMeter({
       renderedLevels.push(percent);
     }
 
-    renderedLevels = renderedLevels.map((level) => 100 - level);
+    renderedLevels = renderedLevels.map(level => 100 - level);
 
     return renderedLevels;
   }, [percent, percents]);
