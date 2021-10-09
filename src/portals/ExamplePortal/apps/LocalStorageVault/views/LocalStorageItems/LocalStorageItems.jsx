@@ -7,6 +7,7 @@ export default function LocalStorageItems() {
           <td>Key</td>
           <td>Value</td>
           <td>Kind</td>
+          <td>Encryption</td>
           <td>Storage Engine</td>
         </tr>
       </thead>
@@ -18,6 +19,7 @@ export default function LocalStorageItems() {
           <td>...</td>
           <td>...</td>
           <td>...</td>
+          <td>Not Encrypted</td>
           <td>...</td>
         </tr>
       </tbody>

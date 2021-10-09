@@ -36,28 +36,45 @@ export default class LocalDataPersistenceService extends UIServiceCore {
     return super.destroy();
   }
 
+  // TODO: Document
+  // TODO: TODO: Implement optional filtering
+  async fetchKeyMaps() {
+    const storageEngines = this._storageEngineCollection.getStorageEngines();
+
+    const keyMaps = [];
+
+    for (const storageEngine of storageEngines) {
+      const keys = await storageEngine.fetchKeys();
+
+      // TODO: Refactor as part of PhantomCore API (i.e. storageEngine.getClass())
+      const StorageEngineClass = storageEngine.constructor;
+
+      for (const key of keys) {
+        keyMaps.push([key, StorageEngineClass]);
+      }
+    }
+
+    return keyMaps;
+  }
+
+  // TODO: Implement optional filtering
   /**
    * Fetches all keys from all connected storage engines.
    *
    * @return {any[]}
    */
   async fetchKeys() {
-    return await Promise.all(
-      this._storageEngineCollection
-        .getStorageEngines()
-        .map(storageEngine => storageEngine.fetchKeys())
-        .flat()
-    );
+    return (await this.fetchKeyMaps()).map(keyMap => keyMap[0]);
   }
 
   // TODO: Document
-  addStorageEngineClass(storageEngineClass) {
-    this._storageEngineCollection.addStorageEngineClass(storageEngineClass);
+  addStorageEngineClass(StorageEngineClass) {
+    this._storageEngineCollection.addStorageEngineClass(StorageEngineClass);
   }
 
   // TODO: Document
-  removeStorageEngineClass(storageEngineClass) {
-    this._storageEngineCollection.removeStorageEngineClass(storageEngineClass);
+  removeStorageEngineClass(StorageEngineClass) {
+    this._storageEngineCollection.removeStorageEngineClass(StorageEngineClass);
   }
 
   // TODO: Document
