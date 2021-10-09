@@ -31,6 +31,9 @@ const Applications = {
 
     return (
       <Padding>
+        {
+          // TODO: Automatically focus when window is activated (unless on mobile)
+        }
         <input
           placeholder="Search Applications"
           onChange={handleSetSearchQuery}
