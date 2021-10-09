@@ -20,6 +20,8 @@ export default function ApplicationSelector({
     [appRuntimes]
   );
 
+  // TODO: Move application search into a service and implement keyword-based
+  // searching, other criteria
   const filteredRegistrations = useMemo(
     () =>
       appRegistrations.filter(registration =>
