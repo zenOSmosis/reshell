@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from "react";
-
-import ServiceCollection, {
+import ReShellCore from "@core/classes/ReShellCore";
+import {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-} from "./classes/UIServiceCollection";
+} from "@core/classes/UIServiceCollection";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
@@ -14,8 +14,9 @@ export default function UIServicesProvider({ children }) {
   const forceUpdate = useForceUpdate();
 
   // const [_uiServiceCollection, _setUIServiceCollection] = useState(null);
+  // TODO: Refactor into core
   const _uiServiceCollection = useMemo(() => {
-    const serviceCollection = new ServiceCollection();
+    const serviceCollection = ReShellCore.getUIServiceCollection();
 
     // Force UI to update when a service has been added or removed
     //

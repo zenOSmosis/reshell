@@ -15,8 +15,25 @@ export {
   EVT_DESTROYED,
 };
 
+// TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
+let _instance = null;
+
+// IMPORTANT: This must be treated as a singleton for desktop usage
 // TODO: Document
 export default class UIServiceCollection extends PhantomCollection {
+  constructor(...args) {
+    // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
+    if (_instance) {
+      throw new ReferenceError(
+        "UIServiceCollection cannot have multiple instances"
+      );
+    }
+
+    super(...args);
+
+    _instance = this;
+  }
+
   /**
    * @return {Promise<void>}
    */
@@ -24,7 +41,12 @@ export default class UIServiceCollection extends PhantomCollection {
     // Destruct all services on collection destruc
     await this.destroyAllChildren();
 
-    super.destroy();
+    const ret = await super.destroy();
+
+    // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
+    _instance = null;
+
+    return ret;
   }
 
   // TODO: Document

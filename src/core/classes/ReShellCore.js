@@ -1,18 +1,20 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
+import UIServiceCollection from "../classes/UIServiceCollection";
+
 import BaseView from "../BaseView";
 
 import queryString from "query-string";
 
-// TODO: Move class to classes, and expose via globals directory
 // TODO: Extend PhantomCore and unrender on destruct?
 export default class ReShellCore {
-  // TODO: Document
-  static async beforeDOMReplace() {}
+  static #uiServiceCollection = new UIServiceCollection();
 
   // TODO: Document
-  static async afterDOMReplace() {}
+  static getUIServiceCollection() {
+    return ReShellCore.#uiServiceCollection;
+  }
 
   // TODO: Document
   static #portals = {};
@@ -39,6 +41,8 @@ export default class ReShellCore {
 
   // TODO: Document
   static async init(portalName = "default") {
+    // TODO: If no portalName is passed and there is a session storage (not local) variable set for portal, use it
+
     if (ReShellCore.#isReShellDOMInitStarted) {
       return ReShellCore.switchToPortal(portalName);
     }
@@ -54,8 +58,6 @@ export default class ReShellCore {
     } else {
       ReShellCore.#activePortalName = portalName;
     }
-
-    await ReShellCore.beforeDOMReplace();
 
     // Wipe existing content
     document.body.innerHTML = "";
@@ -76,8 +78,6 @@ export default class ReShellCore {
       </React.StrictMode>,
       elBase
     );
-
-    await ReShellCore.afterDOMReplace();
   }
 
   // TODO: Document
@@ -85,6 +85,8 @@ export default class ReShellCore {
     if (!ReShellCore.#isReShellDOMInitStarted) {
       return ReShellCore.init(portalName);
     }
+
+    // TODO: Determine if portal is registered before trying to switch to it
 
     // TODO: Animate existing DOM out
 
@@ -99,6 +101,8 @@ export default class ReShellCore {
   // IMPORTANT: This setTimeout (or any other async equiv.) is necessary to
   // allow the parsing of registerPortals.js before trying to run the init on
   // them
+  //
+  // TODO: Use nextTick / microtask / other async
   setTimeout(() => {
     const urlQuery = queryString.parse(window.location.search);
 
