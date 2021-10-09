@@ -36,10 +36,11 @@ export default function ApplicationSelector({ searchQuery = "" }) {
           return (
             <button
               key={registration.getUUID()}
+              // TODO: Extract to module.css
               style={{
                 width: 100,
                 height: 100,
-                overflow: "none",
+                overflow: "hidden",
                 backgroundColor: "transparent",
                 borderColor: totalInstances > 0 ? "green" : "",
               }}
@@ -54,6 +55,7 @@ export default function ApplicationSelector({ searchQuery = "" }) {
                     <LED
                       key={idx}
                       color={totalInstances > 0 ? "green" : "gray"}
+                      // TODO: Extract to module.css
                       style={{ margin: "0px 2px" }}
                     />
                   );
