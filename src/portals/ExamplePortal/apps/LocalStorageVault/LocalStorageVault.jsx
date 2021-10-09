@@ -31,10 +31,7 @@ const LocalStorageVault = {
       appServices[LocalDataPersistenceService];
 
     // TODO: Remove
-    console.log({
-      localDataPersistenceService,
-      session: Object.keys(sessionStorage),
-    });
+    localDataPersistenceService.fetchKeys().then(keys => console.log({ keys }));
 
     return (
       <Layout>

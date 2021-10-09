@@ -36,6 +36,20 @@ export default class LocalDataPersistenceService extends UIServiceCore {
     return super.destroy();
   }
 
+  /**
+   * Fetches all keys from all connected storage engines.
+   *
+   * @return {any[]}
+   */
+  async fetchKeys() {
+    return await Promise.all(
+      this._storageEngineCollection
+        .getStorageEngines()
+        .map(storageEngine => storageEngine.fetchKeys())
+        .flat()
+    );
+  }
+
   // TODO: Document
   addStorageEngineClass(storageEngineClass) {
     this._storageEngineCollection.addStorageEngineClass(storageEngineClass);
