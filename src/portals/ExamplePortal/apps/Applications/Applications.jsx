@@ -7,8 +7,6 @@ import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
 import { useEffect } from "react/cjs/react.development";
 
-// TODO: Implement application search
-
 const DEFAULT_SEARCH_QUERY = "";
 
 const Applications = {
