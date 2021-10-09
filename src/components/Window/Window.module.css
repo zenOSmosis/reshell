@@ -97,9 +97,17 @@ of the drag zone outside of the windows. */
 }
 
 .window .titlebar .title {
-  float: left;
-  margin-left: 10px;
-  font-weight: bold;
+  text-align: center;
+
+  /** More-or-less adjust centering to compensate for window controls pushing off-center (not exact measurement) */
+  padding-left: 10%;
+
+  font-weight: 600;
+  width: 100%;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* @see https://stackoverflow.com/a/36182782 */
