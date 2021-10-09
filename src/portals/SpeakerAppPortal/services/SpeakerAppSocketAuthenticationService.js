@@ -1,10 +1,11 @@
 import SocketIOService from "@services/SocketIOService";
 import {
   sendCachedAuthorization,
-  getMergedAuthorization,
+  // getMergedAuthorization,
 } from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
 
+// TODO: Clean up
 /*
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
@@ -43,6 +44,8 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
     const _handleAuthorizationGranted = receivedAuthorization => {
       // TODO: Remove
       console.log({ receivedAuthorization });
+
+      // TODO: Tie into persistent storage service w/ encrypted engine
 
       /*
       if (receivedAuthorization.serverBuildHash !== CLIENT_BUILD_HASH) {
