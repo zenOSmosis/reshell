@@ -6,14 +6,16 @@ export default function LocalStorageItems() {
           <td></td>
           <td>Key</td>
           <td>Value</td>
+          <td>Kind</td>
           <td>Storage Engine</td>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td className="center">
             <input type="checkbox"></input>
           </td>
+          <td>...</td>
           <td>...</td>
           <td>...</td>
           <td>...</td>
