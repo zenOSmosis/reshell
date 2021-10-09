@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
-import Layout, { Header, Content, Footer } from "@components/Layout";
+import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
-import Center from "@components/Center";
 import Link from "@components/Link";
 
 import ApplicationSelector from "./views/ApplicationSelector";
@@ -9,6 +8,8 @@ import PortalSwitcher from "./views/PortalSelector";
 import { useEffect } from "react/cjs/react.development";
 
 // TODO: Implement application search
+
+const DEFAULT_SEARCH_QUERY = "";
 
 const Applications = {
   id: "applications",
@@ -19,7 +20,27 @@ const Applications = {
   },
   isAutoStart: true,
   isPinnedToDock: true,
-  view: function View({ windowController }) {
+  initialSharedState: {
+    searchQuery: DEFAULT_SEARCH_QUERY,
+  },
+  titleBarView: function TitleBarView({ sharedState, setSharedState }) {
+    const handleSetSearchQuery = useCallback(
+      evt => setSharedState({ searchQuery: evt.target.value }),
+      [setSharedState]
+    );
+
+    return (
+      <Padding>
+        <input
+          placeholder="Search Applications"
+          onChange={handleSetSearchQuery}
+          value={sharedState.searchQuery}
+          style={{ width: "100%" }}
+        />
+      </Padding>
+    );
+  },
+  view: function View({ windowController, sharedState, setSharedState }) {
     const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
 
     // Auto-switch window title depending on "Applications" or "Portals" mode
@@ -29,25 +50,15 @@ const Applications = {
       );
     }, [windowController, isDisplayingPortals]);
 
-    const [searchQuery, setSearchQuery] = useState("");
+    const searchQuery = sharedState?.searchQuery;
 
-    const handleResetSearchQuery = useCallback(() => setSearchQuery(""), []);
+    const handleResetSearchQuery = useCallback(
+      () => setSharedState({ searchQuery: DEFAULT_SEARCH_QUERY }),
+      [setSharedState]
+    );
 
     return (
       <Layout>
-        <Header>
-          {!isDisplayingPortals && (
-            <Padding>
-              <Center>
-                <input
-                  placeholder="Search Applications"
-                  onChange={evt => setSearchQuery(evt.target.value)}
-                  value={searchQuery}
-                />
-              </Center>
-            </Padding>
-          )}
-        </Header>
         <Content>
           {!isDisplayingPortals ? (
             <ApplicationSelector

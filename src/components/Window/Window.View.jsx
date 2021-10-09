@@ -35,6 +35,8 @@ const WindowView = ({
   // TODO: Obtain via windowController
   isProfiling = true,
 
+  titleBarView = null,
+
   style = {},
   ...rest
 }) => {
@@ -207,6 +209,7 @@ const WindowView = ({
                   onRestoreOrMaximize={onRestoreOrMaximize}
                   onMinimize={onMinimize}
                   onClose={onClose}
+                  titleBarView={titleBarView}
                 />
               </Header>
               <Content className={styles["body"]} style={bodyStyle}>

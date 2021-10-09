@@ -1,3 +1,5 @@
+import NoWrap from "@components/NoWrap";
+
 import styles from "../Window.module.css";
 
 import {
@@ -12,8 +14,9 @@ export default function WindowTitlebar({
   onRestoreOrMaximize,
   onMinimize,
   onClose,
+  titleBarView: TitleBarView,
 }) {
-  // onDoubleClick={handleToggleRestoreOrMaximize}
+  // onDoubleClick={handleToggleRestoreOrMaximize})
 
   return (
     <div
@@ -21,12 +24,17 @@ export default function WindowTitlebar({
       className={styles["titlebar"]}
       onDoubleClick={onRestoreOrMaximize}
     >
-      <div className={styles["title"]}>{title}</div>
-      <div className={styles["window-controls"]}>
+      {TitleBarView ? (
+        TitleBarView
+      ) : (
+        <div className={styles["title"]}>{title}</div>
+      )}
+
+      <NoWrap className={styles["window-controls"]}>
         <WindowTitlebarMaximizeButton onClick={onRestoreOrMaximize} />
         <WindowTitlebarMinimizeButton onClick={onMinimize} />
         <WindowTitlebarCloseButton onClick={onClose} />
-      </div>
+      </NoWrap>
     </div>
   );
 }
