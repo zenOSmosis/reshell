@@ -15,6 +15,8 @@ export default class LocalDataPersistenceService extends UIServiceCore {
   constructor() {
     super();
 
+    this.setTitle("Local Data Persistence Service");
+
     this._storageEngineCollection = new StorageEngineCollection();
 
     this.addStorageEngineClass(SessionStorageEngine);

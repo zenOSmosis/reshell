@@ -16,9 +16,9 @@ export default class AppRuntimeOrchestrationService extends UIServiceCore {
   constructor() {
     super();
 
-    this.bindCollectionClass(AppRuntimeCollection);
-
     this.setTitle("AppRuntime Orchestration Service");
+
+    this.bindCollectionClass(AppRuntimeCollection);
   }
 
   // TODO: Document
