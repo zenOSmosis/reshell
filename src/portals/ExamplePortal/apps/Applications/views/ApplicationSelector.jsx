@@ -1,13 +1,17 @@
 import { useMemo } from "react";
 import Center from "@components/Center";
 import LED from "@components/LED";
+import Padding from "@components/Padding";
 
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
 
 import consume from "@utils/consume";
 
-export default function ApplicationSelector({ searchQuery = "" }) {
+export default function ApplicationSelector({
+  searchQuery = "",
+  onResetSearchQuery,
+}) {
   const { appRegistrations } = useAppRegistrationsContext();
   const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
 
@@ -16,18 +20,34 @@ export default function ApplicationSelector({ searchQuery = "" }) {
     [appRuntimes]
   );
 
+  const filteredRegistrations = useMemo(
+    () =>
+      appRegistrations.filter(registration =>
+        !searchQuery
+          ? true
+          : registration
+              .getTitle()
+              .toUpperCase()
+              .includes(searchQuery.toUpperCase())
+      ),
+    [appRegistrations, searchQuery]
+  );
+
+  if (searchQuery?.length && !filteredRegistrations.length) {
+    return (
+      <Center>
+        <Padding>No applications found for search.</Padding>
+        <Padding>
+          <button onClick={onResetSearchQuery}>Reset Search Query</button>
+        </Padding>
+      </Center>
+    );
+  }
+
   return (
     <Center canOverflow={true}>
-      {appRegistrations
-        .filter(registration =>
-          !searchQuery
-            ? true
-            : registration
-                .getTitle()
-                .toUpperCase()
-                .includes(searchQuery.toUpperCase())
-        )
-        .map(registration => {
+      <Padding>
+        {filteredRegistrations.map(registration => {
           // const isRunning = appRuntimeRegistrations.includes(registration);
           const totalInstances = appRuntimeRegistrations.filter(
             predicate => predicate === registration
@@ -64,6 +84,7 @@ export default function ApplicationSelector({ searchQuery = "" }) {
             </button>
           );
         })}
+      </Padding>
     </Center>
   );
 }
