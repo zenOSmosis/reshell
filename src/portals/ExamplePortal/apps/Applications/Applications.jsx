@@ -36,6 +36,9 @@ const Applications = {
           onChange={handleSetSearchQuery}
           value={sharedState.searchQuery}
           style={{ width: "100%" }}
+          // Prevent double-clicks which are [theoretically] intended to select
+          // all the text from resizing the window
+          onDoubleClick={evt => evt.stopPropagation()}
         />
       </Padding>
     );
