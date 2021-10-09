@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
 import UIServiceCollection from "../classes/UIServiceCollection";
+import LocalDataPersistenceService from "@services/LocalDataPersistenceService";
 
 import BaseView from "../BaseView";
 
@@ -53,6 +54,21 @@ export default class ReShellCore extends PhantomCore {
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = this;
 
+    this._uiServiceCollection = new UIServiceCollection();
+    this._uiServiceCollection.startServiceClass(LocalDataPersistenceService);
+
+    // TODO: Remove
+    console.log({
+      storageEngines: this._uiServiceCollection
+        .getService(LocalDataPersistenceService)
+        .getStorageEngines(),
+      sessionKeys: this._uiServiceCollection
+        .getService(LocalDataPersistenceService)
+        .getSessionStorageEngine()
+        .fetchKeys()
+        .then(console.log),
+    });
+
     // TODO: If no portalName is passed and there is a session storage (not local) variable set for portal, use it
     if (!portalName) {
       portalName = "default";
@@ -67,8 +83,6 @@ export default class ReShellCore extends PhantomCore {
     }
 
     this._activePortalName = portalName;
-
-    this._uiServiceCollection = new UIServiceCollection();
 
     // Wipe existing content
     document.body.innerHTML = "";

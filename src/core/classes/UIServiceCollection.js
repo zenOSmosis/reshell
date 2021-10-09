@@ -110,4 +110,11 @@ export default class UIServiceCollection extends PhantomCollection {
       return this.addServiceClass(ServiceClass);
     }
   }
+
+  // TODO: Document
+  getService(ServiceClass) {
+    const cachedService = this.getChildWithKey(ServiceClass);
+
+    return cachedService;
+  }
 }
