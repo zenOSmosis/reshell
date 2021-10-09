@@ -1,4 +1,4 @@
-import { PhantomCollection } from "phantom-core";
+import { PhantomCollection, EVT_UPDATED } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 import StorageEngine from "./engines/StorageEngine";
 import SessionStorageEngine from "./engines/SessionStorageEngine";
@@ -18,6 +18,11 @@ export default class LocalDataPersistenceService extends UIServiceCore {
     this.setTitle("Local Data Persistence Service");
 
     this._storageEngineCollection = new StorageEngineCollection();
+
+    // Proxy storage engine collection EVT_UPDATED events through this instance
+    this.proxyOn(this._storageEngineCollection, EVT_UPDATED, (...args) =>
+      this.emit(EVT_UPDATED, ...args)
+    );
 
     this.addStorageEngineClass(SessionStorageEngine);
   }
