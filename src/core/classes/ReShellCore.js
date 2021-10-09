@@ -9,6 +9,8 @@ import BaseView from "../BaseView";
 
 import queryString from "query-string";
 
+const KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME = "reshell-default-portal";
+
 // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
 let _instance = null;
 
@@ -49,7 +51,9 @@ export default class ReShellCore extends PhantomCore {
       );
     }
 
-    super();
+    super({
+      isReady: false,
+    });
 
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = this;
@@ -57,21 +61,20 @@ export default class ReShellCore extends PhantomCore {
     this._uiServiceCollection = new UIServiceCollection();
     this._uiServiceCollection.startServiceClass(LocalDataPersistenceService);
 
-    // TODO: Remove
-    console.log({
-      storageEngines: this._uiServiceCollection
-        .getService(LocalDataPersistenceService)
-        .getStorageEngines(),
-      sessionKeys: this._uiServiceCollection
-        .getService(LocalDataPersistenceService)
-        .getSessionStorageEngine()
-        .fetchKeys()
-        .then(console.log),
-    });
+    this._init(portalName);
+  }
 
-    // TODO: If no portalName is passed and there is a session storage (not local) variable set for portal, use it
+  async _init(portalName) {
+    const sessionStorageEngine = this._uiServiceCollection
+      .getService(LocalDataPersistenceService)
+      .getSessionStorageEngine();
+
+    // If no portalName is passed and there is a session storage (not local) variable set for portal, use it
     if (!portalName) {
-      portalName = "default";
+      portalName =
+        (await sessionStorageEngine.fetchItem(
+          KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME
+        )) || "default";
     }
 
     const portal = ReShellCore.#portals[portalName];
@@ -81,6 +84,11 @@ export default class ReShellCore extends PhantomCore {
         `Unable to init portal with name: ${portalName}`
       );
     }
+
+    sessionStorageEngine.setItem(
+      KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME,
+      portalName
+    );
 
     this._activePortalName = portalName;
 
@@ -103,6 +111,8 @@ export default class ReShellCore extends PhantomCore {
       </React.StrictMode>,
       this._elBase
     );
+
+    super._init();
   }
 
   /**

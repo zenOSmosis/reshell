@@ -2,8 +2,8 @@ import StorageEngine from "./StorageEngine";
 
 export default class SessionStorageEngine extends StorageEngine {
   // TODO: Document
-  async addItem(key, value) {
-    return window.sessionStorage.addItem(key, value);
+  async setItem(key, value) {
+    return window.sessionStorage.setItem(key, value);
   }
 
   // TODO: Document

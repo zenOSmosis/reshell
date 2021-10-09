@@ -71,7 +71,9 @@ class StorageEngineCollection extends PhantomCollection {
   removeChild(StorageEngineClass) {
     const storageEngine = this.getChildWithKey(StorageEngineClass);
 
-    storageEngine.destroy();
+    if (storageEngine) {
+      storageEngine.destroy();
+    }
   }
 
   // TODO: Document

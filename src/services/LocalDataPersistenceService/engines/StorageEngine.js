@@ -2,8 +2,8 @@ import PhantomCore from "phantom-core";
 
 export default class StorageEngine extends PhantomCore {
   // TODO: Document
-  async addItem(key, value) {
-    throw new ReferenceError("addItem must be overridden");
+  async setItem(key, value) {
+    throw new ReferenceError("setItem must be overridden");
   }
 
   // TODO: Document
