@@ -1,12 +1,6 @@
 import React from "react";
 import ReShellCore from "./core";
 
-// TODO: Move dayjs functionality into core start
-import dayjs from "dayjs";
-// Extend day.js w/ fromNow() method
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
-
 // The portals defined here are what are selectable inside of the application
 const portals = {
   default: React.lazy(() => import("@portals/SpeakerAppPortal")),

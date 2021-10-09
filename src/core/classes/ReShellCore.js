@@ -1,3 +1,5 @@
+import "@core/startupHelpers";
+
 import PhantomCore from "phantom-core";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
