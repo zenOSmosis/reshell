@@ -18,6 +18,8 @@ const Window = React.forwardRef(
       // TODO: Obtain via windowController instead?
       isActive,
 
+      titleBarView,
+
       style = {},
       ...rest
     },
@@ -46,6 +48,7 @@ const Window = React.forwardRef(
         elWindowManager={elWindowManager}
         windowController={windowController}
         isActive={isActive}
+        titleBarView={titleBarView}
       >
         {children}
       </WindowView>

@@ -211,6 +211,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // stuff on every render)
       const {
         view: ViewComponent,
+        titleBarView: TitleBarViewComponent,
 
         // This one is tricky, don't pass up registration ID as DOM element ID
         id,
@@ -276,6 +277,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
           isActive={handleGetIsActiveWindow(windowController)}
           onMouseDown={() => handleSetActiveWindow(windowController)}
           onTouchStart={() => handleSetActiveWindow(windowController)}
+          titleBarView={TitleBarViewComponent}
           ref={ref => {
             if (ref && !windowController) {
               // Begin process of attaching window controller to rendered view

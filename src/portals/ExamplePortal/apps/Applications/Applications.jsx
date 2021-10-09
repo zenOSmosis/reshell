@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
-import Layout, { Header, Content, Footer } from "@components/Layout";
+import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
-import Center from "@components/Center";
 import Link from "@components/Link";
 
 import ApplicationSelector from "./views/ApplicationSelector";
@@ -19,6 +18,15 @@ const Applications = {
   },
   isAutoStart: true,
   isPinnedToDock: true,
+  titleBarView: function TitleBarView() {
+    return (
+      <input
+        placeholder="Search Applications"
+        // onChange={evt => setSearchQuery(evt.target.value)}
+        // value={searchQuery}
+      />
+    );
+  },
   view: function View({ windowController }) {
     const [isDisplayingPortals, setIsDisplayingPortals] = useState(false);
 
@@ -35,19 +43,6 @@ const Applications = {
 
     return (
       <Layout>
-        <Header>
-          {!isDisplayingPortals && (
-            <Padding>
-              <Center>
-                <input
-                  placeholder="Search Applications"
-                  onChange={evt => setSearchQuery(evt.target.value)}
-                  value={searchQuery}
-                />
-              </Center>
-            </Padding>
-          )}
-        </Header>
         <Content>
           {!isDisplayingPortals ? (
             <ApplicationSelector
