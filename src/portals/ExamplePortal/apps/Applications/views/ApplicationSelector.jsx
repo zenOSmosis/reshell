@@ -36,7 +36,9 @@ export default function ApplicationSelector({
   if (searchQuery?.length && !filteredRegistrations.length) {
     return (
       <Center>
-        <Padding>No applications found for search.</Padding>
+        <Padding style={{ fontWeight: "bold" }}>
+          No applications found for search.
+        </Padding>
         <Padding>
           <button onClick={onResetSearchQuery}>Reset Search Query</button>
         </Padding>
