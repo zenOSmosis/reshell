@@ -14,7 +14,6 @@ const KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME = "reshell-default-portal";
 // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
 let _instance = null;
 
-// TODO: Extend PhantomCore and unrender on destruct?
 export default class ReShellCore extends PhantomCore {
   // TODO: Document
   static async switchToPortal(portalName) {
