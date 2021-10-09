@@ -11,7 +11,7 @@ import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import LocalStorageItems from "./views/LocalStorageItems";
 
-import LocalStorageService from "@services/LocalStorageService";
+import LocalDataPersistenceService from "@services/LocalDataPersistenceService";
 
 // TODO: Include ReShell documentation here, as well as architecture overview
 
@@ -25,12 +25,16 @@ const LocalStorageVault = {
     width: 640,
     height: 480,
   },
-  serviceClasses: [LocalStorageService],
+  serviceClasses: [LocalDataPersistenceService],
   view: function View({ appServices }) {
-    const localStorageService = appServices[LocalStorageService];
+    const localDataPersistenceService =
+      appServices[LocalDataPersistenceService];
 
     // TODO: Remove
-    console.log({ localStorageService });
+    console.log({
+      localDataPersistenceService,
+      session: Object.keys(sessionStorage),
+    });
 
     return (
       <Layout>

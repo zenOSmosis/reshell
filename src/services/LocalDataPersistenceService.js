@@ -12,7 +12,7 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 // TODO: Build out
 class PersistentStorageBackendCollection extends PhantomCollection {}
 
-export default class LocalStorageService extends UIServiceCore {
+export default class LocalDataPersistenceService extends UIServiceCore {
   constructor() {
     super();
 
