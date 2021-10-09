@@ -1,4 +1,4 @@
-/** @see Using dark mode in CSS: https://paulmillr.com/posts/using-dark-mode-in-css (@media (prefers-color-scheme: dark)) */
+/** TODO: @see Using dark mode in CSS: https://paulmillr.com/posts/using-dark-mode-in-css (@media (prefers-color-scheme: dark)) */
 
 html {
   /* Universal box sizing w/ inheritance */
@@ -9,6 +9,10 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+
+  /* Add ellipses to long words which can't be broken up onto multiple lines */
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
 }
 
 body {
