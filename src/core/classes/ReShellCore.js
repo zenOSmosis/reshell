@@ -95,6 +95,7 @@ export default class ReShellCore extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
+    // Stop the current UI
     ReactDOM.render(<div>[Tear down]</div>, this._elBase);
 
     await this._uiServiceCollection.destroy();

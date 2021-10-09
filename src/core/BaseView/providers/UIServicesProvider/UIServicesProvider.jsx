@@ -14,7 +14,7 @@ export default function UIServicesProvider({ children }) {
   const forceUpdate = useForceUpdate();
 
   // const [_uiServiceCollection, _setUIServiceCollection] = useState(null);
-  // TODO: Refactor into core
+  // TODO: Refactor into useEffect; fix destruct error where React can't perform state update on unmounted component
   const _uiServiceCollection = useMemo(() => {
     const serviceCollection = ReShellCore.getUIServiceCollection();
 
@@ -31,11 +31,13 @@ export default function UIServicesProvider({ children }) {
       });
     };
 
+    // TODO: Unbind on teardown
     serviceCollection.on(
       EVT_CHILD_INSTANCE_ADDED,
       _handleServiceAddedOrRemoved
     );
 
+    // TODO: Unbind on teardown
     serviceCollection.on(
       EVT_CHILD_INSTANCE_REMOVED,
       _handleServiceAddedOrRemoved

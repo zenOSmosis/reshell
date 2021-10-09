@@ -37,9 +37,11 @@ export default function AppRuntimesProvider({ children }) {
 
   // TODO: Document
   useEffect(() => {
-    appOrchestrationService.on(EVT_UPDATED, () => {
-      forceUpdate();
-    });
+    appOrchestrationService.on(EVT_UPDATED, forceUpdate);
+
+    return function unmount() {
+      appOrchestrationService.off(EVT_UPDATED, forceUpdate);
+    };
   }, [appOrchestrationService, forceUpdate]);
 
   // TODO: Document
