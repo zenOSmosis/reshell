@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+// import { useCallback } from "react";
 
 import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
@@ -33,7 +33,8 @@ const VirtualServer = {
 
     const isHosting = virtualServerService.getIsHosting();
 
-    const handleStopVirtualServer = useCallback(() => {});
+    // TODO: Implement?
+    // const handleStopVirtualServer = useCallback(() => {}, []);
 
     return (
       <Layout>

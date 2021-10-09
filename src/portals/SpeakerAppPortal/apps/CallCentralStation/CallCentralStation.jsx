@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+// import { useCallback } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Center from "@components/Center";
@@ -14,7 +14,7 @@ import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals
 import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
 import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ScreenCapture";
 
-import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
+// import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
@@ -46,6 +46,7 @@ const CallCentralStation = {
     const networks = networkService.getNetworks();
     const lenNetworks = networks.length;
 
+    /*
     const { link: virtualServerLink } = useAppRegistrationLink(
       VIRTUAL_SERVER_REGISTRATION_ID
     );
@@ -57,6 +58,7 @@ const CallCentralStation = {
     const handleOpenPrivateNetwork = useCallback(() => {
       alert("TODO: Implement handleOpenPrivateNetwork");
     }, []);
+    */
 
     return (
       <Layout>
