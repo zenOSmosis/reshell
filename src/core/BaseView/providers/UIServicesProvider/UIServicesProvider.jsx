@@ -48,20 +48,13 @@ export default function UIServicesProvider({ children }) {
 
   // TODO: Document
   const startService = useCallback(
-    ServiceClass => _uiServiceCollection.addServiceClass(ServiceClass),
+    ServiceClass => _uiServiceCollection.startServiceClass(ServiceClass),
     [_uiServiceCollection]
   );
 
   // TODO: Document
   const stopService = useCallback(
-    ServiceClass => {
-      const serviceInstance =
-        _uiServiceCollection.getServiceInstance(ServiceClass);
-
-      if (serviceInstance) {
-        return serviceInstance.destroy();
-      }
-    },
+    ServiceClass => _uiServiceCollection.stopServiceClass(ServiceClass),
     [_uiServiceCollection]
   );
 

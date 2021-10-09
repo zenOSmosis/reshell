@@ -61,7 +61,9 @@ export default class UIServiceCollection extends PhantomCollection {
 
   // TODO: Document
   // TODO: Refactor most of this into addChild, directly
-  addServiceClass(ServiceClass) {
+  // IMPORTANT: Making this async might be more trouble than its worth, if that
+  // is ever a consideration
+  startServiceClass(ServiceClass) {
     const cachedService = this.getChildWithKey(ServiceClass);
 
     if (cachedService) {
@@ -90,14 +92,11 @@ export default class UIServiceCollection extends PhantomCollection {
   }
 
   // TODO: Document
-  removeServiceClass(ServiceClass) {
+  async stopServiceClass(ServiceClass) {
     const cachedService = this.getChildWithKey(ServiceClass);
 
     if (cachedService) {
-      this.removeChild(cachedService);
-
-      // TODO: Destruct service? (note: If so, it should
-      // automatically remove it from the children)
+      cachedService.destroy();
     }
   }
 
