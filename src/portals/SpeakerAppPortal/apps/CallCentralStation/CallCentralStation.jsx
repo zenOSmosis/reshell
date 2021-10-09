@@ -46,20 +46,6 @@ const CallCentralStation = {
     const networks = networkService.getNetworks();
     const lenNetworks = networks.length;
 
-    const handleConnectToNetwork = useCallback(
-      network => {
-        networkService.connectToNetwork(network);
-      },
-      [networkService]
-    );
-
-    const handleDisconnectFromNetwork = useCallback(
-      network => {
-        networkService.disconnectFromNetwork(network);
-      },
-      [networkService]
-    );
-
     const { link: virtualServerLink } = useAppRegistrationLink(
       VIRTUAL_SERVER_REGISTRATION_ID
     );
@@ -105,8 +91,8 @@ const CallCentralStation = {
                   // isConnected,
                   // realmId,
                   // channelId,
-                  onConnectToNetwork={handleConnectToNetwork}
-                  onDisconnectFromNetwork={handleDisconnectFromNetwork}
+                  onConnectToNetwork={networkService.connectToNetwork}
+                  onDisconnectFromNetwork={networkService.disconnectFromNetwork}
                 />
               )}
             </Center>

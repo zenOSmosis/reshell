@@ -45,6 +45,14 @@ export default class UIServiceCore extends PhantomCore {
     // TODO: Include ability to dynamically link in Providers to a service so
     // that the same providers will be available to all consumers of the
     // service
+
+    // Rebind each method to this instance so that buttons, etc. can be mapped
+    // directly to serviceCore methods without an intermediate handler
+    // TODO: Move to PhantomCore (@see https://github.com/zenOSmosis/phantom-core/issues/74)
+    // @see [for how to test] https://github.com/sindresorhus/auto-bind
+    this.getMethodNames().forEach(methodName => {
+      this[methodName] = this[methodName].bind(this);
+    });
   }
 
   /**
