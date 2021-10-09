@@ -53,7 +53,7 @@ export default class UIServiceCore extends PhantomCore {
   async destroy() {
     // Destruct all attached collections
     await Promise.all(
-      [...this._collectionMap].map(collection => collection.destroy())
+      [...this._collectionMap.values()].map(collection => collection.destroy())
     );
 
     return super.destroy();
