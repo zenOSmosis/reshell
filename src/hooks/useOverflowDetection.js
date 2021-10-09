@@ -58,6 +58,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
   useEffect(() => {
     if (isDetecting && element) {
+      let _isUnmounting = false;
+
       /**
        * Handles checking of overflown, comparing it with previous state, and
        * determining if the hook state should be updated.
@@ -67,6 +69,10 @@ export default function useOverflowDetection(element, isDetecting = true) {
        * @return {void}
        */
       const checkIsOverflown = () => {
+        if (_isUnmounting) {
+          return;
+        }
+
         const prevIsOverflown = refPrevIsOverflown.current;
 
         const nextIsOverflown = getIsOverflown();
@@ -108,6 +114,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
       */
 
       return function unmount() {
+        _isUnmounting = true;
+
         ro.observe(element);
         ro.unobserve(element.parentNode);
         // mo.disconnect();
