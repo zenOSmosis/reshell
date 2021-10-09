@@ -62,6 +62,11 @@ export default class ReShellCore extends PhantomCore {
     this._uiServiceCollection = new UIServiceCollection();
     this._uiServiceCollection.startServiceClass(LocalDataPersistenceService);
 
+    // TODO: Bind window "beforeunload" event to try to prevent accidental shut
+    // down before we have a chance to save states, etc. Ensure it gets unbound
+    // before the destructor finishes.
+    // @see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+
     this._init(portalName);
   }
 
@@ -123,6 +128,9 @@ export default class ReShellCore extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
+    // TODO: Shut down running apps first, and provide a way to cancel out of
+    // shut-down in case we need to save any states
+
     // Stop the current UI
     ReactDOM.render(<div>[Tear down]</div>, this._elBase);
 
