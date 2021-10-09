@@ -31,6 +31,7 @@ export default class UIServiceCollection extends PhantomCollection {
 
     super(...args);
 
+    // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = this;
   }
 
