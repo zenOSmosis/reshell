@@ -25,7 +25,7 @@ export default function ApplicationSelector({
   const filteredRegistrations = useMemo(
     () =>
       appRegistrations.filter(registration =>
-        !searchQuery
+        !Boolean(searchQuery)
           ? true
           : registration
               .getTitle()
