@@ -21,6 +21,33 @@ const Applications = {
   initialSharedState: {
     searchQuery: DEFAULT_SEARCH_QUERY,
   },
+  // TODO: Implement the ability to set control handlers which can be driven by the menu
+  /*
+  controlMethods: {
+    // [ROLE_WINDOW_MENU_SUBITEM]
+    setIsDisplayingPortals: ({...samePropsAsView, etc.}) => {
+    }
+  },
+  */
+  // TODO: Implement custom menu functionality
+  /**
+  menu: {
+    window: [
+      {
+        role: 'view-switch'
+        getIsShown: ({sharedState}) => !sharedState.isShowingApplications
+        title: 'Show Applications',
+        onClick: ({controlMethods}) => ...
+      },
+      {
+        role: 'view-switch'
+        getIsShown: ({sharedState}) => sharedState.isShowingApplications
+        title: 'Show Portals',
+        onClick: ({controlMethods}) => ...
+      },
+  ]
+  }
+  */
   titleBarView: function TitleBarView({ sharedState, setSharedState }) {
     const handleSetSearchQuery = useCallback(
       evt => setSharedState({ searchQuery: evt.target.value }),
