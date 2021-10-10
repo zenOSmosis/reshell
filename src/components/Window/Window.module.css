@@ -108,6 +108,9 @@ of the drag zone outside of the windows. */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  /* Don't change cursor on hover; i.e. cursor-passthru */
+  pointer-events: none;
 }
 
 /* @see https://stackoverflow.com/a/36182782 */
