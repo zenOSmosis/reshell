@@ -64,12 +64,12 @@ export default function WindowBorder({
           <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
             <Column
               {...bindNW()}
-              style={{ maxWidth: borderWidth, cursor: "nw-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "nwse-resize" }}
             ></Column>
-            <Column {...bindN()} style={{ cursor: "n-resize" }}></Column>
+            <Column {...bindN()} style={{ cursor: "ns-resize" }}></Column>
             <Column
               {...bindNE()}
-              style={{ maxWidth: borderWidth, cursor: "ne-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "nesw-resize" }}
             ></Column>
           </Row>
         )}
@@ -79,7 +79,7 @@ export default function WindowBorder({
           {!isDisabled && (
             <Column
               {...bindW()}
-              style={{ maxWidth: borderWidth, cursor: "w-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "ew-resize" }}
             ></Column>
           )}
 
@@ -92,7 +92,7 @@ export default function WindowBorder({
           {!isDisabled && (
             <Column
               {...bindE()}
-              style={{ maxWidth: borderWidth, cursor: "e-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "ew-resize" }}
             ></Column>
           )}
         </Row>
@@ -102,12 +102,12 @@ export default function WindowBorder({
           <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
             <Column
               {...bindSW()}
-              style={{ maxWidth: borderWidth, cursor: "sw-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "nesw-resize" }}
             ></Column>
-            <Column {...bindS()} style={{ cursor: "s-resize" }}></Column>
+            <Column {...bindS()} style={{ cursor: "ns-resize" }}></Column>
             <Column
               {...bindSE()}
-              style={{ maxWidth: borderWidth, cursor: "se-resize" }}
+              style={{ maxWidth: borderWidth, cursor: "nwse-resize" }}
             ></Column>
           </Row>
         )}
