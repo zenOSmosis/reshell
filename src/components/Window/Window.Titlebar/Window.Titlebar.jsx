@@ -31,7 +31,7 @@ export default function WindowTitlebar({
           <NoWrap
             style={{
               // Offset width of window-controls in order to make the title centered
-              width: 60,
+              width: 80,
             }}
           />
           <NoWrap className={styles["title"]}>{title}</NoWrap>
