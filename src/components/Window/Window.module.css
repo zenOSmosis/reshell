@@ -79,7 +79,7 @@ of the drag zone outside of the windows. */
 }
 
 .window .titlebar {
-  background-color: rgb(26, 26, 26);
+  background-color: rgba(255, 255, 255, 0.1);
   color: #999;
   border-bottom: 1px rgba(0, 0, 0, 0.4) solid;
   width: 100%;
