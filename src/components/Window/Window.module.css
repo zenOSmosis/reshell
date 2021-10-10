@@ -99,14 +99,10 @@ of the drag zone outside of the windows. */
 .window .titlebar .title {
   text-align: center;
 
-  /** More-or-less adjust centering to compensate for window controls pushing off-center (not exact measurement) */
-  padding-left: 10%;
-
   font-weight: 600;
   width: 100%;
 
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
 
   /* Don't change cursor on hover; i.e. cursor-passthru */
