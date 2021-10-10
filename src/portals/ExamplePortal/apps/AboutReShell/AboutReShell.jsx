@@ -13,7 +13,7 @@ const AboutReShell = {
   style: {
     width: 640,
     height: 480,
-    backgroundColor: "#424242",
+    backgroundColor: "rgba(42,42,42,.5)",
   },
   view: function View() {
     return (
