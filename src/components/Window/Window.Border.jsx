@@ -58,6 +58,7 @@ export default function WindowBorder({
 
   return (
     // TODO: Enable merge-able styles / classNames
+    // TODO: Extract classes to module.css
     <Layout {...rest}>
       <Header>
         {!isDisabled && (
