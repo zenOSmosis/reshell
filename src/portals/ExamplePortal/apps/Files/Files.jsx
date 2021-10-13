@@ -5,6 +5,7 @@ import SocketIOService from "@services/SocketIOService";
 // third-party storage providers
 
 // TODO: Save As view: https://developer.apple.com/design/human-interface-guidelines/macos/buttons/disclosure-controls/
+// TODO: Save As API structure: https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/PromptforaFileName.html#//apple_ref/doc/uid/TP40016239-CH82-SW1
 
 // TODO: See reference project (these links are for an Electon-based file explorer written w/ TypeScript)
 // - [dev.to] https://dev.to/kimlimjustin/i-wrote-a-fully-functioning-file-explorer-using-typescript-1e4n
