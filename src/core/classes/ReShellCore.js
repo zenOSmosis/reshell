@@ -178,6 +178,8 @@ export default class ReShellCore extends PhantomCore {
   // allow the parsing of registerPortals.js before trying to run the init on
   // them
   //
+  // Works in conjuction with ReShellCore.switchToPortal static method.
+  //
   // TODO: Use nextTick / microtask / other async
   setTimeout(() => {
     const urlQuery = queryString.parse(window.location.search);
