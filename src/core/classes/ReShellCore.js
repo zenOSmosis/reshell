@@ -180,7 +180,9 @@ export default class ReShellCore extends PhantomCore {
   //
   // Works in conjuction with ReShellCore.switchToPortal static method.
   //
-  // TODO: Use nextTick / microtask / other async
+  // TODO: Use setImmediate / microtask / other async (use in PhantomCore)
+  // @see [nextTick vs setImmediate] https://stackoverflow.com/a/15349865
+  // @see [MDN recommended setImmediate polyfill] https://github.com/YuzuJS/setImmediate/blob/master/setImmediate.js
   setTimeout(() => {
     const urlQuery = queryString.parse(window.location.search);
 

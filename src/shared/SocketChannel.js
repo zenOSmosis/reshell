@@ -61,8 +61,8 @@ export default class SocketChannel extends PhantomCore {
 
     this._initSocketHandler();
 
-    // Simulate connect in next tick; TODO: Refactor to PhantomCore async init?
-    // (process.nextTick may not be available on client, hence the timeout)
+    // TODO: Replace setTimeout w/ setImmediate:
+    // @see https://github.com/zenOSmosis/phantom-core/issues/76
     setTimeout(() => {
       this.emit(EVT_CONNECTED);
 
