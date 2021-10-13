@@ -18,15 +18,6 @@ let _instance = null;
 
 export default class ReShellCore extends PhantomCore {
   // TODO: Document
-  static async switchToPortal(portalName) {
-    await _instance?.destroy();
-
-    const urlQuery = queryString.stringify({ portalName });
-
-    window.location.href = `?${urlQuery}`;
-  }
-
-  // TODO: Document
   static #portals = {};
 
   // TODO: Document
@@ -135,19 +126,42 @@ export default class ReShellCore extends PhantomCore {
     // TODO: Shut down running apps first, and provide a way to cancel out of
     // shut-down in case we need to save any states
 
+    // Unrender DOM
     // Stop the current UI
     ReactDOM.render(<div>[Tear down]</div>, this._elBase);
 
     await this._uiServiceCollection.destroy();
 
-    // TODO: Unrender DOM
-
-    const ret = super.destroy();
+    const ret = await super.destroy();
 
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = null;
 
     return ret;
+  }
+
+  // TODO: Document
+  async switchToPortal(portalName) {
+    const sessionStorageEngine = this._uiServiceCollection
+      .getService(LocalDataPersistenceService)
+      .getSessionStorageEngine();
+
+    // Cache portalName to the session storage
+    await sessionStorageEngine.setItem(
+      KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME,
+      portalName
+    );
+
+    await this.destroy();
+
+    const urlQuery = queryString.stringify({ portalName });
+
+    window.location.href = `?${urlQuery}`;
+  }
+
+  // TODO: Document
+  static async switchToPortal(portalName) {
+    await _instance?.switchToPortal(portalName);
   }
 
   // TODO: Document
@@ -174,22 +188,24 @@ export default class ReShellCore extends PhantomCore {
 // Auto-init if query string
 // TODO: Refactor
 (() => {
-  // IMPORTANT: This setTimeout (or any other async equiv.) is necessary to
-  // allow the parsing of registerPortals.js before trying to run the init on
-  // them
-  //
-  // Works in conjuction with ReShellCore.switchToPortal static method.
-  //
-  // TODO: Use setImmediate / microtask / other async (use in PhantomCore)
-  // @see [nextTick vs setImmediate] https://stackoverflow.com/a/15349865
-  // @see [MDN recommended setImmediate polyfill] https://github.com/YuzuJS/setImmediate/blob/master/setImmediate.js
-  setTimeout(() => {
-    const urlQuery = queryString.parse(window.location.search);
+  if (!_instance) {
+    // IMPORTANT: This setTimeout (or any other async equiv.) is necessary to
+    // allow the parsing of registerPortals.js before trying to run the init on
+    // them
+    //
+    // Works in conjuction with ReShellCore.switchToPortal static method.
+    //
+    // TODO: Use setImmediate / microtask / other async (use in PhantomCore)
+    // @see [nextTick vs setImmediate] https://stackoverflow.com/a/15349865
+    // @see [MDN recommended setImmediate polyfill] https://github.com/YuzuJS/setImmediate/blob/master/setImmediate.js
+    setTimeout(() => {
+      const urlQuery = queryString.parse(window.location.search);
 
-    const { portalName } = urlQuery;
+      const { portalName } = urlQuery;
 
-    if (portalName) {
-      ReShellCore.init(portalName);
-    }
-  });
+      if (portalName) {
+        // ReShellCore.init(portalName);
+      }
+    });
+  }
 })();

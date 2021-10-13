@@ -40,9 +40,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div style="text-align: center">
-      <div>...</div>
       <div>
-        <button onclick="window.ReShell.init()">Start ReShell</button>
+        ReShell is a browser-based layout framework and UI services engine.
       </div>
     </div>
     <!--
@@ -56,4 +55,10 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+
+  <script>
+    // Automatically start ReShell's UI (this is left optional in case you want
+    // to start it manually)
+    window.ReShell.init();
+  </script>
 </html>

@@ -30,8 +30,15 @@ const AboutReShell = {
             </Center>
           </Content>
           <Footer>
-            <div style={{ padding: 4 }}>
-              If you are seeing this screen, ReShell is up and running. Get
+            <Padding>
+              <p>
+                This project is a work-in-progress. For contact information,
+                visit <a href="https://zenOSmosis.com">zenOSmosis.com</a>.
+              </p>
+            </Padding>
+            {/*
+              <div style={{ padding: 4 }}>
+               Get
               started with{" "}
               {
                 // TODO: Make link
@@ -41,6 +48,7 @@ const AboutReShell = {
               </span>
               .
             </div>
+              */}
           </Footer>
         </Layout>
       </Padding>
