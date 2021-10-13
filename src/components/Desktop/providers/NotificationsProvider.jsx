@@ -11,11 +11,12 @@ export default function NotificationsProvider({ children }) {
   const [activeNotificationsStack, setActiveNotificationsStack] = useState([]);
 
   // TODO: Document
+  // TODO: Borrow API from Apple: // TODO: Borrow API from Apple: https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html#//apple_ref/doc/uid/TP40016239-CH61-SW1
   const showNotification = useCallback(
     ({ image, title, body, onClick, onClose = () => null }) => {
       setActiveNotificationsStack(
         // Add new notifications to end of stack
-        (prev) => [
+        prev => [
           ...prev,
           { image, title, body, uuid: uuidv4(), onClick, onClose },
         ]
@@ -25,8 +26,8 @@ export default function NotificationsProvider({ children }) {
   );
 
   // TODO: Document
-  const handleNotificationClose = useCallback((uuid) => {
-    setActiveNotificationsStack((prev) =>
+  const handleNotificationClose = useCallback(uuid => {
+    setActiveNotificationsStack(prev =>
       prev.filter(({ uuid: prevUUID, onClose }) => {
         const isKept = uuid !== prevUUID;
 

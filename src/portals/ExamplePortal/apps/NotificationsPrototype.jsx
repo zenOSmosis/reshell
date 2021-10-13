@@ -16,6 +16,7 @@ const NotificationsPrototype = {
       <Center>
         <button
           onClick={() =>
+            // TODO: Borrow API from Apple: https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html#//apple_ref/doc/uid/TP40016239-CH61-SW1
             showNotification({
               title: "Test Notification Title",
               body: new Date().getTime(),
