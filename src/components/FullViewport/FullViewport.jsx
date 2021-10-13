@@ -16,7 +16,7 @@ const EVT_TOUCH_END = "touchend";
  * A React Component which utilizes the entire viewport (or what is available
  * beyond the window chrome) of the device.
  *
- * It helps solve layout issue related to mobile layouts (especially on iOS,
+ * It helps solve layout issues related to mobile layouts (especially on iOS,
  * where the viewport size can change depending if URL bar is shown or hidden),
  * by explicitly setting widths and heights in pixels, so that child elements
  * can utilize size percentages (i.e. height="100%") and fully consume
@@ -88,7 +88,7 @@ export default class FullViewport extends Component {
     this._handleViewportResize();
   }
 
-  _handleTouchMove = (evt) => {
+  _handleTouchMove = evt => {
     evt.preventDefault();
   };
 
@@ -99,7 +99,7 @@ export default class FullViewport extends Component {
    *
    * @param {DocumentEvent} evt Event of touchend type
    */
-  _handleTap = (evt) => {
+  _handleTap = evt => {
     const t2 = evt.timeStamp;
     const t1 = evt.currentTarget.__lastTouch || t2;
     const dt = t2 - t1;
@@ -179,7 +179,7 @@ export default class FullViewport extends Component {
 
     return (
       <div
-        ref={(c) => (this._ref = c)}
+        ref={c => (this._ref = c)}
         {...propsRest}
         className={classNames("full-viewport", className)}
       >

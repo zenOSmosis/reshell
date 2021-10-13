@@ -10,7 +10,7 @@ body.full-viewport {
 }
 
 .full-viewport {
-  position: absolute;
+  position: fixed;
   overflow: hidden;
   top: 0px;
   left: 0px;
