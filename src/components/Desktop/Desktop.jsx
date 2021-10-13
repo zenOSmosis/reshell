@@ -89,7 +89,6 @@ export default function Desktop({
                   }
                   <div>
                     <Menu
-                      portal={true}
                       menuButton={
                         <MenuButton>
                           {
