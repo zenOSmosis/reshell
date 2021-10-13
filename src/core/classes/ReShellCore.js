@@ -121,6 +121,10 @@ export default class ReShellCore extends PhantomCore {
       this._elBase
     );
 
+    // TODO: Use LocalDataPersistentService sub-service to open any previously
+    // closed windows and retain their window positions for this portal
+    // @see https://developer.apple.com/design/human-interface-guidelines/macos/app-architecture/restoring-state/
+
     super._init();
   }
 
