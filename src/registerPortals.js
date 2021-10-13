@@ -8,6 +8,8 @@ const portals = {
   example: React.lazy(() => import("@portals/ExamplePortal")),
 
   test: React.lazy(() => import("@portals/TestPortal")),
+
+  ReShellOrg: React.lazy(() => import("@portals/ReShell.org")),
 };
 
 ReShellCore.registerPortals(portals);
