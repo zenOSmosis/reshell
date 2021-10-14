@@ -227,12 +227,18 @@ export default class WindowController extends PhantomCore {
   setPosition({ x, y }) {
     const windowEl = this._windowEl;
     if (windowEl) {
-      // FIXME: (jh) While using translate would be better here, it is buggier
-      // to use with some of the window animations
-      //
-      // However, if able to tie directly into matrix operations provided by
-      // accelerated StackingContext, it might improve acceleration even
-      // further
+      /**
+       * FIXME: (jh) While using translate would be better here, it is buggier
+       * to use with some of the window animations (open / minimize / restore)
+       *
+       * However, if able to tie directly into matrix operations provided by
+       * accelerated StackingContext, it might improve acceleration even
+       * further
+       *
+       * Additional reading:
+       *    - [will-change] https://developer.mozilla.org/en-US/docs/Web/CSS/will-change
+       *    - [animating the box model]: https://whistlr.info/2021/box-model-animation
+       */
 
       window.requestAnimationFrame(() => {
         if (x !== undefined) {
