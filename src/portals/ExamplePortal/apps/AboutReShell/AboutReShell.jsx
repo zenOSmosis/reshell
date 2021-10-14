@@ -10,6 +10,8 @@ import AutoScaler from "@components/AutoScaler";
 
 // TODO: Include license link type: https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types
 
+// TODO: Include links to PhantomCore, MediaStreamController, Speaker.app, zenOSmosis, GitHub, etc.
+
 const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
