@@ -3,13 +3,13 @@ import ReShellCore from "./core";
 
 // The portals defined here are what are selectable inside of the application
 const portals = {
-  default: React.lazy(() => import("@portals/ReShell.org")),
+  default: React.lazy(() => import("@portals/SpeakerAppPortal")),
+
+  ReShellOrg: React.lazy(() => import("@portals/ReShell.org")),
 
   example: React.lazy(() => import("@portals/ExamplePortal")),
 
   test: React.lazy(() => import("@portals/TestPortal")),
-
-  speakerApp: React.lazy(() => import("@portals/SpeakerAppPortal")),
 };
 
 ReShellCore.registerPortals(portals);
