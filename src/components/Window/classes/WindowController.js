@@ -342,6 +342,7 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMaximized });
   }
 
+  // TODO: Document
   maximize() {
     return this.setIsMaximized(true);
   }
@@ -365,6 +366,7 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMinimized });
   }
 
+  // TODO: Document
   minimize() {
     return this.setIsMinimized(true);
   }
@@ -378,6 +380,7 @@ export default class WindowController extends PhantomCore {
     return this._state.isMinimized;
   }
 
+  // TODO: Document
   restore() {
     // IMPORTANT: The maximized / minimized states need to be set at the same
     // time here; don't call the individual methods directly
