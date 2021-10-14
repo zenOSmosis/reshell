@@ -37,8 +37,7 @@ export default function AutoScaler({ children, className, ...rest }) {
       // when first rendering
       elInnerWrap.style.visibility = "hidden";
 
-      // TODO: Fix iOS 13 error (ReferenceError: Can't find variable: ResizeObserver)
-      const ro = new ResizeObserver((entries) => {
+      const ro = new ResizeObserver(entries => {
         requestAnimationFrame(() => {
           for (const entry of entries) {
             const size = {
