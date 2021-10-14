@@ -113,7 +113,7 @@ const Applications = {
             <PortalSwitcher />
           )}
         </Content>
-        {Boolean(LEN_PORTALS) && (
+        {Boolean(LEN_PORTALS > 1) && (
           <Footer>
             <Padding>
               <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
