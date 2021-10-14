@@ -5,8 +5,7 @@ import AutoScaler from "@components/AutoScaler";
 
 // TODO: Include ReShell documentation here, as well as architecture overview
 
-// TODO: Include in documentation how React providers can be wrapped up in (or
-// as) services and dynamically included in the React tree
+// TODO: Include property for "about" view (per app), where its rendered HTML can be utilized for SEO purposes
 
 // TODO: Include license link type: https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types
 
