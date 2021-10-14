@@ -8,7 +8,7 @@ import Link from "@components/Link";
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
 
-const PORTALS = ReShellCore.getPortals();
+const LEN_PORTALS = Object.keys(ReShellCore.getPortals()).length;
 
 const DEFAULT_SEARCH_QUERY = "";
 
@@ -113,7 +113,7 @@ const Applications = {
             <PortalSwitcher />
           )}
         </Content>
-        {PORTALS.length && (
+        {Boolean(LEN_PORTALS) && (
           <Footer>
             <Padding>
               <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
