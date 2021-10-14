@@ -36,7 +36,15 @@ const AboutReShell = {
             <Padding>
               <p>
                 This project is a work-in-progress. For contact information,
-                visit <a href="https://zenOSmosis.com">zenOSmosis.com</a>.
+                visit{" "}
+                <a
+                  href="https://zenOSmosis.com"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  zenOSmosis.com
+                </a>
+                .
               </p>
             </Padding>
             {/*
