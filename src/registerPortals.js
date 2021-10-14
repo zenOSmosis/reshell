@@ -7,9 +7,9 @@ const portals = {
 
   example: React.lazy(() => import("@portals/ExamplePortal")),
 
-  // [SpeakerApp]: React.lazy(() => import("@portals/SpeakerAppPortal")),
-
   test: React.lazy(() => import("@portals/TestPortal")),
+
+  speakerApp: React.lazy(() => import("@portals/SpeakerAppPortal")),
 };
 
 ReShellCore.registerPortals(portals);

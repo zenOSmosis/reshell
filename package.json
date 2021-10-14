@@ -43,7 +43,8 @@
     "build": "craco build",
     "build:with-profiling": "craco build --profile",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "start:speaker.app.portal": "REACT_APP_PORTAL=speakerApp craco start"
   },
   "eslintConfig": {
     "extends": [
