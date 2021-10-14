@@ -33,15 +33,13 @@
     "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
-    "start": "craco start",
-    "start:speaker.app.portal": "REACT_APP_PORTAL=speaker.app craco start",
-    "start:ssl": "HTTPS=true craco start",
+    "start": "HTTPS=true craco start",
+    "start:no-ssl": "craco start",
     "start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
     "stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
     "build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
     "start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start\"",
     "start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
-    "start:test.portal": "HTTPS=true REACT_APP_PORTAL=test PORT=3010 craco start",
     "build": "craco build",
     "build:with-profiling": "craco build --profile",
     "test": "craco test",
@@ -67,5 +65,6 @@
   },
   "devDependencies": {
     "pm2": "^5.1.1"
-  }
+  },
+  "proxy": "http://localhost:3002"
 }
