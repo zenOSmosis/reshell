@@ -37,7 +37,7 @@ const AboutReShell = {
           </Content>
           <Footer>
             <Padding>
-              <p>
+              <div>
                 This project is a work-in-progress. For contact information,
                 visit{" "}
                 <a
@@ -48,7 +48,7 @@ const AboutReShell = {
                   zenOSmosis.com
                 </a>
                 .
-              </p>
+              </div>
             </Padding>
             {/*
               <div style={{ padding: 4 }}>
