@@ -1,6 +1,7 @@
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
+import AutoScaler from "@components/AutoScaler";
 
 // TODO: Include ReShell documentation here, as well as architecture overview
 
@@ -20,14 +21,16 @@ const AboutReShell = {
       <Padding>
         <Layout>
           <Content>
-            <Center>
-              <div style={{ fontSize: "8rem", fontStyle: "italic" }}>
-                ReShell
-              </div>
-              <div style={{ fontSize: "1.5rem" }}>
-                An opinionated, paradigm-switching app mounter
-              </div>
-            </Center>
+            <AutoScaler>
+              <Center>
+                <div style={{ fontSize: "8rem", fontStyle: "italic" }}>
+                  ReShell
+                </div>
+                <div style={{ fontSize: "1.5rem" }}>
+                  An opinionated, paradigm-switching app mounter
+                </div>
+              </Center>
+            </AutoScaler>
           </Content>
           <Footer>
             <Padding>
