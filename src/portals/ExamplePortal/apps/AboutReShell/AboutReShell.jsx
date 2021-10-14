@@ -8,6 +8,8 @@ import AutoScaler from "@components/AutoScaler";
 // TODO: Include in documentation how React providers can be wrapped up in (or
 // as) services and dynamically included in the React tree
 
+// TODO: Include license link type: https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types
+
 const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
