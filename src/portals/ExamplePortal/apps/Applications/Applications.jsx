@@ -1,11 +1,14 @@
-import { useCallback, useState } from "react";
+import ReShellCore from "@core";
+
+import { useCallback, useEffect, useState } from "react";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Link from "@components/Link";
 
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
-import { useEffect } from "react/cjs/react.development";
+
+const PORTALS = ReShellCore.getPortals();
 
 const DEFAULT_SEARCH_QUERY = "";
 
@@ -110,32 +113,34 @@ const Applications = {
             <PortalSwitcher />
           )}
         </Content>
-        <Footer>
-          <Padding>
-            <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
-              {!isDisplayingPortals ? "Portals" : "Applications"}
-            </button>{" "}
-            <span className="note">
-              {!isDisplayingPortals ? (
-                <>
-                  Other applications may be available in{" "}
-                  <Link onClick={() => setIsDisplayingPortals(true)}>
-                    another portal
-                  </Link>
-                  .
-                </>
-              ) : (
-                <>
-                  Return to{" "}
-                  <Link onClick={() => setIsDisplayingPortals(false)}>
-                    application list
-                  </Link>
-                  .
-                </>
-              )}
-            </span>
-          </Padding>
-        </Footer>
+        {PORTALS.length && (
+          <Footer>
+            <Padding>
+              <button onClick={() => setIsDisplayingPortals(prev => !prev)}>
+                {!isDisplayingPortals ? "Portals" : "Applications"}
+              </button>{" "}
+              <span className="note">
+                {!isDisplayingPortals ? (
+                  <>
+                    Other applications may be available in{" "}
+                    <Link onClick={() => setIsDisplayingPortals(true)}>
+                      another portal
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Return to{" "}
+                    <Link onClick={() => setIsDisplayingPortals(false)}>
+                      application list
+                    </Link>
+                    .
+                  </>
+                )}
+              </span>
+            </Padding>
+          </Footer>
+        )}
       </Layout>
     );
   },
