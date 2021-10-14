@@ -1,6 +1,6 @@
 import LED from "@components/LED";
 
-import SocketIOService from "@services/SocketIOService";
+import DevHostBridgeSocketIOService from "@services/DevHostBridgeSocketIOService";
 import SocketAPIMockService from "./services/SocketAPIMockService";
 import HostBridgeAPIMockService from "./services/HostBridgeAPIMockService";
 
@@ -14,12 +14,12 @@ const HostBridge = {
     height: 480,
   },
   serviceClasses: [
-    SocketIOService,
+    DevHostBridgeSocketIOService,
     SocketAPIMockService,
     HostBridgeAPIMockService,
   ],
   view: function View({ windowController, appServices }) {
-    const socketService = appServices[SocketIOService];
+    const socketService = appServices[DevHostBridgeSocketIOService];
 
     const hasSocketIOService = Boolean(socketService);
     const isSocketConnected = socketService.getIsConnected();

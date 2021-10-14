@@ -31,7 +31,7 @@ import bindSocketAPIRoutes from "./routes/socketAPI";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, { path: "/dev.hostbridge/" });
 
 const PORT = process.env.HOST_BRIDGE_PORT || 3002;
 

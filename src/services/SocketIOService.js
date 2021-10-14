@@ -1,7 +1,7 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import SocketChannel from "@shared/SocketChannel";
 
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
 /**
  * Provides SocketIO servicing for ReShell.
@@ -13,20 +13,25 @@ export default class SocketIOService extends UIServiceCore {
     this._socket = null;
 
     // Automatically connect
-    this.connect();
+    // this.connect();
   }
 
   // TODO: Document
-  connect(params = {}) {
+  connect(options = {}) {
     if (this.getIsConnected()) {
       return;
     }
 
     if (this._socket) {
-      this._socket.connect();
+      console.warn("Socket already exists");
+      this._socket.connect(options);
     } else {
       // TODO: Include ability to specify io namespace
-      const socket = io(params.url, params.auth);
+      //
+      // @see https://socket.io/docs/v3/client-api/#iourl
+      // (NOTE: options passes as second parameter with custom path does not
+      // seem to work, in contract to what the docs indicate)
+      const socket = io(options);
 
       socket.on("connect", () => {
         this.setState({
