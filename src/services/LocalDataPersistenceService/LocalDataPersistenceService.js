@@ -41,7 +41,7 @@ export default class LocalDataPersistenceService extends UIServiceCore {
   async fetchKeyStorageEngineMaps() {
     const storageEngines = this._storageEngineCollection.getStorageEngines();
 
-    const keyStorageEngineMapss = [];
+    const keyStorageEngineMaps = [];
 
     for (const storageEngine of storageEngines) {
       const keys = await storageEngine.fetchKeys();
@@ -50,11 +50,11 @@ export default class LocalDataPersistenceService extends UIServiceCore {
       const StorageEngineClass = storageEngine.constructor;
 
       for (const key of keys) {
-        keyStorageEngineMapss.push([key, StorageEngineClass]);
+        keyStorageEngineMaps.push([key, StorageEngineClass]);
       }
     }
 
-    return keyStorageEngineMapss;
+    return keyStorageEngineMaps;
   }
 
   // TODO: Implement optional filtering

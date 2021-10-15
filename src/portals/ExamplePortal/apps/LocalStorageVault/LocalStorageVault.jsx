@@ -34,7 +34,7 @@ const LocalStorageVault = {
     localDataPersistenceService.fetchKeys().then(keys => console.log({ keys }));
     localDataPersistenceService
       .fetchKeyStorageEngineMaps()
-      .then(keyStorageEngineMapss => console.log({ keyStorageEngineMapss }));
+      .then(keyStorageEngineMaps => console.log({ keyStorageEngineMaps }));
 
     return (
       <Layout>
