@@ -3,7 +3,7 @@ import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
-import LocalStorageVault from "../ExamplePortal/apps/LocalStorageVault";
+import KeyVault from "../ExamplePortal/apps/KeyVault";
 import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
 import VUMeter from "../ExamplePortal/apps/VUMeter";
 import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
@@ -11,7 +11,7 @@ import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
-// import LocalStorageVaultPrototype from "../ExamplePortal/apps/LocalStorageVaultPrototype";
+// import KeyVaultPrototype from "../ExamplePortal/apps/KeyVaultPrototype";
 //
 import Applications from "./apps/Applications";
 import CallCentralStation from "./apps/CallCentralStation";
@@ -30,7 +30,7 @@ export default function SpeakerAppPortal() {
         Applications,
         BackgroundSelector,
         AboutReShell,
-        LocalStorageVault,
+        KeyVault,
         InputMediaDevices,
         VUMeter,
         ScreenCapture,
@@ -39,7 +39,7 @@ export default function SpeakerAppPortal() {
         ServiceMonitor,
         ColorAdjuster,
         LocalUserProfile,
-        // LocalStorageVaultPrototype,
+        // KeyVaultPrototype,
 
         CallCentralStation,
         VirtualServer,

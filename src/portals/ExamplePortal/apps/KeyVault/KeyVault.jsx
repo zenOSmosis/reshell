@@ -16,19 +16,18 @@ import NewKeyCreationForm from "./views/NewKeyCreationForm";
 
 import BackArrowIcon from "@icons/BackArrowIcon";
 
-import LocalDataPersistenceService from "@services/LocalDataPersistenceService";
+import KeyVaultService from "@services/KeyVaultService";
 
-const LocalStorageVault = {
+const KeyVault = {
   id: "local-storage-vault",
-  title: "Local Storage Vault",
+  title: "Key Vault",
   style: {
     width: 640,
     height: 480,
   },
-  serviceClasses: [LocalDataPersistenceService],
+  serviceClasses: [KeyVaultService],
   view: function View({ appServices }) {
-    const localDataPersistenceService =
-      appServices[LocalDataPersistenceService];
+    const localDataPersistenceService = appServices[KeyVaultService];
 
     const [keyStorageEngineMaps, setKeyStorageEngineMaps] = useState([]);
 
@@ -107,7 +106,7 @@ const LocalStorageVault = {
             {/*
               <button>Session Storage</button>
             <button>IndexedDB</button>
-            <button>Local Storage</button>
+            <button>Key Vault</button>
             <button>Memory</button>
               */}
             <button onClick={() => setIsCreatingNewKey(prev => !prev)}>
@@ -146,4 +145,4 @@ const LocalStorageVault = {
   },
 };
 
-export default LocalStorageVault;
+export default KeyVault;

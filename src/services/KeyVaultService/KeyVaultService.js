@@ -13,11 +13,11 @@ import LocalStorageEngine from "./engines/LocalStorageEngine";
 // - https://github.com/willgm/web-crypto-storage
 // - https://www.npmjs.com/package/secure-ls
 
-export default class LocalDataPersistenceService extends UIServiceCore {
+export default class KeyVaultService extends UIServiceCore {
   constructor() {
     super();
 
-    this.setTitle("Local Data Persistence Service");
+    this.setTitle("Key Vault Service");
 
     this._storageEngineCollection = new StorageEngineCollection();
 

@@ -4,7 +4,7 @@ import Applications from "./apps/Applications";
 import AboutReShell from "./apps/AboutReShell";
 import BackgroundSelector from "./apps/BackgroundSelector";
 import BeepPrototype from "./apps/BeepPrototype";
-import LocalStorageVault from "./apps/LocalStorageVault";
+import KeyVault from "./apps/KeyVault";
 import InputMediaDevices from "./apps/InputMediaDevices";
 import VUMeter from "./apps/VUMeter";
 import ScreenCapture from "./apps/ScreenCapture";
@@ -37,7 +37,7 @@ export default function ExamplePortal() {
         AboutReShell,
         BackgroundSelector,
         BeepPrototype,
-        LocalStorageVault,
+        KeyVault,
         InputMediaDevices,
         VUMeter,
         ScreenCapture,
