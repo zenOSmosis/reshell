@@ -47,10 +47,10 @@ export default class LocalDataPersistenceService extends UIServiceCore {
       const keys = await storageEngine.fetchKeys();
 
       // TODO: Refactor as part of PhantomCore API (i.e. storageEngine.getClass())
-      const StorageEngineClass = storageEngine.constructor;
+      // const StorageEngineClass = storageEngine.constructor;
 
       for (const key of keys) {
-        keyStorageEngineMaps.push([key, StorageEngineClass]);
+        keyStorageEngineMaps.push([key, storageEngine]);
       }
     }
 

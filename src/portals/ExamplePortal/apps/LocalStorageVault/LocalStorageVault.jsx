@@ -7,16 +7,16 @@
 
 // TODO: Implement ability to export / import local storage data
 
+import { useCallback, useEffect, useState } from "react";
+
 import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import LocalStorageItems from "./views/LocalStorageItems";
+import NewKeyCreationForm from "./views/NewKeyCreationForm";
+
+import BackArrowIcon from "@icons/BackArrowIcon";
 
 import LocalDataPersistenceService from "@services/LocalDataPersistenceService";
-
-// TODO: Include ReShell documentation here, as well as architecture overview
-
-// TODO: Include in documentation how React providers can be wrapped up in (or
-// as) services and dynamically included in the React tree
 
 const LocalStorageVault = {
   id: "local-storage-vault",
@@ -30,11 +30,53 @@ const LocalStorageVault = {
     const localDataPersistenceService =
       appServices[LocalDataPersistenceService];
 
+    const [keyStorageEngineMaps, setKeyStorageEngineMaps] = useState([]);
+
+    const handleFetchKeyStorageEngineMaps = useCallback(async () => {
+      const keyMaps =
+        await localDataPersistenceService.fetchKeyStorageEngineMaps();
+
+      const keyStorageEngineMaps = [];
+
+      for (const keyMap of keyMaps) {
+        const key = keyMap[0];
+        const storageEngine = keyMap[1];
+        const value = await storageEngine.fetchItem(key);
+        const kind = typeof value;
+
+        keyStorageEngineMaps.push({
+          key,
+          storageEngine,
+          value,
+          kind,
+        });
+      }
+
+      setKeyStorageEngineMaps(keyStorageEngineMaps);
+    }, [localDataPersistenceService]);
+
+    const [isCreatingNewKey, setIsCreatingNewKey] = useState(false);
+
+    // Auto-fetch
+    useEffect(() => {
+      handleFetchKeyStorageEngineMaps();
+    }, [handleFetchKeyStorageEngineMaps]);
+
+    const handleGetValue = useCallback(async (key, storageEngine) => {
+      const value = await storageEngine.fetchItem(key);
+
+      // TODO: Implement
+
+      // TODO: Remove
+      console.log({ key, value });
+
+      alert("TODO: Implement get value");
+    }, []);
+
     // TODO: Remove
-    localDataPersistenceService.fetchKeys().then(keys => console.log({ keys }));
-    localDataPersistenceService
-      .fetchKeyStorageEngineMaps()
-      .then(keyStorageEngineMaps => console.log({ keyStorageEngineMaps }));
+    console.log({
+      keyStorageEngineMaps,
+    });
 
     return (
       <Layout>
@@ -46,17 +88,37 @@ const LocalStorageVault = {
             <button>Local Storage</button>
             <button>Memory</button>
               */}
-            <button>(+) New Item</button>
+            <button onClick={() => setIsCreatingNewKey(prev => !prev)}>
+              {!isCreatingNewKey ? (
+                <>(+) New Item</>
+              ) : (
+                <>
+                  <BackArrowIcon /> Back
+                </>
+              )}
+            </button>
           </Padding>
         </Header>
         <Content>
           <Padding>
-            <LocalStorageItems />
+            {!isCreatingNewKey ? (
+              <LocalStorageItems
+                keyStorageEngineMaps={keyStorageEngineMaps}
+                onGetValue={handleGetValue}
+              />
+            ) : (
+              <NewKeyCreationForm
+                storageEngines={localDataPersistenceService.getStorageEngines()}
+              />
+            )}
           </Padding>
         </Content>
         <Footer>
           <Padding>
-            <button>Empty</button>
+            {
+              // TODO: Show dialog confirm when pressed
+            }
+            <button onClick={() => alert("TODO: Implement")}>Empty</button>
           </Padding>
         </Footer>
       </Layout>

@@ -116,7 +116,7 @@ select {
   appearance: none;
 }
 
-input:not([type="checkbox"]),
+input:not([type="checkbox"]):not([type="submit"]),
 select,
 textarea {
   width: 90%;
@@ -137,7 +137,8 @@ ul li {
 /**
 * Normalize CSS buttons
 */
-button {
+button,
+input[type="submit"] {
   outline: none;
   background-color: rgba(66, 66, 66, 0.4);
   color: #c4c4c4;
