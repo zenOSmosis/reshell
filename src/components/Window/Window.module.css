@@ -63,11 +63,6 @@ of the drag zone outside of the windows. */
   border: 1px rgba(255, 255, 255, 0.3) solid;
 }
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
-.window.dragging {
-  cursor: grabbing;
-}
-
 /** Inactive window shading */
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
@@ -89,6 +84,11 @@ of the drag zone outside of the windows. */
   justify-content: left;
   align-items: center;
   padding: 4px;
+}
+
+/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
+.window.dragging .titlebar {
+  cursor: grabbing;
 }
 
 .window.active .titlebar {
