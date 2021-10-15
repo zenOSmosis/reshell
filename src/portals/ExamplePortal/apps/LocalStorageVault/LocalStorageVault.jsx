@@ -33,8 +33,8 @@ const LocalStorageVault = {
     // TODO: Remove
     localDataPersistenceService.fetchKeys().then(keys => console.log({ keys }));
     localDataPersistenceService
-      .fetchKeyMaps()
-      .then(keyMaps => console.log({ keyMaps }));
+      .fetchkeyStorageEngineMapss()
+      .then(keyStorageEngineMapss => console.log({ keyStorageEngineMapss }));
 
     return (
       <Layout>
