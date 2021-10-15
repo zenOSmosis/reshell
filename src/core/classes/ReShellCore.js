@@ -5,7 +5,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
 import UIServiceCollection from "../classes/UIServiceCollection";
-import LocalDataPersistenceService from "@services/LocalDataPersistenceService";
+import KeyVaultService from "@services/KeyVaultService";
 
 import BaseView from "../BaseView";
 
@@ -51,7 +51,7 @@ export default class ReShellCore extends PhantomCore {
     _instance = this;
 
     this._uiServiceCollection = new UIServiceCollection();
-    this._uiServiceCollection.startServiceClass(LocalDataPersistenceService);
+    this._uiServiceCollection.startServiceClass(KeyVaultService);
 
     // TODO: Bind window "beforeunload" event to try to prevent accidental shut
     // down before we have a chance to save states, etc. Ensure it gets unbound
@@ -64,7 +64,7 @@ export default class ReShellCore extends PhantomCore {
   // TODO: Document
   async _init(portalName) {
     const sessionStorageEngine = this._uiServiceCollection
-      .getService(LocalDataPersistenceService)
+      .getService(KeyVaultService)
       .getSessionStorageEngine();
 
     // If no portalName is passed and there is a session storage (not local) variable set for portal, use it
@@ -112,7 +112,7 @@ export default class ReShellCore extends PhantomCore {
       this._elBase
     );
 
-    // TODO: Use LocalDataPersistentService sub-service to open any previously
+    // TODO: Use KeyVaultService sub-service to open any previously
     // closed windows and retain their window positions for this portal
     // @see https://developer.apple.com/design/human-interface-guidelines/macos/app-architecture/restoring-state/
 
@@ -143,7 +143,7 @@ export default class ReShellCore extends PhantomCore {
   // TODO: Document
   async switchToPortal(portalName) {
     const sessionStorageEngine = this._uiServiceCollection
-      .getService(LocalDataPersistenceService)
+      .getService(KeyVaultService)
       .getSessionStorageEngine();
 
     // Cache portalName to the session storage
