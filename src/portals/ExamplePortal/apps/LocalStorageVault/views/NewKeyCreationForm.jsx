@@ -18,8 +18,6 @@ export default function NewKeyCreationForm({
       };
     });
 
-  console.log({ errors });
-
   return (
     <Center canOverflow={true}>
       <form
@@ -33,6 +31,7 @@ export default function NewKeyCreationForm({
           type="text"
           placeholder="Key"
           defaultValue={initialKey}
+          required
         />
 
         {errors?.key && (
@@ -49,7 +48,7 @@ export default function NewKeyCreationForm({
 
         <div style={{ marginTop: 20 }}>
           <label>Storage Engine</label>
-          <select defaultValue={initialStorageEngine?.getTitle()}>
+          <select defaultValue={initialStorageEngine?.getTitle()} required>
             {storageEngines.map(storageEngine => {
               const title = storageEngine.getTitle();
 
