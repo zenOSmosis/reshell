@@ -38,7 +38,7 @@ export default class LocalDataPersistenceService extends UIServiceCore {
 
   // TODO: Document
   // TODO: TODO: Implement optional filtering
-  async fetchkeyStorageEngineMapss() {
+  async fetchKeyStorageEngineMaps() {
     const storageEngines = this._storageEngineCollection.getStorageEngines();
 
     const keyStorageEngineMapss = [];
@@ -64,7 +64,7 @@ export default class LocalDataPersistenceService extends UIServiceCore {
    * @return {any[]}
    */
   async fetchKeys() {
-    return (await this.fetchkeyStorageEngineMapss()).map(
+    return (await this.fetchKeyStorageEngineMaps()).map(
       keyStorageEngineMaps => keyStorageEngineMaps[0]
     );
   }
