@@ -1,5 +1,12 @@
 import PhantomCore from "phantom-core";
 
+/**
+ * NOTE: All of these methods are async to handle potential network,
+ * off-process, or async-based storage engines.
+ *
+ * To ensure maximum compatibility, extension classes should use the async API
+ * as well.
+ */
 export default class StorageEngine extends PhantomCore {
   // TODO: Document
   async setItem(key, value) {
