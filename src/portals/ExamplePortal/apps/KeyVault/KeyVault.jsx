@@ -41,6 +41,10 @@ const KeyVault = {
         const key = keyMap[0];
         const storageEngine = keyMap[1];
         const value = await storageEngine.fetchItem(key);
+
+        // TODO: Move this detection into the service (consider automatically
+        // coercing primitive types:
+        // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
         const kind = typeof value;
 
         keyStorageEngineMaps.push({
