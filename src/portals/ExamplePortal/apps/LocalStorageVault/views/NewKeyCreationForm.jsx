@@ -48,12 +48,17 @@ export default function NewKeyCreationForm({
 
         <div style={{ marginTop: 20 }}>
           <label>Storage Engine</label>
-          <select defaultValue={initialStorageEngine?.getTitle()} required>
+          <select
+            name="storageEngineShortUUID"
+            defaultValue={initialStorageEngine?.getShortUUID()}
+            required
+          >
             {storageEngines.map(storageEngine => {
               const title = storageEngine.getTitle();
+              const shortUUID = storageEngine.getShortUUID();
 
               return (
-                <option key={title} value={title}>
+                <option key={title} value={shortUUID}>
                   {title}
                 </option>
               );

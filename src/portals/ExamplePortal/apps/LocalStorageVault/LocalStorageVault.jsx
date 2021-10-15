@@ -70,19 +70,35 @@ const LocalStorageVault = {
       // TODO: Remove
       console.log({ key, value });
 
+      // TODO: Remove
       alert("TODO: Implement get value");
     }, []);
 
-    // TODO: Implement
-    const handleKeyValueSubmit = useCallback(formValues => {
-      // TODO: Remove
-      console.log({ formValues });
-    }, []);
+    // TODO: Document
+    const handleKeyValueSubmit = useCallback(
+      formValues => {
+        const storageEngine =
+          localDataPersistenceService.getStorageEngineWithShortUUID(
+            formValues["storageEngineShortUUID"]
+          );
 
-    // TODO: Remove
-    console.log({
-      keyStorageEngineMaps,
-    });
+        storageEngine
+          .setItem(formValues["key"], formValues["value"])
+          .then(() => {
+            handleFetchKeyStorageEngineMaps();
+
+            setIsCreatingNewKey(false);
+          });
+      },
+      [localDataPersistenceService, handleFetchKeyStorageEngineMaps]
+    );
+
+    // TODO: Document
+    const handleEmpty = useCallback(() => {
+      localDataPersistenceService
+        .clearAllStorageEngines()
+        .then(handleFetchKeyStorageEngineMaps);
+    }, [localDataPersistenceService, handleFetchKeyStorageEngineMaps]);
 
     return (
       <Layout>
@@ -122,10 +138,7 @@ const LocalStorageVault = {
         </Content>
         <Footer>
           <Padding>
-            {
-              // TODO: Show dialog confirm when pressed
-            }
-            <button onClick={() => alert("TODO: Implement")}>Empty</button>
+            <button onClick={handleEmpty}>Empty</button>
           </Padding>
         </Footer>
       </Layout>

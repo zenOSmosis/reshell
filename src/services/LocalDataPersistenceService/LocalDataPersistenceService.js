@@ -1,7 +1,9 @@
 import { PhantomCollection, EVT_UPDATED } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
+
 import StorageEngine from "./engines/StorageEngine";
 import SessionStorageEngine from "./engines/SessionStorageEngine";
+import LocalStorageEngine from "./engines/LocalStorageEngine";
 
 // TODO: [max size estimate; no Safari support!] https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate
 
@@ -25,6 +27,7 @@ export default class LocalDataPersistenceService extends UIServiceCore {
     );
 
     this.addStorageEngineClass(SessionStorageEngine);
+    this.addStorageEngineClass(LocalStorageEngine);
   }
 
   /**
@@ -85,8 +88,22 @@ export default class LocalDataPersistenceService extends UIServiceCore {
   }
 
   // TODO: Document
+  getStorageEngineWithShortUUID(shortUUID) {
+    return this.getStorageEngines().find(
+      predicate => predicate.getShortUUID() === shortUUID
+    );
+  }
+
+  // TODO: Document
   getSessionStorageEngine() {
     return this._storageEngineCollection.getChildWithKey(SessionStorageEngine);
+  }
+
+  // TODO: Document
+  async clearAllStorageEngines() {
+    await Promise.all(
+      this.getStorageEngines().map(storageEngine => storageEngine.clear())
+    );
   }
 }
 
@@ -96,6 +113,8 @@ class StorageEngineCollection extends PhantomCollection {
     if (this.getChildWithKey(StorageEngineClass)) {
       throw new ReferenceError("StorageEngineClass is already registered");
     }
+
+    // TODO: Ensure title is set and unique across instances
 
     const storageEngine = new StorageEngineClass();
 
@@ -108,6 +127,7 @@ class StorageEngineCollection extends PhantomCollection {
     return super.addChild(storageEngine, StorageEngineClass);
   }
 
+  // TODO: Document
   removeChild(StorageEngineClass) {
     const storageEngine = this.getChildWithKey(StorageEngineClass);
 
