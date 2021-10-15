@@ -73,6 +73,12 @@ const LocalStorageVault = {
       alert("TODO: Implement get value");
     }, []);
 
+    // TODO: Implement
+    const handleKeyValueSubmit = useCallback(formValues => {
+      // TODO: Remove
+      console.log({ formValues });
+    }, []);
+
     // TODO: Remove
     console.log({
       keyStorageEngineMaps,
@@ -109,6 +115,7 @@ const LocalStorageVault = {
             ) : (
               <NewKeyCreationForm
                 storageEngines={localDataPersistenceService.getStorageEngines()}
+                onSubmit={handleKeyValueSubmit}
               />
             )}
           </Padding>

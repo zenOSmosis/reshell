@@ -1,53 +1,32 @@
-import { useCallback, useRef, useState } from "react";
 import Center from "@components/Center";
 
-import getFormValues from "@utils/getFormValues";
+import useFormController from "@hooks/useFormController";
 
 export default function NewKeyCreationForm({
   initialKey,
   initialValue,
   initialStorageEngine,
   storageEngines,
+  onSubmit,
 }) {
-  const refForm = useRef(null);
+  const { setFormRef, handleFormChange, handleFormSubmit, errors, isValid } =
+    useFormController(onSubmit, formValues => {
+      return {
+        key:
+          formValues.key.length < 1 &&
+          "Key must contain at least one character",
+      };
+    });
 
-  const [isValidated, setIsValidated] = useState(false);
-
-  const handleFormValidation = useCallback(formValues => {
-    const isValid = formValues.key.length > 0;
-
-    setIsValidated(isValid);
-  }, []);
-
-  const handleFormChange = useCallback(
-    evt => {
-      const formElement = refForm.current;
-
-      const formValues = getFormValues(formElement);
-      handleFormValidation(formValues);
-    },
-    [handleFormValidation]
-  );
-
-  const handleFormSubmit = useCallback(
-    evt => {
-      evt.preventDefault();
-
-      const formElement = refForm.current;
-
-      const formValues = getFormValues(formElement);
-      handleFormValidation(formValues);
-    },
-    [handleFormValidation]
-  );
+  console.log({ errors });
 
   return (
     <Center canOverflow={true}>
       <form
-        ref={refForm}
+        ref={setFormRef}
         autoComplete="off"
-        onSubmit={handleFormSubmit}
         onChange={handleFormChange}
+        onSubmit={handleFormSubmit}
       >
         <input
           name="key"
@@ -55,6 +34,12 @@ export default function NewKeyCreationForm({
           placeholder="Key"
           defaultValue={initialKey}
         />
+
+        {errors?.key && (
+          <div className="note" style={{ color: "red" }}>
+            {errors.key}
+          </div>
+        )}
 
         <textarea
           name="value"
@@ -78,7 +63,7 @@ export default function NewKeyCreationForm({
         </div>
 
         <div style={{ marginTop: 10 }}>
-          <input type="submit" value="Submit" disabled={!isValidated} />
+          <input type="submit" value="Submit" disabled={!isValid} />
         </div>
       </form>
     </Center>
