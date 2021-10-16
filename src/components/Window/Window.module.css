@@ -4,6 +4,12 @@
 
 .window-outer-border {
   position: absolute;
+
+  /**
+  * Minimum width / height calculations (may need additional consideration)
+  */
+  min-width: 300px;
+  min-height: 50px;
 }
 
 /** TODO: Add adjustable padding to outer-border cells (will probably need a
