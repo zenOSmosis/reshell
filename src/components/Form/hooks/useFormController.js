@@ -2,13 +2,16 @@ import { useCallback, useState } from "react";
 
 import getFormValues from "@utils/getFormValues";
 
+// TODO: Track dirty state
+
 // TODO: Document
 // NOTE: This is supposed to be a simpler alternative to: https://react-hook-form.com/
 // Was struggling to make it easily work with onChange events in a clean way
-export default function useFormController(
-  onSubmit = () => null,
-  validator = () => null
-) {
+export default function useFormController({
+  onSubmit,
+  onChange = () => null,
+  validator = () => null,
+}) {
   const [formElement, setFormRef] = useState(null);
 
   const [isValid, setIsValid] = useState(false);
@@ -44,8 +47,10 @@ export default function useFormController(
     evt => {
       const formValues = getFormValues(formElement);
       validate(formValues);
+
+      onChange();
     },
-    [validate, formElement]
+    [validate, formElement, onChange]
   );
 
   // TODO: Document
