@@ -9,7 +9,7 @@ const LINKS = {
   "Phantom Collection":
     "https://github.com/zenOSmosis/phantom-core/tree/main/src/PhantomCollection",
 
-  "ReShell Core": () => alert("Pending open-source"),
+  "ReShell Core": "https://github.com/zenOSmosis/reshell.org-static",
 
   "Sync Object": "https://github.com/zenOSmosis/sync-object",
   "MediaStream Controller":
