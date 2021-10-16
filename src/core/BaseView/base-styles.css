@@ -53,11 +53,6 @@ body {
   overscroll-behavior: none;
 }
 
-a,
-a:visited {
-  color: inherit;
-}
-
 h1 {
   font-size: 1.4rem;
 }
@@ -131,11 +126,6 @@ body {
 
   /* Fix pull-down-to-refresh on Android */
   overscroll-behavior: none;
-}
-
-a,
-a:visited {
-  color: inherit;
 }
 
 h1 {
@@ -283,6 +273,7 @@ button:disabled {
 }
 
 a,
+a:visited,
 button.link {
   color: orange;
 }
