@@ -1,4 +1,5 @@
 import Center from "@components/Center";
+import Padding from "@components/Padding";
 
 import useFormController from "@hooks/useFormController";
 
@@ -26,13 +27,15 @@ export default function KeyEditorForm({
         onChange={handleFormChange}
         onSubmit={handleFormSubmit}
       >
-        <input
-          name="key"
-          type="text"
-          placeholder="Key"
-          defaultValue={initialKey}
-          required
-        />
+        <Padding>
+          <input
+            name="key"
+            type="text"
+            placeholder="Key"
+            defaultValue={initialKey}
+            required
+          />
+        </Padding>
 
         {errors?.key && (
           <div className="note" style={{ color: "red" }}>
@@ -40,13 +43,15 @@ export default function KeyEditorForm({
           </div>
         )}
 
-        <textarea
-          name="value"
-          placeholder="value"
-          defaultValue={initialValue}
-        ></textarea>
+        <Padding>
+          <textarea
+            name="value"
+            placeholder="Value"
+            defaultValue={initialValue}
+          ></textarea>
+        </Padding>
 
-        <div style={{ marginTop: 20 }}>
+        <Padding style={{ marginTop: 20, textAlign: "left" }}>
           <label>Storage Engine</label>
           <select
             name="storageEngineShortUUID"
@@ -64,11 +69,11 @@ export default function KeyEditorForm({
               );
             })}
           </select>
-        </div>
+        </Padding>
 
-        <div style={{ marginTop: 10 }}>
+        <Padding>
           <input type="submit" value="Submit" disabled={!isValid} />
-        </div>
+        </Padding>
       </form>
     </Center>
   );
