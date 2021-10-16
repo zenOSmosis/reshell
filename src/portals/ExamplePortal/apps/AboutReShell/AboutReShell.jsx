@@ -3,6 +3,8 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AutoScaler from "@components/AutoScaler";
 
+import getCopyright from "@utils/getCopyright";
+
 // TODO: Include ReShell documentation here, as well as architecture overview
 
 // TODO: Include property for "about" view (per app), where its rendered HTML can be utilized for SEO purposes
@@ -21,7 +23,6 @@ const AboutReShell = {
   style: {
     width: 640,
     height: 480,
-    backgroundColor: "rgba(42,42,42,.5)",
   },
   view: function View() {
     return (
@@ -34,19 +35,21 @@ const AboutReShell = {
                   ReShell
                 </div>
                 <div style={{ fontSize: "1.5rem" }}>
-                  An opinionated, paradigm-switching app mounter
+                  App layout framework and UI services engine
                 </div>
               </Center>
             </AutoScaler>
           </Content>
-          <Footer>
-            <div>
+          <Footer style={{ textAlign: "center" }}>
+            <p>
               This project is a work-in-progress. For contact information, visit{" "}
               <a href="https://zenOSmosis.com" target="_blank" rel="noreferrer">
                 zenOSmosis.com
               </a>
               .
-            </div>
+            </p>
+            <div style={{ opacity: 0.5 }}>{getCopyright()}</div>
+
             {/*
               <div style={{ padding: 4 }}>
                Get

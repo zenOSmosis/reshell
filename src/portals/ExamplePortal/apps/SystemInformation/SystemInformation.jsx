@@ -6,14 +6,16 @@ import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
 // import AutoScaler from "@components/AutoScaler";
 
+import getCopyright from "@utils/getCopyright";
+
 const AboutReShell = {
   id: "system-information",
   title: "System Information",
   style: {
     width: 640,
     height: 480,
-    backgroundColor: "rgba(42,42,42,.5)",
   },
+  isPinned: true,
   titleBarView: function TitleBarView({ sharedState, setSharedState }) {
     /*
     const handleSetSearchQuery = useCallback(
@@ -66,8 +68,7 @@ const AboutReShell = {
         </Content>
         <Footer>
           <Padding style={{ textAlign: "center", opacity: 0.5 }}>
-            Copyright &copy; 2010 - {new Date().getFullYear()} zenOSmosis. All
-            rights reserved.
+            {getCopyright()}
           </Padding>
         </Footer>
       </Layout>
