@@ -3,6 +3,7 @@ import Desktop from "@components/Desktop";
 import Applications from "./apps/Applications";
 // import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import AboutReShell from "./apps/AboutReShell";
+import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
@@ -16,6 +17,7 @@ export default function ReShellOrgPortal() {
         Applications,
         // ApplicationMonitor,
         AboutReShell,
+        CheckForUpdates,
         ServiceMonitor,
       ]}
     />
