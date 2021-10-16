@@ -87,13 +87,27 @@ export default class ReShellCore extends PhantomCore {
     }
 
     // Save portal name in session storage
-    sessionStorageEngine.setItem(
+    await sessionStorageEngine.setItem(
       KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME,
       portalName
     );
 
-    // TODO: Handle (notice how it comes after the setting of portal name in session storage; depending on how we work with this)
-    fetchIsLatestVersion().then(isLatest => console.log({ isLatest }));
+    // IMPORANT: This should come after setting of portal name in session storage
+    fetchIsLatestVersion().then(isLatest => {
+      if (!isLatest) {
+        if (
+          // TODO: Update
+          window.confirm(
+            "It appears you are not running the latest version.  Reload?"
+          )
+        ) {
+          // TODO: Adjust as necessary
+          window.location.href = `${
+            process.env.PUBLIC_URL || ""
+          }?__forceReboot=${new Date().getTime()}`;
+        }
+      }
+    });
 
     this._activePortalName = portalName;
 
@@ -173,7 +187,7 @@ export default class ReShellCore extends PhantomCore {
 
     const urlQuery = queryString.stringify({ portalName });
 
-    window.location.href = `?${urlQuery}`;
+    window.location.href = `${process.env.PUBLIC_URL || ""}?${urlQuery}`;
   }
 
   // TODO: Document
@@ -201,28 +215,3 @@ export default class ReShellCore extends PhantomCore {
     return _instance?.getPortalName();
   }
 }
-
-// Auto-init if query string
-// TODO: Refactor
-(() => {
-  if (!_instance) {
-    // IMPORTANT: This setTimeout (or any other async equiv.) is necessary to
-    // allow the parsing of registerPortals.js before trying to run the init on
-    // them
-    //
-    // Works in conjuction with ReShellCore.switchToPortal static method.
-    //
-    // TODO: Use setImmediate / microtask / other async (use in PhantomCore)
-    // @see [nextTick vs setImmediate] https://stackoverflow.com/a/15349865
-    // @see [MDN recommended setImmediate polyfill] https://github.com/YuzuJS/setImmediate/blob/master/setImmediate.js
-    setTimeout(() => {
-      const urlQuery = queryString.parse(window.location.search);
-
-      const { portalName } = urlQuery;
-
-      if (portalName) {
-        // ReShellCore.init(portalName);
-      }
-    });
-  }
-})();
