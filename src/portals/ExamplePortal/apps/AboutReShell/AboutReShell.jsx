@@ -11,6 +11,10 @@ import AutoScaler from "@components/AutoScaler";
 
 // TODO: Include links to PhantomCore, MediaStreamController, Speaker.app, zenOSmosis, GitHub, etc.
 
+// TODO: Include "declarative API" (it is React, but the components themselves
+// do their base to abstract away logic w/ their opinionated internal handling,
+// while trying to stay very performant themselves)
+
 const AboutReShell = {
   id: "about-reshell",
   title: "About ReShell",
