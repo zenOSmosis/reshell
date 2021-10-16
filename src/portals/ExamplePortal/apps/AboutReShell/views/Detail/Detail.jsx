@@ -38,7 +38,7 @@ export default function Detail() {
         >
           PhantomCore
         </a>
-        , a library for the managing JavaScript application lifecycle.
+        , a library for managing the JavaScript application lifecycle.
       </p>
 
       <Padding>
