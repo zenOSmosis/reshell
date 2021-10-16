@@ -20,6 +20,10 @@ import useWindowControls from "./hooks/useWindowControls";
 // TODO: Apply considerations from Apple's Human Interface Guidelines:
 // https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/
 
+// TODO: Consider adjusting tabindex for non-active windows dynamically so that
+// tabbing will stay within constraints of the active window
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+
 // TODO: Add prop-types
 // TODO: Document
 // TODO: Include option to be able to drag the window from within the window body (i.e. like a widget)
