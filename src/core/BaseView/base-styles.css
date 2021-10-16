@@ -84,7 +84,7 @@ select,
 button,
 input,
 textarea {
-  background-color: rgba(0, 0, 0);
+  background-color: #3e3f41;
   color: #ccc;
   border: 1px rgba(255, 255, 255, 0.2) solid;
   border-radius: 8px;
@@ -93,6 +93,13 @@ textarea {
   position: relative;
 
   resize: none;
+}
+
+select:focus,
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 select:disabled,
@@ -119,7 +126,7 @@ select {
 input:not([type="checkbox"]):not([type="submit"]),
 select,
 textarea {
-  width: 90%;
+  width: 100%;
 }
 
 ul {
