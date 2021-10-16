@@ -124,8 +124,13 @@ export default class ReShellCore extends PhantomCore {
 
     this._activePortalName = portalName;
 
-    // Wipe existing content
-    document.body.innerHTML = "";
+    // Wipe existing content, except for script tags (these script tags are
+    // used by the fetchIsLatestVersion utility for comparsion purposes)
+    [...document.body.children].forEach(child => {
+      if (child.tagName.toUpperCase() !== "SCRIPT") {
+        child.parentNode.removeChild(child);
+      }
+    });
 
     // Wipe existing styling
     [...document.getElementsByTagName("style")].forEach(elStyle =>
