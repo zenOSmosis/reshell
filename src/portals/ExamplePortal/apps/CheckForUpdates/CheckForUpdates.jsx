@@ -18,10 +18,12 @@ const CheckForUpdates = {
   view: function View() {
     const [isLatest, setIsLatest] = useState(true);
     const [isChecking, setIsChecking] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     const refIsChecking = useRef(null);
     refIsChecking.current = isChecking;
 
+    // TODO: Refactor into service
     const handleCheckForUpdates = useCallback(async () => {
       const isChecking = refIsChecking.current;
 
@@ -30,6 +32,7 @@ const CheckForUpdates = {
       }
 
       try {
+        setIsError(false);
         setIsChecking(true);
 
         const isLatest = await fetchIsLatestVersion();
@@ -37,6 +40,9 @@ const CheckForUpdates = {
         setIsLatest(isLatest);
       } catch (err) {
         console.error(err);
+
+        setIsError(true);
+        setIsLatest(false);
       } finally {
         setIsChecking(false);
       }
@@ -54,7 +60,14 @@ const CheckForUpdates = {
             <button onClick={handleCheckForUpdates} disabled={isChecking}>
               Check for Updates
             </button>
-            {isLatest ? (
+            {isError ? (
+              <>
+                <p>
+                  There was an error checking for updates.{" "}
+                  <button onClick={handleCheckForUpdates}>Try again?</button>
+                </p>
+              </>
+            ) : isLatest ? (
               <p>You appear to be running the latest version of ReShell.</p>
             ) : (
               <>
