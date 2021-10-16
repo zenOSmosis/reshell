@@ -25,7 +25,7 @@ const LINK_BUTTON_STYLE = {
   height: "100%",
 };
 
-export default function Detail() {
+export default function Details() {
   return (
     <Full style={{ overflowY: "auto" }}>
       <p>

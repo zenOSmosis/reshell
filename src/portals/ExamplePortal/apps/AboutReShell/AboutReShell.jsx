@@ -6,7 +6,7 @@ import ButtonPanel from "@components/ButtonPanel";
 import VirtualLink from "@components/VirtualLink";
 import NoWrap from "@components/NoWrap";
 
-import Detail from "./views/Detail";
+import Details from "./views/Details";
 import Resources from "./views/Resources";
 
 import getCopyright from "@utils/getCopyright";
@@ -64,9 +64,9 @@ const AboutReShell = {
               isSelected: sharedState.screen === "overview",
             },
             {
-              content: "Detail",
-              onClick: () => setSharedState({ screen: "detail" }),
-              isSelected: sharedState.screen === "detail",
+              content: "Details",
+              onClick: () => setSharedState({ screen: "details" }),
+              isSelected: sharedState.screen === "details",
             },
             {
               content: "Resources",
@@ -96,7 +96,7 @@ const AboutReShell = {
               </AutoScaler>
             )}
 
-            {sharedState.screen === "detail" && <Detail />}
+            {sharedState.screen === "details" && <Details />}
 
             {sharedState.screen === "resources" && <Resources />}
           </Content>
