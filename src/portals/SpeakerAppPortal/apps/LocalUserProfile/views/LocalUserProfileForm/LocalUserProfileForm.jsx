@@ -106,9 +106,7 @@ export default function LocalUserProfileForm({
             <tr>
               <td colSpan="2">
                 <div style={{ textAlign: "left" }}>
-                  <div>
-                    <label>Description</label>
-                  </div>
+                  <label>Description</label>
                   <textarea
                     placeholder=""
                     style={{ width: "100%", height: 150 }}
