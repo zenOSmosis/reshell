@@ -18,6 +18,7 @@ export default function AVBase({
     [mediaStreamTrack]
   );
 
+  // TODO: Document
   useEffect(() => {
     if (!el) {
       return;
@@ -41,6 +42,7 @@ export default function AVBase({
 
   const refOnEl = useRef(onEl);
 
+  // TODO: Document
   useEffect(() => {
     const onEl = refOnEl.current;
 
