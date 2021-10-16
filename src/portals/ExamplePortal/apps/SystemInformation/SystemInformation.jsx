@@ -65,10 +65,7 @@ const AboutReShell = {
           </Center>
         </Content>
         <Footer>
-          <Padding
-            style={{ textAlign: "center", opacity: 0.5 }}
-            className="note"
-          >
+          <Padding style={{ textAlign: "center", opacity: 0.5 }}>
             Copyright &copy; 2010 - {new Date().getFullYear()} zenOSmosis. All
             rights reserved.
           </Padding>
