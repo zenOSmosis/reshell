@@ -1,4 +1,5 @@
 import NoWrap from "@components/NoWrap";
+import Full from "@components/Full";
 
 import styles from "../Window.module.css";
 
@@ -25,7 +26,7 @@ export default function WindowTitlebar({
       onDoubleClick={onRestoreOrMaximize}
     >
       {TitleBarView ? (
-        TitleBarView
+        <Full>{TitleBarView}</Full>
       ) : (
         <>
           <NoWrap
