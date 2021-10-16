@@ -13,7 +13,11 @@ export default function ApplicationSelector({
   onResetSearchQuery,
 }) {
   const { appRegistrations } = useAppRegistrationsContext();
-  const { appRuntimes, startAppRuntime } = useAppRuntimesContext();
+  const {
+    appRuntimes,
+    // TODO: Change alias after deciding how to merge these in AppRuntimesProvider
+    bringToFrontOrStartAppRuntime: startAppRuntime,
+  } = useAppRuntimesContext();
 
   const appRuntimeRegistrations = useMemo(
     () => appRuntimes.map(runtime => runtime.getRegistration()),

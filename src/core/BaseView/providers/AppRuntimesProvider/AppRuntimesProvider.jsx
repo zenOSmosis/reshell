@@ -54,6 +54,8 @@ export default function AppRuntimesProvider({ children }) {
 
   // TODO: Merge with startAppRuntime after descriptors can specify multiple
   // window support
+  //
+  // TODO: Debounce this call (starts to bog down if repeatedly pressing app button)
   const bringToFrontOrStartAppRuntime = useCallback(
     appRegistration => {
       if (!runningRegistrations.includes(appRegistration)) {
