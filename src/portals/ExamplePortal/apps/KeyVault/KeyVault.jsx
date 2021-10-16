@@ -98,9 +98,12 @@ const KeyVault = {
 
     // TODO: Document
     const handleEmpty = useCallback(() => {
-      localDataPersistenceService
-        .clearAllStorageEngines()
-        .then(handleFetchKeyStorageEngineMaps);
+      // TODO: Replace window.confirm w/ an async prompt
+      if (window.confirm("Are you sure you wish to empty the Key Vault?")) {
+        localDataPersistenceService
+          .clearAllStorageEngines()
+          .then(handleFetchKeyStorageEngineMaps);
+      }
     }, [localDataPersistenceService, handleFetchKeyStorageEngineMaps]);
 
     return (
@@ -125,25 +128,21 @@ const KeyVault = {
           </Padding>
         </Header>
         <Content>
-          <Padding>
-            {!isCreatingNewKey ? (
-              <LocalStorageItems
-                keyStorageEngineMaps={keyStorageEngineMaps}
-                onGetValue={handleGetValue}
-              />
-            ) : (
-              <NewKeyCreationForm
-                storageEngines={localDataPersistenceService.getStorageEngines()}
-                onSubmit={handleKeyValueSubmit}
-              />
-            )}
-          </Padding>
+          {!isCreatingNewKey ? (
+            <LocalStorageItems
+              keyStorageEngineMaps={keyStorageEngineMaps}
+              onGetValue={handleGetValue}
+              onEmpty={handleEmpty}
+              // TODO: Move to callback
+              onNewItem={() => setIsCreatingNewKey(true)}
+            />
+          ) : (
+            <NewKeyCreationForm
+              storageEngines={localDataPersistenceService.getStorageEngines()}
+              onSubmit={handleKeyValueSubmit}
+            />
+          )}
         </Content>
-        <Footer>
-          <Padding>
-            <button onClick={handleEmpty}>Empty</button>
-          </Padding>
-        </Footer>
       </Layout>
     );
   },
