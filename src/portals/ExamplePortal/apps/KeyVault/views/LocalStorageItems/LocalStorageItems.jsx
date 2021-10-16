@@ -15,7 +15,7 @@ export default function LocalStorageItems({
           <Padding style={{ fontWeight: "bold" }}>No Key Vault items.</Padding>
           <Padding className="note">
             These may be automatically managed by other applications as needed,
-            in order to perform key storage operations.
+            in order to perform key / value pair storage operations.
           </Padding>
           <Padding className="note">
             You have the ability to clear all local / session storage via this
