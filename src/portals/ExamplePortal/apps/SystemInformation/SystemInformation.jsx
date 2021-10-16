@@ -4,6 +4,7 @@
 import Padding from "@components/Padding";
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
+import ButtonPanel from "@components/ButtonPanel";
 // import AutoScaler from "@components/AutoScaler";
 
 import getCopyright from "@utils/getCopyright";
@@ -37,10 +38,26 @@ const AboutReShell = {
 
     return (
       <Padding className="button-group">
-        <button>Overview</button>
-        <button>Storage</button>
-        <button>Memory</button>
-        <button>Services</button>
+        <ButtonPanel
+          buttons={[
+            {
+              content: "Overview",
+              onClick: () => null,
+            },
+            {
+              content: "Storage",
+              onClick: () => null,
+            },
+            {
+              content: "Memory",
+              onClick: () => null,
+            },
+            {
+              content: "Services",
+              onClick: () => null,
+            },
+          ]}
+        />
       </Padding>
     );
   },
@@ -52,10 +69,13 @@ const AboutReShell = {
             <Row>
               <Column>...</Column>
               <Column style={{ textAlign: "left" }}>
+                <div>Desktop Environment</div>
                 <div>ReShell</div>
                 <div>Version xx</div>
 
-                <div style={{ marginTop: 20 }}>Computer info...</div>
+                <div style={{ marginTop: 20 }}>
+                  Computer info... [Host Bridge]
+                </div>
 
                 <div style={{ marginTop: 20 }}>
                   <button>GitHub...</button>
