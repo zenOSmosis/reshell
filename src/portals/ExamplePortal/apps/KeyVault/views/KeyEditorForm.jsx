@@ -2,7 +2,7 @@ import Center from "@components/Center";
 
 import useFormController from "@hooks/useFormController";
 
-export default function NewKeyCreationForm({
+export default function KeyEditorForm({
   initialKey,
   initialValue,
   initialStorageEngine,

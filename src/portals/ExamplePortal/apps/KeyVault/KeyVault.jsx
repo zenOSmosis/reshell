@@ -10,9 +10,9 @@
 import { useCallback, useEffect, useState } from "react";
 
 import Padding from "@components/Padding";
-import Layout, { Header, Content, Footer } from "@components/Layout";
+import Layout, { Header, Content } from "@components/Layout";
 import LocalStorageItems from "./views/LocalStorageItems";
-import NewKeyCreationForm from "./views/NewKeyCreationForm";
+import KeyEditorForm from "./views/KeyEditorForm";
 
 import BackArrowIcon from "@icons/BackArrowIcon";
 
@@ -137,7 +137,7 @@ const KeyVault = {
               onNewItem={() => setIsCreatingNewKey(true)}
             />
           ) : (
-            <NewKeyCreationForm
+            <KeyEditorForm
               storageEngines={localDataPersistenceService.getStorageEngines()}
               onSubmit={handleKeyValueSubmit}
             />
