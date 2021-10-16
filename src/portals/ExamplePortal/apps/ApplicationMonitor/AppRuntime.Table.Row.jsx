@@ -25,7 +25,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
   useEffect(() => {
     if (windowController && elProfilerPhase) {
       // @see https://reactjs.org/docs/profiler.html
-      const handleRenderProfile = (arrRenderProfile) => {
+      const handleRenderProfile = arrRenderProfile => {
         // IMPORTANT: (jh) This was not cast to an Object because I'm not
         // positive if that would induce a lot of extra overhead over time;
         // React defines this as an array, so maybe it's best just leaving it
@@ -103,6 +103,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
           <button
             // TODO: Implement alternate handling
             onClick={() => console.log({ appRuntime })}
+            disabled
           >
             Process
           </button>
@@ -112,6 +113,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
             onClick={() =>
               console.log({ environment: appRuntime.getEnvironment() })
             }
+            disabled
           >
             Environment
           </button>
