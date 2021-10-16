@@ -104,9 +104,9 @@ const AboutReShell = {
             {sharedState.screen === "overview" && (
               <p>
                 <VirtualLink
-                  onClick={() => setSharedState({ screen: "detail" })}
+                  onClick={() => setSharedState({ screen: "details" })}
                 >
-                  Detail
+                  Details
                 </VirtualLink>{" "}
                 |{" "}
                 <VirtualLink
