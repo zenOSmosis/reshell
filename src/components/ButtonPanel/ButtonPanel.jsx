@@ -1,5 +1,3 @@
-// TODO: Remove; replace w/ ButtonGroup
-
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -9,7 +7,7 @@ ButtonPanel.propTypes = {
     PropTypes.shape({
       // TODO: Require to be React component (or any?)
       // TODO: Rename to view, or label
-      content: PropTypes.func.isRequired,
+      content: PropTypes.any.isRequired,
 
       onClick: PropTypes.func.isRequired,
 
@@ -40,6 +38,7 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
     return selectedIdx;
   });
 
+  // TODO: Document
   const refRenderIdx = useRef(-1);
   ++refRenderIdx.current;
 
@@ -84,7 +83,16 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
                 className,
               ])}
             >
-              {typeof Content === "function" ? <Content /> : { Content }}
+              {
+                // TODO: Refactor
+                typeof Content === "string" ? (
+                  Content
+                ) : typeof Content === "function" ? (
+                  <Content />
+                ) : (
+                  { Content }
+                )
+              }
             </button>
           );
         }
