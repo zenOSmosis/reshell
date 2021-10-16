@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 
 import classNames from "classnames";
 import styles from "./Center.module.css";
@@ -21,9 +21,9 @@ export default function Center({
   canOverflow = false,
   ...rest
 }) {
-  const refInnerEl = useRef(null);
+  const [innerEl, setInnerEl] = useState(null);
 
-  const isOverflown = useOverflowDetection(refInnerEl.current, canOverflow);
+  const isOverflown = useOverflowDetection(innerEl, canOverflow);
 
   return (
     <div
@@ -33,7 +33,7 @@ export default function Center({
         className
       )}
     >
-      <div ref={refInnerEl} {...rest} className={styles["inner-wrap"]}>
+      <div ref={setInnerEl} {...rest} className={styles["inner-wrap"]}>
         {children}
       </div>
     </div>
