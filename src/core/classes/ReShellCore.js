@@ -18,7 +18,23 @@ const KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME = "reshell-default-portal";
 // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
 let _instance = null;
 
+/**
+ * Handles bootstrapping the ReShell environment on the browser DOM and
+ * establishes lifecycle control methods for the base ReShell environment.
+ */
 export default class ReShellCore extends PhantomCore {
+  // TODO: Document
+  static async forceUpdate() {
+    if (_instance) {
+      await _instance.destroy();
+    }
+
+    // TODO: Adjust as necessary
+    window.location.href = `${
+      process.env.PUBLIC_URL || ""
+    }?__forceReboot=${new Date().getTime()}`;
+  }
+
   // TODO: Document
   static #portals = {};
 
@@ -101,10 +117,7 @@ export default class ReShellCore extends PhantomCore {
             "It appears you are not running the latest version.  Reload?"
           )
         ) {
-          // TODO: Adjust as necessary
-          window.location.href = `${
-            process.env.PUBLIC_URL || ""
-          }?__forceReboot=${new Date().getTime()}`;
+          ReShellCore.forceUpdate();
         }
       }
     });
