@@ -8,15 +8,28 @@ import axios from "axios";
  * @return {Promise<boolean>}
  */
 export default async function fetchIsLatestVersion() {
+  /**
+   * @type {string[]} Array of static tag sources from our own DOM.
+   */
   const ours = _getStaticTags();
 
-  const result = await axios.get(
-    `${process.env.PUBLIC_URL || ""}?__t=${new Date().getTime()}`
+  // Pull the remote index.html file with a cache-busting timestamp appended
+  const response = await axios.get(
+    `${process.env.PUBLIC_URL || ""}/?__t=${new Date().getTime()}`
   );
-  const domParser = new window.DOMParser();
-  const resultDOM = domParser.parseFromString(result.data, "text/html");
 
+  // Parse the remote response with browser's included DOMParser
+  const domParser = new window.DOMParser();
+  const resultDOM = domParser.parseFromString(response.data, "text/html");
+
+  /**
+   * @type {string[]} Array of static tag sources from the remote DOM.
+   */
   const theirs = _getStaticTags(resultDOM);
+
+  if (theirs.length === 0) {
+    throw new Error("Unable to acquire remote info");
+  }
 
   for (const src of theirs) {
     if (!ours.includes(src)) {
