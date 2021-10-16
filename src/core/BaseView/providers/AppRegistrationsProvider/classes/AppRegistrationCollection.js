@@ -1,19 +1,8 @@
-import {
-  PhantomCollection,
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
-  EVT_UPDATED,
-  EVT_DESTROYED,
-} from "phantom-core";
+import { PhantomCollection, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 import AppRegistration from "./AppRegistration";
 
-export {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
-  EVT_UPDATED,
-  EVT_DESTROYED,
-};
+export { EVT_UPDATED, EVT_DESTROYED };
 
 // TODO: Document
 export default class AppRegistrationCollection extends PhantomCollection {
