@@ -3,7 +3,7 @@ import ReShellCore from "@core";
 import { useCallback, useEffect, useState } from "react";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
-import Link from "@components/Link";
+import VirtualLink from "@components/VirtualLink";
 
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
@@ -123,17 +123,17 @@ const Applications = {
                 {!isDisplayingPortals ? (
                   <>
                     Other applications may be available in{" "}
-                    <Link onClick={() => setIsDisplayingPortals(true)}>
+                    <VirtualLink onClick={() => setIsDisplayingPortals(true)}>
                       another portal
-                    </Link>
+                    </VirtualLink>
                     .
                   </>
                 ) : (
                   <>
                     Return to{" "}
-                    <Link onClick={() => setIsDisplayingPortals(false)}>
+                    <VirtualLink onClick={() => setIsDisplayingPortals(false)}>
                       application list
-                    </Link>
+                    </VirtualLink>
                     .
                   </>
                 )}
