@@ -10,6 +10,10 @@ const LINKS = {
 export default function Resources() {
   return (
     <Center canOverflow={true}>
+      {
+        // TODO: Display grid here for: PhantomCore, etc.
+      }
+
       <p style={{ fontWeight: "bold" }}>Additional resources:</p>
       <div style={{ display: "inline-block", textAlign: "left" }}>
         {Object.entries(LINKS).map(([name, url], idx) => (
