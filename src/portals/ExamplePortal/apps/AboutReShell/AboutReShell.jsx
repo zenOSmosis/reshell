@@ -3,6 +3,7 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import AutoScaler from "@components/AutoScaler";
 import ButtonPanel from "@components/ButtonPanel";
+import VirtualLink from "@components/VirtualLink";
 
 import Resources from "./views/Resources";
 
@@ -52,21 +53,25 @@ const AboutReShell = {
     return (
       <Padding className="button-group">
         <ButtonPanel
+          // Force update if the screen changes
+          key={sharedState.screen}
           buttons={[
             {
               content: "Overview",
               onClick: () => setSharedState({ screen: "overview" }),
+              isSelected: sharedState.screen === "overview",
             },
             {
               content: "Resources",
               onClick: () => setSharedState({ screen: "resources" }),
+              isSelected: sharedState.screen === "resources",
             },
           ]}
         />
       </Padding>
     );
   },
-  view: function View({ sharedState }) {
+  view: function View({ sharedState, setSharedState }) {
     return (
       <Padding>
         <Layout>
@@ -89,15 +94,12 @@ const AboutReShell = {
           <Footer style={{ textAlign: "center" }}>
             {sharedState.screen === "overview" && (
               <p>
-                This project is a work-in-progress. For contact information,
-                visit{" "}
-                <a
-                  href="https://zenOSmosis.com"
-                  target="_blank"
-                  rel="noreferrer"
+                This project is a work-in-progress. For contact information view{" "}
+                <VirtualLink
+                  onClick={() => setSharedState({ screen: "resources" })}
                 >
-                  zenOSmosis.com
-                </a>
+                  resources page
+                </VirtualLink>
                 .
               </p>
             )}
