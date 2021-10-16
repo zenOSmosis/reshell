@@ -173,16 +173,18 @@ export default function Desktop({
                       <MenuHeader>Desktop Operations</MenuHeader>
                       <MenuItem
                         onClick={() =>
-                          alert("TODO: Implement ReShell destruct")
+                          window.confirm(
+                            "Are you sure you wish to close the desktop?"
+                          ) && ReShellCore.destroy()
                         }
                       >
                         Close
                       </MenuItem>
                       <MenuItem
-                        onClick={() => {
-                          // TODO: Only reload after ReShell destruct
-                          window.location.reload();
-                        }}
+                        onClick={() =>
+                          window.confirm("Are you sure you wish to reload?") &&
+                          ReShellCore.reload()
+                        }
                       >
                         Reload
                       </MenuItem>

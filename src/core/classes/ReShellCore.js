@@ -141,6 +141,18 @@ export default class ReShellCore extends PhantomCore {
   }
 
   // TODO: Document
+  static async destroy() {
+    return _instance?.destroy();
+  }
+
+  // TODO: Document
+  static async reload() {
+    await _instance?.destroy();
+
+    window.location.reload();
+  }
+
+  // TODO: Document
   async switchToPortal(portalName) {
     const sessionStorageEngine = this._uiServiceCollection
       .getService(KeyVaultService)
