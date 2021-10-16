@@ -11,6 +11,8 @@ import BaseView from "../BaseView";
 
 import queryString from "query-string";
 
+import fetchIsLatestVersion from "@utils/fetchIsLatestVersion";
+
 const KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME = "reshell-default-portal";
 
 // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
@@ -89,6 +91,9 @@ export default class ReShellCore extends PhantomCore {
       KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME,
       portalName
     );
+
+    // TODO: Handle (notice how it comes after the setting of portal name in session storage; depending on how we work with this)
+    fetchIsLatestVersion().then(isLatest => console.log({ isLatest }));
 
     this._activePortalName = portalName;
 
