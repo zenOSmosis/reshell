@@ -1,3 +1,5 @@
+// TODO: Remove; replace w/ ButtonGroup
+
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
