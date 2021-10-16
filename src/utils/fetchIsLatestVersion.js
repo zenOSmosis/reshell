@@ -8,34 +8,35 @@ import axios from "axios";
  * @return {Promise<boolean>}
  */
 export default async function fetchIsLatestVersion() {
-  const ours = await fetchIndexPage(false);
-  const theirs = await fetchIndexPage(true);
+  const ours = _getStaticTags();
 
-  // FIXME: (jh) If caching is disabled, this may always return true
-  return ours === theirs;
+  const result = await axios.get(
+    `${process.env.PUBLIC_URL || ""}?__t=${new Date().getTime()}`
+  );
+  const domParser = new window.DOMParser();
+  const resultDOM = domParser.parseFromString(result.data, "text/html");
+
+  const theirs = _getStaticTags(resultDOM);
+
+  for (const src of theirs) {
+    if (!ours.includes(src)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /**
- * @param {boolean} isTheirs? [default = true] Whether or not is forcefully
- * pulling a new copy from the server (vs. potentially from the local cache)
- * @return {string}
+ * @param {Object} dom? [default = window.document]
+ * @return {string[]}
  */
-async function fetchIndexPage(isTheirs = true) {
-  // There may be a better way of doing this, but it also needs to work with
-  // GitHub Pages or any Jamstack-related hosting
-  const response = await axios.get(
-    // NOTE: Non-CRA (create-react-app) usage may need this to be modified
-    // accordingly
-    //
-    // This works because each build contains unique identifiers for CRA-
-    // generated static assets.
-    //
-    // A previous attempt tried to look at asset-manifest.json, but that does
-    // not seem to be very reliable if a service worker is not used
-    `${process.env.PUBLIC_URL || ""}/index.html${
-      isTheirs ? `?__t=${new Date().getTime()}` : ""
-    }`
-  );
+function _getStaticTags(dom = window.document) {
+  const jsTags = [...dom.getElementsByTagName("script")];
 
-  return response.data;
+  const staticJsTagSrcs = jsTags
+    .filter(tag => tag.getAttribute("src")?.startsWith("/static"))
+    .map(tag => tag.getAttribute("src"));
+
+  return staticJsTagSrcs;
 }
