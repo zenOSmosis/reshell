@@ -1,10 +1,10 @@
-import { useCallback } from "react";
+// import { useCallback } from "react";
 
-import Full from "@components/Full";
+// import Full from "@components/Full";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
-import AutoScaler from "@components/AutoScaler";
+// import AutoScaler from "@components/AutoScaler";
 
 const AboutReShell = {
   id: "system-information",
@@ -15,6 +15,7 @@ const AboutReShell = {
     backgroundColor: "rgba(42,42,42,.5)",
   },
   titleBarView: function TitleBarView({ sharedState, setSharedState }) {
+    /*
     const handleSetSearchQuery = useCallback(
       evt => setSharedState({ searchQuery: evt.target.value }),
       [setSharedState]
@@ -30,6 +31,7 @@ const AboutReShell = {
       },
       [sharedState]
     );
+    */
 
     return (
       <Padding className="button-group">
