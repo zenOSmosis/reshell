@@ -137,15 +137,6 @@ export default function Desktop({
                             {app.getTitle()}
                           </MenuItem>
                         ))}
-                      <MenuItem
-                        onClick={() =>
-                          alert(
-                            "TODO: Implement window w/ overview of System Information"
-                          )
-                        }
-                      >
-                        About / System Information
-                      </MenuItem>
                       <MenuDivider />
                       <MenuHeader>Global Window Management</MenuHeader>
                       <MenuItem
