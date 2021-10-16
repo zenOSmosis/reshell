@@ -18,6 +18,7 @@ export default function Form({
 
   return (
     <form
+      {...rest}
       ref={setFormRef}
       autoComplete={autoComplete}
       onChange={handleFormChange}
