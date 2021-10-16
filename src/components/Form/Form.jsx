@@ -4,16 +4,21 @@ import useFormController from "./hooks/useFormController";
 export default function Form({
   children,
   onSubmit,
+  onChange = () => null,
   autoComplete = "off",
   ...rest
 }) {
   const { setFormRef, handleFormChange, handleFormSubmit, errors, isValid } =
-    useFormController(onSubmit, formValues => {
-      return {
-        key:
-          formValues.key.length < 1 &&
-          "Key must contain at least one character",
-      };
+    useFormController({
+      onSubmit,
+      onChange,
+      validator: formValues => {
+        return {
+          key:
+            formValues.key.length < 1 &&
+            "Key must contain at least one character",
+        };
+      },
     });
 
   return (
