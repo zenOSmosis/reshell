@@ -1,5 +1,8 @@
 import PhantomCore from "phantom-core";
 
+// TODO: Look into https://www.npmjs.com/package/localforage for local IndexedDB handling
+// TODO: Implement encrypted storage (indexeddb usage as well?)
+
 /**
  * NOTE: All of these methods are async to handle potential network,
  * off-process, or async-based storage engines.
