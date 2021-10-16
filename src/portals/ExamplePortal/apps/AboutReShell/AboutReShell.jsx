@@ -40,20 +40,13 @@ const AboutReShell = {
             </AutoScaler>
           </Content>
           <Footer>
-            <Padding>
-              <div>
-                This project is a work-in-progress. For contact information,
-                visit{" "}
-                <a
-                  href="https://zenOSmosis.com"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  zenOSmosis.com
-                </a>
-                .
-              </div>
-            </Padding>
+            <div>
+              This project is a work-in-progress. For contact information, visit{" "}
+              <a href="https://zenOSmosis.com" target="_blank" rel="noreferrer">
+                zenOSmosis.com
+              </a>
+              .
+            </div>
             {/*
               <div style={{ padding: 4 }}>
                Get
