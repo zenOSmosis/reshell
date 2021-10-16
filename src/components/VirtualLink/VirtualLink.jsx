@@ -10,11 +10,11 @@ import classNames from "classnames";
 export default function VirtualLink({ children, className, onClick, ...rest }) {
   return (
     <ButtonTransparent
+      {...rest}
       // IMPORTANT: The seemingly double link styles are placed on purpose (one
       // is the normal CSS, and the other is the module.css override)
       className={classNames("link", styles["virtual-link"], className)}
       onClick={onClick}
-      {...rest}
     >
       {children}
     </ButtonTransparent>

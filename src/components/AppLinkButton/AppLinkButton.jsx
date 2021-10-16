@@ -1,4 +1,5 @@
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
+import VirtualLinkButton from "../VirtualLinkButton";
 
 // TODO: Apply "active" class to button whenever registration is active?
 
@@ -11,13 +12,13 @@ export default function AppLinkButton({ id, title = null, ...rest }) {
   }
 
   return (
-    <button
+    <VirtualLinkButton
       // IMPORTANT: ...rest is moved before onClick handler so the internal
       // onClick handler will not be overridden
       {...rest}
       onClick={link}
     >
       {title || registrationTitle}
-    </button>
+    </VirtualLinkButton>
   );
 }

@@ -1,5 +1,6 @@
 import Center from "@components/Center";
 import Padding from "@components/Padding";
+import ExternalLink from "@components/ExternalLink";
 
 const LINKS = {
   zenOSmosis: "https://zenOSmosis.com",
@@ -18,9 +19,7 @@ export default function Resources() {
             {
               // TODO: Use ExternalLink component for this
             }
-            <a href={url} target="_blank" rel="noreferrer">
-              {url}
-            </a>
+            <ExternalLink href={url}>{url}</ExternalLink>
           </Padding>
         ))}
       </div>
@@ -29,7 +28,10 @@ export default function Resources() {
 
       <p>
         To contact us directly, email:{" "}
-        <a href="mailto:info@zenosmosis.com">info@zenosmosis.com</a>.
+        <ExternalLink href="mailto:info@zenosmosis.com">
+          info@zenosmosis.com
+        </ExternalLink>
+        .
       </p>
     </Center>
   );

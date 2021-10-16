@@ -1,6 +1,29 @@
 import Full from "@components/Full";
 import Padding from "@components/Padding";
-import { Row, Column } from "@components/Layout";
+import ExternalLink from "@components/ExternalLink";
+import ExternalLinkButton from "@components/ExternalLinkButton";
+import VirtualLinkButton from "@components/VirtualLinkButton";
+
+const LINKS = {
+  "Phantom Core": "https://github.com/zenOSmosis/phantom-core",
+  "Phantom Collection":
+    "https://github.com/zenOSmosis/phantom-core/tree/main/src/PhantomCollection",
+
+  "ReShell Core": () => alert("Pending open-source"),
+
+  "Sync Object": "https://github.com/zenOSmosis/sync-object",
+  "MediaStream Controller":
+    "https://github.com/zenOSmosis/media-stream-track-controller",
+  "webrtc-peer": "https://github.com/zenOSmosis/webrtc-peer",
+};
+
+// TODO: Refactor
+const LINK_BUTTON_STYLE = {
+  minHeight: "4em",
+  whiteSpace: "wrap",
+  width: "100%",
+  height: "100%",
+};
 
 export default function Detail() {
   return (
@@ -23,49 +46,45 @@ export default function Detail() {
       </p>
       <p>
         Leveraged off of the core code for{" "}
-        <a href="https://speaker.app" target="_blank" rel="noreferrer">
-          Speaker.app
-        </a>{" "}
-        and other{" "}
-        <a href="https://zenosmosis.com" target="_blank" rel="noreferrer">
-          zenOSmosis
-        </a>{" "}
+        <ExternalLink href="https://speaker.app">Speaker.app</ExternalLink> and
+        other{" "}
+        <ExternalLink href="https://zenosmosis.com">zenOSmosis</ExternalLink>{" "}
         projects based on{" "}
-        <a
-          href="https://github.com/zenOSmosis/phantom-core"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <ExternalLink href="https://github.com/zenOSmosis/phantom-core">
           PhantomCore
-        </a>
+        </ExternalLink>
         , a library for managing the JavaScript application lifecycle.
       </p>
 
-      <Padding>
-        <p style={{ fontWeight: "bold" }}>Some included technologies:</p>
-        <Row style={{ height: 50 }}>
-          <Column>
-            <button>PhantomCore</button>
-          </Column>
-          <Column>
-            <button>PhantomCollection</button>
-          </Column>
-          <Column>
-            <button>ReShell Core</button>
-          </Column>
-        </Row>
-        <Row style={{ height: 50 }}>
-          <Column>
-            <button>SyncObject</button>
-          </Column>
-          <Column>
-            <button>MediaStream Controller</button>
-          </Column>
-          <Column>
-            <button>webrtc-peer</button>
-          </Column>
-        </Row>
-      </Padding>
+      <p style={{ fontWeight: "bold" }}>Some included technologies:</p>
+
+      <div style={{ textAlign: "center" }}>
+        <div
+          style={{ display: "inline-grid", gridTemplateColumns: "1fr 1fr 1fr" }}
+        >
+          {Object.entries(LINKS).map(([title, urlOrAction], idx) => {
+            return (
+              <Padding key={idx}>
+                {typeof urlOrAction === "string" ? (
+                  <ExternalLinkButton
+                    href={urlOrAction}
+                    style={LINK_BUTTON_STYLE}
+                  >
+                    {title}
+                  </ExternalLinkButton>
+                ) : (
+                  <VirtualLinkButton
+                    onClick={urlOrAction}
+                    style={LINK_BUTTON_STYLE}
+                  >
+                    {title}
+                  </VirtualLinkButton>
+                )}
+              </Padding>
+            );
+          })}
+        </div>
+      </div>
     </Full>
   );
 }
