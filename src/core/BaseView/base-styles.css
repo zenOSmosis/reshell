@@ -80,6 +80,13 @@ hr {
   opacity: 0.2;
 }
 
+label {
+  font-weight: bold;
+
+  display: block;
+  margin: 0.25em 0em;
+}
+
 select,
 button,
 input,
@@ -200,10 +207,6 @@ button.active {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-label {
-  font-weight: bold;
 }
 
 table {
