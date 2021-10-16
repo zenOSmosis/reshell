@@ -4,7 +4,9 @@ import Center from "@components/Center";
 import AutoScaler from "@components/AutoScaler";
 import ButtonPanel from "@components/ButtonPanel";
 import VirtualLink from "@components/VirtualLink";
+import NoWrap from "@components/NoWrap";
 
+import Detail from "./views/Detail";
 import Resources from "./views/Resources";
 
 import getCopyright from "@utils/getCopyright";
@@ -62,6 +64,11 @@ const AboutReShell = {
               isSelected: sharedState.screen === "overview",
             },
             {
+              content: "Detail",
+              onClick: () => setSharedState({ screen: "detail" }),
+              isSelected: sharedState.screen === "detail",
+            },
+            {
               content: "Resources",
               onClick: () => setSharedState({ screen: "resources" }),
               isSelected: sharedState.screen === "resources",
@@ -82,25 +89,31 @@ const AboutReShell = {
                   <div style={{ fontSize: "8rem", fontStyle: "italic" }}>
                     ReShell
                   </div>
-                  <div style={{ fontSize: "1.5rem" }}>
+                  <NoWrap style={{ fontSize: "1.5rem" }}>
                     App layout framework and UI services engine
-                  </div>
+                  </NoWrap>
                 </Center>
               </AutoScaler>
             )}
+
+            {sharedState.screen === "detail" && <Detail />}
 
             {sharedState.screen === "resources" && <Resources />}
           </Content>
           <Footer style={{ textAlign: "center" }}>
             {sharedState.screen === "overview" && (
               <p>
-                This project is a work-in-progress. For contact information view{" "}
+                <VirtualLink
+                  onClick={() => setSharedState({ screen: "detail" })}
+                >
+                  Detail
+                </VirtualLink>{" "}
+                |{" "}
                 <VirtualLink
                   onClick={() => setSharedState({ screen: "resources" })}
                 >
-                  resources page
+                  Resources
                 </VirtualLink>
-                .
               </p>
             )}
 
