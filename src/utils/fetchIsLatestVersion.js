@@ -47,6 +47,8 @@ export default async function fetchIsLatestVersion() {
 function _getStaticTags(dom = window.document) {
   const jsTags = [...dom.getElementsByTagName("script")];
 
+  // TODO: Also look at CSS tags
+
   const staticJsTagSrcs = jsTags
     .filter(tag => tag.getAttribute("src")?.startsWith("/static"))
     .map(tag => tag.getAttribute("src"));
