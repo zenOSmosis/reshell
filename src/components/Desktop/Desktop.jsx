@@ -1,3 +1,5 @@
+import PhantomCore from "phantom-core";
+
 import WindowManager from "../WindowManager";
 import Cover from "../Cover";
 import Layout, { Header, Content, Row, Column } from "../Layout";
@@ -321,6 +323,7 @@ export default function Desktop({
                 <AutoScaler style={{ whiteSpace: "nowrap" }}>
                   <div style={{ textAlign: "left", fontSize: ".7em" }}>
                     <div>ReShell 0.0.1-alpha</div>
+                    <div>PhantomCore {PhantomCore.getPhantomCoreVersion()}</div>
                     <div>Portal: {ReShellCore.getPortalName()}</div>
                     <div>Env: {process.env.NODE_ENV}</div>
                   </div>

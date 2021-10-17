@@ -15,7 +15,7 @@
     "dayjs": "^1.10.7",
     "debounce": "^1.2.1",
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v1.0.1",
-    "phantom-core": "github:zenosmosis/phantom-core#v1.0.1",
+    "phantom-core": "github:zenosmosis/phantom-core#v2/feature--core-utils",
     "preload-it": "^1.4.0",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
