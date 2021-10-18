@@ -62,7 +62,7 @@ export default class ReShellCore extends PhantomCore {
     }
 
     super({
-      isReady: false,
+      isAsync: true,
     });
 
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
