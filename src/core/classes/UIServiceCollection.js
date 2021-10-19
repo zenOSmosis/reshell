@@ -107,7 +107,7 @@ export default class UIServiceCollection extends PhantomCollection {
     if (cachedService) {
       return cachedService;
     } else {
-      return this.addServiceClass(ServiceClass);
+      return this.startServiceClass(ServiceClass);
     }
   }
 
