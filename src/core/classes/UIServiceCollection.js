@@ -39,7 +39,7 @@ export default class UIServiceCollection extends PhantomCollection {
    * @return {Promise<void>}
    */
   async destroy() {
-    // Destruct all services on collection destruc
+    // Destruct all services on collection destruct
     await this.destroyAllChildren();
 
     const ret = await super.destroy();
@@ -76,8 +76,8 @@ export default class UIServiceCollection extends PhantomCollection {
     // NOTE: This was engineered this way in order to not have to pass
     // arguments to the ServiceClass itself, thus making it easier to extend
     // services without having to think about needed constructor arguments
-    ServiceClass.prototype._useServiceHandler = ServiceClass =>
-      this.useService(ServiceClass);
+    ServiceClass.prototype._useServiceClassHandler = ServiceClass =>
+      this.useServiceClass(ServiceClass);
 
     // NOTE: Services are instantiated with the collection without arguments,
     // but may pass arguments down to the base ServiceCore class (i.e. for
@@ -101,7 +101,7 @@ export default class UIServiceCollection extends PhantomCollection {
   }
 
   // TODO: Document
-  useService(ServiceClass) {
+  useServiceClass(ServiceClass) {
     const cachedService = this.getChildWithKey(ServiceClass);
 
     if (cachedService) {

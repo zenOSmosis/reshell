@@ -26,9 +26,9 @@ export default class UIServiceCore extends PhantomCore {
 
     super();
 
-    if (typeof this._useServiceHandler !== "function") {
+    if (typeof this._useServiceClassHandler !== "function") {
       throw new ReferenceError(
-        "_useServiceHandler property should be set by the collection this service is collected in"
+        "_useServiceClassHandler property should be set by the collection this service is collected in"
       );
     }
 
@@ -60,8 +60,8 @@ export default class UIServiceCore extends PhantomCore {
   }
 
   // TODO: Document
-  useService(ServiceClass) {
-    return this._useServiceHandler(ServiceClass);
+  useServiceClass(ServiceClass) {
+    return this._useServiceClassHandler(ServiceClass);
   }
 
   /**

@@ -13,7 +13,7 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
       isHosting: false,
     });
 
-    this._socketService = this.useService(
+    this._socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
   }

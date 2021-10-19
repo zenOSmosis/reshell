@@ -10,7 +10,7 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
       networks: [],
     });
 
-    this._socketService = this.useService(
+    this._socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
 
