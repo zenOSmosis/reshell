@@ -77,7 +77,7 @@ export default class UIServiceCollection extends PhantomCollection {
     // arguments to the ServiceClass itself, thus making it easier to extend
     // services without having to think about needed constructor arguments
     ServiceClass.prototype._useServiceClassHandler = ServiceClass =>
-      this.useServiceClass(ServiceClass);
+      this.startServiceClass(ServiceClass);
 
     // NOTE: Services are instantiated with the collection without arguments,
     // but may pass arguments down to the base ServiceCore class (i.e. for
@@ -97,17 +97,6 @@ export default class UIServiceCollection extends PhantomCollection {
 
     if (cachedService) {
       cachedService.destroy();
-    }
-  }
-
-  // TODO: Document
-  useServiceClass(ServiceClass) {
-    const cachedService = this.getChildWithKey(ServiceClass);
-
-    if (cachedService) {
-      return cachedService;
-    } else {
-      return this.startServiceClass(ServiceClass);
     }
   }
 
