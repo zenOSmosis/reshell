@@ -3,6 +3,7 @@ import PhantomCore, {
   PhantomCollection,
   EVT_UPDATED,
   EVT_DESTROYED,
+  deepMerge,
 } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -32,9 +33,7 @@ export default class UIServiceCore extends PhantomCore {
       );
     }
 
-    this._state = Object.seal(
-      UIServiceCore.mergeOptions(DEFAULT_STATE, initialState)
-    );
+    this._state = Object.seal(deepMerge(DEFAULT_STATE, initialState));
 
     // A map of collections, attached to this service core
     this._collectionMap = new Map();

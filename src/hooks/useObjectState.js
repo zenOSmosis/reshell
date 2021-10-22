@@ -2,8 +2,6 @@ import { useCallback, useRef, useState } from "react";
 
 // TODO: See other implementation here (might be more performant): https://thoughtspile.github.io/2021/10/11/usestate-object-vs-multiple/?utm_campaign=thisweekinreact&utm_medium=email&utm_source=Revue%20newsletter
 
-// TODO: Use PhantomCore.mergeOptions for deep-merge, instead?
-
 /**
  * Applies a shallow-merge strategy to object updates so that setState() calls
  * don't completely overwrite previous object state.

@@ -1,4 +1,8 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, {
+  EVT_UPDATED,
+  EVT_DESTROYED,
+  deepMerge,
+} from "phantom-core";
 import { debounce } from "debounce";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -25,9 +29,7 @@ export default class WindowController extends PhantomCore {
       // isActive: false,
     };
 
-    this._state = Object.seal(
-      WindowController.mergeOptions(DEFAULT_STATE, initialState)
-    );
+    this._state = Object.seal(deepMerge(DEFAULT_STATE, initialState));
 
     this._appRuntime = null;
 
@@ -310,8 +312,7 @@ export default class WindowController extends PhantomCore {
       partialNextState.isMaximized = false;
     }
 
-    // TODO: This is buggy with certain types of state objects; should we just do a shallow-merge instead?
-    this._state = PhantomCore.mergeOptions(this._state, partialNextState);
+    this._state = deepMerge(this._state, partialNextState);
 
     this.emit(EVT_UPDATED, partialNextState);
   }
