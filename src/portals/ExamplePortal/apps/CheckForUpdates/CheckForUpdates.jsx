@@ -8,8 +8,10 @@ import LabeledLED from "@components/labeled/LabeledLED";
 
 import fetchIsLatestVersion from "@utils/fetchIsLatestVersion";
 
+export const REGISTRATION_ID = "check-for-updates";
+
 const CheckForUpdates = {
-  id: "check-for-updates",
+  id: REGISTRATION_ID,
   title: "Check for Updates",
   style: {
     width: 320,

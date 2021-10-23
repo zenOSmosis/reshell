@@ -14,6 +14,7 @@ import AppLinkButton from "@components/AppLinkButton";
 import ObjectViewer from "@components/ObjectViewer";
 
 import { REGISTRATION_ID as ENVIRONMENT_REGISTRATION_ID } from "@portals/ExamplePortal/apps/Environment";
+import { REGISTRATION_ID as CHECK_FOR_UPDATES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/CheckForUpdates";
 
 const packageJson = require("@root/package.json");
 
@@ -53,11 +54,9 @@ const SoftwareInfo = {
                 </Center>
               </Column>
               <Column>
-                <Center>
-                  <AppLinkButton
-                    id={ENVIRONMENT_REGISTRATION_ID}
-                    style={{ float: "right" }}
-                  />
+                <Center style={{ textAlign: "right" }}>
+                  <AppLinkButton id={CHECK_FOR_UPDATES_REGISTRATION_ID} />{" "}
+                  <AppLinkButton id={ENVIRONMENT_REGISTRATION_ID} />
                 </Center>
               </Column>
             </Row>
