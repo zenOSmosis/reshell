@@ -1,6 +1,6 @@
 import ReactJson from "react-json-view";
 
-const packageJson = require("../../../../../package.json");
+const packageJson = require("@root/package.json");
 
 export const REGISTRATION_ID = "software-info";
 
