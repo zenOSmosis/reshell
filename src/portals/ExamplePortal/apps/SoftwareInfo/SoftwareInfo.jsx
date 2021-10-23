@@ -11,8 +11,7 @@ import Layout, {
 import Center from "@components/Center";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
-
-import ReactJson from "react-json-view";
+import ObjectViewer from "@components/ObjectViewer";
 
 import { REGISTRATION_ID as ENVIRONMENT_REGISTRATION_ID } from "@portals/ExamplePortal/apps/Environment";
 
@@ -34,13 +33,7 @@ const SoftwareInfo = {
           <Padding>Package.json content</Padding>
         </Header>
         <Content>
-          <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
-            <ReactJson
-              src={packageJson}
-              theme="monokai"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
+          <ObjectViewer src={packageJson} />
         </Content>
         <Footer>
           <Padding>

@@ -1,5 +1,5 @@
 import Layout, { Content /* Footer */ } from "@components/Layout";
-import ReactJson from "react-json-view";
+import ObjectViewer from "@components/ObjectViewer";
 
 // TODO: Include ability to show environment of any given AppRuntime?
 
@@ -16,13 +16,7 @@ const Environment = {
     return (
       <Layout>
         <Content>
-          <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
-            <ReactJson
-              src={process.env}
-              theme="monokai"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
+          <ObjectViewer src={process.env} />
         </Content>
       </Layout>
     );
