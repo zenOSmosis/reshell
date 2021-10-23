@@ -5,8 +5,13 @@ import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
 export default class SpeakerAppNetworkService extends UIServiceCore {
-  constructor() {
+  constructor({ ...args }) {
     super({
+      ...args,
+    });
+
+    // TODO: Move to setInitialState once available
+    this.setState({
       networks: [],
     });
 

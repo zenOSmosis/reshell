@@ -4,7 +4,7 @@ import PhantomCore from "phantom-core";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 
-import UIServiceCollection from "../classes/UIServiceCollection";
+import UIServiceManager from "../classes/UIServiceManager";
 import KeyVaultService from "@services/KeyVaultService";
 
 import BaseView from "../BaseView";
@@ -57,7 +57,7 @@ export default class ReShellCore extends PhantomCore {
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     if (_instance) {
       throw new ReferenceError(
-        "UIServiceCollection cannot have multiple instances"
+        "UIServiceManager cannot have multiple instances"
       );
     }
 
@@ -68,8 +68,8 @@ export default class ReShellCore extends PhantomCore {
     // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = this;
 
-    this._uiServiceCollection = new UIServiceCollection();
-    this._uiServiceCollection.startServiceClass(KeyVaultService);
+    this._uiServiceManager = new UIServiceManager();
+    this._uiServiceManager.startServiceClass(KeyVaultService);
 
     // TODO: Bind window "beforeunload" event to try to prevent accidental shut
     // down before we have a chance to save states, etc. Ensure it gets unbound
@@ -81,8 +81,8 @@ export default class ReShellCore extends PhantomCore {
 
   // TODO: Document
   async _init(portalName) {
-    const sessionStorageEngine = this._uiServiceCollection
-      .getService(KeyVaultService)
+    const sessionStorageEngine = this._uiServiceManager
+      .getServiceInstance(KeyVaultService)
       .getSessionStorageEngine();
 
     // If no portalName is passed and there is a session storage (not local) variable set for portal, use it
@@ -167,7 +167,7 @@ export default class ReShellCore extends PhantomCore {
     // Stop the current UI
     ReactDOM.render(<div>[Tear down]</div>, this._elBase);
 
-    await this._uiServiceCollection.destroy();
+    await this._uiServiceManager.destroy();
 
     const ret = await super.destroy();
 
@@ -191,8 +191,8 @@ export default class ReShellCore extends PhantomCore {
 
   // TODO: Document
   async switchToPortal(portalName) {
-    const sessionStorageEngine = this._uiServiceCollection
-      .getService(KeyVaultService)
+    const sessionStorageEngine = this._uiServiceManager
+      .getServiceInstance(KeyVaultService)
       .getSessionStorageEngine();
 
     // Cache portalName to the session storage
@@ -214,13 +214,13 @@ export default class ReShellCore extends PhantomCore {
   }
 
   // TODO: Document
-  getUIServiceCollection() {
-    return this._uiServiceCollection;
+  getUIServiceManager() {
+    return this._uiServiceManager;
   }
 
   // TODO: Document
-  static getUIServiceCollection() {
-    return _instance?.getUIServiceCollection();
+  static getUIServiceManager() {
+    return _instance?.getUIServiceManager();
   }
 
   // TODO: Document

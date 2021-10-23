@@ -3,7 +3,7 @@ import ReShellCore from "@core/classes/ReShellCore";
 import {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-} from "@core/classes/UIServiceCollection";
+} from "@core/classes/UIServiceManager";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
@@ -13,10 +13,10 @@ export const UIServicesContext = React.createContext({});
 export default function UIServicesProvider({ children }) {
   const forceUpdate = useForceUpdate();
 
-  // const [_uiServiceCollection, _setUIServiceCollection] = useState(null);
+  // const [_uiServiceManager, _setUIServiceManager] = useState(null);
   // TODO: Refactor into useEffect; fix destruct error where React can't perform state update on unmounted component
-  const _uiServiceCollection = useMemo(() => {
-    const serviceCollection = ReShellCore.getUIServiceCollection();
+  const _uiServiceManager = useMemo(() => {
+    const serviceCollection = ReShellCore.getUIServiceManager();
 
     // Force UI to update when a service has been added or removed
     //
@@ -48,20 +48,20 @@ export default function UIServicesProvider({ children }) {
 
   // TODO: Document
   const startService = useCallback(
-    ServiceClass => _uiServiceCollection.startServiceClass(ServiceClass),
-    [_uiServiceCollection]
+    ServiceClass => _uiServiceManager.startServiceClass(ServiceClass),
+    [_uiServiceManager]
   );
 
   // TODO: Document
   const stopService = useCallback(
-    ServiceClass => _uiServiceCollection.stopServiceClass(ServiceClass),
-    [_uiServiceCollection]
+    ServiceClass => _uiServiceManager.stopServiceClass(ServiceClass),
+    [_uiServiceManager]
   );
 
   return (
     <UIServicesContext.Provider
       value={{
-        services: _uiServiceCollection && _uiServiceCollection.getChildren(),
+        services: _uiServiceManager && _uiServiceManager.getChildren(),
         startService,
         stopService,
       }}

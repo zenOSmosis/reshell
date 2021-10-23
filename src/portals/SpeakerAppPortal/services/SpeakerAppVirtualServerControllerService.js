@@ -8,8 +8,13 @@ import {
 
 // TODO: Document
 export default class SpeakerAppVirtualServerControllerService extends UIServiceCore {
-  constructor() {
+  constructor({ ...args }) {
     super({
+      ...args,
+    });
+
+    // TODO: Migrate to setInitialState once available
+    this.setState({
       isHosting: false,
     });
 

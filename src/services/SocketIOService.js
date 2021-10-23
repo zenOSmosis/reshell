@@ -7,8 +7,8 @@ import { io } from "socket.io-client";
  * Provides SocketIO servicing for ReShell.
  */
 export default class SocketIOService extends UIServiceCore {
-  constructor() {
-    super();
+  constructor({ ...args }) {
+    super({ ...args });
 
     this._socket = null;
 
