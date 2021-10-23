@@ -16,8 +16,10 @@ import Padding from "@components/Padding";
 import Timer from "@components/Timer";
 import NoWrap from "@components/NoWrap";
 
+export const REGISTRATION_ID = "service-monitor";
+
 const ServiceMonitor = {
-  id: "service-monitor",
+  id: REGISTRATION_ID,
   title: "Service Monitor",
   style: {
     width: 640,

@@ -24,6 +24,10 @@ import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
 import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
 import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
+
+import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitor";
+
 import NotificationsProvider from "./providers/NotificationsProvider";
 
 // import { useEffect } from "react";
@@ -44,6 +48,10 @@ export default function Desktop({
   backgroundView = <div style={{ backgroundColor: "#ccc" }} />,
   appDescriptors,
 }) {
+  const { link: openServiceMonitor } = useAppRegistrationLink(
+    SERVICE_MONITOR_REGISTRATION_ID
+  );
+
   const { services } = useServicesContext();
   const { activeWindowController /* addBackgroundAsset */ } =
     useDesktopContext();
@@ -283,7 +291,8 @@ export default function Desktop({
                         services.map(service => (
                           <MenuItem
                             key={service.getUUID()}
-                            onClick={() => alert("TODO: Implement")}
+                            // TODO: Open direct service in service monitor
+                            onClick={openServiceMonitor}
                           >
                             {service.getTitle()}
                           </MenuItem>
