@@ -4,8 +4,13 @@ import Applications from "./apps/Applications";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import AboutReShell from "./apps/AboutReShell";
 import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates";
+import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
+import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
+import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
+import VUMeter from "../ExamplePortal/apps/VUMeter";
+import MemoryInfo from "../ExamplePortal/apps/MemoryInfo/MemoryInfo";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
@@ -19,8 +24,13 @@ export default function ReShellOrgPortal() {
         ApplicationMonitor,
         AboutReShell,
         CheckForUpdates,
+        ColorAdjuster,
+        InputMediaDevices,
+        MemoryInfo,
+        ScreenCapture,
         ServiceMonitor,
         SoftwareInfo,
+        VUMeter,
       ]}
     />
   );
