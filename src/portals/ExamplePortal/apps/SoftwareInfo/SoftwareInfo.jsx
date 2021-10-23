@@ -1,4 +1,20 @@
+import ReShellCore from "@core";
+import PhantomCore from "phantom-core";
+
+import Layout, {
+  Header,
+  Content,
+  Footer,
+  Row,
+  Column,
+} from "@components/Layout";
+import Center from "@components/Center";
+import Padding from "@components/Padding";
+import AppLinkButton from "@components/AppLinkButton";
+
 import ReactJson from "react-json-view";
+
+import { REGISTRATION_ID as ENVIRONMENT_REGISTRATION_ID } from "@portals/ExamplePortal/apps/Environment";
 
 const packageJson = require("@root/package.json");
 
@@ -13,13 +29,48 @@ const SoftwareInfo = {
   },
   view: function View() {
     return (
-      <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
-        <ReactJson
-          src={packageJson}
-          theme="monokai"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div>
+      <Layout>
+        <Header>
+          <Padding>Package.json content</Padding>
+        </Header>
+        <Content>
+          <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
+            <ReactJson
+              src={packageJson}
+              theme="monokai"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+        </Content>
+        <Footer>
+          <Padding>
+            <Row>
+              <Column>
+                <Center>
+                  <div
+                    style={{ float: "left", textAlign: "left" }}
+                    className="note"
+                  >
+                    ReShell version: {packageJson.version}
+                    <br />
+                    Phantom Core version: {PhantomCore.getPhantomCoreVersion()}
+                    <br />
+                    Portal: {ReShellCore.getPortalName()}
+                  </div>
+                </Center>
+              </Column>
+              <Column>
+                <Center>
+                  <AppLinkButton
+                    id={ENVIRONMENT_REGISTRATION_ID}
+                    style={{ float: "right" }}
+                  />
+                </Center>
+              </Column>
+            </Row>
+          </Padding>
+        </Footer>
+      </Layout>
     );
   },
 };

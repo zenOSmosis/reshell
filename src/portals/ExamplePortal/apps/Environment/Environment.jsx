@@ -3,8 +3,10 @@ import ReactJson from "react-json-view";
 
 // TODO: Include ability to show environment of any given AppRuntime?
 
+export const REGISTRATION_ID = "environment";
+
 const Environment = {
-  id: "environment",
+  id: REGISTRATION_ID,
   title: "Environment",
   style: {
     width: 640 * 0.8,
