@@ -2,11 +2,12 @@ import ReShellCore from "@core";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Center from "@components/Center";
-import Layout, { Content, Footer } from "@components/Layout";
+import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
-import LabeledLED from "@components/labeled/LabeledLED";
 
 import fetchIsLatestVersion from "@utils/fetchIsLatestVersion";
+
+import dayjs from "dayjs";
 
 export const REGISTRATION_ID = "check-for-updates";
 
@@ -17,10 +18,12 @@ const CheckForUpdates = {
     width: 320,
     height: 240,
   },
+  isPinned: true,
   view: function View() {
     const [isLatest, setIsLatest] = useState(true);
     const [isChecking, setIsChecking] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [lastCheckTime, setLastCheckTime] = useState(null);
 
     const refIsChecking = useRef(null);
     refIsChecking.current = isChecking;
@@ -47,6 +50,7 @@ const CheckForUpdates = {
         setIsLatest(false);
       } finally {
         setIsChecking(false);
+        setLastCheckTime(new Date().getTime());
       }
     }, []);
 
@@ -57,11 +61,15 @@ const CheckForUpdates = {
 
     return (
       <Layout>
-        <Content>
-          <Center>
+        <Header>
+          <Padding style={{ textAlign: "center" }}>
             <button onClick={handleCheckForUpdates} disabled={isChecking}>
               Check for Updates
             </button>
+          </Padding>
+        </Header>
+        <Content>
+          <Center canOverflow={true}>
             {isError ? (
               <>
                 <p>
@@ -85,7 +93,10 @@ const CheckForUpdates = {
         </Content>
         <Footer>
           <Padding>
-            <LabeledLED label="Latest" color={isLatest ? "green" : "red"} />
+            <div className="note">
+              Last checked:{" "}
+              {lastCheckTime ? dayjs(lastCheckTime).format("LLL") : "N/A"}
+            </div>
           </Padding>
         </Footer>
       </Layout>
