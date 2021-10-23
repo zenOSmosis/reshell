@@ -23,8 +23,10 @@ import getCopyright from "@utils/getCopyright";
 // do their base to abstract away logic w/ their opinionated internal handling,
 // while trying to stay very performant themselves)
 
+export const REGISTRATION_ID = "about-reshell";
+
 const AboutReShell = {
-  id: "about-reshell",
+  id: REGISTRATION_ID,
   title: "About ReShell",
   style: {
     width: 640,
