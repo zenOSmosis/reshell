@@ -12,6 +12,8 @@ export default class MediaDevicesService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Media Devices Service");
+
     // TODO: Re-run when devices have been changed
     this.fetchAudioInputDevices();
 

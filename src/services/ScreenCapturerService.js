@@ -10,6 +10,8 @@ export default class ScreenCapturerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Screen Capturer Service");
+
     this.bindCollectionClass(ScreenCaptureFactoryCollection);
   }
 
@@ -32,10 +34,10 @@ export default class ScreenCapturerService extends UIServiceCore {
   getMediaStreamTracks() {
     return this.getCollectionInstance(ScreenCaptureFactoryCollection)
       .getChildren()
-      .map((factory) =>
+      .map(factory =>
         factory
           .getTrackControllers()
-          .map((controller) => controller.getOutputMediaStreamTrack())
+          .map(controller => controller.getOutputMediaStreamTrack())
       )
       .flat();
   }
