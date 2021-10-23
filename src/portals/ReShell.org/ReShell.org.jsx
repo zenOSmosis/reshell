@@ -7,9 +7,9 @@ import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
-// import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
-// import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
-// import VUMeter from "../ExamplePortal/apps/VUMeter";
+import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
+import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
+import VUMeter from "../ExamplePortal/apps/VUMeter";
 import MemoryInfo from "../ExamplePortal/apps/MemoryInfo/MemoryInfo";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
@@ -25,12 +25,12 @@ export default function ReShellOrgPortal() {
         AboutReShell,
         CheckForUpdates,
         ColorAdjuster,
-        // InputMediaDevices,
+        InputMediaDevices,
         MemoryInfo,
-        // ScreenCapture,
+        ScreenCapture,
         ServiceMonitor,
         SoftwareInfo,
-        // VUMeter,
+        VUMeter,
       ]}
     />
   );
