@@ -5,6 +5,7 @@ import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import AboutReShell from "./apps/AboutReShell";
 import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
+import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
@@ -19,6 +20,7 @@ export default function ReShellOrgPortal() {
         AboutReShell,
         CheckForUpdates,
         ServiceMonitor,
+        SoftwareInfo,
       ]}
     />
   );
