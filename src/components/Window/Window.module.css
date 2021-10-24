@@ -122,10 +122,7 @@ of the drag zone outside of the windows. */
 }
 
 .window .titlebar .window-controls button {
-  font-weight: bold;
-}
-
-.window .titlebar .window-controls button {
+  outline: 0px;
   padding: 0px;
   margin: 4px;
   border-radius: 12px;
