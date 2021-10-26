@@ -5,6 +5,8 @@ import {
 } from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
 
+// TODO: Look into WebAuthn: https://webauthn.guide / https://dev.to/jsombie/say-goodbye-to-passwords-webauthn-the-foundations-27g7
+
 // TODO: Clean up
 /*
 import { useEffect, useState } from "react";
