@@ -38,8 +38,6 @@ const Window = React.forwardRef(
       return null;
     }
 
-    // TODO: Implement error boundary here
-
     return (
       <WindowView
         {...rest}

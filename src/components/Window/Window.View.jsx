@@ -171,6 +171,7 @@ const WindowView = ({
   });
 
   return (
+    // TODO: Wrap with ErrorBoundary and React.Suspense
     <DynamicProfilingWrapper>
       <StackingContext
         onMount={_setEl}
