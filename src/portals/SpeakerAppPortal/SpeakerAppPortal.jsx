@@ -12,6 +12,7 @@ import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
 import Environment from "../ExamplePortal/apps/Environment";
+import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates/CheckForUpdates";
 //
 import Applications from "./apps/Applications";
 import CallCentralStation from "./apps/CallCentralStation";
@@ -40,6 +41,7 @@ export default function SpeakerAppPortal() {
         ColorAdjuster,
         LocalUserProfile,
         Environment,
+        CheckForUpdates,
 
         CallCentralStation,
         VirtualServer,
