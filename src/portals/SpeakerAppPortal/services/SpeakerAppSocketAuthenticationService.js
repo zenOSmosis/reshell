@@ -44,6 +44,8 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
       .getLocalStorageEngine()
       .fetchItem(KEY_SERVICE_AUTHORIZATION);
 
+    // TODO: Handle de-encryption
+
     if (cachedAuthorization) {
       return JSON.parse(cachedAuthorization);
     } else {
@@ -90,6 +92,8 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
         );
 
         // _setDeviceAddress(mergedAuthorization.clientIdentity.address);
+
+        // TODO: Handle encryption
 
         // Write to local storage
         localStorageEngine.setItem(
