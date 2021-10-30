@@ -95,6 +95,11 @@ export default class KeyVaultService extends UIServiceCore {
   }
 
   // TODO: Document
+  getLocalStorageEngine() {
+    return this._storageEngineCollection.getChildWithKey(LocalStorageEngine);
+  }
+
+  // TODO: Document
   getSessionStorageEngine() {
     return this._storageEngineCollection.getChildWithKey(SessionStorageEngine);
   }

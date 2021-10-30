@@ -1,5 +1,7 @@
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
+import SpeakerAppSocketAuthenticationService, {
+  EVT_CONNECTED,
+} from "./SpeakerAppSocketAuthenticationService";
 
 import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
@@ -19,9 +21,16 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
       SpeakerAppSocketAuthenticationService
     );
 
-    // TODO: Handle unbinding, etc (use PhantomCore proxy?); add onSocketEvent / emitSocketEvent / onceSocketEvent?
-    this._socketService.getSocket().on(SOCKET_EVT_NETWORKS_UPDATED, () => {
-      this.fetchNetworks();
+    this.proxyOnce(this._socketService, EVT_CONNECTED, () => {
+      const socket = this._socketService.getSocket();
+
+      const handleNetworksUpdated = () => this.fetchNetworks();
+
+      socket.on(SOCKET_EVT_NETWORKS_UPDATED, handleNetworksUpdated);
+
+      this.registerShutdownHandler(() => {
+        socket.off(SOCKET_EVT_NETWORKS_UPDATED, handleNetworksUpdated);
+      });
     });
 
     this.proxyOn(this._socketService, EVT_UPDATED, () => {

@@ -1,9 +1,16 @@
-import SocketIOService from "@services/SocketIOService";
+import SocketIOService, {
+  EVT_CONNECTED,
+  EVT_DISCONNECTED,
+} from "@services/SocketIOService";
 import {
   sendCachedAuthorization,
   getMergedAuthorization,
 } from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
+import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
+import KeyVaultService from "@services/KeyVaultService";
+
+export { EVT_CONNECTED, EVT_DISCONNECTED };
 
 // TODO: Look into WebAuthn: https://webauthn.guide / https://dev.to/jsombie/say-goodbye-to-passwords-webauthn-the-foundations-27g7
 
@@ -32,22 +39,40 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
   }
 
   // TODO: Document
-  connect() {
+  async fetchCachedAuthorization() {
+    const cachedAuthorization = await this.useServiceClass(KeyVaultService)
+      .getLocalStorageEngine()
+      .fetchItem(KEY_SERVICE_AUTHORIZATION);
+
+    if (cachedAuthorization) {
+      return JSON.parse(cachedAuthorization);
+    } else {
+      return {};
+    }
+  }
+
+  // TODO: Document
+  async connect() {
+    const cachedAuthorization = await this.fetchCachedAuthorization();
+
     super.connect({
       auth: {
-        // TODO: Obtain cachedAuthorization from localStorage
-        ...sendCachedAuthorization({} /* cachedAuthorization */),
+        ...sendCachedAuthorization(cachedAuthorization),
       },
     });
 
     // TODO: Build out & refactor
-    const _handleAuthorizationGranted = receivedAuthorization => {
+    const _handleAuthorizationGranted = async receivedAuthorization => {
+      const cachedAuthorization = await this.fetchCachedAuthorization();
+
       // TODO: Remove
       console.log({ receivedAuthorization });
 
+      const localStorageEngine =
+        this.useServiceClass(KeyVaultService).getLocalStorageEngine();
+
       // TODO: Tie into persistent storage service w/ encrypted engine
 
-      /*
       if (receivedAuthorization.serverBuildHash !== CLIENT_BUILD_HASH) {
         // Force reload to try to update to latest hash
         //
@@ -64,17 +89,19 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
           receivedAuthorization
         );
 
-        _setDeviceAddress(mergedAuthorization.clientIdentity.address);
+        // _setDeviceAddress(mergedAuthorization.clientIdentity.address);
 
         // Write to local storage
-        setItem(KEY_SERVICE_AUTHORIZATION, mergedAuthorization);
+        localStorageEngine.setItem(
+          KEY_SERVICE_AUTHORIZATION,
+          JSON.stringify(mergedAuthorization)
+        );
 
         // Instantiate SocketAPIClient
-        new SocketAPIClient(socket);
+        // new SocketAPIClient(socket);
 
-        _setSocket(socket);
+        // _setSocket(socket);
       }
-      */
     };
 
     this._socket.once(

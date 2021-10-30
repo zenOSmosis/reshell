@@ -3,6 +3,9 @@ import SocketChannel from "@shared/SocketChannel";
 
 import { io } from "socket.io-client";
 
+export const EVT_CONNECTED = "connected";
+export const EVT_DISCONNECTED = "disconnected";
+
 /**
  * Provides SocketIO servicing for ReShell.
  */
@@ -37,12 +40,16 @@ export default class SocketIOService extends UIServiceCore {
         this.setState({
           isConnected: true,
         });
+
+        this.emit(EVT_CONNECTED);
       });
 
       socket.on("disconnect", () => {
         this.setState({
           isConnected: false,
         });
+
+        this.emit(EVT_DISCONNECTED);
       });
 
       this._socket = socket;
