@@ -19,6 +19,12 @@ export default class AppRuntime extends PhantomCore {
 
     this._appRegistration = appRegistration;
 
+    this.registerShutdownHandler(() => {
+      // IMPORTANT: We only want to remove the registration, but don't want to
+      // destruct the registration itself, as it should be reused
+      delete this._appRegistration;
+    });
+
     // Emit EVT_UPDATED out runtime when the registration updates
     this.proxyOn(this._appRegistration, EVT_UPDATED, () => {
       this.emit(EVT_UPDATED);
@@ -30,6 +36,10 @@ export default class AppRuntime extends PhantomCore {
     });
 
     this._windowController = null;
+
+    this.registerShutdownHandler(async () => {
+      await this._windowController.destroy();
+    });
   }
 
   // TODO: Document
