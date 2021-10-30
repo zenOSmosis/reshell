@@ -1,7 +1,7 @@
 import SocketIOService from "@services/SocketIOService";
 import {
   sendCachedAuthorization,
-  // getMergedAuthorization,
+  getMergedAuthorization,
 } from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
 
@@ -12,18 +12,16 @@ import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPort
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import SocketAPIClient from "@portals/SpeakerAppPortal/shared/SocketAPIClient";
+*/
 
-import {
-  sendCachedAuthorization,
-  getMergedAuthorization,
-} from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
+/*
 import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
 import { EVT_CONNECT_ERROR } from "./socketConstants";
+*/
 
-import useLocalStorage from "@portals/SpeakerAppPortal/hooks/useLocalStorage";
+// import useLocalStorage from "@portals/SpeakerAppPortal/hooks/useLocalStorage";
 
 const CLIENT_BUILD_HASH = process.env.REACT_APP_GIT_HASH;
-*/
 
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {
   constructor({ ...args }) {
@@ -54,6 +52,7 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
         // Force reload to try to update to latest hash
         //
         // TODO: Make work w/ service worker once PWA is available
+        // TODO: Use app updater service instead of force reload
         // window.location.reload(true);
         console.warn(
           `Server build hash "${receivedAuthorization.serverBuildHash}" does not match REACT_APP_GIT_HASH "${CLIENT_BUILD_HASH}"`
@@ -85,7 +84,7 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
   }
 }
 
-// TODO: Build out
+// TODO: Remove
 
 /**
  * Service authentication wrapper around Socket.io.
