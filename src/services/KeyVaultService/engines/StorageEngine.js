@@ -11,12 +11,27 @@ import PhantomCore from "phantom-core";
  * as well.
  */
 export default class StorageEngine extends PhantomCore {
-  constructor() {
-    // Cannot be init async
-    //
-    // NOTE: empty object being passed to super so linting does not call this a
-    // useless constructor
-    super({});
+  constructor(options = {}) {
+    const DEFAULT_OPTIONS = { encryptionType: null };
+
+    super(
+      PhantomCore.mergeOptions({
+        DEFAULT_OPTIONS,
+        ...PhantomCore.mergeOptions({
+          ...options,
+          isAsync: false,
+        }),
+      })
+    );
+
+    // IMPORTANT: The encryption type is left up to the storage engine itself
+    // to implement; this only contains its type
+    this._encryptionType = this.getOptions().encryptionType;
+  }
+
+  // TODO: Document
+  getEncryptionType() {
+    return this._encryptionType;
   }
 
   // TODO: Document

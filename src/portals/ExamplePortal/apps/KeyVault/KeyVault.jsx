@@ -17,7 +17,7 @@ import BackArrowIcon from "@icons/BackArrowIcon";
 import KeyVaultService from "@services/KeyVaultService";
 
 const KeyVault = {
-  id: "local-storage-vault",
+  id: "key-vault",
   title: "Key Vault",
   style: {
     width: 640,
@@ -43,13 +43,13 @@ const KeyVault = {
         // TODO: Move this detection into the service (consider automatically
         // coercing primitive types:
         // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
-        const kind = typeof value;
+        // const kind = typeof value;
 
         keyStorageEngineMaps.push({
           key,
           storageEngine,
           value,
-          kind,
+          // kind,
         });
       }
 

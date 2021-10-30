@@ -40,7 +40,9 @@ export default function LocalStorageItems({
                   <td></td>
                   <td>Key</td>
                   <td>Value</td>
-                  <td>Kind</td>
+                  {/*
+                    <td>Kind</td>
+                    */}
                   <td>Encryption</td>
                   <td>Storage Engine</td>
                 </tr>
@@ -60,9 +62,14 @@ export default function LocalStorageItems({
                           Get
                         </button>
                       </td>
-                      <td>{kind}</td>
-                      <td>Not Encrypted</td>
-                      <td>{storageEngine.getTitle()}</td>
+                      {/*
+                        <td className="center">{kind}</td>
+                        */}
+
+                      <td className="center">
+                        {storageEngine.getEncryptionType() || "Not Encrypted"}
+                      </td>
+                      <td className="center">{storageEngine.getTitle()}</td>
                     </tr>
                   );
                 })}

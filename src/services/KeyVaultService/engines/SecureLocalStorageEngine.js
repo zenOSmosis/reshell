@@ -1,11 +1,17 @@
+import PhantomCore from "phantom-core";
 import StorageEngine from "./StorageEngine";
 import SecureLS from "secure-ls";
 
-export default class LocalStorageEngine extends StorageEngine {
-  constructor(...args) {
-    super(...args);
+export default class SecureLocalStorageEngine extends StorageEngine {
+  constructor(options) {
+    const DEFAULT_OPTIONS = {
+      encryptionType: "aes",
+    };
 
-    this._ls = new SecureLS();
+    super(PhantomCore.mergeOptions(DEFAULT_OPTIONS, options));
+
+    // @see https://github.com/softvar/secure-ls
+    this._ls = new SecureLS({ encodingType: this.getEncryptionType() });
 
     this.setTitle("SecureLocalStorageEngine");
   }
