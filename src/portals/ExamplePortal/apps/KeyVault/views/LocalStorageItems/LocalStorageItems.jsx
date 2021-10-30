@@ -49,7 +49,7 @@ export default function LocalStorageItems({
               </thead>
               <tbody>
                 {keyStorageEngineMaps.map((keyMap, idx) => {
-                  const { key, kind, storageEngine } = keyMap;
+                  const { key, /* kind, */ storageEngine } = keyMap;
 
                   return (
                     <tr key={idx}>
