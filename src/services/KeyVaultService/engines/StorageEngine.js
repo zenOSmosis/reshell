@@ -11,6 +11,14 @@ import PhantomCore from "phantom-core";
  * as well.
  */
 export default class StorageEngine extends PhantomCore {
+  constructor() {
+    // Cannot be init async
+    //
+    // NOTE: empty object being passed to super so linting does not call this a
+    // useless constructor
+    super({});
+  }
+
   // TODO: Document
   async setItem(key, value) {
     throw new ReferenceError("setItem must be overridden");
