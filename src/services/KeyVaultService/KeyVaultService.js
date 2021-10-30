@@ -3,7 +3,7 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 
 import StorageEngine from "./engines/StorageEngine";
 import SessionStorageEngine from "./engines/SessionStorageEngine";
-import LocalStorageEngine from "./engines/LocalStorageEngine";
+import SecureLocalStorageEngine from "./engines/SecureLocalStorageEngine";
 
 // TODO: [max size estimate; no Safari support!] https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate
 
@@ -27,7 +27,7 @@ export default class KeyVaultService extends UIServiceCore {
     );
 
     this.addStorageEngineClass(SessionStorageEngine);
-    this.addStorageEngineClass(LocalStorageEngine);
+    this.addStorageEngineClass(SecureLocalStorageEngine);
   }
 
   /**
@@ -95,8 +95,10 @@ export default class KeyVaultService extends UIServiceCore {
   }
 
   // TODO: Document
-  getLocalStorageEngine() {
-    return this._storageEngineCollection.getChildWithKey(LocalStorageEngine);
+  getSecureLocalStorageEngine() {
+    return this._storageEngineCollection.getChildWithKey(
+      SecureLocalStorageEngine
+    );
   }
 
   // TODO: Document

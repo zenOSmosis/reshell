@@ -41,10 +41,8 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
   // TODO: Document
   async fetchCachedAuthorization() {
     const cachedAuthorization = await this.useServiceClass(KeyVaultService)
-      .getLocalStorageEngine()
+      .getSecureLocalStorageEngine()
       .fetchItem(KEY_SERVICE_AUTHORIZATION);
-
-    // TODO: Handle de-encryption
 
     if (cachedAuthorization) {
       return JSON.parse(cachedAuthorization);
@@ -71,7 +69,7 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
       console.log({ receivedAuthorization });
 
       const localStorageEngine =
-        this.useServiceClass(KeyVaultService).getLocalStorageEngine();
+        this.useServiceClass(KeyVaultService).getSecureLocalStorageEngine();
 
       // TODO: Tie into persistent storage service w/ encrypted engine
 
@@ -92,8 +90,6 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
         );
 
         // _setDeviceAddress(mergedAuthorization.clientIdentity.address);
-
-        // TODO: Handle encryption
 
         // Write to local storage
         localStorageEngine.setItem(
