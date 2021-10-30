@@ -11,7 +11,7 @@ import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
-// import KeyVaultPrototype from "../ExamplePortal/apps/KeyVaultPrototype";
+import Environment from "../ExamplePortal/apps/Environment";
 //
 import Applications from "./apps/Applications";
 import CallCentralStation from "./apps/CallCentralStation";
@@ -39,7 +39,7 @@ export default function SpeakerAppPortal() {
         ServiceMonitor,
         ColorAdjuster,
         LocalUserProfile,
-        // KeyVaultPrototype,
+        Environment,
 
         CallCentralStation,
         VirtualServer,
