@@ -55,7 +55,7 @@ const AboutReShell = {
     */
 
     return (
-      <Padding className="button-group">
+      <Padding>
         <ButtonPanel
           // Force update if the screen changes
           key={sharedState.screen}
