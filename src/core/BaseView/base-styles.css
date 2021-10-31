@@ -1,4 +1,4 @@
-/** TODO: @see Using dark mode in CSS: https://paulmillr.com/posts/using-dark-mode-in-css (@media (prefers-color-scheme: dark)) */
+/* TODO: @see Using dark mode in CSS: https://paulmillr.com/posts/using-dark-mode-in-css (@media (prefers-color-scheme: dark)) */
 
 html {
   /* Universal box sizing w/ inheritance */
@@ -13,6 +13,16 @@ html {
   /* Add ellipses to long words which can't be broken up onto multiple lines */
   overflow-wrap: normal;
   text-overflow: ellipsis;
+
+  /*
+   * Enable panning and pinch zoom gestures, but disable additional
+   * non-standard gestures such as double-tap to zoom.
+   *
+   * This fixes an issue where moving windows on Android would only partially move them.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action
+   */
+  touch-action: manipulation;
 }
 
 body {

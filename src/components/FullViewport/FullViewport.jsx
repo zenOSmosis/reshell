@@ -94,7 +94,7 @@ export default class FullViewport extends Component {
   }
 
   /**
-   * IMPORTANT: Also takes the element itself into consideration.
+   * Determines if the given element, or its parents, are overflown.
    *
    * @param {DOMElement} el
    * @return {boolean}
@@ -115,13 +115,30 @@ export default class FullViewport extends Component {
     return isOverflown;
   };
 
-  // TODO: Document
+  /**
+   * Handles touch starting.
+   *
+   * This works in conjuction with _handleTouchMove to prevent the page from
+   * bouncing on iOS when scrolling.
+   *
+   * @param {DocumentEvent} evt
+   * @return {void}
+   */
   _handleTouchStart = evt => {
     this._touchHasOverflownParent = this._getHasOverflownParent(evt.target);
   };
 
-  // TODO: Document
+  /**
+   * Handles touch movement.
+   *
+   * @param {DocumentEvent} evt
+   */
   _handleTouchMove = evt => {
+    // NOTE: The condition fixes an issue where scrolling isn't working on
+    // mobile
+    //
+    // If evt.preventDefault is not called, the page will bounce when scrolling
+    // on iOS
     if (!this._touchHasOverflownParent) {
       evt.preventDefault();
     }
@@ -135,9 +152,14 @@ export default class FullViewport extends Component {
   /**
    * Prevents double-tap zooming on iOS.
    *
-   * Note: Source adapted from https://exceptionshub.com/disable-double-tap-zoom-option-in-browser-on-touch-devices.html
+   * NOTE: This may not be needed with "touch-action: manipulation"
+   * (@see base-styles.css) set on element as well, but is left in for
+   * additional protection.
+   *
+   * Source adapted from https://exceptionshub.com/disable-double-tap-zoom-option-in-browser-on-touch-devices.html
    *
    * @param {DocumentEvent} evt Event of touchend type
+   * @return {void}
    */
   _handleTap = evt => {
     const t2 = evt.timeStamp;
