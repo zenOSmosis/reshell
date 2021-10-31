@@ -14,6 +14,23 @@ export const DIR_BORDER_S = "S";
 export const DIR_BORDER_SW = "SW";
 export const DIR_BORDER_W = "W";
 
+// @see https://use-gesture.netlify.app/docs/#simple-example
+const useDirectionalDragger = function (direction, onBorderDrag) {
+  return useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(direction, { mx, my, isDragging });
+    },
+    {
+      pointer: {
+        // IMPORTANT: This makes use-gesture utilize touch events instead of
+        // pointer events and fixes an issue where pointercancel would
+        // sometimes be fired on certain Android devices
+        touch: true,
+      },
+    }
+  );
+};
+
 // TODO: Use prop-types
 // TODO: Document
 export default function WindowBorder({
@@ -23,62 +40,14 @@ export default function WindowBorder({
   isDisabled = false,
   ...rest
 }) {
-  // @see https://use-gesture.netlify.app/docs/#simple-example
-  const bindNW = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_NW, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindN = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_N, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindNE = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_NE, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindE = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_E, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindSE = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_SE, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindS = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_S, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindSW = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_SW, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
-
-  const bindW = useDrag(
-    ({ down: isDragging, movement: [mx, my] }) => {
-      onBorderDrag(DIR_BORDER_W, { mx, my, isDragging });
-    },
-    { pointer: { touch: true } }
-  );
+  const bindNW = useDirectionalDragger(DIR_BORDER_NW, onBorderDrag);
+  const bindN = useDirectionalDragger(DIR_BORDER_N, onBorderDrag);
+  const bindNE = useDirectionalDragger(DIR_BORDER_NE, onBorderDrag);
+  const bindE = useDirectionalDragger(DIR_BORDER_E, onBorderDrag);
+  const bindSE = useDirectionalDragger(DIR_BORDER_SE, onBorderDrag);
+  const bindS = useDirectionalDragger(DIR_BORDER_S, onBorderDrag);
+  const bindSW = useDirectionalDragger(DIR_BORDER_SW, onBorderDrag);
+  const bindW = useDirectionalDragger(DIR_BORDER_W, onBorderDrag);
 
   return (
     // TODO: Enable merge-able styles / classNames

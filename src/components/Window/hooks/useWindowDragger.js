@@ -82,6 +82,9 @@ export default function useWindowDragger({
     },
     {
       pointer: {
+        // IMPORTANT: This makes use-gesture utilize touch events instead of
+        // pointer events and fixes an issue where pointercancel would
+        // sometimes be fired on certain Android devices
         touch: true,
       },
     }
