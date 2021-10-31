@@ -16,11 +16,13 @@ export default function WindowTitlebar({
   onMinimize,
   onClose,
   titleBarView: TitleBarView,
+  ...rest
 }) {
   // onDoubleClick={handleToggleRestoreOrMaximize})
 
   return (
     <div
+      {...rest}
       ref={onElTitlebar}
       className={styles["titlebar"]}
       onDoubleClick={onRestoreOrMaximize}

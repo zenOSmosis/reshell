@@ -196,7 +196,6 @@ const WindowView = ({
           onBorderDrag={handleBorderDrag}
         >
           <Full
-            {...dragBind()}
             className={classNames(
               styles["window"],
               isActive && styles["active"],
@@ -209,6 +208,7 @@ const WindowView = ({
             <Layout>
               <Header>
                 <WindowTitlebar
+                  {...dragBind()}
                   onElTitlebar={_setElTitlebar}
                   title={title}
                   onRestoreOrMaximize={onRestoreOrMaximize}
