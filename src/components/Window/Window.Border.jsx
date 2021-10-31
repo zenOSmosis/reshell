@@ -24,37 +24,61 @@ export default function WindowBorder({
   ...rest
 }) {
   // @see https://use-gesture.netlify.app/docs/#simple-example
-  const bindNW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_NW, { mx, my, isDragging });
-  });
+  const bindNW = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_NW, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindN = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_N, { mx, my, isDragging });
-  });
+  const bindN = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_N, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindNE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_NE, { mx, my, isDragging });
-  });
+  const bindNE = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_NE, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_E, { mx, my, isDragging });
-  });
+  const bindE = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_E, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindSE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_SE, { mx, my, isDragging });
-  });
+  const bindSE = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_SE, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindS = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_S, { mx, my, isDragging });
-  });
+  const bindS = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_S, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindSW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_SW, { mx, my, isDragging });
-  });
+  const bindSW = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_SW, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
-  const bindW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_W, { mx, my, isDragging });
-  });
+  const bindW = useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(DIR_BORDER_W, { mx, my, isDragging });
+    },
+    { pointer: { touch: true } }
+  );
 
   return (
     // TODO: Enable merge-able styles / classNames

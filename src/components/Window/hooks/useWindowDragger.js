@@ -79,6 +79,11 @@ export default function useWindowDragger({
         refInitialDragPosition.current = null;
         refInitialWindowManagerSize.current = null;
       }
+    },
+    {
+      pointer: {
+        touch: true,
+      },
     }
   );
 
