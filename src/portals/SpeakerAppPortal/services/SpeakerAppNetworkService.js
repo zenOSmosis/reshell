@@ -21,6 +21,7 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
       SpeakerAppSocketAuthenticationService
     );
 
+    // Set up network fetching once socket is ready
     this.proxyOnce(this._socketService, EVT_CONNECTED, () => {
       const socket = this._socketService.getSocket();
 
