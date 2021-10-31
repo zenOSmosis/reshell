@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useDrag } from "react-use-gesture";
+import { useDrag } from "@use-gesture/react";
 
 export const TOP_THRESHOLD = 0;
 export const BOTTOM_THRESHOLD = 58;

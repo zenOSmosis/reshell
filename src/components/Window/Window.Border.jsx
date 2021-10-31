@@ -1,5 +1,5 @@
 import Layout, { Header, Content, Footer, Row, Column } from "../Layout";
-import { useDrag } from "react-use-gesture";
+import { useDrag } from "@use-gesture/react";
 
 // TODO: Height and width are synonymous
 
