@@ -40,14 +40,18 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
 
   // TODO: Document
   async fetchCachedAuthorization() {
-    const cachedAuthorization = await this.useServiceClass(KeyVaultService)
+    const rawCachedAuthorization = await this.useServiceClass(KeyVaultService)
       .getSecureLocalStorageEngine()
       .fetchItem(KEY_SERVICE_AUTHORIZATION);
 
-    if (cachedAuthorization) {
-      return JSON.parse(cachedAuthorization);
-    } else {
-      return {};
+    let cachedAuthorization = {};
+
+    try {
+      cachedAuthorization = JSON.parse(rawCachedAuthorization);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      return cachedAuthorization;
     }
   }
 
