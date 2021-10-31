@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import getIsElOverflown from "@utils/getIsElOverflown";
 
 // NOTE: This intentionally does not make use of *.module.css because it also
 // includes internal styling for the html and body tags
@@ -9,6 +10,7 @@ import React, { Component } from "react";
 import "./FullViewport.css";
 
 const EVT_RESIZE = "resize";
+const EVT_TOUCH_START = "touchstart";
 const EVT_TOUCH_MOVE = "touchmove";
 const EVT_TOUCH_END = "touchend";
 
@@ -43,10 +45,14 @@ export default class FullViewport extends Component {
 
     this._lastPollWidth = 0;
     this._lastPollHeight = 0;
+
+    this._touchHasOverflownParent = false;
   }
 
   componentDidMount() {
     this._handleViewportResize();
+
+    window.addEventListener(EVT_TOUCH_START, this._handleTouchStart);
 
     /**
      * IMPORTANT: passive: false is extremely important or else when moving
@@ -61,7 +67,7 @@ export default class FullViewport extends Component {
     window.addEventListener(EVT_RESIZE, this._handleViewportResize);
     window.addEventListener(EVT_TOUCH_END, this._handleTap);
 
-    // TODO: Document why this is needed
+    // TODO: Document why this is needed (is it for software keyboards?)
     this._pollingInterval = setInterval(
       this._handleViewportResize,
       this._pollingTime
@@ -77,27 +83,83 @@ export default class FullViewport extends Component {
     document.documentElement.classList.remove("full-viewport");
     document.body.classList.remove("full-viewport");
 
-    window.removeEventListener(EVT_TOUCH_MOVE, this._handleTouchMove);
+    window.removeEventListener(EVT_TOUCH_START, this._handleTouchStart);
+    window.removeEventListener(EVT_TOUCH_MOVE, this._handleTouchMove, {
+      passive: false,
+    });
     window.removeEventListener(EVT_RESIZE, this._handleViewportResize);
     window.removeEventListener(EVT_TOUCH_END, this._handleTap);
 
     clearInterval(this._pollingInterval);
   }
 
+  /**
+   * Determines if the given element, or its parents, are overflown.
+   *
+   * @param {DOMElement} el
+   * @return {boolean}
+   */
+  _getHasOverflownParent = el => {
+    let isOverflown = false;
+
+    do {
+      isOverflown = getIsElOverflown(el);
+
+      if (isOverflown) {
+        break;
+      }
+
+      el = el.parentNode;
+    } while (el.parentNode);
+
+    return isOverflown;
+  };
+
+  /**
+   * Handles touch starting.
+   *
+   * This works in conjuction with _handleTouchMove to prevent the page from
+   * bouncing on iOS when scrolling.
+   *
+   * @param {DocumentEvent} evt
+   * @return {void}
+   */
+  _handleTouchStart = evt => {
+    this._touchHasOverflownParent = this._getHasOverflownParent(evt.target);
+  };
+
+  /**
+   * Handles touch movement.
+   *
+   * @param {DocumentEvent} evt
+   */
+  _handleTouchMove = evt => {
+    // NOTE: The condition fixes an issue where scrolling isn't working on
+    // mobile
+    //
+    // If evt.preventDefault is not called, the page will bounce when scrolling
+    // on iOS
+    if (!this._touchHasOverflownParent) {
+      evt.preventDefault();
+    }
+  };
+
   componentDidUpdate() {
+    // Re-run viewport resize calculations every time the component updates
     this._handleViewportResize();
   }
-
-  _handleTouchMove = evt => {
-    evt.preventDefault();
-  };
 
   /**
    * Prevents double-tap zooming on iOS.
    *
-   * Note: Source adapted from https://exceptionshub.com/disable-double-tap-zoom-option-in-browser-on-touch-devices.html
+   * NOTE: This may not be needed with "touch-action: manipulation"
+   * (@see base-styles.css) set on element as well, but is left in for
+   * additional protection.
+   *
+   * Source adapted from https://exceptionshub.com/disable-double-tap-zoom-option-in-browser-on-touch-devices.html
    *
    * @param {DocumentEvent} evt Event of touchend type
+   * @return {void}
    */
   _handleTap = evt => {
     const t2 = evt.timeStamp;
@@ -139,7 +201,9 @@ export default class FullViewport extends Component {
     if (
       isInPollingMode &&
       document.activeElement &&
-      ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+      ["INPUT", "TEXTAREA"].includes(
+        document.activeElement.tagName.toUpperCase()
+      )
     ) {
       return;
     }

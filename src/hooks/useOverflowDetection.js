@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import getIsElOverflown from "@utils/getIsElOverflown";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -27,30 +28,10 @@ export default function useOverflowDetection(element, isDetecting = true) {
   /**
    * @return {boolean} Whether or not the element is overflowing its parent.
    */
-  const getIsOverflown = useCallback(() => {
-    if (element) {
-      // Height / width of the inner element, including padding and borders
-      // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight
-      const innerOffsetHeight = element.offsetHeight;
-      const innerOffsetWidth = element.offsetWidth;
-
-      const parentNode = element.parentNode;
-
-      // Height / width of the outer element, including padding but excluding
-      // borders, margins, and scrollbars
-      // @see https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight
-      const outerHeight = parentNode?.clientHeight;
-      const outerWidth = parentNode?.clientWidth;
-
-      if (outerHeight < innerOffsetHeight || outerWidth < innerOffsetWidth) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }, [element]);
+  const getIsOverflown = useCallback(
+    () => getIsElOverflown(element),
+    [element]
+  );
 
   const [isOverflown, setIsOverflown] = useState(() => getIsOverflown());
 
