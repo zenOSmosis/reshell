@@ -72,6 +72,7 @@ export const EVT_SYNC_EVT_RECEIVED = "sync-event";
 // Internal event for pinging (in conjunction w/ SYNC_EVT_PONG)
 const EVT_PONG = "pong";
 
+/*
 const ICE_SERVERS = (() => {
   throw new Error("TODO: Rework COTURN variables");
 
@@ -94,6 +95,7 @@ const ICE_SERVERS = (() => {
 
   return iceServers;
 })();
+*/
 
 /**
  * TODO: Handle possible WebRTCPeer error codes:
@@ -182,6 +184,7 @@ export default class ZenRTCPeer extends PhantomCore {
     socketIoId,
     isInitiator = false,
     shouldAutoReconnect = true, // Only if isInitiator
+    iceServers,
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
     writableSyncObject = null,
@@ -199,6 +202,8 @@ export default class ZenRTCPeer extends PhantomCore {
     }
 
     super();
+
+    this._iceServers = iceServers;
 
     // IMPORTANT: This may need to be changed accordingly in order to handle more peers
     // TODO: Move this to transcoder only
@@ -574,7 +579,7 @@ export default class ZenRTCPeer extends PhantomCore {
         },
 
         config: {
-          iceServers: ICE_SERVERS,
+          iceServers: this._iceServers,
         },
 
         sdpTransform: sdp => {

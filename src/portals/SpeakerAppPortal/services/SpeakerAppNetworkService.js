@@ -4,7 +4,10 @@ import SpeakerAppSocketAuthenticationService, {
 } from "./SpeakerAppSocketAuthenticationService";
 import SpeakerAppLocalZenRTCPeerService from "./SpeakerAppLocalZenRTCPeerService";
 
-import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
+import {
+  SOCKET_API_ROUTE_FETCH_NETWORKS,
+  SOCKET_API_ROUTE_FETCH_ICE_SERVERS,
+} from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
 export default class SpeakerAppNetworkService extends UIServiceCore {
@@ -86,5 +89,12 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
   disconnectFromNetwork(network) {
     // TODO: Map to ZenRTCPeer
     console.log("TODO: disconnect from network", { network, self: this });
+  }
+
+  // TODO: Document
+  fetchICEServers() {
+    return this._socketService.fetchSocketAPICall(
+      SOCKET_API_ROUTE_FETCH_ICE_SERVERS
+    );
   }
 }
