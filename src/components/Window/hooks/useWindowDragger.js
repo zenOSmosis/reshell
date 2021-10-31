@@ -7,11 +7,7 @@ export const LEFT_THRESHOLD = 0;
 export const RIGHT_THRESHOLD = 0;
 
 // TODO: Document
-export default function useWindowDragger({
-  windowController,
-  elTitlebar,
-  isDisabled,
-}) {
+export default function useWindowDragger({ windowController, isDisabled }) {
   const refInitialDragPosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
 
@@ -26,10 +22,6 @@ export default function useWindowDragger({
 
       if (isDragging !== isUserDragging) {
         setIsUserDragging(isDragging);
-      }
-
-      if (!elTitlebar.contains(event.target)) {
-        return;
       }
 
       if (isDragging) {

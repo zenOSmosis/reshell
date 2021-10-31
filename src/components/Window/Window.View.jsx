@@ -53,8 +53,6 @@ const WindowView = ({
   // TODO: Document
   useWindowAutoPositioner(elWindowManager, el, windowController);
 
-  const [elTitlebar, _setElTitlebar] = useState(null);
-
   const [zIndex, _setZIndex] = useState(0);
   const [title, _setTitle] = useState(null);
 
@@ -135,7 +133,6 @@ const WindowView = ({
   // Binds window dragging functionality
   const [dragBind, isUserDragging] = useWindowDragger({
     windowController,
-    elTitlebar,
     isDisabled: isWindowBorderDisabled,
   });
 
@@ -209,7 +206,6 @@ const WindowView = ({
               <Header>
                 <WindowTitlebar
                   {...dragBind()}
-                  onElTitlebar={_setElTitlebar}
                   title={title}
                   onRestoreOrMaximize={onRestoreOrMaximize}
                   onMinimize={onMinimize}
