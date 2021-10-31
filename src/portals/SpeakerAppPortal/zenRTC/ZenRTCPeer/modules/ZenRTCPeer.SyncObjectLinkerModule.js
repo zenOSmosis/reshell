@@ -8,8 +8,8 @@ import {
   SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC,
   SYNC_EVT_SYNC_OBJECT_FULL_SYNC,
   SYNC_EVT_SYNC_OBJECT_UPDATE_HASH,
-} from "../../syncEvents";
-import SyncObject, {
+} from "@portals/SpeakerAppPortal/shared/syncEvents";
+import {
   BidirectionalSyncObject,
   EVT_WRITABLE_PARTIAL_SYNC,
   EVT_WRITABLE_FULL_SYNC,

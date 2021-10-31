@@ -2,9 +2,9 @@ import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
 
-import sleep from "../sleep";
+import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-import getUnixTime from "../time/getUnixTime";
+import getUnixTime from "@portals/SpeakerAppPortal/shared/time/getUnixTime";
 import {
   getTrackMediaStream,
   // getListHasMediaStream,
@@ -20,7 +20,7 @@ import {
   SYNC_EVT_KICK,
   SYNC_EVT_TRACK_REMOVED,
   SYNC_EVT_DEBUG,
-} from "../syncEvents";
+} from "@portals/SpeakerAppPortal/shared/syncEvents";
 
 import HeartbeatModule from "./modules/ZenRTCPeer.HeartbeatModule";
 import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule";

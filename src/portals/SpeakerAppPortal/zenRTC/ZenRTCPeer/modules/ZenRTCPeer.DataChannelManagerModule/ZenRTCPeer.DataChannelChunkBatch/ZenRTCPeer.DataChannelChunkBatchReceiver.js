@@ -4,7 +4,7 @@ import DataChannelChunkBatchCore from "./_ZenRTCPeer.DataChannelChunkBatchCore";
 
 import DataChannelManagerModule from "../ZenRTCPeer.DataChannelManagerModule";
 
-import getUnsortedArrayLength from "../../../../number/getUnsortedArrayLength";
+import getUnsortedArrayLength from "@portals/SpeakerAppPortal/shared/number/getUnsortedArrayLength";
 
 export default class DataChannelChunkBatchReceiver extends DataChannelChunkBatchCore {
   /**

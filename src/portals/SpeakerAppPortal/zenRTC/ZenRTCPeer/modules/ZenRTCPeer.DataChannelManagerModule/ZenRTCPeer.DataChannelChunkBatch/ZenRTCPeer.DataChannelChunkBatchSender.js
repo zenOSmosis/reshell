@@ -12,9 +12,7 @@ import DataChannelManagerModule from "../ZenRTCPeer.DataChannelManagerModule";
 
 import fastChunkString from "@shelf/fast-chunk-string";
 
-// IMPORTANT: Module aliases are not currently supported w/ shared modules,
-// hence the full relative path
-import getRoughSizeOfObject from "../../../../number/getRoughSizeOfObject";
+import getRoughSizeOfObject from "@portals/SpeakerAppPortal/shared/number/getRoughSizeOfObject";
 
 export default class DataChannelChunkBatchSender extends DataChannelChunkBatchCore {
   /**

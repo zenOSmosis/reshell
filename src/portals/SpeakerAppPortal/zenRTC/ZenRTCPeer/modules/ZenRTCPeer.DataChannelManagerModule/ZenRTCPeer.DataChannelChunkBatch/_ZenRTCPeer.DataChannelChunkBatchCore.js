@@ -2,7 +2,7 @@ import PhantomCore, { logger } from "phantom-core";
 
 // IMPORTANT: Module aliases are not currently supported w/ shared modules,
 // hence the full relative path
-import getRoughSizeOfObject from "../../../../number/getRoughSizeOfObject";
+import getRoughSizeOfObject from "@portals/SpeakerAppPortal/shared/number/getRoughSizeOfObject";
 
 /**
  * NOTE: maxChunkSize option defaults to 63488 (62 kiB). This number was chosen
