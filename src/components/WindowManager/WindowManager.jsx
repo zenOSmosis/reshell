@@ -302,6 +302,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
                     onBringToTop: handleSetActiveWindow,
                   }
                 );
+
                 windowController.setTitle(title);
 
                 windowController.attachWindowManagerElement(elBase);
