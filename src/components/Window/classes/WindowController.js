@@ -221,6 +221,13 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   setPosition({ x, y }) {
+    // Fixes issue where restoring using widow title bar (i.e. double-click or
+    // using window control button) would make window go to upper-left of
+    // screen
+    if (this.getIsMaximized()) {
+      return;
+    }
+
     const windowEl = this._windowEl;
     if (windowEl) {
       /**
