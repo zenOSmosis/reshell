@@ -16,10 +16,6 @@ export default function useWindowDragger({ windowController, isDisabled }) {
   // @see https://use-gesture.netlify.app/docs/#simple-example
   const bind = useDrag(
     ({ down: isDragging, movement: [mx, my], xy, event }) => {
-      if (isDisabled || event.target.tagName.toUpperCase() === "BUTTON") {
-        return;
-      }
-
       if (isDragging !== isUserDragging) {
         setIsUserDragging(isDragging);
       }
