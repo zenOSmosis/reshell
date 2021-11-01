@@ -55,6 +55,8 @@ const WindowView = ({
 
   const [zIndex, _setZIndex] = useState(0);
   const [title, _setTitle] = useState(null);
+  const refTitle = useRef(null);
+  refTitle.current = title;
 
   // Associate window element with window controller
   // TODO: Refactor into useWindowController hook
@@ -74,6 +76,7 @@ const WindowView = ({
 
   // TODO: Document
   // TODO: Refactor into useWindowController hook
+  // TODO: Move into container view?
   useEffect(() => {
     if (windowController) {
       const _handleWindowControllerUpdate = updatedState => {
@@ -82,12 +85,9 @@ const WindowView = ({
         }
 
         // Only apply view state change when necessary
-        if (
-          updatedState.title !== undefined &&
-          // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
-          updatedState.title !== title
-        ) {
-          _setTitle(updatedState.title);
+        const windowTitle = windowController.getTitle();
+        if (windowTitle !== refTitle.current) {
+          _setTitle(windowTitle);
         }
 
         // Only apply view state change when necessary

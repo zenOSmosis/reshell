@@ -1,8 +1,4 @@
-import PhantomCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
-  deepMerge,
-} from "phantom-core";
+import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import { debounce } from "debounce";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -17,19 +13,15 @@ export const EVT_MOVED = "moved";
 
 // TODO: Move into core directory?
 // TODO: Document
-export default class WindowController extends PhantomCore {
+export default class WindowController extends PhantomState {
   // TODO: Document
   constructor(initialState = {}, { onBringToTop }) {
-    super();
-
     const DEFAULT_STATE = {
       isMaximized: false,
       isMinimized: false,
-      title: this.getTitle(),
-      // isActive: false,
     };
 
-    this._state = Object.seal(deepMerge(DEFAULT_STATE, initialState));
+    super(PhantomState.mergeOptions({ ...DEFAULT_STATE, ...initialState }));
 
     this._appRuntime = null;
 
@@ -300,11 +292,6 @@ export default class WindowController extends PhantomCore {
       throw new TypeError("partialNextState is not an object");
     }
 
-    // TODO: Refactor title to app runtime passing (ensure it can work both ways)
-    if (partialNextState.title !== undefined && this._appRuntime) {
-      this._appRuntime.setTitle(partialNextState.title);
-    }
-
     // Potentially reset polar-opposite states
     if (partialNextState.isMaximized) {
       partialNextState.isMinimized = false;
@@ -312,27 +299,7 @@ export default class WindowController extends PhantomCore {
       partialNextState.isMaximized = false;
     }
 
-    this._state = deepMerge(this._state, partialNextState);
-
-    this.emit(EVT_UPDATED, partialNextState);
-  }
-
-  /**
-   * @param {string} title
-   * @return {void}
-   */
-  setTitle(title) {
-    // Fixes issue where title does not render in window
-    this.setState({ title });
-
-    super.setTitle(title);
-  }
-
-  /**
-   * @return {Object}
-   */
-  getState() {
-    return this._state;
+    super.setState(partialNextState);
   }
 
   /**
