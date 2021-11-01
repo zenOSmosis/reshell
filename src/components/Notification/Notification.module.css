@@ -3,6 +3,8 @@
   width: 310px;
   max-height: 400px;
   display: inline-block;
+
+  cursor: default;
 }
 
 .notification .main-image-wrap {
