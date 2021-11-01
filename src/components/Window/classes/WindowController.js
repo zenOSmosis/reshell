@@ -299,7 +299,7 @@ export default class WindowController extends PhantomState {
       partialNextState.isMaximized = false;
     }
 
-    super.setState(partialNextState);
+    return super.setState(partialNextState);
   }
 
   /**
