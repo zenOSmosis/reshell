@@ -58,7 +58,7 @@ export default class SocketIOService extends UIServiceCore {
 
   // TODO: Document
   disconnect() {
-    this._socket.disconnect();
+    this._socket?.disconnect();
   }
 
   /**
@@ -111,6 +111,12 @@ export default class SocketIOService extends UIServiceCore {
    * @return {Promise<SocketChannel>}
    */
   async createSocketChannel(options = {}) {
+    if (!this._socket) {
+      throw new ReferenceError(
+        "Socket is not available to create socket channel"
+      );
+    }
+
     const { channelId } = await this.fetchSocketAPICall(
       // TODO: Use constant
       "request-data-channel",
