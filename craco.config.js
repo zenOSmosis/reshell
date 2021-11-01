@@ -1,6 +1,7 @@
 const path = require("path");
 
 // TODO: Will CRA pick up env variables added here?
+// TODO: Add git info, build timestamp, and possibly some build-OS specifics as REACT_APP_ variables here
 
 module.exports = {
   webpack: {
