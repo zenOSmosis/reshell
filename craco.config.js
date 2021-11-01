@@ -1,5 +1,7 @@
 const path = require("path");
 
+// TODO: Will CRA pick up env variables added here?
+
 module.exports = {
   webpack: {
     alias: {
