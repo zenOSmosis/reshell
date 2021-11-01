@@ -47,12 +47,14 @@ export default function UIServicesProvider({ children }) {
   }, [forceUpdate]);
 
   // TODO: Document
+  // TODO: Rename to startServiceClass
   const startService = useCallback(
     ServiceClass => _uiServiceManager.startServiceClass(ServiceClass),
     [_uiServiceManager]
   );
 
   // TODO: Document
+  // TODO: Rename to stopServiceClass
   const stopService = useCallback(
     ServiceClass => _uiServiceManager.stopServiceClass(ServiceClass),
     [_uiServiceManager]

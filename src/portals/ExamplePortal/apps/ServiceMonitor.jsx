@@ -7,6 +7,8 @@ import { UIServicesContext } from "@core/BaseView/providers/UIServicesProvider";
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
 
+// TODO: Show last update time, state, etc.
+
 // TODO: Include ability to render service reporters, once functionality is
 // integrated
 

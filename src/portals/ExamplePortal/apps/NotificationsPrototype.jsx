@@ -1,6 +1,6 @@
 import Center from "@components/Center";
 
-import useNotificationsContext from "@hooks/useNotificationsContext";
+import NotificationService from "@services/NotificationService";
 
 const NotificationsPrototype = {
   id: "notifications-prototype",
@@ -9,15 +9,16 @@ const NotificationsPrototype = {
     width: 640,
     height: 480,
   },
-  view: function View() {
-    const { showNotification } = useNotificationsContext();
+  serviceClasses: [NotificationService],
+  view: function View({ appServices }) {
+    const notificationService = appServices[NotificationService];
 
     return (
       <Center>
         <button
           onClick={() =>
             // TODO: Borrow API from Apple: https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html#//apple_ref/doc/uid/TP40016239-CH61-SW1
-            showNotification({
+            notificationService.showNotification({
               title: "Test Notification Title",
               body: new Date().getTime(),
             })
