@@ -14,17 +14,13 @@ export default function NotificationsProvider({ children }) {
 
   // TODO: Document
   const showNotification = useCallback(
-    notification => {
-      serviceInstance.showNotification(notification);
-    },
+    notification => serviceInstance.showNotification(notification),
     [serviceInstance]
   );
 
   // TODO: Document
   const closeNotificationWithUUID = useCallback(
-    uuid => {
-      serviceInstance.closeNotificationWithUUID(uuid);
-    },
+    uuid => serviceInstance.closeNotificationWithUUID(uuid),
     [serviceInstance]
   );
 
