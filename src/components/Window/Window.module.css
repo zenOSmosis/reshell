@@ -121,6 +121,7 @@ of the drag zone outside of the windows. */
   order: 2;
 }
 
+/* TODO: Use rounded triangles instead of round buttons? */
 .window .titlebar .window-controls button {
   outline: 0px;
   padding: 0px;
