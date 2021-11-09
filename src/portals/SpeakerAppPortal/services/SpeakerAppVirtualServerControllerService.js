@@ -41,6 +41,7 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
   }
 
   // TODO: Document
+  // TODO: Wire up to transcoder
   async createVirtualServer(params) {
     try {
       await this._socketService.fetchSocketAPICall(
@@ -58,6 +59,7 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
   }
 
   // TODO: Document
+  // TODO: Wire up to transcoder
   async stopVirtualServer() {
     await this._socketService.fetchSocketAPICall(
       SOCKET_API_ROUTE_END_TRANSCODER_SESSION

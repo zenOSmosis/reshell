@@ -7,6 +7,7 @@ import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 
 import NetworkCreatorForm from "./views/NetworkCreatorForm";
+import HostingView from "./views/HostingView";
 
 import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
 
@@ -39,11 +40,12 @@ const VirtualServer = {
 
     return (
       <Layout>
-        <Header>
+        <Header style={{ textAlign: "center" }}>
           <Padding>
             <AppLinkButton
               id={CALL_CENTRAL_STATION_REGISTRATION_ID}
               title="Network"
+              style={{ float: "left" }}
             />
             {isHosting && (
               <button
@@ -53,6 +55,15 @@ const VirtualServer = {
                 Stop
               </button>
             )}
+            <div>
+              {isHosting && (
+                <div style={{ fontSize: ".9em" }}>
+                  Realm ID: {realmID}
+                  <br />
+                  Channel ID: {channelID}
+                </div>
+              )}
+            </div>
           </Padding>
         </Header>
         <Content>
@@ -72,24 +83,7 @@ const VirtualServer = {
               }
             />
           ) : (
-            // TODO: Build out this view
-            <Center>
-              <div>
-                <div>
-                  <button
-                    onClick={() => virtualServerService.stopVirtualServer()}
-                    style={{ backgroundColor: "red" }}
-                  >
-                    Stop
-                  </button>
-                </div>
-                <div>
-                  Realm ID: {realmID}
-                  <br />
-                  Channel ID: {channelID}
-                </div>
-              </div>
-            </Center>
+            <HostingView />
           )}
         </Content>
         <Footer>
