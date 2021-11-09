@@ -37,8 +37,8 @@ export default function WebZenRTCProvider({
 
   const [zenRTCPeer, _setZenRTCPeer] = useState(null);
 
-  const [realmId, setRealmId] = useState(null);
-  const [channelId, setChannelId] = useState(null);
+  const [realmID, setRealmId] = useState(null);
+  const [channelID, setChannelId] = useState(null);
 
   const [isZenRTCConnecting, _setIsZenRTCConnecting] = useState(false);
   const [isZenRTCConnected, _setIsZenRTCConnected] = useState(false);
@@ -94,29 +94,29 @@ export default function WebZenRTCProvider({
   /**
    * Creates a new WebZenRTCPeer instance and tries to connect to it.
    *
-   * NOTE: Despite the value of the hook's realmId / channelId states, the
-   * realmId and channelId must currently be passed to the connect function,
+   * NOTE: Despite the value of the hook's realmID / channelID states, the
+   * realmID and channelID must currently be passed to the connect function,
    * and it will override the current realm / channel values once connected.
    *
    * @return {Promise<void>}
    */
   const connectZenRTC = useCallback(
-    async ({ realmId, channelId }) => {
+    async ({ realmID, channelID }) => {
       // Destroy existing connection, if already established
       if (zenRTCPeer) {
         await zenRTCPeer.destroy();
       }
 
       await (async () => {
-        if (!realmId || !channelId || !socket || !isSocketIoConnected) {
+        if (!realmID || !channelID || !socket || !isSocketIoConnected) {
           console.warn("WebZenRTCPeer is not currently connectable");
 
           return;
         }
 
         const zenRTCPeer = new ZenRTCClass({
-          realmId,
-          channelId,
+          realmID,
+          channelID,
           socket,
 
           // Web side calls into server, so we're the initiator
@@ -214,8 +214,8 @@ export default function WebZenRTCProvider({
         await zenRTCPeer.connect();
 
         // Register the realm and channel with the hook
-        setRealmId(realmId);
-        setChannelId(channelId);
+        setRealmId(realmID);
+        setChannelId(channelID);
       })();
     },
     [zenRTCPeer, socket, isSocketIoConnected, ZenRTCClass]
@@ -268,8 +268,8 @@ export default function WebZenRTCProvider({
   return (
     <ZenRTCContext.Provider
       value={{
-        realmId,
-        channelId,
+        realmID,
+        channelID,
         setRealmId,
         setChannelId,
         zenRTCPeer,

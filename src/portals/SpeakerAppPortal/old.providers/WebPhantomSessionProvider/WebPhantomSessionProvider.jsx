@@ -30,8 +30,8 @@ export const WebPhantomSessionContext = createContext({});
 // IMPORTANT: Only available to mainApp context (not transcoderApp)
 export default function WebPhantomSessionProvider({ children }) {
   const {
-    realmId,
-    channelId,
+    realmID,
+    channelID,
     setRealmId,
     setChannelId,
     zenRTCPeer,
@@ -134,10 +134,10 @@ export default function WebPhantomSessionProvider({ children }) {
   useEffect(() => {
     if (socket) {
       const _handleNetworksUpdated = () => {
-        if (realmId && channelId) {
+        if (realmID && channelID) {
           fetch(SOCKET_API_ROUTE_FETCH_NETWORK_EXISTS, {
-            realmId,
-            channelId,
+            realmID,
+            channelID,
           }).then(setIsHostOnline);
         } else {
           setIsHostOnline(false);
@@ -152,7 +152,7 @@ export default function WebPhantomSessionProvider({ children }) {
         socket.off(SOCKET_EVT_NETWORKS_UPDATED, _handleNetworksUpdated);
       };
     }
-  }, [socket, realmId, channelId]);
+  }, [socket, realmID, channelID]);
 
   // TODO: Refactor
   useEffect(() => {
@@ -183,11 +183,11 @@ export default function WebPhantomSessionProvider({ children }) {
   }, [zenRTCPeer]);
 
   const connect = useCallback(
-    async ({ realmId, channelId }) => {
+    async ({ realmID, channelID }) => {
       if (!isHostOnline) {
         console.warn("Cannot connect when host is not online");
       } else {
-        await connectZenRTC({ realmId, channelId });
+        await connectZenRTC({ realmID, channelID });
       }
     },
     [isHostOnline, connectZenRTC]
@@ -226,15 +226,15 @@ export default function WebPhantomSessionProvider({ children }) {
   );
 
   const networkURL = useMemo(
-    () => realmId && channelId && getCallURL({ realmId, channelId }),
-    [realmId, channelId]
+    () => realmID && channelID && getCallURL({ realmID, channelID }),
+    [realmID, channelID]
   );
 
   return (
     <WebPhantomSessionContext.Provider
       value={{
-        realmId,
-        channelId,
+        realmID,
+        channelID,
         setRealmId,
         setChannelId,
         isHostOnline,

@@ -9,7 +9,7 @@ export const AppRoutesContext = React.createContext({});
 
 // TODO: Move into MainApp (this provider doesn't support virtual server app)
 export default function AppRoutesProvider({ routes, children }) {
-  const { realmId, channelId } = useWebPhantomSessionContext();
+  const { realmID, channelID } = useWebPhantomSessionContext();
 
   const history = useHistory();
 
@@ -125,8 +125,8 @@ export default function AppRoutesProvider({ routes, children }) {
   const fakeUseController = useCallback(() => null, []);
 
   const networkURL = useMemo(
-    () => realmId && channelId && getCallURL({ realmId, channelId }),
-    [realmId, channelId]
+    () => realmID && channelID && getCallURL({ realmID, channelID }),
+    [realmID, channelID]
   );
 
   return (

@@ -117,16 +117,16 @@ export default class SocketIOService extends UIServiceCore {
       );
     }
 
-    const { channelId } = await this.fetchSocketAPICall(
+    const { channelID } = await this.fetchSocketAPICall(
       // TODO: Use constant
       "request-data-channel",
       options
     );
 
-    const socketChannel = new SocketChannel(this._socket, channelId);
+    const socketChannel = new SocketChannel(this._socket, channelID);
 
     // TODO: Refactor?
-    if (socketChannel.getChannelId() !== channelId) {
+    if (socketChannel.getChannelId() !== channelID) {
       throw new ReferenceError(
         "Local SocketChannel does not match same channel id as remote"
       );

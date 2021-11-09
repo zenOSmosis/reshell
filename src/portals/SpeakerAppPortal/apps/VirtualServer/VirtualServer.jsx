@@ -32,7 +32,7 @@ const VirtualServer = {
       appServices[SpeakerAppVirtualServerControllerService];
 
     const isHosting = virtualServerService.getIsHosting();
-    const { realmId, channelId } = virtualServerService.getNetworkRoute();
+    const { realmID, channelID } = virtualServerService.getNetworkRoute();
 
     // TODO: Implement?
     // const handleStopVirtualServer = useCallback(() => {}, []);
@@ -84,9 +84,9 @@ const VirtualServer = {
                   </button>
                 </div>
                 <div>
-                  Realm ID: {realmId}
+                  Realm ID: {realmID}
                   <br />
-                  Channel ID: {channelId}
+                  Channel ID: {channelID}
                 </div>
               </div>
             </Center>
