@@ -6,6 +6,7 @@
     "email": "info@zenosmosis.com",
     "url": "https://zenosmosis.com"
   },
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
