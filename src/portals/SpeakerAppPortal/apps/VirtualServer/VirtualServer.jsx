@@ -32,6 +32,7 @@ const VirtualServer = {
       appServices[SpeakerAppVirtualServerControllerService];
 
     const isHosting = virtualServerService.getIsHosting();
+    const { realmId, channelId } = virtualServerService.getNetworkRoute();
 
     // TODO: Implement?
     // const handleStopVirtualServer = useCallback(() => {}, []);
@@ -71,13 +72,23 @@ const VirtualServer = {
               }
             />
           ) : (
+            // TODO: Build out this view
             <Center>
-              <button
-                onClick={() => virtualServerService.stopVirtualServer()}
-                style={{ backgroundColor: "red" }}
-              >
-                Stop
-              </button>
+              <div>
+                <div>
+                  <button
+                    onClick={() => virtualServerService.stopVirtualServer()}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Stop
+                  </button>
+                </div>
+                <div>
+                  Realm ID: {realmId}
+                  <br />
+                  Channel ID: {channelId}
+                </div>
+              </div>
             </Center>
           )}
         </Content>
