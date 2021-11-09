@@ -1,6 +1,6 @@
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
-import ZenRTCPeer from "../zenRTC/ZenRTCPeer";
+// import ZenRTCPeer from "../zenRTC/ZenRTCPeer";
 
 export { EVT_UPDATED };
 
