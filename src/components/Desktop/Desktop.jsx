@@ -98,6 +98,9 @@ export default function Desktop({
                     // TODO: Replace menu with data-driven Menubar component
                   }
                   <div>
+                    {
+                      // TODO: Include bookmark menu option (use browser bookmark system and / or store somewhere else); in combination w/ deep-linking functionality
+                    }
                     <Menu
                       menuButton={
                         <MenuButton>

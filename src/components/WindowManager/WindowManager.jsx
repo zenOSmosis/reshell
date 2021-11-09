@@ -121,7 +121,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
 
   // Handle setting of active window based on locationAppRuntimes
   // TODO: Fix; currently buggy w/ Safari
-  // TODO: Implement deep linking
+  // TODO: Implement deep linking (implement DeepLinkService [URLService, or equiv]?)
   /*
   useEffect(() => {
     const to = setTimeout(() => {
