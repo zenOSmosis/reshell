@@ -48,7 +48,8 @@
     "build": "craco build",
     "build:with-profiling": "craco build --profile",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "lint": "prettier --write '(**/)*.js'"
   },
   "eslintConfig": {
     "extends": [
@@ -67,5 +68,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
   }
 }

@@ -1,10 +1,10 @@
-import fs from 'fs';
+import fs from "fs";
 
 /**
  * Reads the contents of a directory.
- * 
+ *
  * @see https://nodejs.org/api/fs.html#fs_fs_readdir_path_options_callback
- * 
+ *
  * @param {string} path
  * @param {Object} options?
  * @return {Promise<string[]>}

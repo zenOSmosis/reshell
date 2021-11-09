@@ -1,11 +1,11 @@
-import fs from 'fs';
+import fs from "fs";
 
 /**
  * Asynchronous file open.
- * 
+ *
  * @see https://nodejs.org/api/fs.html#fs_fs_open_path_flags_mode_callback
  * @see http://man7.org/linux/man-pages/man2/open.2.html
- * 
+ *
  * @param {string} path
  * @param {string} flags?
  * @param {number} mode

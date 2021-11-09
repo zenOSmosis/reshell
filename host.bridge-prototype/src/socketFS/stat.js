@@ -1,10 +1,10 @@
-import './shared/socketFS.typedefs';
-import fs from 'fs';
+import "./shared/socketFS.typedefs";
+import fs from "fs";
 
 /**
  * @see https://nodejs.org/api/fs.html#fs_fs_stat_path_options_callback
- * 
- * @param {string} path 
+ *
+ * @param {string} path
  * @param {Object} options?
  * @return {Promise<FSStats>}
  * @throws {Promise<Error>}

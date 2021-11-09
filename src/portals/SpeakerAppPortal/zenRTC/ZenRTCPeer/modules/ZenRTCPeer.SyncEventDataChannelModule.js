@@ -17,7 +17,7 @@ export default class SyncEventDataChannelModule extends BaseModule {
       SYNC_EVENTS_DATA_CHANNEL_NAME
     );
 
-    this._dataChannel.on(EVT_DATA_RECEIVED, (data) => {
+    this._dataChannel.on(EVT_DATA_RECEIVED, data => {
       const [eventName, eventData] = data;
 
       this.receiveSyncEvent(eventName, eventData);

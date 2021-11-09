@@ -3,7 +3,7 @@ import checkIsDir from "./isDir";
 import fetchPathSeparator from "./fetchPathSeparator";
 
 // TODO: Document
-const dirDetail = async (path) => {
+const dirDetail = async path => {
   try {
     const isDir = await checkIsDir(path);
     if (!isDir) {

@@ -1,5 +1,5 @@
-import './shared/socketFS.typedefs';
-import fs from 'fs';
+import "./shared/socketFS.typedefs";
+import fs from "fs";
 
 /**
  * @see https://nodejs.org/api/fs.html#fs_fs_mkdir_path_options_callback
@@ -11,7 +11,7 @@ import fs from 'fs';
  */
 const mkdir = (path, options = {}) => {
   return new Promise((resolve, reject) => {
-    fs.mkdir(path, options, (error) => {
+    fs.mkdir(path, options, error => {
       if (error) {
         return reject(error);
       } else {

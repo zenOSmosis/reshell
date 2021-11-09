@@ -4,7 +4,7 @@ import fetchPathSeparator from "./fetchPathSeparator";
 import readdir from "./readdir";
 import mime from "mime-types";
 
-const pathDetail = async (path) => {
+const pathDetail = async path => {
   try {
     const pathSeparator = await fetchPathSeparator();
 

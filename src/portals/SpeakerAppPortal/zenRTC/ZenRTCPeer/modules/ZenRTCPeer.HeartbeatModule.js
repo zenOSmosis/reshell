@@ -48,7 +48,7 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
       return;
     }
 
-    return this._zenRTCPeer.ping().catch((err) => {
+    return this._zenRTCPeer.ping().catch(err => {
       console.error("Heartbeat failed", err);
 
       this._zenRTCPeer.destroy();

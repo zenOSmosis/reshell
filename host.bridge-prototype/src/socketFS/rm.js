@@ -1,9 +1,9 @@
-import fs from 'fs';
-import fetchIsDir from './isDir';
-import rmdir from './rmdir';
-import unlink from './unlink';
+import fs from "fs";
+import fetchIsDir from "./isDir";
+import rmdir from "./rmdir";
+import unlink from "./unlink";
 
-const rm = async (path) => {
+const rm = async path => {
   try {
     if (!fs.existsSync(path)) {
       return;

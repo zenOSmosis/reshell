@@ -33,7 +33,7 @@ export default function useAudioMediaStreamTrackLevelMonitor(
         ? mediaStreamTrackOrTracks
         : [mediaStreamTrackOrTracks]
       ).filter(
-        (track) => track instanceof MediaStreamTrack && track.kind === "audio"
+        track => track instanceof MediaStreamTrack && track.kind === "audio"
       ),
     [mediaStreamTrackOrTracks]
   );

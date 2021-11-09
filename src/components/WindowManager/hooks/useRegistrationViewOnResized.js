@@ -17,7 +17,7 @@ export default function useRegistrationViewOnResized(windowController) {
    * @param {function | void} setResizeHandler Passed up from AppRegistration view
    * properties.
    */
-  const handleResized = useCallback((setResizeHandler) => {
+  const handleResized = useCallback(setResizeHandler => {
     /**
      * onResized is passed from view, and is executed by the WindowManager when
      * the WindowController emits EVT_RESIZED event.
