@@ -1,6 +1,11 @@
 {
   "name": "reshell",
   "version": "0.0.1-alpha",
+  "author": {
+    "name": "zenOSmosis",
+    "email": "info@zenosmosis.com",
+    "url": "https://zenosmosis.com"
+  },
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
