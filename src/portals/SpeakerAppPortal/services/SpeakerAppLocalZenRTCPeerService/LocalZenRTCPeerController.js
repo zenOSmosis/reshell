@@ -1,5 +1,8 @@
 import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import SyncObject from "sync-object";
+
+// TODO: Implement
+// import IPCMessageBroker from "../SpeakerAppPortal/shared/IPCMessageBroker";
 // import ZenRTCPeer from "../zenRTC/ZenRTCPeer";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -35,6 +38,12 @@ export default class LocalZenRTCPeerController extends PhantomState {
     }
 
     super();
+
+    // TODO: Remove
+    console.log({
+      network,
+      ourSocket,
+    });
 
     this._realmID = realmID;
     this._channelID = channelID;
