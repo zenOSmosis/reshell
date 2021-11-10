@@ -6,8 +6,17 @@ export { EVT_UPDATED, EVT_DESTROYED };
 
 // TODO: Create base class for local / virtual server usage
 export default class LocalZenRTCPeerController extends PhantomState {
-  constructor() {
+  constructor({ realmID, channelID }) {
+    if (!realmID || !channelID) {
+      throw new Error(
+        "realmID and channelID must be specified during construction"
+      );
+    }
+
     super();
+
+    this._realmID = realmID;
+    this._channelID = channelID;
 
     // Contains our shared state
     this._writableSyncObject = new SyncObject();
@@ -26,6 +35,14 @@ export default class LocalZenRTCPeerController extends PhantomState {
     this._ipcMessageBroker = null;
   }
 
+  getRealmID() {
+    return this._realmID;
+  }
+
+  getChannelID() {
+    return this._channelID;
+  }
+
   // TODO: Document
   setSocketID(socketID) {
     this.setState({ socketID });
@@ -36,12 +53,16 @@ export default class LocalZenRTCPeerController extends PhantomState {
     this.setState({ iceServers });
   }
 
+  // TODO: Document
   async connect() {
     // FIXME: (jh) Destroy existing or just block the attempt?
     await Promise.all([
       () => this._zenRTCPeer?.destroy(),
       () => this._ipcMessageBroker?.destroy(),
     ]);
+
+    const realmID = this._realmID;
+    const channelID = this._channelID;
 
     const { iceServers, socketID } = this.getState();
 
@@ -64,10 +85,27 @@ export default class LocalZenRTCPeerController extends PhantomState {
 
     // TODO: Remove
     console.warn("TODO: Implement connect", {
+      realmID,
+      channelID,
       iceServers,
       socketID,
       writableSyncObject,
       readOnlySyncObject,
     });
+  }
+
+  // TODO: Document
+  async disconnect() {
+    // TODO: Remove
+    console.warn("TODO: Implement disconnect");
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    await this.disconnect();
+
+    return super.destroy();
   }
 }

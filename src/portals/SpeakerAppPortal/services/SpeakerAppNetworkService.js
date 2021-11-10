@@ -81,8 +81,9 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
     // TODO: Map to ZenRTCPeer
     console.log("TODO: connect to network", { network, self: this });
 
-    // TODO: Implement
-    return this._localZenRTCPeerService.connect();
+    const { realmID, channelID } = network;
+
+    return this._localZenRTCPeerService.connect({ realmID, channelID });
   }
 
   // TODO: Document
