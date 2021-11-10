@@ -85,13 +85,11 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
 
   // TODO: Document
   async connectToNetwork(network) {
-    const { realmID, channelID } = network;
-    return this._localZenRTCPeerService.connect({ realmID, channelID });
+    return this._localZenRTCPeerService.connect(network);
   }
 
   // TODO: Document
   disconnectFromNetwork(network) {
-    const { realmID, channelID } = network;
-    return this._localZenRTCPeerService.disconnect({ realmID, channelID });
+    return this._localZenRTCPeerService.disconnect(network);
   }
 }

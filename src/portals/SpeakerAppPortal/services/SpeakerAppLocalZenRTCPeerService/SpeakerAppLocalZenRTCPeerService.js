@@ -46,7 +46,9 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   }
 
   // TODO: Document
-  async connect({ realmID, channelID }) {
+  async connect(network) {
+    const { realmID, channelID } = network;
+
     // Destruct previous controller for this network, if exists
     await this._getLocalZenRTCPeerControllerInstance({
       realmID,
@@ -61,9 +63,10 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     // TODO: Consider refactoring by passing in network service; could span multiple network types
     const networkService = this.useServiceClass(SpeakerAppNetworkService);
 
+    const ourSocket = socketService.getSocket();
     const zenRTCPeerController = new LocalZenRTCPeerController({
-      realmID,
-      channelID,
+      network,
+      ourSocket,
     });
 
     this._addLocalZenRTCPeerControllerInstance(zenRTCPeerController);
@@ -84,11 +87,13 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     zenRTCPeerController.setSocketID(socketID);
     zenRTCPeerController.setICEServers(iceServers);
 
-    return zenRTCPeerController.connect({ realmID, channelID });
+    return zenRTCPeerController.connect();
   }
 
   // TODO: Document
-  async disconnect({ realmID, channelID }) {
+  async disconnect(network) {
+    const { realmID, channelID } = network;
+
     // Destruct previous controller for this network, if exists
     return this._getLocalZenRTCPeerControllerInstance({
       realmID,

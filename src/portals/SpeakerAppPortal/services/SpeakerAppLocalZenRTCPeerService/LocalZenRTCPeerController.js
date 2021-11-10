@@ -9,10 +9,28 @@ export { EVT_UPDATED, EVT_DESTROYED };
 // TODO: Refactor into shared base class for local / virtual server usage
 export default class LocalZenRTCPeerController extends PhantomState {
   // TODO: Document
-  constructor({ realmID, channelID }) {
-    if (!realmID || !channelID) {
-      throw new Error(
-        "realmID and channelID must be specified during construction"
+  constructor({ network, ourSocket }) {
+    const { realmID, channelID, transcoderSocketID } = network;
+
+    if (!realmID) {
+      throw new ReferenceError("realmID must be specified during construction");
+    }
+
+    if (!channelID) {
+      throw new ReferenceError(
+        "channelID must be specified during construction"
+      );
+    }
+
+    if (!transcoderSocketID) {
+      throw new ReferenceError(
+        "transcoderSocketID must be specified during construction"
+      );
+    }
+
+    if (!ourSocket) {
+      throw new ReferenceError(
+        "ourSocket must be specified during construction"
       );
     }
 
@@ -20,6 +38,7 @@ export default class LocalZenRTCPeerController extends PhantomState {
 
     this._realmID = realmID;
     this._channelID = channelID;
+    this._ourSocket = ourSocket;
 
     // Contains our shared state
     this._writableSyncObject = new SyncObject();
@@ -76,7 +95,6 @@ export default class LocalZenRTCPeerController extends PhantomState {
     const writableSyncObject = this._writableSyncObject;
     const readOnlySyncObject = this._readOnlySyncObject;
 
-    // TODO: Utilize IPCMessageBroker
     /*
     iceServers,
     socketID,

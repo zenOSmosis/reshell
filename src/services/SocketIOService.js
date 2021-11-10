@@ -68,7 +68,7 @@ export default class SocketIOService extends UIServiceCore {
     return this.getState().isConnected;
   }
 
-  // TODO: Keep?
+  // TODO: Document
   getSocket() {
     return this._socket;
   }
