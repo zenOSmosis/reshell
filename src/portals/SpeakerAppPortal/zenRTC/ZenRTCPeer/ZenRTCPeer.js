@@ -27,7 +27,7 @@ import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule"
 import DataChannelManagerModule from "./modules/ZenRTCPeer.DataChannelManagerModule";
 import SyncEventDataChannelModule from "./modules/ZenRTCPeer.SyncEventDataChannelModule";
 
-// ZenRTCPeer instances running on this thread, using socketIoId as reference
+// ZenRTCPeer instances running on this thread, using socketID as reference
 // keys
 const _instances = {};
 
@@ -153,26 +153,26 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {ZenRTCPeer[]}
    */
   static getOtherInstances(peer) {
-    const peerSocketIoId = peer.getSocketIoId();
+    const peerSocketID = peer.getSocketID();
 
     const otherPeers = ZenRTCPeer.getInstances().filter(
-      testPeer => testPeer.getSocketIoId() !== peerSocketIoId
+      testPeer => testPeer.getSocketID() !== peerSocketID
     );
 
     return otherPeers;
   }
 
   /**
-   * @param {string} socketIoId
+   * @param {string} socketID
    * @return {ZenRTCPeer}
    */
-  static getInstanceWithSocketIoId(socketIoId) {
-    return _instances[socketIoId];
+  static getInstanceWithSocketID(socketID) {
+    return _instances[socketID];
   }
 
   /**
    * @param {Object[]} iceServers
-   * @param {string} socketIoId Used primarily for peer distinction // TODO: Rename
+   * @param {string} socketID Used primarily for peer distinction // TODO: Rename
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
    * @param {boolean} shouldAutoReconnect? [default=true] Has no effect if is
@@ -183,7 +183,7 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   constructor({
     iceServers,
-    socketIoId,
+    socketID,
     isInitiator = false,
     writableSyncObject = null,
     readOnlySyncObject = null,
@@ -192,13 +192,13 @@ export default class ZenRTCPeer extends PhantomCore {
     offerToReceiveVideo = true,
     preferredAudioCodecs = ["opus"],
   }) {
-    if (!socketIoId) {
-      throw new Error("No socketIoId present");
+    if (!socketID) {
+      throw new Error("No socketID present");
     }
 
-    if (_instances[socketIoId]) {
+    if (_instances[socketID]) {
       throw new Error(
-        `Thread already contains ZenRTCPeer instance with socketIoId ${socketIoId}`
+        `Thread already contains ZenRTCPeer instance with socketID ${socketID}`
       );
     }
 
@@ -212,21 +212,19 @@ export default class ZenRTCPeer extends PhantomCore {
 
     this.preferredAudioCodecs = preferredAudioCodecs;
 
-    _instances[socketIoId] = this;
+    _instances[socketID] = this;
 
     this.log.debug(
       `Constructing new ${
         this.constructor.name
-      } with socketIoId "${socketIoId}" as "${
-        isInitiator ? "initiator" : "guest"
-      }"`
+      } with socketID "${socketID}" as "${isInitiator ? "initiator" : "guest"}"`
     );
 
     // Built-in support for stream multiplexing
     this._outgoingMediaStreams = []; // TODO: Use Set
     this._incomingMediaStreams = []; // TODO: Use Set
 
-    this._socketIoId = socketIoId;
+    this._socketID = socketID;
     this._isInitiator = isInitiator;
     this._shouldAutoReconnect = shouldAutoReconnect;
 
@@ -502,8 +500,8 @@ export default class ZenRTCPeer extends PhantomCore {
    *
    * @return {string}
    */
-  getSocketIoId() {
-    return this._socketIoId;
+  getSocketID() {
+    return this._socketID;
   }
 
   /**
@@ -591,7 +589,7 @@ export default class ZenRTCPeer extends PhantomCore {
           /*
           this.log.debug({
             offer: sdpTransform.parse(sdp),
-            socketIoId: this.getSocketIoId(),
+            socketID: this.getSocketID(),
           });
           */
 
@@ -752,7 +750,7 @@ export default class ZenRTCPeer extends PhantomCore {
       this.emit(EVT_SDP_ANSWERED, signal.sdp);
     } else {
       throw new Error(
-        `No WebRTCPeer in ${this.constructor.name} with socketIoId "${this._socketIoId}"`
+        `No WebRTCPeer in ${this.constructor.name} with socketID "${this._socketID}"`
       );
     }
   }
@@ -1171,7 +1169,7 @@ export default class ZenRTCPeer extends PhantomCore {
   async destroy() {
     // IMPORTANT: This should be set before any event emitters are emitted, so
     // that counts are updated properly
-    delete _instances[this._socketIoId];
+    delete _instances[this._socketID];
 
     // Disconnect handler
     await (async () => {

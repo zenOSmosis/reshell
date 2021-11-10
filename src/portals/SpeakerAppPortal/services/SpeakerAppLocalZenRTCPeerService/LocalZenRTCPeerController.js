@@ -21,6 +21,9 @@ export default class LocalZenRTCPeerController extends PhantomState {
         () => this._readOnlySyncObject.destroy(),
       ]);
     });
+
+    this._zenRTCPeer = null;
+    this._ipcMessageBroker = null;
   }
 
   // TODO: Document
@@ -34,10 +37,21 @@ export default class LocalZenRTCPeerController extends PhantomState {
   }
 
   async connect() {
+    // FIXME: (jh) Destroy existing or just block the attempt?
+    await Promise.all([
+      () => this._zenRTCPeer?.destroy(),
+      () => this._ipcMessageBroker?.destroy(),
+    ]);
+
+    const { iceServers, socketID } = this.getState();
+
+    const writableSyncObject = this._writableSyncObject;
+    const readOnlySyncObject = this._readOnlySyncObject;
+
     // TODO: Utilize IPCMessageBroker
     /*
     iceServers,
-    socketIoId,
+    socketID,
     isInitiator = false,
     shouldAutoReconnect = true, // Only if isInitiator
     offerToReceiveAudio = true,
@@ -49,6 +63,11 @@ export default class LocalZenRTCPeerController extends PhantomState {
     // const zenRTCPeer = new ZenRTCPeer();
 
     // TODO: Remove
-    console.warn("TODO: Implement connect");
+    console.warn("TODO: Implement connect", {
+      iceServers,
+      socketID,
+      writableSyncObject,
+      readOnlySyncObject,
+    });
   }
 }
