@@ -4,8 +4,11 @@ import SyncObject from "sync-object";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
-// TODO: Create base class for local / virtual server usage
+// 1:1 relationship binding of controller to local ZenRTCPeer instance
+// TODO: Potentially don't extend PhantomState if not using state after refactor
+// TODO: Refactor into shared base class for local / virtual server usage
 export default class LocalZenRTCPeerController extends PhantomState {
+  // TODO: Document
   constructor({ realmID, channelID }) {
     if (!realmID || !channelID) {
       throw new Error(
@@ -35,20 +38,24 @@ export default class LocalZenRTCPeerController extends PhantomState {
     this._ipcMessageBroker = null;
   }
 
+  // TODO: Document
   getRealmID() {
     return this._realmID;
   }
 
+  // TODO: Document
   getChannelID() {
     return this._channelID;
   }
 
-  // TODO: Document
+  // TODO: Pass in via constructor
+  // TODO: Remove
   setSocketID(socketID) {
     this.setState({ socketID });
   }
 
-  // TODO: Document
+  // TODO: Pass in via constructor
+  // TODO: Remove
   setICEServers(iceServers) {
     this.setState({ iceServers });
   }

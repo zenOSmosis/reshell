@@ -77,25 +77,21 @@ export default class SpeakerAppNetworkService extends UIServiceCore {
   }
 
   // TODO: Document
+  fetchICEServers() {
+    return this._socketService.fetchSocketAPICall(
+      SOCKET_API_ROUTE_FETCH_ICE_SERVERS
+    );
+  }
+
+  // TODO: Document
   async connectToNetwork(network) {
-    // TODO: Map to ZenRTCPeer
-    console.log("TODO: connect to network", { network, self: this });
-
     const { realmID, channelID } = network;
-
     return this._localZenRTCPeerService.connect({ realmID, channelID });
   }
 
   // TODO: Document
   disconnectFromNetwork(network) {
-    // TODO: Map to ZenRTCPeer
-    console.log("TODO: disconnect from network", { network, self: this });
-  }
-
-  // TODO: Document
-  fetchICEServers() {
-    return this._socketService.fetchSocketAPICall(
-      SOCKET_API_ROUTE_FETCH_ICE_SERVERS
-    );
+    const { realmID, channelID } = network;
+    return this._localZenRTCPeerService.disconnect({ realmID, channelID });
   }
 }

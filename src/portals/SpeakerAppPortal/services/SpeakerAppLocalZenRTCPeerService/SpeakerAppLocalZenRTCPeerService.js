@@ -7,6 +7,7 @@ import SpeakerAppSocketAuthenticationService from "../SpeakerAppSocketAuthentica
 
 export { EVT_UPDATED };
 
+// 1-many binding relationship of service to controllers
 // TODO: Consider renaming to non-speaker-app for more dynamic usage
 export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
@@ -14,25 +15,43 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
     // Goal is for local peer to be able to connect to multiple networks at the
     // same time
-    this._localZenRTCPeerCollection = new PhantomCollection();
+    this._localZenRTCPeerControllerCollection = new PhantomCollection();
     this.registerShutdownHandler(() =>
-      this._localZenRTCPeerCollection.destroy()
+      this._localZenRTCPeerControllerCollection.destroy()
     );
   }
 
   // TODO: Document
-  getCollectionKey({ realmID, channelID }) {
+  _getLocalZenRTCPeerControllerInstance({ realmID, channelID }) {
+    const collectionKey = this._getCollectionKey({ realmID, channelID });
+    const controller =
+      this._localZenRTCPeerControllerCollection.getChildWithKey(collectionKey);
+    return controller;
+  }
+
+  // TODO: Document
+  _getCollectionKey({ realmID, channelID }) {
     return JSON.stringify({ realmID, channelID });
   }
 
   // TODO: Document
-  async connect({ realmID, channelID }) {
-    const collectionKey = this.getCollectionKey({ realmID, channelID });
+  _addLocalZenRTCPeerControllerInstance(controller) {
+    const realmID = controller.getRealmID();
+    const channelID = controller.getChannelID();
+    const collectionKey = this._getCollectionKey({ realmID, channelID });
+    this._localZenRTCPeerControllerCollection.addChild(
+      controller,
+      collectionKey
+    );
+  }
 
-    const prev = this._localZenRTCPeerCollection.getChildWithKey(collectionKey);
-    if (prev) {
-      await prev.destroy();
-    }
+  // TODO: Document
+  async connect({ realmID, channelID }) {
+    // Destruct previous controller for this network, if exists
+    await this._getLocalZenRTCPeerControllerInstance({
+      realmID,
+      channelID,
+    })?.destroy();
 
     // TODO: Consider refactoring by passing in socket service; could span multiple socket connections
     const socketService = this.useServiceClass(
@@ -47,10 +66,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       channelID,
     });
 
-    this._localZenRTCPeerCollection.addChild(
-      zenRTCPeerController,
-      collectionKey
-    );
+    this._addLocalZenRTCPeerControllerInstance(zenRTCPeerController);
 
     zenRTCPeerController.on(EVT_UPDATED, nextState => {
       // TODO: Remove
@@ -73,13 +89,10 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
   // TODO: Document
   async disconnect({ realmID, channelID }) {
-    const collectionKey = this.getCollectionKey({ realmID, channelID });
-
-    const zenRTCPeerController =
-      this._localZenRTCPeerCollection.getChildWithKey(collectionKey);
-
-    if (zenRTCPeerController) {
-      return zenRTCPeerController.destroy();
-    }
+    // Destruct previous controller for this network, if exists
+    return this._getLocalZenRTCPeerControllerInstance({
+      realmID,
+      channelID,
+    })?.destroy();
   }
 }
