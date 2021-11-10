@@ -171,6 +171,7 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
+   * @param {Object[]} iceServers
    * @param {string} socketIoId Used primarily for peer distinction // TODO: Rename
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
@@ -181,14 +182,14 @@ export default class ZenRTCPeer extends PhantomCore {
    * @param {string} preferredAudioCodecs? [default=["opus"]]
    */
   constructor({
+    iceServers,
     socketIoId,
     isInitiator = false,
-    shouldAutoReconnect = true, // Only if isInitiator
-    iceServers,
-    offerToReceiveAudio = true,
-    offerToReceiveVideo = true,
     writableSyncObject = null,
     readOnlySyncObject = null,
+    shouldAutoReconnect = true, // Only if isInitiator
+    offerToReceiveAudio = true,
+    offerToReceiveVideo = true,
     preferredAudioCodecs = ["opus"],
   }) {
     if (!socketIoId) {
@@ -619,6 +620,7 @@ export default class ZenRTCPeer extends PhantomCore {
         // TODO: Debug error and determine if we need to try to reconnect
         this.log.warn("Caught WebRTCPeer error", err);
 
+        // TODO: Remove?  It's also handled on close event.
         /*
         if (this._isInitiator && this._shouldAutoReconnect) {
           this._reconnect();

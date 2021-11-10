@@ -74,6 +74,13 @@ export default class SocketIOService extends UIServiceCore {
   }
 
   /**
+   * @return {string | void}
+   */
+  getSocketID() {
+    return this._socket?.id;
+  }
+
+  /**
    * @param {string} apiName
    * @param {Object} requestData [optional]
    * @return {Promise<Object>} requestResponse; TODO: Document
