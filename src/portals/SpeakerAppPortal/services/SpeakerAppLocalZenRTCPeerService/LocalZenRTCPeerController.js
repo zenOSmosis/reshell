@@ -1,15 +1,13 @@
 import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import SyncObject from "sync-object";
 
-// TODO: Implement
-// import IPCMessageBroker from "../SpeakerAppPortal/shared/IPCMessageBroker";
-// import ZenRTCPeer from "../zenRTC/ZenRTCPeer";
+// import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
 // 1:1 relationship binding of controller to local ZenRTCPeer instance
 // TODO: Potentially don't extend PhantomState if not using state after refactor
-// TODO: Refactor into shared base class for local / virtual server usage
+// TODO: Potentially refactor into shared base class for local / virtual server usage
 export default class LocalZenRTCPeerController extends PhantomState {
   // TODO: Document
   constructor({ network, ourSocket }) {
@@ -115,7 +113,7 @@ export default class LocalZenRTCPeerController extends PhantomState {
     readOnlySyncObject = null,
     preferredAudioCodecs = ["opus"],
     */
-    // const zenRTCPeer = new ZenRTCPeer();
+    // const localZenRTCPeer = new LocalZenRTCPeer();
 
     // TODO: Remove
     console.warn("TODO: Implement connect", {
