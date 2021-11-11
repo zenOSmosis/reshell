@@ -1,4 +1,4 @@
-import ZenRTCPeer, {
+import VirtualServerZenRTCPeer, {
   EVT_UPDATED,
   EVT_CONNECTING,
   EVT_RECONNECTING,
@@ -14,9 +14,9 @@ import ZenRTCPeer, {
   EVT_SDP_OFFERED,
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
-} from "../ZenRTCPeer";
-// import LocalIPCMessageBroker from './LocalIPCMessageBroker'
+} from "./VirtualServerZenRTCPeer";
 
+export default VirtualServerZenRTCPeer;
 export {
   EVT_UPDATED,
   EVT_CONNECTING,
@@ -34,7 +34,3 @@ export {
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
 };
-
-// TODO: Build out
-// TODO: See https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCPeer/WebZenRTCPeer.js
-export default class LocalZenRTCPeer extends ZenRTCPeer {}

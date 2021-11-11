@@ -1,14 +1,13 @@
-import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import SyncObject from "sync-object";
 
-// import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
+import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
 // 1:1 relationship binding of controller to local ZenRTCPeer instance
-// TODO: Potentially don't extend PhantomState if not using state after refactor
 // TODO: Potentially refactor into shared base class for local / virtual server usage
-export default class LocalZenRTCPeerController extends PhantomState {
+export default class LocalZenRTCPeerController extends PhantomCore {
   // TODO: Document
   constructor({ network, ourSocket }) {
     const { realmID, channelID, transcoderSocketID } = network;
@@ -65,14 +64,18 @@ export default class LocalZenRTCPeerController extends PhantomState {
   }
 
   // TODO: Document
+  /*
   getRealmID() {
     return this._realmID;
   }
+  */
 
   // TODO: Document
+  /*
   getChannelID() {
     return this._channelID;
   }
+  */
 
   // TODO: Pass in via constructor
   // TODO: Remove
@@ -113,7 +116,14 @@ export default class LocalZenRTCPeerController extends PhantomState {
     readOnlySyncObject = null,
     preferredAudioCodecs = ["opus"],
     */
-    // const localZenRTCPeer = new LocalZenRTCPeer();
+    const localZenRTCPeer = new LocalZenRTCPeer({
+      realmID,
+      channelID,
+      iceServers,
+      socketID,
+      writableSyncObject,
+      readOnlySyncObject,
+    });
 
     // TODO: Remove
     console.warn("TODO: Implement connect", {
