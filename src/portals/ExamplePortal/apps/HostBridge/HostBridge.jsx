@@ -54,12 +54,12 @@ const HostBridge = {
                   socketService
                     .fetchSocketAPICall("request-data-channel")
                     .then(resp => {
-                      const { channelID } = resp;
+                      const { channelId } = resp;
 
                       // TODO: Refactor
                       const socketChannel = new SocketChannel(
                         socketService.getSocket(),
-                        channelID
+                        channelId
                       );
 
                       // TODO: Remove
@@ -72,7 +72,7 @@ const HostBridge = {
                       // TODO: Use equal assertion
                       console.log({
                         resp,
-                        remoteSocketChannelId: channelID,
+                        remoteSocketChannelId: channelId,
                         localSocketChannelId: socketChannel.getChannelId(),
                       });
                     })

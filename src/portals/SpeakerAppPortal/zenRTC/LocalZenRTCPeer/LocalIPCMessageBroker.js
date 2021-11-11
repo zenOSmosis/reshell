@@ -27,7 +27,7 @@ export default class LocalIPCMessageBroker extends IPCMessageBroker {
     // WebIPCMessageBroker instances will receive the same message
     (() => {
       const _handleReceiveMessage = message => {
-        // TODO: Only emit if the received message corresponds to same realmID and channelID
+        // TODO: Only emit if the received message corresponds to same realmId and channelId
 
         this.receiveMessage(message);
       };

@@ -29,8 +29,8 @@ import useForceUpdate from "@hooks/useForceUpdate";
 export default function Networks({
   networks,
   isConnected,
-  realmID,
-  channelID,
+  realmId,
+  channelId,
   onConnectToNetwork,
   onDisconnectFromNetwork,
 }) {
@@ -41,8 +41,8 @@ export default function Networks({
           // TODO: Highlight active network, if currently connected to it
           const isCurrentNetwork =
             isConnected &&
-            realmID === network.realmID &&
-            channelID === network.channelID;
+            realmId === network.realmId &&
+            channelId === network.channelId;
 
           const PadlockIcon = network.isPublic
             ? PadlockOpenIcon
@@ -163,7 +163,7 @@ export default function Networks({
                             textOverflow: "ellipsis",
                           }}
                         >
-                          Realm: {network.realmID}
+                          Realm: {network.realmId}
                         </div>
 
                         <div
@@ -174,7 +174,7 @@ export default function Networks({
                             textOverflow: "ellipsis",
                           }}
                         >
-                          Channel: {network.channelID}
+                          Channel: {network.channelId}
                         </div>
                       </div>
                     </div>

@@ -10,21 +10,21 @@ export { EVT_UPDATED, EVT_DESTROYED };
 export default class LocalZenRTCPeerController extends PhantomCore {
   // TODO: Document
   constructor({ network, ourSocket }) {
-    const { realmID, channelID, transcoderSocketID } = network;
+    const { realmId, channelId, transcoderSocketId } = network;
 
-    if (!realmID) {
-      throw new ReferenceError("realmID must be specified during construction");
+    if (!realmId) {
+      throw new ReferenceError("realmId must be specified during construction");
     }
 
-    if (!channelID) {
+    if (!channelId) {
       throw new ReferenceError(
-        "channelID must be specified during construction"
+        "channelId must be specified during construction"
       );
     }
 
-    if (!transcoderSocketID) {
+    if (!transcoderSocketId) {
       throw new ReferenceError(
-        "transcoderSocketID must be specified during construction"
+        "transcoderSocketId must be specified during construction"
       );
     }
 
@@ -42,8 +42,8 @@ export default class LocalZenRTCPeerController extends PhantomCore {
       ourSocket,
     });
 
-    this._realmID = realmID;
-    this._channelID = channelID;
+    this._realmId = realmId;
+    this._channelId = channelId;
     this._ourSocket = ourSocket;
 
     // Contains our shared state
@@ -65,22 +65,22 @@ export default class LocalZenRTCPeerController extends PhantomCore {
 
   // TODO: Document
   /*
-  getRealmID() {
-    return this._realmID;
+  getRealmId() {
+    return this._realmId;
   }
   */
 
   // TODO: Document
   /*
-  getChannelID() {
-    return this._channelID;
+  getChannelId() {
+    return this._channelId;
   }
   */
 
   // TODO: Pass in via constructor
   // TODO: Remove
-  setSocketID(socketID) {
-    this.setState({ socketID });
+  setSocketId(socketId) {
+    this.setState({ socketId });
   }
 
   // TODO: Pass in via constructor
@@ -97,17 +97,17 @@ export default class LocalZenRTCPeerController extends PhantomCore {
       () => this._ipcMessageBroker?.destroy(),
     ]);
 
-    const realmID = this._realmID;
-    const channelID = this._channelID;
+    const realmId = this._realmId;
+    const channelId = this._channelId;
 
-    const { iceServers, socketID } = this.getState();
+    const { iceServers, socketId } = this.getState();
 
     const writableSyncObject = this._writableSyncObject;
     const readOnlySyncObject = this._readOnlySyncObject;
 
     /*
     iceServers,
-    socketID,
+    socketId,
     isInitiator = false,
     shouldAutoReconnect = true, // Only if isInitiator
     offerToReceiveAudio = true,
@@ -117,20 +117,20 @@ export default class LocalZenRTCPeerController extends PhantomCore {
     preferredAudioCodecs = ["opus"],
     */
     const localZenRTCPeer = new LocalZenRTCPeer({
-      realmID,
-      channelID,
+      realmId,
+      channelId,
       iceServers,
-      socketID,
+      socketId,
       writableSyncObject,
       readOnlySyncObject,
     });
 
     // TODO: Remove
     console.warn("TODO: Implement connect", {
-      realmID,
-      channelID,
+      realmId,
+      channelId,
       iceServers,
-      socketID,
+      socketId,
       writableSyncObject,
       readOnlySyncObject,
     });

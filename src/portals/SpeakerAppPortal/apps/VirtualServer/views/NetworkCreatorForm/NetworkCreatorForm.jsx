@@ -64,8 +64,8 @@ export default function CreateNetwork({ onSubmit }) {
       networkName,
       networkDescription,
       isPublic,
-      realmID,
-      channelID,
+      realmId,
+      channelId,
       isShowingAdvanced,
       // launchTarget,
     },
@@ -78,8 +78,8 @@ export default function CreateNetwork({ onSubmit }) {
       networkDescription: "",
       // TODO: Change isPublic default to false after adding in ability to connect to private networks
       isPublic: true,
-      // realmID: deviceAddress,
-      channelID: "",
+      // realmId: deviceAddress,
+      channelId: "",
       isShowingAdvanced: false,
       // launchTarget: LAUNCH_TARGET_IFRAME,
     }
@@ -98,16 +98,16 @@ export default function CreateNetwork({ onSubmit }) {
       networkName,
       networkDescription,
       isPublic,
-      realmID,
-      channelID,
+      realmId,
+      channelId,
       isShowingAdvanced,
     });
   }, [
     networkName,
     networkDescription,
     isPublic,
-    realmID,
-    channelID,
+    realmId,
+    channelId,
     isShowingAdvanced,
     onSubmit,
   ]);
@@ -116,7 +116,7 @@ export default function CreateNetwork({ onSubmit }) {
   /*
   useEffect(() => {
     setState({
-      channelID: networkName.toLowerCase().replaceAll(" ", "-"),
+      channelId: networkName.toLowerCase().replaceAll(" ", "-"),
     });
   }, [networkName, setState]);
   */
@@ -136,7 +136,7 @@ export default function CreateNetwork({ onSubmit }) {
               Share this URL with others whom you wish to join your network.
             </div>
             <input
-              defaultValue={getCallURL({ realmID, channelID })}
+              defaultValue={getCallURL({ realmId, channelId })}
               readOnly
               style={{ textAlign: "center" }}
             />
@@ -146,8 +146,8 @@ export default function CreateNetwork({ onSubmit }) {
             <button
               onClick={() =>
                 openRoute(ROUTE_CALL_URL, {
-                  realmID,
-                  channelID,
+                  realmId,
+                  channelId,
                 })
               }
               style={{ backgroundColor: "rgb(52, 127, 232)", marginRight: 8 }}
@@ -298,10 +298,10 @@ export default function CreateNetwork({ onSubmit }) {
                     <label>Realm</label>
                     <input
                       type="text"
-                      value={realmID}
+                      value={realmId}
                       onChange={evt =>
                         setState({
-                          realmID: evt.target.value,
+                          realmId: evt.target.value,
                         })
                       }
                     />
@@ -316,10 +316,10 @@ export default function CreateNetwork({ onSubmit }) {
                     <label>Channel</label>
                     <input
                       type="text"
-                      value={channelID}
+                      value={channelId}
                       onChange={evt =>
                         setState({
-                          channelID: evt.target.value,
+                          channelId: evt.target.value,
                         })
                       }
                     />

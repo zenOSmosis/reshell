@@ -32,7 +32,7 @@ const VirtualServer = {
       appServices[SpeakerAppVirtualServerControllerService];
 
     const isHosting = virtualServerService.getIsHosting();
-    const { realmID, channelID } = virtualServerService.getNetworkRoute();
+    const { realmId, channelId } = virtualServerService.getNetworkRoute();
 
     // TODO: Implement?
     // const handleStopVirtualServer = useCallback(() => {}, []);
@@ -57,9 +57,9 @@ const VirtualServer = {
             <div>
               {isHosting && (
                 <div style={{ fontSize: ".9em" }}>
-                  Realm ID: {realmID}
+                  Realm ID: {realmId}
                   <br />
-                  Channel ID: {channelID}
+                  Channel ID: {channelId}
                 </div>
               )}
             </div>

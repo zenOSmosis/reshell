@@ -5,11 +5,11 @@ import pty from "./pty";
 export default function requestDataChannelRoute(socketAPI) {
   // TODO: Include potential authorization, channel type, etc
   // TODO: Use constant?
-  socketAPI.addRoute("request-data-channel", ({ channelID, type }) => {
+  socketAPI.addRoute("request-data-channel", ({ channelId, type }) => {
     const socket = socketAPI.getSocket();
 
     // TODO: Refactor
-    const socketChannel = new SocketChannel(socket, channelID);
+    const socketChannel = new SocketChannel(socket, channelId);
 
     // TODO: Remove?
     /*
@@ -35,7 +35,7 @@ export default function requestDataChannelRoute(socketAPI) {
     });
 
     return {
-      channelID: socketChannel.getChannelId(),
+      channelId: socketChannel.getChannelId(),
     };
   });
 }

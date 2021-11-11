@@ -91,8 +91,8 @@ const CallCentralStation = {
                 <Networks
                   networks={networks}
                   // isConnected,
-                  // realmID,
-                  // channelID,
+                  // realmId,
+                  // channelId,
                   onConnectToNetwork={networkService.connectToNetwork}
                   onDisconnectFromNetwork={networkService.disconnectFromNetwork}
                 />

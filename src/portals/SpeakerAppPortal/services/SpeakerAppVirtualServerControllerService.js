@@ -16,8 +16,8 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
     // TODO: Migrate to setInitialState once available
     this.setState({
       isHosting: false,
-      realmID: null,
-      channelID: null,
+      realmId: null,
+      channelId: null,
     });
 
     this._socketService = this.useServiceClass(
@@ -32,11 +32,11 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
 
   // TODO: Document
   getNetworkRoute() {
-    const { realmID, channelID } = this.getState();
+    const { realmId, channelId } = this.getState();
 
     return {
-      realmID,
-      channelID,
+      realmId,
+      channelId,
     };
   }
 
@@ -49,9 +49,9 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
         params
       );
 
-      const { realmID, channelID } = params;
+      const { realmId, channelId } = params;
 
-      this.setState({ isHosting: true, realmID, channelID });
+      this.setState({ isHosting: true, realmId, channelId });
     } catch (err) {
       // TODO: Handle error
       throw err;
@@ -65,6 +65,6 @@ export default class SpeakerAppVirtualServerControllerService extends UIServiceC
       SOCKET_API_ROUTE_END_TRANSCODER_SESSION
     );
 
-    this.setState({ isHosting: false, realmID: null, channelID: null });
+    this.setState({ isHosting: false, realmId: null, channelId: null });
   }
 }

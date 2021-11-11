@@ -22,7 +22,7 @@ export {
  */
 export default class SocketChannel extends PhantomCore {
   /**
-   * Utilized to send arbitrary event over static channelID event.
+   * Utilized to send arbitrary event over static channelId event.
    *
    * @param {string} eventName
    * @param {number | string | boolean | Object | ArrayBuffer} eventData
@@ -47,17 +47,17 @@ export default class SocketChannel extends PhantomCore {
 
   /**
    * @param {Object} socket socket.io socket.
-   * @param {string} channelID? If null, a channel id will be created
+   * @param {string} channelId? If null, a channel id will be created
    * internally and this instance will become the host instance.
    */
-  constructor(socket, channelID = null) {
+  constructor(socket, channelId = null) {
     super();
 
     this._receiveSocketData = this._receiveSocketData.bind(this);
 
     this._socket = socket;
 
-    this._channelID = channelID || `socketChannel/${this.getUUID()}`;
+    this._channelId = channelId || `socketChannel/${this.getUUID()}`;
 
     this._initSocketHandler();
 
@@ -66,7 +66,7 @@ export default class SocketChannel extends PhantomCore {
     setTimeout(() => {
       this.emit(EVT_CONNECTED);
 
-      this.log(`Created data channel with id: ${this._channelID}`);
+      this.log(`Created data channel with id: ${this._channelId}`);
     }, 1);
 
     // Handle channel auto-destruct when socket disconnects
@@ -91,7 +91,7 @@ export default class SocketChannel extends PhantomCore {
    */
   _initSocketHandler() {
     // Initialize the channel on the socket
-    this._socket.on(this._channelID, this._receiveSocketData);
+    this._socket.on(this._channelId, this._receiveSocketData);
   }
 
   /**
@@ -102,14 +102,14 @@ export default class SocketChannel extends PhantomCore {
    */
   _deinitSocketHandler() {
     // De-initialize the channel on the socket
-    this._socket.off(this._channelID, this._receiveSocketData);
+    this._socket.off(this._channelId, this._receiveSocketData);
   }
 
   /**
    * @return {Promise<void>}
    */
   async destroy() {
-    this.log(`Destructing data channel with id: ${this._channelID}`);
+    this.log(`Destructing data channel with id: ${this._channelId}`);
 
     // IMPORTANT: Emits remotely (let the other peer know we're shutting down)
     this.emit(EVT_BEFORE_REMOTE_DISCONNECT);
@@ -140,7 +140,7 @@ export default class SocketChannel extends PhantomCore {
    * @return {string | number}
    */
   getChannelId() {
-    return this._channelID;
+    return this._channelId;
   }
 
   /**
@@ -160,7 +160,7 @@ export default class SocketChannel extends PhantomCore {
   emit(eventName, eventData) {
     // Send arbitrary event data over Socket.io
     this._socket.emit(
-      this._channelID,
+      this._channelId,
       SocketChannel.marshallEventData(eventName, eventData)
     );
   }
