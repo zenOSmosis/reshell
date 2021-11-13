@@ -35,6 +35,44 @@ export {
   EVT_ZENRTC_SIGNAL,
 };
 
-// TODO: Build out
-// TODO: See https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCPeer/WebZenRTCPeer.js
-export default class LocalZenRTCPeer extends ZenRTCPeer {}
+// TODO: Potentially refactor into shared base class for local / virtual server usage
+export default class LocalZenRTCPeer extends ZenRTCPeer {
+  // TODO: Document
+  constructor({ network, ourSocket, iceServers }) {
+    const { realmId, channelId, transcoderSocketId } = network;
+
+    if (!realmId) {
+      throw new ReferenceError("realmId must be specified during construction");
+    }
+
+    if (!channelId) {
+      throw new ReferenceError(
+        "channelId must be specified during construction"
+      );
+    }
+
+    if (!transcoderSocketId) {
+      throw new ReferenceError(
+        "transcoderSocketId must be specified during construction"
+      );
+    }
+
+    if (!ourSocket) {
+      throw new ReferenceError(
+        "ourSocket must be specified during construction"
+      );
+    }
+
+    if (!iceServers) {
+      throw new ReferenceError(
+        "iceServers must be specified during construction"
+      );
+    }
+
+    super({
+      /* */
+    });
+
+    // TODO: Build out
+  }
+}
