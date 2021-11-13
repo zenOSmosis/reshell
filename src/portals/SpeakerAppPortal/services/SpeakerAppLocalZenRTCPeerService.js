@@ -1,9 +1,9 @@
 import { PhantomCollection } from "phantom-core";
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import LocalZenRTCPeerController from "./LocalZenRTCPeerController";
+import LocalZenRTCPeerController from "../zenRTC/LocalZenRTCPeerController";
 
-import SpeakerAppNetworkService from "../SpeakerAppNetworkService";
-import SpeakerAppSocketAuthenticationService from "../SpeakerAppSocketAuthenticationService";
+import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
+import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 
 export { EVT_UPDATED };
 
@@ -63,10 +63,13 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     // TODO: Consider refactoring by passing in network service; could span multiple network types
     const networkService = this.useServiceClass(SpeakerAppNetworkService);
 
+    const iceServers = await networkService.fetchICEServers();
+
     const ourSocket = socketService.getSocket();
     const zenRTCPeerController = new LocalZenRTCPeerController({
       network,
       ourSocket,
+      iceServers,
     });
 
     this._addLocalZenRTCPeerControllerInstance(zenRTCPeerController);
@@ -80,12 +83,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
       // TODO: Handle routing of remote states
     });
-
-    const socketId = socketService.getSocketId();
-    const iceServers = await networkService.fetchICEServers();
-
-    zenRTCPeerController.setSocketId(socketId);
-    zenRTCPeerController.setICEServers(iceServers);
 
     return zenRTCPeerController.connect();
   }

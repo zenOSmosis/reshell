@@ -1,7 +1,7 @@
 import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import SyncObject from "sync-object";
 
-import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
+import LocalZenRTCPeer from "./LocalZenRTCPeer";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
@@ -9,7 +9,7 @@ export { EVT_UPDATED, EVT_DESTROYED };
 // TODO: Potentially refactor into shared base class for local / virtual server usage
 export default class LocalZenRTCPeerController extends PhantomCore {
   // TODO: Document
-  constructor({ network, ourSocket }) {
+  constructor({ network, ourSocket, iceServers }) {
     const { realmId, channelId, transcoderSocketId } = network;
 
     if (!realmId) {
@@ -34,6 +34,12 @@ export default class LocalZenRTCPeerController extends PhantomCore {
       );
     }
 
+    if (!iceServers) {
+      throw new ReferenceError(
+        "iceServers must be specified during construction"
+      );
+    }
+
     super();
 
     // TODO: Remove
@@ -45,6 +51,7 @@ export default class LocalZenRTCPeerController extends PhantomCore {
     this._realmId = realmId;
     this._channelId = channelId;
     this._ourSocket = ourSocket;
+    this._iceServers = iceServers;
 
     // Contains our shared state
     this._writableSyncObject = new SyncObject();
@@ -64,29 +71,13 @@ export default class LocalZenRTCPeerController extends PhantomCore {
   }
 
   // TODO: Document
-  /*
   getRealmId() {
     return this._realmId;
   }
-  */
 
   // TODO: Document
-  /*
   getChannelId() {
     return this._channelId;
-  }
-  */
-
-  // TODO: Pass in via constructor
-  // TODO: Remove
-  setSocketId(socketId) {
-    this.setState({ socketId });
-  }
-
-  // TODO: Pass in via constructor
-  // TODO: Remove
-  setICEServers(iceServers) {
-    this.setState({ iceServers });
   }
 
   // TODO: Document
@@ -99,8 +90,8 @@ export default class LocalZenRTCPeerController extends PhantomCore {
 
     const realmId = this._realmId;
     const channelId = this._channelId;
-
-    const { iceServers, socketId } = this.getState();
+    const socketId = this._ourSocket.id;
+    const iceServers = this._iceServers;
 
     const writableSyncObject = this._writableSyncObject;
     const readOnlySyncObject = this._readOnlySyncObject;

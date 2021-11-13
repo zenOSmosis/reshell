@@ -131,9 +131,9 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * TODO: Rename to getThreadInstances?
+   * TODO: Rename to getZenRTCPeerInstances
    *
-   * Retrieves all ZenRTCPeer instances in this thread.
+   * Retrieves all ZenRTCPeer instances in this CPU thread.
    *
    * @return {ZenRTCPeer[]}
    */
@@ -142,12 +142,11 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * TODO: Rename to getOtherThreadInstances?
+   * TODO: Rename to getOtherZenRTCPeerInstance
    *
-   * Fetches ZenRTCPeer instances without the given peer, with the same CPU
-   * thread.
+   * Retrieves other ZenRTCPeer instances, besides the given instance.
    *
-   * IMPORTANT: This does not handle multiplexed peers.
+   * IMPORTANT: This does not handle multiplexed peers on its own.
    *
    * @param {ZenRTCPeer} peer
    * @return {ZenRTCPeer[]}
@@ -193,12 +192,12 @@ export default class ZenRTCPeer extends PhantomCore {
     preferredAudioCodecs = ["opus"],
   }) {
     if (!socketId) {
-      throw new Error("No socketId present");
+      throw new ReferenceError("No socketId present");
     }
 
     if (_instances[socketId]) {
-      throw new Error(
-        `Thread already contains ZenRTCPeer instance with socketId ${socketId}`
+      throw new ReferenceError(
+        `Thread already contains ZenRTCPeer instance with socketId "${socketId}"`
       );
     }
 
