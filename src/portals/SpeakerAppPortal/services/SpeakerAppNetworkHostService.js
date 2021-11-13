@@ -7,7 +7,7 @@ import {
 } from "../shared/socketAPIRoutes";
 
 // TODO: Document
-export default class SpeakerAppVirtualServerControllerService extends UIServiceCore {
+export default class SpeakerAppNetworkHostService extends UIServiceCore {
   constructor({ ...args }) {
     super({
       ...args,
