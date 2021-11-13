@@ -7,13 +7,13 @@ export { TYPE_WEB_IPC_MESSAGE };
 // TODO: Build out
 // TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/TranscoderApp/subClasses/TranscoderIPCMessageBroker.js
 export default class VirtualServerIPCMessageBroker extends IPCMessageBroker {
-  constructor({ socketIoIdTo, socket, ...rest }) {
-    super({ socketIoIdTo, ...rest });
+  constructor({ socketIdTo, socket, ...rest }) {
+    super({ socketIdTo, ...rest });
 
     // TODO: Enable to co-exist over same Socket.io connection as local ZenRTCPeer
 
     this._socket = socket;
-    this._initiatorSocketIoId = socketIoIdTo;
+    this._initiatorSocketIoId = socketIdTo;
   }
 
   // TODO: Document
@@ -26,8 +26,8 @@ export default class VirtualServerIPCMessageBroker extends IPCMessageBroker {
     this._socket.emit(TYPE_WEB_IPC_MESSAGE, {
       realmId: this._realmId,
       channelId: this._channelId,
-      socketIoIdTo: this._initiatorSocketIoId,
-      socketIoIdFrom: this._socket.id,
+      socketIdTo: this._initiatorSocketIoId,
+      socketIdFrom: this._socket.id,
       ...data,
     });
   }

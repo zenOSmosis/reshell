@@ -16,8 +16,10 @@ export {
 // @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebIPCMessageBroker/WebIPCMessageBroker.js
 export default class LocalIPCMessageBroker extends IPCMessageBroker {
   // TODO: Document
-  constructor({ socket, ...rest }) {
-    super({ ...rest });
+  constructor({ socket, socketIdTo, realmId, channelId }) {
+    const socketIdFrom = socket.id;
+
+    super({ socketIdFrom, socketIdTo, realmId, channelId });
 
     this._socket = socket;
 
@@ -44,16 +46,16 @@ export default class LocalIPCMessageBroker extends IPCMessageBroker {
     const {
       realmId = this._realmId,
       channelId = this._channelId,
-      socketIoIdFrom = this._socketIoIdFrom,
-      socketIoIdTo = this._socketIoIdTo,
+      socketIdFrom = this._socketIdFrom,
+      socketIdTo = this._socketIdTo,
       ...rest
     } = message;
 
     this._socket.emit(TYPE_WEB_IPC_MESSAGE, {
       realmId,
       channelId,
-      socketIoIdFrom,
-      socketIoIdTo,
+      socketIdFrom,
+      socketIdTo,
       ...rest,
     });
   }

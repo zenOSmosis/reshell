@@ -15,7 +15,9 @@ import ZenRTCPeer, {
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
-import LocalIPCMessageBroker from "./LocalIPCMessageBroker";
+import LocalIPCMessageBroker, {
+  EVT_MESSAGE_RECEIVED,
+} from "./LocalIPCMessageBroker";
 
 export {
   EVT_UPDATED,
@@ -79,6 +81,10 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
     const ipcMessageBroker = new LocalIPCMessageBroker({
       socket: ourSocket,
+      realmId,
+      channelId,
+      socketIdFrom: ourSocket.id,
+      socketIdTo: transcoderSocketId,
     });
 
     super({
@@ -97,11 +103,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     this._ipcMessageBroker = ipcMessageBroker;
     this.registerShutdownHandler(() => this._ipcMessageBroker.destroy());
 
-    this.on(EVT_SDP_OFFERED, data => {
-      // TODO: Handle
-      console.warn("TODO: Implement SDP offered", data);
+    this.on(EVT_ZENRTC_SIGNAL, data => {
+      this._ipcMessageBroker.sendMessage(data);
     });
 
-    // TODO: Listen to SDP answers from message broker and handle accordingly in ZenRTCPeer
+    this._ipcMessageBroker.on(EVT_MESSAGE_RECEIVED, data => {
+      // this.receiveZenRTCSignal(data);
+
+      console.warn("TODO: Handle EVT_MESSAGE_RECEIVED", data);
+    });
   }
 }
