@@ -43,6 +43,10 @@ export default class SDPAdapter {
       codec.toUpperCase()
     );
 
+    // Type-case to integer (this value will be run inline to configure fmtp
+    // below)
+    maxAverageBitrate = parseInt(maxAverageBitrate, 10);
+
     const parsedSDP = sdpTransform.parse(sdp);
 
     parsedSDP.media = parsedSDP.media.map(media => {
