@@ -35,11 +35,11 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   }
 
   // TODO: Document
-  _addLocalZenRTCPeerInstance(controller) {
-    const realmId = controller.getRealmId();
-    const channelId = controller.getChannelId();
+  _addLocalZenRTCPeerInstance(localZenRTCPeer) {
+    const realmId = localZenRTCPeer.getRealmId();
+    const channelId = localZenRTCPeer.getChannelId();
     const collectionKey = this._getCollectionKey({ realmId, channelId });
-    this._LocalZenRTCPeerCollection.addChild(controller, collectionKey);
+    this._LocalZenRTCPeerCollection.addChild(localZenRTCPeer, collectionKey);
   }
 
   // TODO: Document

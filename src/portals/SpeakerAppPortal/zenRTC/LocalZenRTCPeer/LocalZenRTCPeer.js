@@ -38,7 +38,15 @@ export {
 // TODO: Potentially refactor into shared base class for local / virtual server usage
 export default class LocalZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
-  constructor({ network, ourSocket, iceServers }) {
+  constructor({
+    network,
+    ourSocket,
+    iceServers,
+    writableSyncObject,
+    readOnlySyncObject,
+    offerToReceiveAudio = true,
+    offerToReceiveVideo = true,
+  }) {
     const { realmId, channelId, transcoderSocketId } = network;
 
     if (!realmId) {
@@ -69,10 +77,31 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       );
     }
 
+    const socketId = ourSocket.id;
+
     super({
-      /* */
+      iceServers,
+      socketId,
+      realmId,
+      channelId,
+      writableSyncObject,
+      readOnlySyncObject,
+      offerToReceiveAudio,
+      offerToReceiveVideo,
+      isInitiator: true,
+      shouldAutoReconnect: true,
     });
 
     // TODO: Build out
+
+    this.on(EVT_SDP_OFFERED, data => {
+      // TODO: Handle
+      console.warn("TODO: Implement SDP offered", data);
+    });
+
+    this.on(EVT_SDP_ANSWERED, data => {
+      // TODO: Handle
+      console.warn("TODO: Implement SDP answered", data);
+    });
   }
 }

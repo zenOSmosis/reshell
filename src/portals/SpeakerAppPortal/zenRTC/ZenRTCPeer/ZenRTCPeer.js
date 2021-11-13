@@ -172,10 +172,12 @@ export default class ZenRTCPeer extends PhantomCore {
   /**
    * @param {Object[]} iceServers
    * @param {string} socketId Used primarily for peer distinction // TODO: Rename
+   * // TODO: Document realmId / channelId
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
    * @param {boolean} shouldAutoReconnect? [default=true] Has no effect if is
    * not initiator.
+   * // TODO: Document writable / readOnlySyncObject
    * @param {boolean} offerToReceiveAudio? [default=true]
    * @param {boolean} offerToReceiveVideo? [default=true]
    * @param {string} preferredAudioCodecs? [default=["opus"]]
@@ -183,10 +185,12 @@ export default class ZenRTCPeer extends PhantomCore {
   constructor({
     iceServers,
     socketId,
+    realmId,
+    channelId,
     isInitiator = false,
+    shouldAutoReconnect = true, // Only if isInitiator
     writableSyncObject = null,
     readOnlySyncObject = null,
-    shouldAutoReconnect = true, // Only if isInitiator
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
     preferredAudioCodecs = ["opus"],
@@ -212,6 +216,9 @@ export default class ZenRTCPeer extends PhantomCore {
     this.preferredAudioCodecs = preferredAudioCodecs;
 
     _instances[socketId] = this;
+
+    this._realmId = realmId;
+    this._channelId = channelId;
 
     this.log.debug(
       `Constructing new ${
@@ -290,6 +297,20 @@ export default class ZenRTCPeer extends PhantomCore {
     })();
 
     this._reconnectArgs = [];
+  }
+
+  /**
+   * @return {string}
+   */
+  getRealmId() {
+    return this._realmId;
+  }
+
+  /**
+   * @return {string}
+   */
+  getChannelId() {
+    return this._channelId;
   }
 
   /**
