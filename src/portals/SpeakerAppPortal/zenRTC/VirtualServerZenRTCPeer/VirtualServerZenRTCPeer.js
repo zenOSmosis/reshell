@@ -62,7 +62,7 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
       // TODO: Keep this like this?
       this.connect = () => null;
 
-      // TODO: Emit through ipcMessageBroker that "the room is full"
+      // TODO: Emit through zenRTCSignalBroker that "the room is full"
       return;
     }
 

@@ -1,12 +1,12 @@
-import IPCMessageBroker, {
+import ZenRTCSignalBroker, {
   TYPE_WEB_IPC_MESSAGE,
-} from "../../shared/IPCMessageBroker";
+} from "../../shared/ZenRTCSignalBroker";
 
 export { TYPE_WEB_IPC_MESSAGE };
 
 // TODO: Build out
-// TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/TranscoderApp/subClasses/TranscoderIPCMessageBroker.js
-export default class VirtualServerIPCMessageBroker extends IPCMessageBroker {
+// TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/TranscoderApp/subClasses/TranscoderZenRTCSignalBroker.js
+export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker {
   constructor({ socketIdTo, socket, ...rest }) {
     super({ socketIdTo, ...rest });
 

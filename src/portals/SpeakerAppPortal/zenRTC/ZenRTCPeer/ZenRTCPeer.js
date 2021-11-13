@@ -27,7 +27,7 @@ import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule"
 import DataChannelManagerModule from "./modules/ZenRTCPeer.DataChannelManagerModule";
 import SyncEventDataChannelModule from "./modules/ZenRTCPeer.SyncEventDataChannelModule";
 
-// ZenRTCPeer instances running on this thread, using ipcMessageBrokerId as reference
+// ZenRTCPeer instances running on this thread, using zenRTCSignalBrokerId as reference
 // keys
 const _instances = {};
 
@@ -152,26 +152,26 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {ZenRTCPeer[]}
    */
   static getOtherInstances(peer) {
-    const ipcMessageBrokerId = peer.getIpcMessageBrokerId();
+    const zenRTCSignalBrokerId = peer.getIpcMessageBrokerId();
 
     const otherPeers = ZenRTCPeer.getInstances().filter(
-      testPeer => testPeer.getIpcMessageBrokerId() !== ipcMessageBrokerId
+      testPeer => testPeer.getIpcMessageBrokerId() !== zenRTCSignalBrokerId
     );
 
     return otherPeers;
   }
 
   /**
-   * @param {string} ipcMessageBrokerId
+   * @param {string} zenRTCSignalBrokerId
    * @return {ZenRTCPeer}
    */
-  static getInstanceWithIpcMessageBrokerId(ipcMessageBrokerId) {
-    return _instances[ipcMessageBrokerId];
+  static getInstanceWithIpcMessageBrokerId(zenRTCSignalBrokerId) {
+    return _instances[zenRTCSignalBrokerId];
   }
 
   /**
    * @param {Object[]} iceServers
-   * @param {string} ipcMessageBrokerId Used primarily for peer distinction
+   * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction
    * // TODO: Document realmId / channelId
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
@@ -184,7 +184,7 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   constructor({
     iceServers,
-    ipcMessageBrokerId,
+    zenRTCSignalBrokerId,
     realmId,
     channelId,
     isInitiator = false,
@@ -195,19 +195,19 @@ export default class ZenRTCPeer extends PhantomCore {
     offerToReceiveVideo = true,
     preferredAudioCodecs = ["opus"],
   }) {
-    if (!ipcMessageBrokerId) {
-      throw new ReferenceError("No ipcMessageBrokerId present");
+    if (!zenRTCSignalBrokerId) {
+      throw new ReferenceError("No zenRTCSignalBrokerId present");
     }
 
-    if (_instances[ipcMessageBrokerId]) {
+    if (_instances[zenRTCSignalBrokerId]) {
       throw new ReferenceError(
-        `ZenRTCPeer instance with ipcMessageBrokerId "${ipcMessageBrokerId}" already exists`
+        `ZenRTCPeer instance with zenRTCSignalBrokerId "${zenRTCSignalBrokerId}" already exists`
       );
     }
 
     super();
 
-    _instances[ipcMessageBrokerId] = this;
+    _instances[zenRTCSignalBrokerId] = this;
 
     this._iceServers = iceServers;
 
@@ -223,7 +223,7 @@ export default class ZenRTCPeer extends PhantomCore {
     this.log.debug(
       `Constructing new ${
         this.constructor.name
-      } with ipcMessageBrokerId "${ipcMessageBrokerId}" as "${
+      } with zenRTCSignalBrokerId "${zenRTCSignalBrokerId}" as "${
         isInitiator ? "initiator" : "guest"
       }"`
     );
@@ -232,7 +232,7 @@ export default class ZenRTCPeer extends PhantomCore {
     this._outgoingMediaStreams = []; // TODO: Use Set
     this._incomingMediaStreams = []; // TODO: Use Set
 
-    this._ipcMessageBrokerId = ipcMessageBrokerId;
+    this._zenRTCSignalBrokerId = zenRTCSignalBrokerId;
     this._isInitiator = isInitiator;
     this._shouldAutoReconnect = shouldAutoReconnect;
 
@@ -516,14 +516,14 @@ export default class ZenRTCPeer extends PhantomCore {
 
   /**
    * Utilized for peer identification and should match the Socket.io id
-   * provided in the signaling (ipcMessageBroker).
+   * provided in the signaling (zenRTCSignalBroker).
    *
    * TODO: Rename to getSignalingId?
    *
    * @return {string}
    */
   getIpcMessageBrokerId() {
-    return this._ipcMessageBrokerId;
+    return this._zenRTCSignalBrokerId;
   }
 
   /**
@@ -611,7 +611,7 @@ export default class ZenRTCPeer extends PhantomCore {
           /*
           this.log.debug({
             offer: sdpTransform.parse(sdp),
-            ipcMessageBrokerId: this.getIpcMessageBrokerId(),
+            zenRTCSignalBrokerId: this.getIpcMessageBrokerId(),
           });
           */
 
@@ -634,7 +634,7 @@ export default class ZenRTCPeer extends PhantomCore {
       this._webrtcPeer = new WebRTCPeer(simplePeerOptions);
 
       // TODO: Build out
-      // TODO: Send up ipcMessageBroker
+      // TODO: Send up zenRTCSignalBroker
       /** @see https://github.com/feross/simple-peer#error-codes */
       this._webrtcPeer.on("error", async err => {
         // TODO: Debug error and determine if we need to try to reconnect
@@ -772,7 +772,7 @@ export default class ZenRTCPeer extends PhantomCore {
       this.emit(EVT_SDP_ANSWERED, signal.sdp);
     } else {
       throw new Error(
-        `No WebRTCPeer in ${this.constructor.name} with ipcMessageBrokerId "${this._ipcMessageBrokerId}"`
+        `No WebRTCPeer in ${this.constructor.name} with zenRTCSignalBrokerId "${this._zenRTCSignalBrokerId}"`
       );
     }
   }
@@ -1193,7 +1193,7 @@ export default class ZenRTCPeer extends PhantomCore {
     //
     // IMPORTANT: This should be set before any event emitters are emitted, so
     // that counts are updated properly
-    delete _instances[this._ipcMessageBrokerId];
+    delete _instances[this._zenRTCSignalBrokerId];
 
     // Disconnect handler
     await (async () => {

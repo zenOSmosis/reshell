@@ -1,9 +1,9 @@
-import IPCMessageBroker, {
+import ZenRTCSignalBroker, {
   EVT_DESTROYED,
   EVT_MESSAGE_RECEIVED,
   EVT_READY_STATE_CHANGED,
   TYPE_WEB_IPC_MESSAGE,
-} from "../../shared/IPCMessageBroker";
+} from "../../shared/ZenRTCSignalBroker";
 
 export {
   EVT_READY_STATE_CHANGED,
@@ -13,8 +13,8 @@ export {
 };
 
 // TODO: Document
-// @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebIPCMessageBroker/WebIPCMessageBroker.js
-export default class LocalIPCMessageBroker extends IPCMessageBroker {
+// @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCSignalBroker/WebZenRTCSignalBroker.js
+export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
   // TODO: Document
   constructor({ socket, socketIdTo, realmId, channelId }) {
     const socketIdFrom = socket.id;
@@ -26,7 +26,7 @@ export default class LocalIPCMessageBroker extends IPCMessageBroker {
     // Handle all incoming WebIPC messages
     //
     // IMPORTANT: These are not multiplexed at the moment; all
-    // WebIPCMessageBroker instances will receive the same message
+    // WebZenRTCSignalBroker instances will receive the same message
     (() => {
       const _handleReceiveMessage = message => {
         // TODO: Only emit if the received message corresponds to same realmId and channelId

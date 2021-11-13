@@ -15,9 +15,9 @@ import ZenRTCPeer, {
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
-import LocalIPCMessageBroker, {
+import LocalZenRTCSignalBroker, {
   EVT_MESSAGE_RECEIVED,
-} from "./LocalIPCMessageBroker";
+} from "./LocalZenRTCSignalBroker";
 
 export {
   EVT_UPDATED,
@@ -79,7 +79,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       );
     }
 
-    const ipcMessageBroker = new LocalIPCMessageBroker({
+    const zenRTCSignalBroker = new LocalZenRTCSignalBroker({
       socket: ourSocket,
       realmId,
       channelId,
@@ -89,7 +89,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
     super({
       iceServers,
-      ipcMessageBrokerId: ipcMessageBroker.getUUID(),
+      zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
       realmId,
       channelId,
       writableSyncObject,
@@ -100,14 +100,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       shouldAutoReconnect: true,
     });
 
-    this._ipcMessageBroker = ipcMessageBroker;
-    this.registerShutdownHandler(() => this._ipcMessageBroker.destroy());
+    this._zenRTCSignalBroker = zenRTCSignalBroker;
+    this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
 
     this.on(EVT_ZENRTC_SIGNAL, data => {
-      this._ipcMessageBroker.sendMessage(data);
+      this._zenRTCSignalBroker.sendMessage(data);
     });
 
-    this._ipcMessageBroker.on(EVT_MESSAGE_RECEIVED, data => {
+    this._zenRTCSignalBroker.on(EVT_MESSAGE_RECEIVED, data => {
       // this.receiveZenRTCSignal(data);
 
       console.warn("TODO: Handle EVT_MESSAGE_RECEIVED", data);
