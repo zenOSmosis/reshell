@@ -25,14 +25,14 @@ import RocketIcon from "@icons/RocketIcon";
 // import mfuNetwork from "@assets/network/mfu.svg";
 
 /*
-import useTranscoderSandboxContext, {
+import useVirtualServerSandboxContext, {
   LAUNCH_TARGET_SELF,
   LAUNCH_TARGET_IFRAME,
   LAUNCH_TARGET_NEW_WINDOW,
-} from "@baseApps/MainApp/subHooks/useTranscoderSandboxContext";
+} from "@baseApps/MainApp/subHooks/useVirtualServerSandboxContext";
 */
 
-// import { KEY_TRANSCODER_LOCAL_STORAGE_CREDS } from "@local/localStorageKeys";
+// import { KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS } from "@local/localStorageKeys";
 
 // import useLocalStorage from "@hooks/useLocalStorage";
 // import useAppRoutesContext from "@hooks/useAppRoutesContext";
@@ -71,7 +71,7 @@ export default function CreateNetwork({ onSubmit }) {
     },
     setState,
   ] = useObjectState(
-    /* getItem(KEY_TRANSCODER_LOCAL_STORAGE_CREDS) || */ {
+    /* getItem(KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS) || */ {
       // Default form values
       //
       networkName: "",
@@ -87,10 +87,10 @@ export default function CreateNetwork({ onSubmit }) {
 
   /*
   const {
-    initTranscoder,
-    destroyTranscoder,
-    isTranscoderConnected,
-  } = useTranscoderSandboxContext();
+    initVirtualServer,
+    destroyVirtualServer,
+    isVirtualServerConnected,
+  } = useVirtualServerSandboxContext();
   */
 
   const handleSubmit = useCallback(() => {
@@ -122,7 +122,7 @@ export default function CreateNetwork({ onSubmit }) {
   */
 
   /*
-  if (isTranscoderConnected) {
+  if (isVirtualServerConnected) {
     return (
       <Center canOverflow={true}>
         {
@@ -156,7 +156,7 @@ export default function CreateNetwork({ onSubmit }) {
             </button>
 
             <button
-              onClick={destroyTranscoder}
+              onClick={destroyVirtualServer}
               style={{ backgroundColor: "red" }}
             >
               Stop

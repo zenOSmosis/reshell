@@ -49,7 +49,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
   }) {
-    const { realmId, channelId, transcoderSocketId } = network;
+    const { realmId, channelId, virtualServerSocketId } = network;
 
     if (!realmId) {
       throw new ReferenceError("realmId must be specified during construction");
@@ -61,9 +61,9 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       );
     }
 
-    if (!transcoderSocketId) {
+    if (!virtualServerSocketId) {
       throw new ReferenceError(
-        "transcoderSocketId must be specified during construction"
+        "virtualServerSocketId must be specified during construction"
       );
     }
 
@@ -84,7 +84,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       realmId,
       channelId,
       socketIdFrom: ourSocket.id,
-      socketIdTo: transcoderSocketId,
+      socketIdTo: virtualServerSocketId,
     });
 
     super({

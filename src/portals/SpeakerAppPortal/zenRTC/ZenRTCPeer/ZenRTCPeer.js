@@ -212,7 +212,7 @@ export default class ZenRTCPeer extends PhantomCore {
     this._iceServers = iceServers;
 
     // IMPORTANT: This may need to be changed accordingly in order to handle more peers
-    // TODO: Move this to transcoder only
+    // TODO: Move this to virtualServer only
     this.setMaxListeners(100);
 
     this.preferredAudioCodecs = preferredAudioCodecs;

@@ -38,7 +38,7 @@ export {
   EVT_ZENRTC_SIGNAL,
 };
 
-// TODO: Move this handling into TranscoderZenRTCManager
+// TODO: Move this handling into VirtualServerZenRTCManager
 const MAX_INSTANCES = 20;
 
 /**
@@ -51,11 +51,11 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
 
     // this._cssColor = getNextPeerCSSColor();
 
-    // TODO: Move to TranscoderZenRTCManager
-    // TODO: Rename to CAPABILITY_NETWORK_TRANSCODER
+    // TODO: Move to VirtualServerZenRTCManager
+    // TODO: Rename to CAPABILITY_NETWORK_VIRTUAL_SERVER
     this.addCapability(CAPABILITY_MULTI_PEER_MULTIPLEXER);
 
-    // TODO: Move to TranscoderZenRTCManager
+    // TODO: Move to VirtualServerZenRTCManager
     if (VirtualServerZenRTCPeer.getInstances().length > MAX_INSTANCES) {
       this.log.warn("Too many instances");
 

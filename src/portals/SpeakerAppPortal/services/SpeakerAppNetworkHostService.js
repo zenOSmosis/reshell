@@ -2,8 +2,8 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 
 import {
-  SOCKET_API_ROUTE_INIT_TRANSCODER_SESSION,
-  SOCKET_API_ROUTE_END_TRANSCODER_SESSION,
+  SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
+  SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
 } from "../shared/socketAPIRoutes";
 
 // TODO: Document
@@ -41,11 +41,11 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
   }
 
   // TODO: Document
-  // TODO: Wire up to transcoder
+  // TODO: Wire up to virtualServer
   async createVirtualServer(params) {
     try {
       await this._socketService.fetchSocketAPICall(
-        SOCKET_API_ROUTE_INIT_TRANSCODER_SESSION,
+        SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
         params
       );
 
@@ -59,10 +59,10 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
   }
 
   // TODO: Document
-  // TODO: Wire up to transcoder
+  // TODO: Wire up to virtualServer
   async stopVirtualServer() {
     await this._socketService.fetchSocketAPICall(
-      SOCKET_API_ROUTE_END_TRANSCODER_SESSION
+      SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION
     );
 
     this.setState({ isHosting: false, realmId: null, channelId: null });

@@ -37,14 +37,14 @@ export const KEY_SERVICE_AUTHORIZATION = "a0";
  *
  * @type {Object}
  */
-export const KEY_TRANSCODER_LOCAL_STORAGE_CREDS = "t0";
+export const KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS = "t0";
 
 /**
- * Is set to true if the transcoder manually logged out.
+ * Is set to true if the virtualServer manually logged out.
  *
- * If the value is set to true, it should prevent the transcoder auto-reconnect
+ * If the value is set to true, it should prevent the virtualServer auto-reconnect
  * mechanism from reconnecting, as part of the design.
  *
  * @type {boolean}
  */
-export const KEY_TRANSCODER_DID_MANUALLY_LOGOUT = "m0";
+export const KEY_VIRTUAL_SERVER_DID_MANUALLY_LOGOUT = "m0";
