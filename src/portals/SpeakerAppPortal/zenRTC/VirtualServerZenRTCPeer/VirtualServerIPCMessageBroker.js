@@ -1,8 +1,8 @@
 import ZenRTCSignalBroker, {
-  TYPE_WEB_IPC_MESSAGE,
+  TYPE_ZEN_RTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { TYPE_WEB_IPC_MESSAGE };
+export { TYPE_ZEN_RTC_SIGNAL };
 
 // TODO: Build out
 // TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/TranscoderApp/subClasses/TranscoderZenRTCSignalBroker.js
@@ -23,7 +23,7 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
       to: this._initiatorSocketIoId,
     });
 
-    this._socket.emit(TYPE_WEB_IPC_MESSAGE, {
+    this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
       realmId: this._realmId,
       channelId: this._channelId,
       socketIdTo: this._initiatorSocketIoId,

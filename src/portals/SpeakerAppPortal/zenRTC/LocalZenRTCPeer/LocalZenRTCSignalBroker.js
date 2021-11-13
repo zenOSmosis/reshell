@@ -2,14 +2,14 @@ import ZenRTCSignalBroker, {
   EVT_DESTROYED,
   EVT_MESSAGE_RECEIVED,
   EVT_READY_STATE_CHANGED,
-  TYPE_WEB_IPC_MESSAGE,
+  TYPE_ZEN_RTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
 export {
   EVT_READY_STATE_CHANGED,
   EVT_MESSAGE_RECEIVED,
   EVT_DESTROYED,
-  TYPE_WEB_IPC_MESSAGE,
+  TYPE_ZEN_RTC_SIGNAL,
 };
 
 // TODO: Document
@@ -34,10 +34,10 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
         this.receiveMessage(message);
       };
 
-      socket.on(TYPE_WEB_IPC_MESSAGE, _handleReceiveMessage);
+      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
 
       this.once(EVT_DESTROYED, () => {
-        socket.off(TYPE_WEB_IPC_MESSAGE, _handleReceiveMessage);
+        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
       });
     })();
   }
@@ -51,7 +51,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       ...rest
     } = message;
 
-    this._socket.emit(TYPE_WEB_IPC_MESSAGE, {
+    this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
       realmId,
       channelId,
       socketIdFrom,
