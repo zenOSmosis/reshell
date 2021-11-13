@@ -6,7 +6,7 @@ import {
   SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
 } from "../shared/socketAPIRoutes";
 
-// TODO: Document
+// TODO: Document (used for network hosting)
 export default class SpeakerAppNetworkHostService extends UIServiceCore {
   constructor({ ...args }) {
     super({
@@ -43,6 +43,14 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
   // TODO: Document
   // TODO: Wire up to virtualServer
   async createVirtualServer(params) {
+    // TODO: Remove
+    console.log({
+      params,
+    });
+
+    // TODO: Init multi-peer manager here
+    // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
+
     try {
       await this._socketService.fetchSocketAPICall(
         SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
