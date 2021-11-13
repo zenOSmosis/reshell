@@ -171,7 +171,8 @@ export default class ZenRTCPeer extends PhantomCore {
 
   /**
    * @param {Object[]} iceServers
-   * @param {string} socketId Used primarily for peer distinction // TODO: Rename
+   * // TODO: Rename to ipcMessageBrokerId
+   * @param {string} socketId Used primarily for peer distinction
    * // TODO: Document realmId / channelId
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
@@ -201,11 +202,13 @@ export default class ZenRTCPeer extends PhantomCore {
 
     if (_instances[socketId]) {
       throw new ReferenceError(
-        `Thread already contains ZenRTCPeer instance with socketId "${socketId}"`
+        `ZenRTCPeer instance with socketId "${socketId}" already exists`
       );
     }
 
     super();
+
+    _instances[socketId] = this;
 
     this._iceServers = iceServers;
 
@@ -214,8 +217,6 @@ export default class ZenRTCPeer extends PhantomCore {
     this.setMaxListeners(100);
 
     this.preferredAudioCodecs = preferredAudioCodecs;
-
-    _instances[socketId] = this;
 
     this._realmId = realmId;
     this._channelId = channelId;
@@ -1187,6 +1188,8 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
+    // Unregister peer from _instances
+    //
     // IMPORTANT: This should be set before any event emitters are emitted, so
     // that counts are updated properly
     delete _instances[this._socketId];

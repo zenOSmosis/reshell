@@ -46,7 +46,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   async connect(network) {
     const { realmId, channelId } = network;
 
-    // Destruct previous controller for this network, if exists
+    // Destruct previous zenRTCPeer for this network, if exists
     await this._getLocalZenRTCPeerInstance({
       realmId,
       channelId,
