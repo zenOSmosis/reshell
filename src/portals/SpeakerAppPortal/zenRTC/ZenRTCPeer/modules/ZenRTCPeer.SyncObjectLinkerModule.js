@@ -141,6 +141,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
 
       this._zenRTCPeer.on(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
 
+      // TODO: Swap out for this.registerShutdownHandler()
       this.once(EVT_DESTROYED, () => {
         this._zenRTCPeer.off(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
       });

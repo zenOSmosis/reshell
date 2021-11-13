@@ -9,6 +9,7 @@ export default class ZenRTCPeerBaseModule extends PhantomCore {
     this._zenRTCPeer = zenRTCPeer;
 
     // Destroy this module once peer is destroyed
+    // TODO: Swap out for this.registerShutdownHandler()
     this._zenRTCPeer.once(EVT_DESTROYED, () => this.destroy());
   }
 
