@@ -15,7 +15,7 @@ import ZenRTCPeer, {
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
-// import LocalIPCMessageBroker from './LocalIPCMessageBroker'
+import LocalIPCMessageBroker from "./LocalIPCMessageBroker";
 
 export {
   EVT_UPDATED,
@@ -35,7 +35,7 @@ export {
   EVT_ZENRTC_SIGNAL,
 };
 
-// TODO: Potentially refactor into shared base class for local / virtual server usage
+// TODO: Document
 export default class LocalZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
   constructor({
@@ -77,11 +77,13 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       );
     }
 
-    const socketId = ourSocket.id;
+    const ipcMessageBroker = new LocalIPCMessageBroker({
+      socket: ourSocket,
+    });
 
     super({
       iceServers,
-      socketId,
+      ipcMessageBrokerId: ipcMessageBroker.getUUID(),
       realmId,
       channelId,
       writableSyncObject,
@@ -92,16 +94,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       shouldAutoReconnect: true,
     });
 
-    // TODO: Build out
+    this._ipcMessageBroker = ipcMessageBroker;
+    this.registerShutdownHandler(() => this._ipcMessageBroker.destroy());
 
     this.on(EVT_SDP_OFFERED, data => {
       // TODO: Handle
       console.warn("TODO: Implement SDP offered", data);
     });
 
-    this.on(EVT_SDP_ANSWERED, data => {
-      // TODO: Handle
-      console.warn("TODO: Implement SDP answered", data);
-    });
+    // TODO: Listen to SDP answers from message broker and handle accordingly in ZenRTCPeer
   }
 }

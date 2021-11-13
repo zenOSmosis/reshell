@@ -3,7 +3,7 @@ import IPCMessageBroker, {
   EVT_MESSAGE_RECEIVED,
   EVT_READY_STATE_CHANGED,
   TYPE_WEB_IPC_MESSAGE,
-} from "../shared/IPCMessageBroker";
+} from "../../shared/IPCMessageBroker";
 
 export {
   EVT_READY_STATE_CHANGED,

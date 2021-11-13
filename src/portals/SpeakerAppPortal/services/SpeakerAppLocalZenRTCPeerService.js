@@ -63,32 +63,25 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     const iceServers = await networkService.fetchICEServers();
 
     const ourSocket = socketService.getSocket();
-    const zenRTCPeerController = new LocalZenRTCPeer({
+    const localZenRTCPeer = new LocalZenRTCPeer({
       network,
       ourSocket,
       iceServers,
     });
 
-    this._addLocalZenRTCPeerInstance(zenRTCPeerController);
+    // Adds the localZenRTCPeer to a collection; if the service is destructed,
+    // the peer will automatically destruct
+    this._addLocalZenRTCPeerInstance(localZenRTCPeer);
 
-    zenRTCPeerController.on(EVT_UPDATED, nextState => {
-      // TODO: Remove
-      console.log({
-        nextState,
-        fullState: zenRTCPeerController.getState(),
-      });
-
-      // TODO: Handle routing of remote states
-    });
-
-    return zenRTCPeerController.connect();
+    return localZenRTCPeer.connect();
   }
 
   // TODO: Document
   async disconnect(network) {
     const { realmId, channelId } = network;
 
-    // Destruct previous controller for this network, if exists
+    // Destruct previous controller for this network, if exists, and remove it
+    // from the service collection
     return this._getLocalZenRTCPeerInstance({
       realmId,
       channelId,
