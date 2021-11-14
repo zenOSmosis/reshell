@@ -11,7 +11,7 @@ import TranscoderZenRTCPeer, {
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
   // EVT_SYNC_EVT_RECEIVED,
   EVT_ZENRTC_SIGNAL,
-} from "../VirtualServerZenRTCPeer";
+} from "./VirtualServerZenRTCPeer";
 
 import SyncObject from "sync-object";
 
@@ -19,10 +19,10 @@ import SyncObject from "sync-object";
 // import { SOCKET_API_ROUTE_SET_NETWORK_BACKGROUND_IMAGE } from "@shared/socketAPIRoutes";
 
 import TranscoderIPCMessageBroker, {
-  TYPE_WEB_IPC_MESSAGE,
-} from "../TranscoderIPCMessageBroker";
+  TYPE_ZEN_RTC_SIGNAL,
+} from "./VirtualServerZenRTCSignalBroker";
 
-import { TranscoderVirtualParticipant } from "@shared/VirtualParticipant";
+import VirtualServerPhantomPeer from "./VirtualServerPhantomPeer";
 
 // import { uniqBy } from "lodash";
 
@@ -34,6 +34,7 @@ export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
 export const EVT_PEER_UPDATED = "peer-updated";
 
+// TODO: Refactor to enable ability to host multiple networks at a time
 let _instance = null;
 
 // TODO: Use secured indexeddb for storing of messages, etc.
@@ -82,10 +83,10 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     // Handle all incoming WebIPC messages
     (() => {
       const _handleReceiveIPCMessage = data => {
-        const { socketIoIdFrom, senderDeviceAddress } = data;
+        const { socketIdFrom, senderDeviceAddress } = data;
 
         const zenRTCPeer = this._getOrCreateTranscoderZenRTCInstance(
-          socketIoIdFrom,
+          socketIdFrom,
           senderDeviceAddress
         );
 
@@ -94,16 +95,17 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
 
       // TODO: Check realm / channel integrity before starting up zenRTCInstance?
 
-      socket.on(TYPE_WEB_IPC_MESSAGE, _handleReceiveIPCMessage);
+      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveIPCMessage);
 
       this.once(EVT_DESTROYED, () => {
-        socket.off(TYPE_WEB_IPC_MESSAGE, _handleReceiveIPCMessage);
+        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveIPCMessage);
       });
     })();
 
     this._networkName = null;
     this._networkDescription = null;
 
+    // TODO: These binds may not be necessary w/ PhantomCore 2.0.0
     this._peerHasConnected = this._peerHasConnected.bind(this);
     this._peerHasUpdated = this._peerHasUpdated.bind(this);
     this._peerHasDisconnected = this._peerHasDisconnected.bind(this);
@@ -183,7 +185,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
 
   /**
    * Gets, or creates, TranscoderZenRTCPeer associated with the given
-   * socketIoId.
+   * socketId.
    *
    * @param {string} initiatorSocketIoId
    * @param {string} initiatorDeviceAddress
@@ -202,7 +204,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
       /**
        * Read the remote participant.
        */
-      const readOnlySyncObject = new TranscoderVirtualParticipant(
+      const readOnlySyncObject = new VirtualServerPhantomPeer(
         initiatorDeviceAddress,
         initiatorSocketIoId
       );
@@ -210,7 +212,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
       const virtualParticipant = readOnlySyncObject;
 
       const transcoderZenRTCPeer = new TranscoderZenRTCPeer({
-        socketIoId: initiatorSocketIoId,
+        socketId: initiatorSocketIoId,
         // NOTE: The writable is shared between all of the participants and
         // does not represent a single participant (it symbolized all of them)
         writableSyncObject: this._sharedWritableSyncObject,
@@ -226,8 +228,8 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
           realmId: this._realmId,
           channelId: this._channelId,
           socket: this._socket,
-          socketIoIdTo: initiatorSocketIoId,
-          socketIoIdFrom: this._socket.id,
+          socketIdTo: initiatorSocketIoId,
+          socketIdFrom: this._socket.id,
         });
 
         transcoderZenRTCPeer.on(EVT_ZENRTC_SIGNAL, data =>
@@ -349,22 +351,23 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     }
   }
 
+  // TODO: Refactor
   /**
    * Sync peer data (except for streaming media information) / chosen
    * background with other peers.
    *
    * @param {SyncObject} virtualParticipant
-   * @param {string} socketIoId
+   * @param {string} socketId
    * @param {Object} updatedState
    * @return {void}
    */
-  _syncPeerData(virtualParticipant, socketIoId, updatedState) {
+  _syncPeerData(virtualParticipant, socketId, updatedState) {
     this.log.debug("Syncing virtual participant", virtualParticipant);
 
     // TODO: Remove
     /*
     console.log({
-      socketIoId,
+      socketId,
       updatedState,
       virtualParticipant,
       vp: virtualParticipant && virtualParticipant.getState(),
@@ -374,7 +377,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     // All peers will receive this
     const syncUpdate = {
       peers: {
-        [socketIoId]: updatedState,
+        [socketId]: updatedState,
       },
     };
 
@@ -403,6 +406,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     }
   }
 
+  // TODO: Refactor
   /**
    * Sync incoming media streaming information with other peers.
    *
@@ -412,7 +416,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     const peers = {};
 
     for (const zenRTCPeer of TranscoderZenRTCPeer.getInstances()) {
-      const socketIoId = zenRTCPeer.getSocketIoId();
+      const socketId = zenRTCPeer.getSocketIoId();
 
       /**
        * @type {string} CSV representation of incoming media stream ids
@@ -422,7 +426,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         .map(({ id }) => id)
         .join(",");
 
-      peers[socketIoId] = {
+      peers[socketId] = {
         media,
       };
     }
@@ -432,21 +436,22 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     });
   }
 
+  // TODO: Refactor
   /**
    * Sync removed participant with other peers.
    *
    * @param {SyncObject} virtualParticipant
-   * @param {string} socketIoId
+   * @param {string} socketId
    * @return {void}
    */
-  _syncRemovedVirtualParticipant(virtualParticipant, socketIoId) {
+  _syncRemovedVirtualParticipant(virtualParticipant, socketId) {
     this.log.debug("Removing virtual participant", virtualParticipant);
 
     this._sharedWritableSyncObject.setState({
       peers: {
         // IMPORTANT: At this time, SyncObject does not support setting
         // undefined and syncing over the wire, so null is used instead
-        [socketIoId]: null,
+        [socketId]: null,
       },
     });
   }

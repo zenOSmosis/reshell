@@ -18,7 +18,7 @@ import ZenRTCPeer, {
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
-import { CAPABILITY_MULTI_PEER_MULTIPLEXER } from "@shared/capabilities";
+import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../capabilities";
 
 export {
   EVT_UPDATED,
@@ -46,14 +46,12 @@ const MAX_INSTANCES = 20;
  */
 export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
-  constructor({ socketIoId, ...rest }) {
-    super({ socketIoId, ...rest });
+  constructor({ socketId, ...rest }) {
+    super({ socketId, ...rest });
 
     // this._cssColor = getNextPeerCSSColor();
 
-    // TODO: Move to VirtualServerZenRTCManager
-    // TODO: Rename to CAPABILITY_NETWORK_VIRTUAL_SERVER
-    this.addCapability(CAPABILITY_MULTI_PEER_MULTIPLEXER);
+    this.addCapability(CAPABILITY_NETWORK_VIRTUAL_SERVER);
 
     // TODO: Move to VirtualServerZenRTCManager
     if (VirtualServerZenRTCPeer.getInstances().length > MAX_INSTANCES) {
@@ -66,11 +64,13 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
       return;
     }
 
+    // Fix for audio transcoding in Chrome
     (() => {
       this.on(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, ({ mediaStreamTrack }) => {
         if (mediaStreamTrack.kind === "audio") {
           /**
-           * This fixes audio being able to play on headless Chrome.
+           * This fixes audio being able to play in [headless] Chrome, since
+           * it's not playing directly out the speakers or out an audio node.
            *
            * The problem seems to be that the WebAudio graph's clock is driven
            * from its sink, so if the sink doesn't connect to anything with a
