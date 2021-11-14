@@ -1,16 +1,10 @@
 import ZenRTCSignalBroker, {
   EVT_DESTROYED,
   EVT_MESSAGE_RECEIVED,
-  EVT_READY_STATE_CHANGED,
   TYPE_ZEN_RTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export {
-  EVT_READY_STATE_CHANGED,
-  EVT_MESSAGE_RECEIVED,
-  EVT_DESTROYED,
-  TYPE_ZEN_RTC_SIGNAL,
-};
+export { EVT_MESSAGE_RECEIVED, EVT_DESTROYED, TYPE_ZEN_RTC_SIGNAL };
 
 // TODO: Document
 // @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCSignalBroker/WebZenRTCSignalBroker.js
