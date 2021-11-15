@@ -87,8 +87,18 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     return address;
   }
 
-  // TODO: Implement and document
-  async fetchLocalPublicKey() {}
+  // TODO: Document
+  async fetchLocalPublicKey() {
+    const { publicKey } = await this.fetchLocalIdentity();
+
+    if (!publicKey) {
+      throw new ReferenceError(
+        "Could not obtain public key from local identity"
+      );
+    }
+
+    return publicKey;
+  }
 
   // TODO: Implement and document
   async fetchLocalPrivateKey(requestor) {
