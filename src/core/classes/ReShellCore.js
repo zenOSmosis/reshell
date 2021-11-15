@@ -133,7 +133,11 @@ export default class ReShellCore extends PhantomCore {
           LocalDeviceIdentificationService
         );
 
-      // TODO: Finish implementing
+      const localIdentity =
+        await localDeviceIdentificationService.fetchLocalIdentity();
+
+      // TODO: Remove
+      console.log({ localIdentity });
     })();
 
     this._activePortalName = portalName;

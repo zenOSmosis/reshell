@@ -15,6 +15,7 @@ const { getInMemoryLocalIdentity, setInMemoryLocalIdentity } = (() => {
 })();
 
 // TODO: Implement public key compression / decompression?
+
 // TODO: Document
 export default class LocalDeviceIdentificationService extends UIServiceCore {
   constructor(...args) {
@@ -23,11 +24,6 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     this.setTitle("Local Device Identification Service");
 
     this._keyVaultService = this.useServiceClass(KeyVaultService);
-
-    // TODO: Remove
-    this.fetchLocalIdentity().then(localIdentity =>
-      console.log({ localIdentity })
-    );
   }
 
   // TODO: Document
@@ -66,6 +62,7 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
           localIdentity
         );
       }
+
       setInMemoryLocalIdentity(localIdentity);
 
       return localIdentity;
