@@ -1,6 +1,6 @@
 import Center from "@components/Center";
 
-import NotificationService from "@services/NotificationService";
+import UINotificationService from "@services/UINotificationService";
 
 const NotificationsPrototype = {
   id: "notifications-prototype",
@@ -9,9 +9,9 @@ const NotificationsPrototype = {
     width: 640,
     height: 480,
   },
-  serviceClasses: [NotificationService],
+  serviceClasses: [UINotificationService],
   view: function View({ appServices }) {
-    const notificationService = appServices[NotificationService];
+    const notificationService = appServices[UINotificationService];
 
     return (
       <Center>
