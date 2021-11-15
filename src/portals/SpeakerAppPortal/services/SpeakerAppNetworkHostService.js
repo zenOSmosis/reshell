@@ -1,4 +1,6 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
+import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
+
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import VirtualServerZenRTCPeerManager from "../zenRTC/VirtualServerZenRTCPeerManager";
 
@@ -49,10 +51,9 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
 
     const socket = socketService.getSocket();
 
-    const hostDeviceAddress = "abc";
-
-    // TODO: Remove
-    console.warn("TODO: Obtain host device address from a service");
+    const hostDeviceAddress = await this.useServiceClass(
+      LocalDeviceIdentificationService
+    ).fetchLocalAddress();
 
     /*
     try {
@@ -75,6 +76,12 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
       channelId,
       hostDeviceAddress,
       socket,
+    });
+
+    // TODO: Remove
+    console.log({
+      virtualServer,
+      hostDeviceAddress,
     });
   }
 

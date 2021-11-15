@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 
 import UIServiceManager from "../classes/UIServiceManager";
 import KeyVaultService from "@services/KeyVaultService";
+import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 import BaseView from "../BaseView";
 
@@ -70,6 +71,7 @@ export default class ReShellCore extends PhantomCore {
 
     this._uiServiceManager = new UIServiceManager();
     this._uiServiceManager.startServiceClass(KeyVaultService);
+    this._uiServiceManager.startServiceClass(LocalDeviceIdentificationService);
 
     // TODO: Bind window "beforeunload" event to try to prevent accidental shut
     // down before we have a chance to save states, etc. Ensure it gets unbound
@@ -109,6 +111,7 @@ export default class ReShellCore extends PhantomCore {
     );
 
     // IMPORANT: This should come after setting of portal name in session storage
+    // NOTE: Intentionally not awaiting this (though maybe we should)
     fetchIsLatestVersion().then(isLatest => {
       if (!isLatest) {
         if (
@@ -121,6 +124,17 @@ export default class ReShellCore extends PhantomCore {
         }
       }
     });
+
+    // Establish local device identity
+    // TODO: Document why
+    await (async () => {
+      const localDeviceIdentificationService =
+        this._uiServiceManager.getServiceInstance(
+          LocalDeviceIdentificationService
+        );
+
+      // TODO: Finish implementing
+    })();
 
     this._activePortalName = portalName;
 

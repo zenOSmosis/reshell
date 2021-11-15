@@ -23,6 +23,7 @@
     "concurrently": "^6.2.1",
     "dayjs": "^1.10.7",
     "debounce": "^1.2.1",
+    "eth-crypto": "^2.1.0",
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v1.1.1",
     "phantom-core": "github:zenosmosis/phantom-core#v2.0.1",
     "preload-it": "^1.4.0",
