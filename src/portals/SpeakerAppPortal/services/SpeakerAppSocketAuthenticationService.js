@@ -47,7 +47,9 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
     let cachedAuthorization = {};
 
     try {
-      cachedAuthorization = JSON.parse(rawCachedAuthorization);
+      if (rawCachedAuthorization) {
+        cachedAuthorization = JSON.parse(rawCachedAuthorization);
+      }
     } catch (err) {
       console.error(err);
     } finally {
