@@ -49,7 +49,7 @@ body {
 
   -webkit-tap-highlight-color: transparent;
 
-  /**
+  /*
    * Handle long word overflows
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/word-break
@@ -124,7 +124,7 @@ body {
 
   -webkit-tap-highlight-color: transparent;
 
-  /**
+  /*
    * Handle long word overflows
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/word-break
@@ -237,7 +237,7 @@ ul li {
   padding: 8px;
 }
 
-/**
+/*
 * Normalize CSS buttons
 */
 button,
@@ -288,7 +288,7 @@ button.link {
   color: orange;
 }
 
-/** TODO: Use :active CSS property as well? */
+/* TODO: Use :active CSS property as well? */
 button.active {
   color: orange;
   border-color: rgba(255, 130, 0, 0.5);
@@ -341,7 +341,7 @@ table tbody tr:nth-child(even) {
   word-wrap: break-word;
 }
 
-/** BEGIN SCROLLBAR **/
+/* BEGIN SCROLLBAR */
 
 /* Customize website's scrollbar like Mac OS
 Not supported in and IE.
@@ -383,7 +383,7 @@ Not supported in and IE.
   scrollbar-width: thin;
 }
 
-/** END SCROLLBAR **/
+/* END SCROLLBAR */
 
 .left {
   text-align: left;
