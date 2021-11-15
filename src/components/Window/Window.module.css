@@ -5,18 +5,18 @@
 .window-outer-border {
   position: absolute;
 
-  /**
-  * Minimum width / height calculations (may need additional consideration)
+  /*
+  Minimum width / height calculations (may need additional consideration)
   */
   min-width: 300px;
   min-height: 50px;
 }
 
-/** TODO: Add adjustable padding to outer-border cells (will probably need a
+/* TODO: Add adjustable padding to outer-border cells (will probably need a
 class set on the individual elements).  This padding will determine the width
 of the drag zone outside of the windows. */
 
-/** TODO: Rename window-outer-border to window-drag-resize-border (or equiv.) */
+/* TODO: Rename window-outer-border to window-drag-resize-border (or equiv.) */
 
 /*
 .window-outer-border:not(.maximized) {
@@ -30,9 +30,8 @@ of the drag zone outside of the windows. */
   width: 100% !important;
   height: 100% !important;
 
-  /**
-   * Ensure maximized windows clear the Dock
-   * TODO: Refactor as necessary to handle dynamic Dock layouts
+  /* Ensure maximized windows clear the Dock
+    TODO: Refactor as necessary to handle dynamic Dock layouts
    */
   padding-bottom: 30px !important;
 }
@@ -43,12 +42,12 @@ of the drag zone outside of the windows. */
   left: 50% !important;
 }
 
-/** Enable slower transitions when user is not dragging or resizing the window */
+/* Enable slower transitions when user is not dragging or resizing the window */
 .window-outer-border:not(.dragging) {
   transition: 0.1s linear;
 }
 
-/** Prevent window from being able to be larger than the available space */
+/* Prevent window from being able to be larger than the available space */
 /* TODO: Only enforce this change if the user has not resized the window? */
 /* TODO: If window is slid off edge, move it, dynamically (i.e. call the appropriate moveTo method in the JS) */
 .window,
@@ -69,12 +68,12 @@ of the drag zone outside of the windows. */
   border: 1px rgba(255, 255, 255, 0.3) solid;
 }
 
-/** Inactive window shading */
+/* Inactive window shading */
 .window-outer-border:not(.active) {
   filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
 }
 
-/** Active window shading window shading */
+/* Active window shading window shading */
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
 }
@@ -92,7 +91,19 @@ of the drag zone outside of the windows. */
   padding: 4px;
 }
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
+/*
+  Fixes issue where pointercancel would sometimes be fired on certain Android
+  devices.
+
+  Also enables all child elements of title bar to act as actionable drag
+  elements (i.e. able to drag a when event target is a button, etc.
+*/
+.window .titlebar,
+.window .titlebar * {
+  touch-action: none !important;
+}
+
+/* @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
 .window.dragging .titlebar {
   cursor: grabbing;
 }
@@ -150,7 +161,7 @@ of the drag zone outside of the windows. */
   filter: grayscale(0);
 }
 
-/** Apply partial grayscale to some inactive window elements */
+/* Apply partial grayscale to some inactive window elements */
 .window:not(.active) button,
 .window:not(.active) input,
 .window:not(.active) textarea,
