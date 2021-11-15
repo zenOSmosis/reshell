@@ -58,14 +58,13 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
       );
 
       if (!localIdentity) {
-        this._localIdentity = this._generateLocalIdentity();
+        localIdentity = this._generateLocalIdentity();
 
         await secureLocalStorageEngine.setItem(
           LS_KEY_DEVICE_IDENTIFICATION,
           localIdentity
         );
       }
-
       setInMemoryLocalIdentity(localIdentity);
 
       return localIdentity;
