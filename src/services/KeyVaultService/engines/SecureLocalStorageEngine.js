@@ -28,6 +28,12 @@ export default class SecureLocalStorageEngine extends StorageEngine {
 
   // TODO: Document
   async fetchItem(key) {
+    // Fix issue where empty string is returned if key is not available
+    const keys = this._ls.getAllKeys();
+    if (!keys.includes(key)) {
+      return undefined;
+    }
+
     try {
       return this._ls.get(key);
     } catch (err) {
