@@ -152,10 +152,10 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {ZenRTCPeer[]}
    */
   static getOtherInstances(peer) {
-    const zenRTCSignalBrokerId = peer.getIpcMessageBrokerId();
+    const zenRTCSignalBrokerId = peer.getSignalBrokerId();
 
     const otherPeers = ZenRTCPeer.getInstances().filter(
-      testPeer => testPeer.getIpcMessageBrokerId() !== zenRTCSignalBrokerId
+      testPeer => testPeer.getSignalBrokerId() !== zenRTCSignalBrokerId
     );
 
     return otherPeers;
@@ -522,7 +522,7 @@ export default class ZenRTCPeer extends PhantomCore {
    *
    * @return {string}
    */
-  getIpcMessageBrokerId() {
+  getSignalBrokerId() {
     return this._zenRTCSignalBrokerId;
   }
 
@@ -611,7 +611,7 @@ export default class ZenRTCPeer extends PhantomCore {
           /*
           this.log.debug({
             offer: sdpTransform.parse(sdp),
-            zenRTCSignalBrokerId: this.getIpcMessageBrokerId(),
+            zenRTCSignalBrokerId: this.getSignalBrokerId(),
           });
           */
 
