@@ -16,6 +16,10 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
       ...args,
     });
 
+    this._socketService = this.useServiceClass(
+      SpeakerAppSocketAuthenticationService
+    );
+
     // TODO: Migrate to setInitialState once available
     this.setState({
       isHosting: false,
@@ -45,44 +49,36 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
     // TODO: Init multi-peer manager here
     // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
 
-    const socketService = this.useServiceClass(
-      SpeakerAppSocketAuthenticationService
-    );
-
-    const socket = socketService.getSocket();
+    const socket = this._socketService.getSocket();
 
     const hostDeviceAddress = await this.useServiceClass(
       LocalDeviceIdentificationService
     ).fetchLocalAddress();
 
-    /*
-    try {
-      await this._socketService.fetchSocketAPICall(
-        SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
-        params
-      );
-
-      this.setState({ isHosting: true, realmId, channelId });
-    } catch (err) {
-      // TODO: Handle error
-      throw err;
-    }
-    */
+    // Register server on network
+    await this._socketService.fetchSocketAPICall(
+      SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
+      params
+    );
 
     const { realmId, channelId } = params;
 
-    const virtualServer = new VirtualServerZenRTCPeerManager({
+    const peerManager = new VirtualServerZenRTCPeerManager({
       realmId,
       channelId,
       hostDeviceAddress,
       socket,
     });
 
+    peerManager.registerShutdownHandler(() => this.stopVirtualServer());
+
     // TODO: Remove
     console.log({
-      virtualServer,
+      peerManager,
       hostDeviceAddress,
     });
+
+    this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
   }
 
   // TODO: Document

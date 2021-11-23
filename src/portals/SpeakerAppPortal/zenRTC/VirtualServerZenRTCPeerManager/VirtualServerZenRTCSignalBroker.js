@@ -5,7 +5,7 @@ import ZenRTCSignalBroker, {
 export { TYPE_ZEN_RTC_SIGNAL };
 
 // TODO: Build out
-// TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/TranscoderApp/subClasses/TranscoderZenRTCSignalBroker.js
+// TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/VirtualServerApp/subClasses/VirtualServerZenRTCSignalBroker.js
 export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker {
   constructor({ socketIdTo, socket, ...rest }) {
     super({ socketIdTo, ...rest });
