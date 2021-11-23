@@ -108,9 +108,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     });
 
     this._zenRTCSignalBroker.on(EVT_MESSAGE_RECEIVED, data => {
-      // this.receiveZenRTCSignal(data);
-
-      console.warn("TODO: Handle EVT_MESSAGE_RECEIVED", data);
+      this.receiveZenRTCSignal(data);
     });
   }
 }

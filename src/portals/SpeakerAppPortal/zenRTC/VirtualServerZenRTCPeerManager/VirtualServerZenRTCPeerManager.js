@@ -88,8 +88,6 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         // TODO: Remove
         console.log("_handleReceiveZenRTCSignal", data);
 
-        // TODO: Handle
-        /*
         const { socketIdFrom, senderDeviceAddress } = data;
 
         const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
@@ -98,7 +96,6 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         );
 
         zenRTCPeer.receiveZenRTCSignal(data);
-        */
       };
 
       // TODO: Check realm / channel integrity before starting up zenRTCInstance?
@@ -221,8 +218,19 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
 
       const virtualParticipant = readOnlySyncObject;
 
+      // ZenRTC Signal Broker
+      const zenRTCSignalBroker = new VirtualServerZenRTCSignalBroker({
+        realmId: this._realmId,
+        channelId: this._channelId,
+        socket: this._socket,
+        socketIdTo: initiatorSocketIoId,
+        socketIdFrom: this._socket.id,
+      });
+
+      // ZenRTC Peer
       const virtualServerZenRTCPeer = new VirtualServerZenRTCPeer({
         socketId: initiatorSocketIoId,
+        zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
         // NOTE: The writable is shared between all of the participants and
         // does not represent a single participant (it symbolized all of them)
         writableSyncObject: this._sharedWritableSyncObject,
@@ -232,45 +240,32 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
       this._virtualServerZenRTCInstances[initiatorSocketIoId] =
         virtualServerZenRTCPeer;
 
-      // Set up IPC message routing
-      (() => {
-        const ipcMessageBroker = new VirtualServerZenRTCSignalBroker({
-          realmId: this._realmId,
-          channelId: this._channelId,
-          socket: this._socket,
-          socketIdTo: initiatorSocketIoId,
-          socketIdFrom: this._socket.id,
-        });
+      virtualServerZenRTCPeer.on(EVT_ZENRTC_SIGNAL, data =>
+        zenRTCSignalBroker.sendMessage(data)
+      );
 
-        virtualServerZenRTCPeer.on(EVT_ZENRTC_SIGNAL, data =>
-          ipcMessageBroker.sendMessage(data)
-        );
+      virtualServerZenRTCPeer.registerShutdownHandler(() => {
+        // IMPORTANT: Don't destroy the writable here as it is shared between
+        // the other peers
 
-        virtualServerZenRTCPeer.once(EVT_DESTROYED, () => {
-          // IMPORTANT: Don't destroy the writable here as it is shared between
-          // the other peers
+        // TODO: Verify if any remaining sockets exist for the given
+        // participant and delete, if not
 
-          // TODO: Verify if any remaining sockets exist for the given
-          // participant and delete, if not
-
-          // Unbind ipcMessageBroker
-          ipcMessageBroker.destroy();
-        });
-      })();
+        // Unbind zenRTCSignalBroker
+        zenRTCSignalBroker.destroy();
+      });
 
       // Carry profile and other shared information over to other peers
       //
       // Note the written object is sometimes augmented by internal calls to
       // this._syncLinkedMediaState()
-      (() => {
-        virtualParticipant.on(EVT_UPDATED, updatedState =>
-          this._syncPeerData(
-            virtualParticipant,
-            initiatorSocketIoId,
-            updatedState
-          )
-        );
-      })();
+      virtualParticipant.on(EVT_UPDATED, updatedState =>
+        this._syncPeerData(
+          virtualParticipant,
+          initiatorSocketIoId,
+          updatedState
+        )
+      );
 
       // Handle connect / disconnect peer bindings
       virtualServerZenRTCPeer.on(EVT_CONNECTED, () => {
@@ -292,7 +287,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         this._peerHasDisconnected(virtualServerZenRTCPeer);
       });
 
-      virtualServerZenRTCPeer.once(EVT_DESTROYED, () => {
+      virtualServerZenRTCPeer.registerShutdownHandler(() => {
         // Unregister zenRTCPeerEVT_CONNECTED
         delete this._virtualServerZenRTCInstances[initiatorSocketIoId];
 
