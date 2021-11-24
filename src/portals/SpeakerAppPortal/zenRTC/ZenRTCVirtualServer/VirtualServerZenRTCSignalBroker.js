@@ -1,9 +1,9 @@
 import ZenRTCSignalBroker, {
   SOCKET_EVT_ZENRTC_SIGNAL,
-  EVT_MESSAGE_RECEIVED,
+  EVT_ZENRTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { SOCKET_EVT_ZENRTC_SIGNAL, EVT_MESSAGE_RECEIVED };
+export { SOCKET_EVT_ZENRTC_SIGNAL, EVT_ZENRTC_SIGNAL };
 
 // TODO: Build out
 // TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/VirtualServerApp/subClasses/VirtualServerZenRTCSignalBroker.js
@@ -19,7 +19,7 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
   }
 
   // TODO: Document
-  sendMessage(data) {
+  signal(data) {
     this.log.debug("sending message", {
       data,
       to: this._socketIdTo,

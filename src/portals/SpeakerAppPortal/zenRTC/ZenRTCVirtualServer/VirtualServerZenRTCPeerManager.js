@@ -279,7 +279,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
 
       /*
       virtualServerZenRTCPeer.on(EVT_ZENRTC_SIGNAL, data =>
-        zenRTCSignalBroker.sendMessage(data)
+        zenRTCSignalBroker.signal(data)
       );
       */
 

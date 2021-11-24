@@ -17,7 +17,7 @@ import ZenRTCPeer, {
 } from "../ZenRTCPeer";
 
 import VirtualServerZenRTCSignalBroker, {
-  EVT_MESSAGE_RECEIVED,
+  EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
 } from "./VirtualServerZenRTCSignalBroker";
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
@@ -114,10 +114,10 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
     this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
 
     this.on(EVT_ZENRTC_SIGNAL, data => {
-      this._zenRTCSignalBroker.sendMessage(data);
+      this._zenRTCSignalBroker.signal(data);
     });
 
-    this._zenRTCSignalBroker.on(EVT_MESSAGE_RECEIVED, data => {
+    this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, data => {
       this.receiveZenRTCSignal(data);
     });
   }

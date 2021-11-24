@@ -54,6 +54,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     (() => {
       const socket = this._socketService.getSocket();
 
+      // TODO: Refactor into signal broker?
       const _handleReceiveZenRTCSignal = data => {
         // TODO: Remove
         console.log("TODO: _handleReceiveZenRTCSignal", data);

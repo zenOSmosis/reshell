@@ -40,6 +40,7 @@ export const EVT_DISCONNECTED = "disconnected";
 // export const EVT_SIMPLE_PEER_INSTANTIATED = "simple-peer-instantiated";
 
 // TODO: Document
+// TODO: Import, and reutilize, from signal broker
 //
 // Is emit when there is an outgoing ZenRTC signal
 export const EVT_ZENRTC_SIGNAL = "zenrtc-signal";
