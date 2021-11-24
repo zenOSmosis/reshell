@@ -1,8 +1,9 @@
 import ZenRTCSignalBroker, {
   TYPE_ZEN_RTC_SIGNAL,
+  EVT_MESSAGE_RECEIVED,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { TYPE_ZEN_RTC_SIGNAL };
+export { TYPE_ZEN_RTC_SIGNAL, EVT_MESSAGE_RECEIVED };
 
 // TODO: Build out
 // TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/VirtualServerApp/subClasses/VirtualServerZenRTCSignalBroker.js

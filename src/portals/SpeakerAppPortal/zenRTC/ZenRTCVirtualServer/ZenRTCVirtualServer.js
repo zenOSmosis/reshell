@@ -7,6 +7,8 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_UPDATED,
 } from "./VirtualServerZenRTCPeerManager";
 
+import { TYPE_ZEN_RTC_SIGNAL } from "./VirtualServerZenRTCSignalBroker";
+
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
   SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
@@ -48,6 +50,49 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
       this.destroy();
     });
+
+    (() => {
+      const socket = this._socketService.getSocket();
+
+      const _handleReceiveZenRTCSignal = data => {
+        // TODO: Remove
+        console.log("TODO: _handleReceiveZenRTCSignal", data);
+
+        /*
+        const {
+          socketIdFrom,
+          senderDeviceAddress,
+          signalBrokerIdFrom,
+          realmId,
+          channelId,
+          signalBrokerIdTo,
+        } = data;
+
+        if (
+          // IMPORTANT: Clients do not know the signalBrokerId they are sending
+          // to, as the virtual server's signal broker isn't set up for that
+          // client until the message is received
+          signalBrokerIdTo === undefined &&
+          realmId === this._realmId &&
+          channelId === this._channelId
+        ) {
+          const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
+            socketIdFrom,
+            senderDeviceAddress,
+            signalBrokerIdFrom
+          );
+
+          zenRTCPeer.receiveZenRTCSignal(data);
+        }
+        */
+      };
+
+      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal);
+
+      this.registerShutdownHandler(() =>
+        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal)
+      );
+    })();
   }
 
   // TODO: Document

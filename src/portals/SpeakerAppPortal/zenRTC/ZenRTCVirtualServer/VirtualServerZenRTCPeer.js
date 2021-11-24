@@ -16,6 +16,10 @@ import ZenRTCPeer, {
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
 
+import VirtualServerZenRTCSignalBroker, {
+  EVT_MESSAGE_RECEIVED,
+} from "./VirtualServerZenRTCSignalBroker";
+
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
 import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../capabilities";
@@ -46,8 +50,30 @@ const MAX_INSTANCES = 20;
  */
 export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
-  constructor({ socketId, ...rest }) {
-    super({ socketId, ...rest });
+  constructor({
+    ourSocket,
+    realmId,
+    channelId,
+    clientSocketId,
+    clientSignalBrokerId,
+    ...rest
+  }) {
+    // ZenRTC Signal Broker
+    const zenRTCSignalBroker = new VirtualServerZenRTCSignalBroker({
+      socket: ourSocket,
+      realmId,
+      channelId,
+      socketIdTo: clientSocketId,
+      socketIdFrom: ourSocket.id,
+      signalBrokerIdTo: clientSignalBrokerId,
+    });
+
+    super({
+      zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
+      realmId,
+      channelId,
+      ...rest,
+    });
 
     // this._cssColor = getNextPeerCSSColor();
 
@@ -83,6 +109,17 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
         }
       });
     })();
+
+    this._zenRTCSignalBroker = zenRTCSignalBroker;
+    this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
+
+    this.on(EVT_ZENRTC_SIGNAL, data => {
+      this._zenRTCSignalBroker.sendMessage(data);
+    });
+
+    this._zenRTCSignalBroker.on(EVT_MESSAGE_RECEIVED, data => {
+      this.receiveZenRTCSignal(data);
+    });
   }
 
   /**
