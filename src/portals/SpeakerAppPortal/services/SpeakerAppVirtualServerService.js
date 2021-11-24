@@ -1,7 +1,7 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
-import VirtualServerZenRTCPeerManager from "../zenRTC/VirtualServerZenRTCPeerManager";
+import VirtualServerZenRTCPeerManager from "../zenRTC/VirtualServer";
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
   SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
