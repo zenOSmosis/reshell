@@ -43,10 +43,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
     // this._peerManager = new VirtualServerZenRTCPeerManager();
 
-    this.registerShutdownHandler(() => {
-      this._emitSessionEnd();
-    });
-
     this._init().catch(err => {
       this.log.error(err);
 
@@ -84,5 +80,14 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     await this._socketService.fetchSocketAPICall(
       SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION
     );
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    await this._emitSessionEnd();
+
+    return super.destroy();
   }
 }
