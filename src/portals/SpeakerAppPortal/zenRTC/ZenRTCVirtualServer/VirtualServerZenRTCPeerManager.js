@@ -40,7 +40,7 @@ let _instance = null;
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
 
-// TODO: Extend PhantomState instead?
+// TODO: Extend PhantomCollection instead?
 /**
  * Manages the creation, updating, and destroying of VirtualServerZenRTCPeer instances.
  */
