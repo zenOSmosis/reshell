@@ -7,7 +7,7 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_UPDATED,
 } from "./VirtualServerZenRTCPeerManager";
 
-import { TYPE_ZEN_RTC_SIGNAL } from "./VirtualServerZenRTCSignalBroker";
+import { SOCKET_EVT_ZENRTC_SIGNAL } from "./VirtualServerZenRTCSignalBroker";
 
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
@@ -87,10 +87,10 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         */
       };
 
-      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal);
+      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
 
       this.registerShutdownHandler(() =>
-        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal)
+        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
       );
     })();
   }

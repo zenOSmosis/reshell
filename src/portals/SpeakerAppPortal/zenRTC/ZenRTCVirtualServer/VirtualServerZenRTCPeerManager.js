@@ -20,7 +20,7 @@ import SyncObject from "sync-object";
 
 /*
 import VirtualServerZenRTCSignalBroker, {
-  TYPE_ZEN_RTC_SIGNAL,
+  SOCKET_EVT_ZENRTC_SIGNAL,
 } from "./VirtualServerZenRTCSignalBroker";
 */
 
@@ -115,10 +115,10 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
 
       // TODO: Check realm / channel integrity before starting up zenRTCInstance?
 
-      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal);
+      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
 
       this.registerShutdownHandler(() =>
-        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveZenRTCSignal)
+        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
       );
     })();
     */

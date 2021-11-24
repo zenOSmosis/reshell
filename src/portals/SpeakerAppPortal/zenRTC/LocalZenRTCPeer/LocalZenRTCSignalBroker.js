@@ -1,10 +1,10 @@
 import ZenRTCSignalBroker, {
   EVT_DESTROYED,
   EVT_MESSAGE_RECEIVED,
-  TYPE_ZEN_RTC_SIGNAL,
+  SOCKET_EVT_ZENRTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { EVT_MESSAGE_RECEIVED, EVT_DESTROYED, TYPE_ZEN_RTC_SIGNAL };
+export { EVT_MESSAGE_RECEIVED, EVT_DESTROYED, SOCKET_EVT_ZENRTC_SIGNAL };
 
 // TODO: Document
 // @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCSignalBroker/WebZenRTCSignalBroker.js
@@ -35,10 +35,10 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
         }
       };
 
-      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
+      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveMessage);
 
       this.registerShutdownHandler(() => {
-        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
+        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveMessage);
       });
     })();
   }
@@ -53,7 +53,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       ...rest
     } = message;
 
-    this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
+    this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId,
       channelId,
       socketIdFrom,
