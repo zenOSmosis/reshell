@@ -6,7 +6,7 @@ const _instances = {};
 /**
  * A virtual participant from the perspective of the virtualServer.
  */
-export default class PhantomPeerHostPerspective extends PhantomPeerCore {
+export default class VirtualServerPhantomPeer extends PhantomPeerCore {
   /**
    * @param {string} socketId
    * @returns {PhantomPeer}
