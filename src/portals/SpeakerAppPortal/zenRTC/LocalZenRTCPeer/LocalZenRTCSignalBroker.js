@@ -42,6 +42,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       channelId = this._channelId,
       socketIdFrom = this._socketIdFrom,
       socketIdTo = this._socketIdTo,
+      signalBrokerId = this._signalBrokerId,
       ...rest
     } = message;
 
@@ -50,6 +51,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       channelId,
       socketIdFrom,
       socketIdTo,
+      signalBrokerId,
       ...rest,
     });
   }

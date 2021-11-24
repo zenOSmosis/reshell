@@ -13,21 +13,22 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
     // TODO: Enable to co-exist over same Socket.io connection as local ZenRTCPeer
 
     this._socket = socket;
-    this._initiatorSocketIoId = socketIdTo;
+    this._socketIdTo = socketIdTo;
   }
 
   // TODO: Document
   sendMessage(data) {
     this.log.debug("sending message", {
       data,
-      to: this._initiatorSocketIoId,
+      to: this._socketIdTo,
     });
 
     this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
       realmId: this._realmId,
       channelId: this._channelId,
-      socketIdTo: this._initiatorSocketIoId,
+      socketIdTo: this._socketIdTo,
       socketIdFrom: this._socket.id,
+      signalBrokerId: this._signalBrokerId,
       ...data,
     });
   }
