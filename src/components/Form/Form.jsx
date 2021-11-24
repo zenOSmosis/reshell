@@ -12,8 +12,10 @@ export default function Form({
     useFormController({
       onSubmit,
       onChange,
+      // TODO: Expose validator as Form property
       validator: formValues => {
         return {
+          // TODO: Refactor into KeyEditorForm
           key:
             formValues.key.length < 1 &&
             "Key must contain at least one character",
