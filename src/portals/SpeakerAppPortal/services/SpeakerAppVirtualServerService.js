@@ -46,6 +46,8 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
 
   // TODO: Document
   async createVirtualServer(params) {
+    // TODO: Refactor into VirtualServer class
+
     if (this._peerManager) {
       console.warn(
         "Peer manager already exists; ignoring createVirtualManager call"
