@@ -8,14 +8,14 @@ const _instances = {};
  */
 export default class VirtualServerPhantomPeer extends PhantomPeerCore {
   /**
-   * @param {string} socketId
+   * @param {string} signalBrokerId
    * @returns {PhantomPeer}
    */
-  static getInstanceWithSocketId(socketId) {
+  static getInstanceWithSignalBrokerId(signalBrokerId) {
     for (const p of Object.values(_instances)) {
-      const testId = p.getSocketId();
+      const testId = p.getSignalBrokerId();
 
-      if (testId === socketId) {
+      if (testId === signalBrokerId) {
         return p;
       }
     }
@@ -23,23 +23,23 @@ export default class VirtualServerPhantomPeer extends PhantomPeerCore {
 
   /**
    * @param {string} deviceAddress
-   * @param {string} socketId
+   * @param {string} signalBrokerId
    * @param {Object} rest? [optional; default = {}] The this value is passed to
    * the super PhantomPeer class.
    */
-  constructor(deviceAddress, socketId, rest = {}) {
+  constructor(deviceAddress, signalBrokerId, rest = {}) {
     if (!deviceAddress) {
       throw new Error("deviceAddress must be defined");
     }
 
-    if (!socketId) {
+    if (!signalBrokerId) {
       throw new Error("initialSocketId must be defined");
     }
 
     super({ ...rest });
 
     this._deviceAddress = deviceAddress;
-    this._socketId = socketId;
+    this._signalBrokerId = signalBrokerId;
 
     _instances[this._deviceAddress] = this;
   }
@@ -47,8 +47,8 @@ export default class VirtualServerPhantomPeer extends PhantomPeerCore {
   /**
    * @return {string[]}
    */
-  getSocketId() {
-    return this._socketId;
+  getSignalBrokerId() {
+    return this._signalBrokerId;
   }
 
   /**

@@ -85,18 +85,31 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     // Handle all incoming WebIPC messages
     (() => {
       const _handleReceiveZenRTCSignal = data => {
-        // TODO: Remove
-        console.log("_handleReceiveZenRTCSignal", data);
-
-        const { socketIdFrom, senderDeviceAddress, signalBrokerIdFrom } = data;
-
-        const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
+        const {
           socketIdFrom,
           senderDeviceAddress,
-          signalBrokerIdFrom
-        );
+          signalBrokerIdFrom,
+          realmId,
+          channelId,
+          signalBrokerIdTo,
+        } = data;
 
-        zenRTCPeer.receiveZenRTCSignal(data);
+        if (
+          // IMPORTANT: Clients do not know the signalBrokerId they are sending
+          // to, as the virtual server's signal broker isn't set up for that
+          // client until the message is received
+          signalBrokerIdTo === undefined &&
+          realmId === this._realmId &&
+          channelId === this._channelId
+        ) {
+          const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
+            socketIdFrom,
+            senderDeviceAddress,
+            signalBrokerIdFrom
+          );
+
+          zenRTCPeer.receiveZenRTCSignal(data);
+        }
       };
 
       // TODO: Check realm / channel integrity before starting up zenRTCInstance?
@@ -205,18 +218,21 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     initiatorDeviceAddress,
     initiatorSignalBrokerId
   ) {
-    if (this._virtualServerZenRTCInstances[initiatorSocketIoId]) {
+    if (this._virtualServerZenRTCInstances[initiatorSignalBrokerId]) {
       // Retrieve cached instance
-      return this._virtualServerZenRTCInstances[initiatorSocketIoId];
+      return this._virtualServerZenRTCInstances[initiatorSignalBrokerId];
     } else {
       // Create new instance
+      this.log(
+        `Creating new VirtualServerZenRTCPeer for initiator signal broker "${initiatorSignalBrokerId}"`
+      );
 
       /**
        * Read the remote participant.
        */
       const readOnlySyncObject = new VirtualServerPhantomPeer(
         initiatorDeviceAddress,
-        initiatorSocketIoId
+        initiatorSignalBrokerId
       );
 
       const virtualParticipant = readOnlySyncObject;
@@ -243,7 +259,12 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         readOnlySyncObject,
       });
 
-      this._virtualServerZenRTCInstances[initiatorSocketIoId] =
+      this.registerShutdownHandler(() => {
+        zenRTCSignalBroker.destroy();
+        virtualServerZenRTCPeer.destroy();
+      });
+
+      this._virtualServerZenRTCInstances[initiatorSignalBrokerId] =
         virtualServerZenRTCPeer;
 
       virtualServerZenRTCPeer.on(EVT_ZENRTC_SIGNAL, data =>
@@ -251,6 +272,10 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
       );
 
       virtualServerZenRTCPeer.registerShutdownHandler(() => {
+        this.log(
+          `Destructing VirtualServerZenRTCPeer for initiator signal broker "${initiatorSignalBrokerId}"`
+        );
+
         // IMPORTANT: Don't destroy the writable here as it is shared between
         // the other peers
 
@@ -261,10 +286,12 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         zenRTCSignalBroker.destroy();
       });
 
+      // TODO: Uncomment or refactor
       // Carry profile and other shared information over to other peers
       //
       // Note the written object is sometimes augmented by internal calls to
       // this._syncLinkedMediaState()
+      /*
       virtualParticipant.on(EVT_UPDATED, updatedState =>
         this._syncPeerData(
           virtualParticipant,
@@ -272,18 +299,27 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
           updatedState
         )
       );
+      */
 
+      // TODO: Uncomment or refactor
       // Handle connect / disconnect peer bindings
+      /*
       virtualServerZenRTCPeer.on(EVT_CONNECTED, () => {
         this._peerHasConnected(virtualServerZenRTCPeer);
 
         this._syncLinkedMediaState();
       });
+      */
 
+      // TODO: Uncomment or refactor
+      /*
       virtualServerZenRTCPeer.on(EVT_UPDATED, () =>
         this._peerHasUpdated(virtualServerZenRTCPeer)
       );
+      */
 
+      // TODO: Uncomment or refactor
+      /*
       virtualServerZenRTCPeer.on(EVT_DISCONNECTED, () => {
         this._syncRemovedVirtualParticipant(
           virtualParticipant,
@@ -292,17 +328,23 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
 
         this._peerHasDisconnected(virtualServerZenRTCPeer);
       });
+      */
 
+      // TODO: Uncomment or refactor
+      /*
       virtualServerZenRTCPeer.registerShutdownHandler(() => {
         // Unregister zenRTCPeerEVT_CONNECTED
         delete this._virtualServerZenRTCInstances[initiatorSocketIoId];
 
         this._peerHasDestroyed(virtualServerZenRTCPeer);
       });
+      */
 
+      // TODO: Uncomment or refactor
       // Handle media stream routing
       //
       // TODO: Extract into class method
+      /*
       (() => {
         // Sync new tracks with new peer
         virtualServerZenRTCPeer.on(
@@ -312,10 +354,10 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
               virtualServerZenRTCPeer.getOtherThreadInstances();
 
             // TODO: Remove
-            this.log.debug("incoming stream track added", {
-              data,
-              otherPeers,
-            });
+            // this.log.debug("incoming stream track added", {
+            //   data,
+            //   otherPeers,
+            // });
 
             await Promise.all(
               otherPeers.map(peer =>
@@ -330,6 +372,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
           }
         );
 
+        // TODO: Uncomment or refactor
         // TODO: Extract into class method
         // Sync removed tracks with new peer
         virtualServerZenRTCPeer.on(
@@ -356,6 +399,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
           }
         );
       })();
+      */
 
       // Automatically connect
       virtualServerZenRTCPeer.connect();
@@ -376,16 +420,6 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
    */
   _syncPeerData(virtualParticipant, zenRTCSignalBrokerId, updatedState) {
     this.log.debug("Syncing virtual participant", virtualParticipant);
-
-    // TODO: Remove
-    /*
-    console.log({
-      zenRTCSignalBrokerId,
-      updatedState,
-      virtualParticipant,
-      vp: virtualParticipant && virtualParticipant.getState(),
-    });
-    */
 
     // All peers will receive this
     const syncUpdate = {
