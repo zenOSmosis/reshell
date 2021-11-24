@@ -7,13 +7,14 @@ export { TYPE_ZEN_RTC_SIGNAL };
 // TODO: Build out
 // TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/VirtualServerApp/subClasses/VirtualServerZenRTCSignalBroker.js
 export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker {
-  constructor({ socketIdTo, socket, ...rest }) {
+  constructor({ socketIdTo, socket, signalBrokerIdTo, ...rest }) {
     super({ socketIdTo, ...rest });
 
     // TODO: Enable to co-exist over same Socket.io connection as local ZenRTCPeer
 
     this._socket = socket;
     this._socketIdTo = socketIdTo;
+    this._signalBrokerIdTo = signalBrokerIdTo;
   }
 
   // TODO: Document
@@ -28,7 +29,8 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
       channelId: this._channelId,
       socketIdTo: this._socketIdTo,
       socketIdFrom: this._socket.id,
-      signalBrokerId: this._signalBrokerId,
+      signalBrokerIdFrom: this._signalBrokerIdFrom,
+      signalBrokerIdTo: this._signalBrokerIdTo,
       ...data,
     });
   }

@@ -88,11 +88,12 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         // TODO: Remove
         console.log("_handleReceiveZenRTCSignal", data);
 
-        const { socketIdFrom, senderDeviceAddress } = data;
+        const { socketIdFrom, senderDeviceAddress, signalBrokerIdFrom } = data;
 
         const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
           socketIdFrom,
-          senderDeviceAddress
+          senderDeviceAddress,
+          signalBrokerIdFrom
         );
 
         zenRTCPeer.receiveZenRTCSignal(data);
@@ -196,11 +197,13 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
    *
    * @param {string} initiatorSocketIoId
    * @param {string} initiatorDeviceAddress
+   * @param {string} initiatorSignalBrokerId
    * @return {VirtualServerZenRTCPeer} Returns a new, or cached, instance.
    */
   _getOrCreateVirtualServerZenRTCPeer(
     initiatorSocketIoId,
-    initiatorDeviceAddress
+    initiatorDeviceAddress,
+    initiatorSignalBrokerId
   ) {
     if (this._virtualServerZenRTCInstances[initiatorSocketIoId]) {
       // Retrieve cached instance
@@ -225,6 +228,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         socket: this._socket,
         socketIdTo: initiatorSocketIoId,
         socketIdFrom: this._socket.id,
+        signalBrokerIdTo: initiatorSignalBrokerId,
       });
 
       const zenRTCSignalBrokerId = zenRTCSignalBroker.getUUID();
@@ -425,7 +429,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
     const peers = {};
 
     for (const zenRTCPeer of VirtualServerZenRTCPeer.getInstances()) {
-      const signalBrokerId = zenRTCPeer.getSignalBrokerId();
+      const signalBrokerIdFrom = zenRTCPeer.getSignalBrokerId();
 
       /**
        * @type {string} CSV representation of incoming media stream ids
@@ -435,7 +439,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCore {
         .map(({ id }) => id)
         .join(",");
 
-      peers[signalBrokerId] = {
+      peers[signalBrokerIdFrom] = {
         media,
       };
     }

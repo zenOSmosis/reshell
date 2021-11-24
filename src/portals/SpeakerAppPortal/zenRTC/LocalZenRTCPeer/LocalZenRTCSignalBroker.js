@@ -23,14 +23,21 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
     // WebZenRTCSignalBroker instances will receive the same message
     (() => {
       const _handleReceiveMessage = message => {
+        if (!message.signalBrokerIdTo) {
+          return;
+        }
+
         // TODO: Only emit if the received message corresponds to same realmId and channelId
 
-        this.receiveMessage(message);
+        // TODO: Additional checks need to be made for this...
+        if (message.signalBrokerIdTo === this._signalBrokerIdFrom) {
+          this.receiveMessage(message);
+        }
       };
 
       socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
 
-      this.once(EVT_DESTROYED, () => {
+      this.registerShutdownHandler(() => {
         socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
       });
     })();
@@ -42,7 +49,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       channelId = this._channelId,
       socketIdFrom = this._socketIdFrom,
       socketIdTo = this._socketIdTo,
-      signalBrokerId = this._signalBrokerId,
+      signalBrokerIdFrom = this._signalBrokerIdFrom,
       ...rest
     } = message;
 
@@ -51,7 +58,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       channelId,
       socketIdFrom,
       socketIdTo,
-      signalBrokerId,
+      signalBrokerIdFrom,
       ...rest,
     });
   }
