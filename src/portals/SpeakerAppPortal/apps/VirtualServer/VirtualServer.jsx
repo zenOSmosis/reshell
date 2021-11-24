@@ -11,7 +11,7 @@ import HostingView from "./views/HostingView";
 import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
-import SpeakerAppNetworkHostService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkHostService";
+import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
 
 export const REGISTRATION_ID = "virtual-server";
 
@@ -24,11 +24,11 @@ const VirtualServer = {
   },
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
-    SpeakerAppNetworkHostService,
+    SpeakerAppVirtualServerService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
-    const virtualServerService = appServices[SpeakerAppNetworkHostService];
+    const virtualServerService = appServices[SpeakerAppVirtualServerService];
 
     const isHosting = virtualServerService.getIsHosting();
     const { realmId, channelId } = virtualServerService.getNetworkRoute();

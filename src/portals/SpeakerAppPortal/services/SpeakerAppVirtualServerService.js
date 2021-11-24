@@ -1,16 +1,15 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
-
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import VirtualServerZenRTCPeerManager from "../zenRTC/VirtualServerZenRTCPeerManager";
-
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
   SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
 } from "../shared/socketAPIRoutes";
 
 // TODO: Document (used for network hosting)
-export default class SpeakerAppNetworkHostService extends UIServiceCore {
+
+export default class SpeakerAppVirtualServerService extends UIServiceCore {
   constructor({ ...args }) {
     super({
       ...args,
@@ -56,7 +55,6 @@ export default class SpeakerAppNetworkHostService extends UIServiceCore {
 
     // TODO: Init multi-peer manager here
     // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
-
     const socket = this._socketService.getSocket();
 
     const hostDeviceAddress = await this.useServiceClass(
