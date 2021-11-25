@@ -77,11 +77,10 @@ export default class ZenRTCVirtualServer extends PhantomCore {
   _initSocketListener() {
     const socket = this._socket;
 
-    // TODO: Refactor into signal broker?
+    // Listens for SOCKET_EVT_ZENRTC_SIGNAL on the socket connection and
+    // determines if they should be routed to a relevant peer on this virtual
+    // network
     const _handleReceiveZenRTCSignal = signal => {
-      // TODO: Remove
-      console.log("TODO: _handleReceiveZenRTCSignal", signal);
-
       const {
         socketIdFrom,
         senderDeviceAddress,
@@ -99,9 +98,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         realmId === this._realmId &&
         channelId === this._channelId
       ) {
-        // TODO: Remove
-        console.log("relay", { signal });
-
         const zenRTCPeer = this._peerManager.getOrCreateZenRTCPeer(
           socketIdFrom,
           senderDeviceAddress,
