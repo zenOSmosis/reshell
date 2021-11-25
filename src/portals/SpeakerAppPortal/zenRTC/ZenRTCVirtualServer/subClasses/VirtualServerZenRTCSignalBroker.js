@@ -1,7 +1,7 @@
 import ZenRTCSignalBroker, {
   SOCKET_EVT_ZENRTC_SIGNAL,
   EVT_ZENRTC_SIGNAL,
-} from "../../shared/ZenRTCSignalBroker";
+} from "../../../shared/ZenRTCSignalBroker";
 
 export { SOCKET_EVT_ZENRTC_SIGNAL, EVT_ZENRTC_SIGNAL };
 

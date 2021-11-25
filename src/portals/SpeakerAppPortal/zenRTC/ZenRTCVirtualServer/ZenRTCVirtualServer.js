@@ -5,9 +5,9 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
   EVT_PEER_UPDATED,
-} from "./VirtualServerZenRTCPeerManager";
+} from "./subClasses/VirtualServerZenRTCPeerManager";
 
-import { SOCKET_EVT_ZENRTC_SIGNAL } from "./VirtualServerZenRTCSignalBroker";
+import { SOCKET_EVT_ZENRTC_SIGNAL } from "./subClasses/VirtualServerZenRTCSignalBroker";
 
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,

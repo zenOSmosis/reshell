@@ -1,4 +1,4 @@
-import PhantomPeerCore from "../PhantomPeerCore";
+import PhantomPeerCore from "../../PhantomPeerCore";
 
 // TODO: Use map or collection
 const _instances = {};

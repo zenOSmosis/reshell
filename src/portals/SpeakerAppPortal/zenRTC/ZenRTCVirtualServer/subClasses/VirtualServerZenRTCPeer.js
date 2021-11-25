@@ -14,7 +14,7 @@ import ZenRTCPeer, {
   EVT_SDP_OFFERED,
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
-} from "../ZenRTCPeer";
+} from "../../ZenRTCPeer";
 
 import VirtualServerZenRTCSignalBroker, {
   EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
@@ -22,7 +22,7 @@ import VirtualServerZenRTCSignalBroker, {
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
-import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../capabilities";
+import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../../capabilities";
 
 export {
   EVT_UPDATED,
