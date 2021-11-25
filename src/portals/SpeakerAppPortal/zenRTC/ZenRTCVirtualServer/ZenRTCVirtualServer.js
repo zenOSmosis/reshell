@@ -1,6 +1,5 @@
 import PhantomCore, { EVT_READY, EVT_DESTROYED } from "phantom-core";
 import VirtualServerZenRTCPeerManager, {
-  EVT_UPDATED,
   EVT_PEER_CONNECTED,
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
@@ -95,6 +94,26 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       deviceAddress: this._deviceAddress,
       socket: this._socket,
       sharedWritableSyncObject: this._sharedWritableSyncObject,
+    });
+
+    this._peerManager.on(EVT_PEER_CONNECTED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer connected", zenRTCPeer);
+    });
+
+    this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer disconnected", zenRTCPeer);
+    });
+
+    this._peerManager.on(EVT_PEER_UPDATED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer updated", zenRTCPeer);
+    });
+
+    this._peerManager.on(EVT_PEER_DESTROYED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer destructed", zenRTCPeer);
     });
 
     this.registerShutdownHandler(() => this._peerManager.destroy());

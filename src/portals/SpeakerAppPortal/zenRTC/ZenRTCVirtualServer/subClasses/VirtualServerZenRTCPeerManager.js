@@ -1,15 +1,16 @@
 import { PhantomCollection, EVT_DESTROYED } from "phantom-core";
-import VirtualServerZenRTCPeer from "./VirtualServerZenRTCPeer";
+import VirtualServerZenRTCPeer, {
+  EVT_CONNECTED,
+  EVT_DISCONNECTED,
+  EVT_UPDATED,
+} from "./VirtualServerZenRTCPeer";
 
 export { EVT_DESTROYED };
 
-// TODO: Keep exporting these?
-/*
 export const EVT_PEER_CONNECTED = "peer-connected";
 export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
 export const EVT_PEER_UPDATED = "peer-updated";
-*/
 
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
@@ -99,6 +100,22 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
 
         // TODO: Re-enable
         // readOnlySyncObject,
+      });
+
+      this.proxyOn(virtualServerZenRTCPeer, EVT_CONNECTED, () => {
+        this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
+      });
+
+      this.proxyOn(virtualServerZenRTCPeer, EVT_DISCONNECTED, () => {
+        this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
+      });
+
+      this.proxyOn(virtualServerZenRTCPeer, EVT_UPDATED, () => {
+        this.emit(EVT_PEER_UPDATED, virtualServerZenRTCPeer);
+      });
+
+      this.proxyOn(virtualServerZenRTCPeer, EVT_DESTROYED, () => {
+        this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
       });
 
       // Register the peer in the collection
