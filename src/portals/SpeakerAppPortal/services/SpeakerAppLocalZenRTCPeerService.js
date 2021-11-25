@@ -1,6 +1,6 @@
 import { PhantomCollection } from "phantom-core";
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
+import LocalZenRTCPeer, { EVT_CONNECTED } from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
@@ -70,10 +70,18 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       network,
       ourSocket,
       iceServers,
-      initialMediaCaptureFactories: mediaDevicesService.getCaptureFactories(),
     });
 
     localZenRTCPeer.proxyOn(mediaDevicesService, EVT_UPDATED, () => {
+      localZenRTCPeer.setMediaCaptureFactories(
+        mediaDevicesService.getCaptureFactories()
+      );
+    });
+
+    localZenRTCPeer.once(EVT_CONNECTED, () => {
+      // TODO: Remove
+      console.log("connected!!!!");
+
       localZenRTCPeer.setMediaCaptureFactories(
         mediaDevicesService.getCaptureFactories()
       );

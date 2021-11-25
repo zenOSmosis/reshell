@@ -73,31 +73,6 @@ export const EVT_SYNC_EVT_RECEIVED = "sync-event";
 // Internal event for pinging (in conjunction w/ SYNC_EVT_PONG)
 const EVT_PONG = "pong";
 
-/*
-const ICE_SERVERS = (() => {
-  throw new Error("TODO: Rework COTURN variables");
-
-  const hostname =
-    process.env.REACT_APP_COTURN_HOSTNAME || process.env.COTURN_HOSTNAME;
-
-  const username =
-    process.env.REACT_APP_COTURN_USERNAME || process.env.COTURN_USERNAME;
-  const credential =
-    process.env.REACT_APP_COTURN_PASSWORD || process.env.COTURN_PASSWORD;
-
-  // TODO: Document type
-  const iceServers = [
-    {
-      urls: [`turn:${hostname}:3478`, `stun:${hostname}:3478`],
-      username,
-      credential,
-    },
-  ];
-
-  return iceServers;
-})();
-*/
-
 /**
  * TODO: Handle possible WebRTCPeer error codes:
  *
@@ -298,8 +273,6 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
     })();
-
-    this._reconnectArgs = [];
   }
 
   /**
@@ -528,14 +501,9 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * TODO: Make private; or auto-(re)connect?
-   *
-   * @param {MediaStream} outgoingMediaStream?
    * @return {Promise<void>}
    */
-  async connect(outgoingMediaStream = new MediaStream()) {
-    this._reconnectArgs = [outgoingMediaStream];
-
+  async connect() {
     if (this._isDestroyed) {
       // FIXME: This should probably throw, however on Firefox if clicking
       // connect button multiple times while mic prompt is active, it will
@@ -559,21 +527,6 @@ export default class ZenRTCPeer extends PhantomCore {
       // Fix issue where reconnecting streams causes tracks to build up
       this._outgoingMediaStreams = [];
       this._incomingMediaStreams = [];
-
-      if (outgoingMediaStream) {
-        // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
-        // connected
-        this.once(EVT_CONNECTED, async () => {
-          const mediaStreamTracks = outgoingMediaStream.getTracks();
-
-          for (const mediaStreamTrack of mediaStreamTracks) {
-            this.addOutgoingMediaStreamTrack(
-              mediaStreamTrack,
-              outgoingMediaStream
-            );
-          }
-        });
-      }
 
       const simplePeerOptions = {
         initiator: this._isInitiator,
@@ -654,6 +607,9 @@ export default class ZenRTCPeer extends PhantomCore {
 
       // Handle WebRTC connect
       this._webrtcPeer.on("connect", () => {
+        // TODO: Remove
+        this.log("CONNECTED...");
+
         this._isConnected = true;
         this._connectTime = getUnixTime();
 
@@ -662,6 +618,9 @@ export default class ZenRTCPeer extends PhantomCore {
 
       // Handle WebRTC disconnect
       this._webrtcPeer.on("close", async () => {
+        // TODO: Remove
+        this.log("DISCONNECTED...");
+
         this._isConnected = false;
         this.emit(EVT_DISCONNECTED);
 
@@ -716,7 +675,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this.log.debug("Trying to reconnect");
 
-      const ret = this.connect(...this._reconnectArgs);
+      const ret = this.connect();
 
       this.emit(EVT_RECONNECTING);
 
