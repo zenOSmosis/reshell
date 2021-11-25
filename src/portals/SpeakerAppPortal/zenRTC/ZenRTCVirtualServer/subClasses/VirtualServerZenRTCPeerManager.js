@@ -3,12 +3,20 @@ import SyncObject, { EVT_UPDATED } from "sync-object";
 import VirtualServerZenRTCPeer, {
   EVT_CONNECTED,
   EVT_DISCONNECTED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "./VirtualServerZenRTCPeer";
 
 export { EVT_DESTROYED };
 
 export const EVT_PEER_CONNECTED = "peer-connected";
 export const EVT_PEER_SHARED_STATE_UPDATED = "peer-shared-state-updated";
+export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED}`;
+export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED}`;
+export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED}`;
+export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED}`;
 export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
 
@@ -112,12 +120,56 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
       });
 
-      virtualServerZenRTCPeer.on(EVT_DISCONNECTED, () => {
-        this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
+      // IMPORTANT: Listening to readOnlySyncObject, not the peer, here
+      readOnlySyncObject.on(EVT_UPDATED, updatedState => {
+        this.emit(EVT_PEER_SHARED_STATE_UPDATED, [
+          virtualServerZenRTCPeer,
+          updatedState,
+        ]);
       });
 
-      readOnlySyncObject.on(EVT_UPDATED, () => {
-        this.emit(EVT_PEER_SHARED_STATE_UPDATED, virtualServerZenRTCPeer);
+      virtualServerZenRTCPeer.on(
+        EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+        mediaStreamTrack => {
+          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED, [
+            virtualServerZenRTCPeer,
+            mediaStreamTrack,
+          ]);
+        }
+      );
+
+      virtualServerZenRTCPeer.on(
+        EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+        mediaStreamTrack => {
+          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, [
+            virtualServerZenRTCPeer,
+            mediaStreamTrack,
+          ]);
+        }
+      );
+
+      virtualServerZenRTCPeer.on(
+        EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        mediaStreamTrack => {
+          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED, [
+            virtualServerZenRTCPeer,
+            mediaStreamTrack,
+          ]);
+        }
+      );
+
+      virtualServerZenRTCPeer.on(
+        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        mediaStreamTrack => {
+          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED, [
+            virtualServerZenRTCPeer,
+            mediaStreamTrack,
+          ]);
+        }
+      );
+
+      virtualServerZenRTCPeer.on(EVT_DISCONNECTED, () => {
+        this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
       });
 
       virtualServerZenRTCPeer.on(EVT_DESTROYED, () => {

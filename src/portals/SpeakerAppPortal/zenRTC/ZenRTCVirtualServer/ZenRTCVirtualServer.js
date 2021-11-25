@@ -2,6 +2,10 @@ import PhantomCore, { EVT_READY, EVT_DESTROYED } from "phantom-core";
 import VirtualServerZenRTCPeerManager, {
   EVT_PEER_CONNECTED,
   EVT_PEER_SHARED_STATE_UPDATED,
+  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
@@ -100,15 +104,63 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       // TODO: Re-emit
     });
 
-    this._peerManager.on(EVT_PEER_SHARED_STATE_UPDATED, zenRTCPeer => {
-      // TODO: Remove
-      console.log("zenRTCPeer read-only state updated", {
-        zenRTCPeer,
-        readOnlyState: zenRTCPeer.getReadOnlySyncObject().getState(),
-      });
+    this._peerManager.on(
+      EVT_PEER_SHARED_STATE_UPDATED,
+      ([zenRTCPeer, readOnlyUpdatedState]) => {
+        // TODO: Remove
+        console.log("zenRTCPeer read-only state updated", {
+          zenRTCPeer,
+          readOnlyUpdatedState,
+          readOnlyFullState: zenRTCPeer.getReadOnlySyncObject().getState(),
+        });
 
-      // TODO: Re-emit
-    });
+        // TODO: Re-emit
+      }
+    );
+
+    this._peerManager.on(
+      EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+      ([zenRTCPeer, mediaStreamTrack]) => {
+        // TODO: Remove
+        console.log("zenRTCPeer added outgoing media stream track", {
+          zenRTCPeer,
+          mediaStreamTrack,
+        });
+      }
+    );
+
+    this._peerManager.on(
+      EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+      ([zenRTCPeer, mediaStreamTrack]) => {
+        // TODO: Remove
+        console.log("zenRTCPeer removed outgoing media stream track", {
+          zenRTCPeer,
+          mediaStreamTrack,
+        });
+      }
+    );
+
+    this._peerManager.on(
+      EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+      ([zenRTCPeer, mediaStreamTrack]) => {
+        // TODO: Remove
+        console.log("zenRTCPeer added incoming media stream track", {
+          zenRTCPeer,
+          mediaStreamTrack,
+        });
+      }
+    );
+
+    this._peerManager.on(
+      EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+      ([zenRTCPeer, mediaStreamTrack]) => {
+        // TODO: Remove
+        console.log("zenRTCPeer removed incoming media stream track", {
+          zenRTCPeer,
+          mediaStreamTrack,
+        });
+      }
+    );
 
     this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
       // TODO: Remove
