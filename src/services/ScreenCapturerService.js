@@ -41,4 +41,11 @@ export default class ScreenCapturerService extends UIServiceCore {
       )
       .flat();
   }
+
+  // TODO: Document
+  getCaptureFactories() {
+    return this.getCollectionInstance(
+      ScreenCaptureFactoryCollection
+    ).getChildren();
+  }
 }
