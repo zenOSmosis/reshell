@@ -1,10 +1,11 @@
 import { PhantomCollection } from "phantom-core";
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import LocalZenRTCPeer, { EVT_CONNECTED } from "../zenRTC/LocalZenRTCPeer";
+import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
+import ScreenCapturerService from "@services/ScreenCapturerService";
 
 export { EVT_UPDATED };
 
@@ -58,9 +59,13 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       SpeakerAppSocketAuthenticationService
     );
 
-    const mediaDevicesService = this.useServiceClass(InputMediaDevicesService);
+    const inputMediaDevicesService = this.useServiceClass(
+      InputMediaDevicesService
+    );
+    // TODO: Remove
+    console.log({ inputMediaDevicesService });
 
-    // TODO: Consider refactoring by passing in network service; could span multiple network types
+    const screenCapturerService = this.useServiceClass(ScreenCapturerService);
     const networkService = this.useServiceClass(SpeakerAppNetworkService);
 
     const iceServers = await networkService.fetchICEServers();
@@ -70,21 +75,10 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       network,
       ourSocket,
       iceServers,
-    });
-
-    localZenRTCPeer.proxyOn(mediaDevicesService, EVT_UPDATED, () => {
-      localZenRTCPeer.setMediaCaptureFactories(
-        mediaDevicesService.getCaptureFactories()
-      );
-    });
-
-    localZenRTCPeer.once(EVT_CONNECTED, () => {
-      // TODO: Remove
-      console.log("connected!!!!");
-
-      localZenRTCPeer.setMediaCaptureFactories(
-        mediaDevicesService.getCaptureFactories()
-      );
+      // writableSyncObject,
+      // readOnlySyncObject,
+      inputMediaDevicesService,
+      screenCapturerService,
     });
 
     // Adds the localZenRTCPeer to a collection; if the service is destructed,

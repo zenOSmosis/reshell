@@ -47,6 +47,8 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     iceServers,
     writableSyncObject,
     readOnlySyncObject,
+    inputMediaDevicesService,
+    screenCapturerService,
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
   }) {
@@ -112,21 +114,53 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       this.receiveZenRTCSignal(data);
     });
 
+    this._inputMediaDevicesService = inputMediaDevicesService;
+    this._screenCapturerService = screenCapturerService;
+
+    // Handle dynamic media capture factory publishing
+    (() => {
+      [this._inputMediaDevicesService, this._screenCapturerService].forEach(
+        mediaCaptureService => {
+          this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
+            // TODO: Remove
+            console.log("mediaCaptureService updated", {
+              mediaCaptureService,
+            });
+
+            if (this.getIsConnected()) {
+              this._publishMediaCaptureFactories();
+            }
+          });
+        }
+      );
+
+      this.on(EVT_CONNECTED, () => {
+        this._publishMediaCaptureFactories();
+      });
+    })();
+
     // TODO: Remove
     this.on(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, mediaStreamData => {
       console.log("added incoming media stream data", mediaStreamData);
     });
 
+    // TODO: Remove
     this.on(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, mediaStreamData => {
       console.log("removed incoming media stream data", mediaStreamData);
     });
   }
 
   // TODO: Document
-  setMediaCaptureFactories(mediaCaptureFactories) {
-    this._mediaCaptureFactories = mediaCaptureFactories;
+  _getMediaCaptureFactories() {
+    return [
+      ...this._inputMediaDevicesService.getCaptureFactories(),
+      ...this._screenCapturerService.getCaptureFactories(),
+    ];
+  }
 
-    const outputMediaStreams = this._mediaCaptureFactories.map(factory =>
+  // TODO: Document
+  _publishMediaCaptureFactories() {
+    const outputMediaStreams = this._getMediaCaptureFactories().map(factory =>
       factory.getOutputMediaStream()
     );
 
