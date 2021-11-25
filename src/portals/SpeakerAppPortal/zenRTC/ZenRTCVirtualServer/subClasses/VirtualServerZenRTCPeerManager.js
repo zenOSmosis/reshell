@@ -39,7 +39,6 @@ export const EVT_PEER_UPDATED = "peer-updated";
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
 
-// TODO: Extend PhantomCollection instead?
 /**
  * Manages the creation, updating, and destroying of VirtualServerZenRTCPeer instances.
  */
@@ -64,6 +63,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
     this._deviceAddress = deviceAddress;
     this._socket = socket;
 
+    // TODO: Move to virtual server
     // TODO: Use local storage sync object, or web worker based
     // Shared between all peers
     this._sharedWritableSyncObject = new SyncObject({
@@ -80,13 +80,17 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
     this._networkDescription = null;
 
     // TODO: These binds may not be necessary w/ PhantomCore 2.0.0
+    /*
     this._peerHasConnected = this._peerHasConnected.bind(this);
     this._peerHasUpdated = this._peerHasUpdated.bind(this);
     this._peerHasDisconnected = this._peerHasDisconnected.bind(this);
     this._peerHasDestroyed = this._peerHasDestroyed.bind(this);
+    */
 
+    /*
     this._syncPeerData = this._syncPeerData.bind(this);
     this._syncLinkedMediaState = this._syncLinkedMediaState.bind(this);
+    */
 
     this.log("Listening for ZenRTCPeer connections");
   }
