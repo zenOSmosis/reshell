@@ -43,64 +43,78 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
     this._socketService = socketService;
 
-    // this._peerManager = new VirtualServerZenRTCPeerManager();
+    this._peerManager = new VirtualServerZenRTCPeerManager({
+      realmId: this._realmId,
+      channelId: this._channelId,
+      deviceAddress: this._deviceAddress,
+    });
+    this.registerShutdownHandler(() => this._peerManager.destroy());
 
     this._init().catch(err => {
       this.log.error(err);
 
       this.destroy();
     });
-
-    (() => {
-      const socket = this._socketService.getSocket();
-
-      // TODO: Refactor into signal broker?
-      const _handleReceiveZenRTCSignal = data => {
-        // TODO: Remove
-        console.log("TODO: _handleReceiveZenRTCSignal", data);
-
-        /*
-        const {
-          socketIdFrom,
-          senderDeviceAddress,
-          signalBrokerIdFrom,
-          realmId,
-          channelId,
-          signalBrokerIdTo,
-        } = data;
-
-        if (
-          // IMPORTANT: Clients do not know the signalBrokerId they are sending
-          // to, as the virtual server's signal broker isn't set up for that
-          // client until the message is received
-          signalBrokerIdTo === undefined &&
-          realmId === this._realmId &&
-          channelId === this._channelId
-        ) {
-          const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
-            socketIdFrom,
-            senderDeviceAddress,
-            signalBrokerIdFrom
-          );
-
-          zenRTCPeer.receiveZenRTCSignal(data);
-        }
-        */
-      };
-
-      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
-
-      this.registerShutdownHandler(() =>
-        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
-      );
-    })();
   }
 
   // TODO: Document
   async _init() {
+    // Start listening for socket events
+    this._initSocketListener();
+
+    // Tell the real server we're starting a session
     await this._emitSessionStart();
+    // When destructed, tell the real server we're stopping the session
+    this.registerShutdownHandler(() => this._emitSessionEnd());
 
     return super._init();
+  }
+
+  // TODO: Document
+  _initSocketListener() {
+    const socket = this._socketService.getSocket();
+
+    // TODO: Refactor into signal broker?
+    const _handleReceiveZenRTCSignal = signal => {
+      // TODO: Remove
+      console.log("TODO: _handleReceiveZenRTCSignal", signal);
+
+      const {
+        socketIdFrom,
+        senderDeviceAddress,
+        signalBrokerIdFrom,
+        realmId,
+        channelId,
+        signalBrokerIdTo,
+      } = signal;
+
+      if (
+        // IMPORTANT: Clients do not know the signalBrokerId they are sending
+        // to, as the virtual server's signal broker isn't set up for that
+        // client until the message is received
+        signalBrokerIdTo === undefined &&
+        realmId === this._realmId &&
+        channelId === this._channelId
+      ) {
+        // TODO: Relay signal to appropriate peer
+        /*
+        const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
+          socketIdFrom,
+          senderDeviceAddress,
+          signalBrokerIdFrom
+        );
+
+        zenRTCPeer.receiveZenRTCSignal(signal);
+        */
+      }
+    };
+
+    socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
+
+    // Unbind from socket when destructed
+    this.registerShutdownHandler(() =>
+      socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
+    );
   }
 
   // TODO: Document
@@ -126,14 +140,5 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     await this._socketService.fetchSocketAPICall(
       SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION
     );
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    await this._emitSessionEnd();
-
-    return super.destroy();
   }
 }

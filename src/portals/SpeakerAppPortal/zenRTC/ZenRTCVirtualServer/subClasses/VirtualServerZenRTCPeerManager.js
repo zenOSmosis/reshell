@@ -36,9 +36,6 @@ export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
 export const EVT_PEER_UPDATED = "peer-updated";
 
-// TODO: Refactor to enable ability to host multiple networks at a time
-let _instance = null;
-
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
 
@@ -48,26 +45,12 @@ let _instance = null;
  */
 export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
   // TODO: Document
-  constructor({ realmId, channelId, hostDeviceAddress, socket }) {
+  constructor({ realmId, channelId, deviceAddress }) {
     super();
-
-    // Destroy previous instance
-    //
-    // TODO: Document why we want to destroy instead of retain it as a
-    // singleton
-    if (_instance) {
-      this.log.warn(`Destroying previous ${this.getClassName()} instance`);
-
-      _instance.destroy();
-    }
-
-    _instance = this;
-    this.registerShutdownHandler(() => (_instance = null));
 
     this._realmId = realmId;
     this._channelId = channelId;
-    this._socket = socket;
-    this._hostDeviceAddress = hostDeviceAddress;
+    this._deviceAddress = deviceAddress;
 
     // TODO: Use local storage sync object, or web worker based
     // Shared between all peers
@@ -80,48 +63,6 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
 
       chatMessages: {},
     });
-
-    // TODO: Refactor
-    // Handle all incoming WebIPC messages
-    /*
-    (() => {
-      const _handleReceiveZenRTCSignal = data => {
-        const {
-          socketIdFrom,
-          senderDeviceAddress,
-          signalBrokerIdFrom,
-          realmId,
-          channelId,
-          signalBrokerIdTo,
-        } = data;
-
-        if (
-          // IMPORTANT: Clients do not know the signalBrokerId they are sending
-          // to, as the virtual server's signal broker isn't set up for that
-          // client until the message is received
-          signalBrokerIdTo === undefined &&
-          realmId === this._realmId &&
-          channelId === this._channelId
-        ) {
-          const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
-            socketIdFrom,
-            senderDeviceAddress,
-            signalBrokerIdFrom
-          );
-
-          zenRTCPeer.receiveZenRTCSignal(data);
-        }
-      };
-
-      // TODO: Check realm / channel integrity before starting up zenRTCInstance?
-
-      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
-
-      this.registerShutdownHandler(() =>
-        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
-      );
-    })();
-    */
 
     this._networkName = null;
     this._networkDescription = null;
@@ -165,7 +106,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         channelId: this._channelId,
         networkName: this._networkName,
         networkDescription: this._networkDescription,
-        hostDeviceAddress: this._hostDeviceAddress,
+        hostDeviceAddress: this._deviceAddress,
       },
     });
 
@@ -225,13 +166,13 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
    * Gets, or creates, VirtualServerZenRTCPeer associated with the given
    * socketId.
    *
-   * @param {string} initiatorSocketIoId
+   * // @param {string} initiatorSocketIoId
    * @param {string} initiatorDeviceAddress
    * @param {string} initiatorSignalBrokerId
    * @return {VirtualServerZenRTCPeer} Returns a new, or cached, instance.
    */
   _getOrCreateVirtualServerZenRTCPeer(
-    initiatorSocketIoId,
+    // initiatorSocketIoId,
     initiatorDeviceAddress,
     initiatorSignalBrokerId
   ) {
@@ -248,12 +189,14 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       /**
        * Read the remote participant.
        */
+      /*
       const readOnlySyncObject = new VirtualServerPhantomPeer(
         initiatorDeviceAddress,
         initiatorSignalBrokerId
       );
+      */
 
-      const virtualParticipant = readOnlySyncObject;
+      // const virtualParticipant = readOnlySyncObject;
 
       // TODO: Refactor beyond this point
       return;
@@ -261,6 +204,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       // const zenRTCSignalBrokerId = zenRTCSignalBroker.getUUID();
 
       // ZenRTC Peer
+      /*
       const virtualServerZenRTCPeer = new VirtualServerZenRTCPeer({
         socketId: initiatorSocketIoId,
         // zenRTCSignalBrokerId: zenRTCSignalBrokerId,
@@ -274,6 +218,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         // zenRTCSignalBroker.destroy();
         virtualServerZenRTCPeer.destroy();
       });
+      */
 
       // this.addChild(virtualServerZenRTCPeer, zenRTCSignalBrokerId);
 
@@ -283,6 +228,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       );
       */
 
+      /*
       virtualServerZenRTCPeer.registerShutdownHandler(() => {
         this.log(
           `Destructing VirtualServerZenRTCPeer for initiator signal broker "${initiatorSignalBrokerId}"`
@@ -297,6 +243,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         // Unbind zenRTCSignalBroker
         // zenRTCSignalBroker.destroy();
       });
+      */
 
       // TODO: Uncomment or refactor
       // Carry profile and other shared information over to other peers
@@ -414,9 +361,11 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       */
 
       // Automatically connect
+      /*
       virtualServerZenRTCPeer.connect();
 
       return virtualServerZenRTCPeer;
+      */
     }
   }
 
