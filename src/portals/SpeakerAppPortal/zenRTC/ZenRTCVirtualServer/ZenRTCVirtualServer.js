@@ -18,6 +18,7 @@ import { SOCKET_EVT_ZENRTC_SIGNAL } from "./subClasses/VirtualServerZenRTCSignal
 import {
   SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
   SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
+  SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,
 } from "../../shared/socketAPIRoutes";
 
 export { EVT_READY, EVT_DESTROYED };
@@ -107,6 +108,32 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       // TODO: Remove
       console.log("zenRTCPeer connected", zenRTCPeer);
 
+      // Emit count to real server
+      this._socketService.fetchSocketAPICall(
+        SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,
+        this._peerManager.getConnectedZenRTCPeers().length
+      );
+
+      // TODO: Re-emit
+    });
+
+    this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer disconnected", zenRTCPeer);
+
+      // Emit count to real server
+      this._socketService.fetchSocketAPICall(
+        SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,
+        this._peerManager.getConnectedZenRTCPeers().length
+      );
+
+      // TODO: Re-emit
+    });
+
+    this._peerManager.on(EVT_PEER_DESTROYED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer destructed", zenRTCPeer);
+
       // TODO: Re-emit
     });
 
@@ -187,20 +214,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         );
       }
     );
-
-    this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
-      // TODO: Remove
-      console.log("zenRTCPeer disconnected", zenRTCPeer);
-
-      // TODO: Re-emit
-    });
-
-    this._peerManager.on(EVT_PEER_DESTROYED, zenRTCPeer => {
-      // TODO: Remove
-      console.log("zenRTCPeer destructed", zenRTCPeer);
-
-      // TODO: Re-emit
-    });
 
     this.registerShutdownHandler(() => this._peerManager.destroy());
   }

@@ -195,7 +195,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
   /**
    * @return {VirtualServerZenRTCPeer[]}
    */
-  getZenRTCPeers() {
-    return this.getChildren();
+  getConnectedZenRTCPeers() {
+    return this.getChildren().filter(zenRTCPeer => zenRTCPeer.getIsConnected());
   }
 }
