@@ -8,11 +8,11 @@ import {
 // TODO: Build out; ensuring added children are media device controller factories
 class MediaDeviceFactoryCollection extends PhantomCollection {}
 
-export default class MediaDevicesService extends UIServiceCore {
+export default class InputMediaDevicesService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Media Devices Service");
+    this.setTitle("Input Media Devices Service");
 
     // TODO: Re-run when devices have been changed
     this.fetchAudioInputDevices();

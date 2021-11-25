@@ -1,4 +1,4 @@
-import MediaDevicesService from "@services/MediaDevicesService";
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
 import Layout, { Content, Footer } from "@components/Layout";
 import LED from "@components/LED";
@@ -17,9 +17,9 @@ const InputMediaDevices = {
     width: 640,
     height: 300,
   },
-  serviceClasses: [MediaDevicesService],
+  serviceClasses: [InputMediaDevicesService],
   view: function View({ appServices }) {
-    const mds = appServices[MediaDevicesService];
+    const mds = appServices[InputMediaDevicesService];
 
     const mediaDevices = mds.getMediaDevices();
 

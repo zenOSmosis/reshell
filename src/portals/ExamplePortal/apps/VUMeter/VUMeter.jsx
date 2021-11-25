@@ -1,4 +1,4 @@
-import MediaDevicesService from "@services/MediaDevicesService";
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
@@ -19,9 +19,9 @@ const VUMeter = {
     height: 360,
     backgroundColor: "rgba(0,0,0,.4)",
   },
-  serviceClasses: [MediaDevicesService],
+  serviceClasses: [InputMediaDevicesService],
   view: ({ appServices }) => {
-    const mds = appServices[MediaDevicesService];
+    const mds = appServices[InputMediaDevicesService];
 
     const captureFactories = mds.getCaptureFactories();
     const isCapturing = Boolean(captureFactories.length);

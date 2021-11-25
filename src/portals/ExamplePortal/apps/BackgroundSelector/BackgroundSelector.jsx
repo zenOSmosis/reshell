@@ -17,7 +17,7 @@ const BackgroundSelector = {
     width: 640,
     height: 300,
   },
-  // serviceClasses: [MediaDevicesService],
+  // serviceClasses: [InputMediaDevicesService],
   view: function View({ appServices }) {
     return <Center>TODO: Background Selector</Center>;
   },

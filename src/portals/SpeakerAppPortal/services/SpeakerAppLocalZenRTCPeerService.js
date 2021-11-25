@@ -4,7 +4,7 @@ import LocalZenRTCPeer, { EVT_CONNECTED } from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
-import MediaDevicesService from "@services/MediaDevicesService";
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
 export { EVT_UPDATED };
 
@@ -58,7 +58,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       SpeakerAppSocketAuthenticationService
     );
 
-    const mediaDevicesService = this.useServiceClass(MediaDevicesService);
+    const mediaDevicesService = this.useServiceClass(InputMediaDevicesService);
 
     // TODO: Consider refactoring by passing in network service; could span multiple network types
     const networkService = this.useServiceClass(SpeakerAppNetworkService);
