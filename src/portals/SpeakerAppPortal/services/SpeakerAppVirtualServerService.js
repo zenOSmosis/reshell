@@ -5,6 +5,7 @@ import ZenRTCVirtualServer from "../zenRTC/ZenRTCVirtualServer";
 
 // TODO: Document (used for network hosting)
 
+// TODO: Document
 export default class SpeakerAppVirtualServerService extends UIServiceCore {
   constructor({ ...args }) {
     super({
@@ -85,7 +86,7 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
       this._virtualServer = null;
     });
 
-    await this._virtualServer.onceReady()
+    await this._virtualServer.onceReady();
 
     this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
   }

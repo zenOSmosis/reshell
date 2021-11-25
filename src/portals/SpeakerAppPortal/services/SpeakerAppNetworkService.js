@@ -10,6 +10,7 @@ import {
 } from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
+// TODO: Document
 export default class SpeakerAppNetworkService extends UIServiceCore {
   constructor({ ...args }) {
     super({

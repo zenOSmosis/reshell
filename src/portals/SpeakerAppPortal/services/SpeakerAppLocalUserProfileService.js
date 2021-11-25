@@ -4,6 +4,7 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 // import { SOCKET_API_ROUTE_FETCH_NETWORKS } from "../shared/socketAPIRoutes";
 // import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
+// TODO: Document
 export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
   // TODO: Build out
 }

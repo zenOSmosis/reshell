@@ -30,6 +30,7 @@ import { EVT_CONNECT_ERROR } from "./socketConstants";
 
 const CLIENT_BUILD_HASH = process.env.REACT_APP_GIT_HASH;
 
+// TODO: Document
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {
   constructor({ ...args }) {
     super({ ...args });
