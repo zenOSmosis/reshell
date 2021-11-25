@@ -44,13 +44,25 @@ export const EVT_PEER_UPDATED = "peer-updated";
  * Manages the creation, updating, and destroying of VirtualServerZenRTCPeer instances.
  */
 export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
+  /**
+   * Gets the unique key to identify a peer.
+   *
+   * @param {string} clientDeviceAddress
+   * @param {string} clientSignalBrokerId
+   * @return {string}
+   */
+  static getPeerKey(clientDeviceAddress, clientSignalBrokerId) {
+    return `${clientDeviceAddress}-${clientSignalBrokerId}`;
+  }
+
   // TODO: Document
-  constructor({ realmId, channelId, deviceAddress }) {
+  constructor({ realmId, channelId, deviceAddress, socket }) {
     super();
 
     this._realmId = realmId;
     this._channelId = channelId;
     this._deviceAddress = deviceAddress;
+    this._socket = socket;
 
     // TODO: Use local storage sync object, or web worker based
     // Shared between all peers
@@ -80,86 +92,72 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
   }
 
   // TODO: Document
-  addChild(virtualServerZenRTCPeer, zenRTCSignalBrokerId) {
-    if (!(VirtualServerZenRTCPeer instanceof VirtualServerZenRTCPeer)) {
+  addChild(virtualServerZenRTCPeer, clientDeviceAddress, clientSignalBrokerId) {
+    if (!(virtualServerZenRTCPeer instanceof VirtualServerZenRTCPeer)) {
       throw new TypeError(
         "virtualServerZenRTCPeer is not a VirtualServerZenRTCPeer instance"
       );
     }
 
-    if (typeof zenRTCSignalBrokerId !== "string") {
-      throw new TypeError("Expected string for zenRTCSignalBrokerId");
-    }
+    const peerKey = VirtualServerZenRTCPeerManager.getPeerKey(
+      clientDeviceAddress,
+      clientSignalBrokerId
+    );
 
-    return super.addChild(virtualServerZenRTCPeer, zenRTCSignalBrokerId);
+    return super.addChild(virtualServerZenRTCPeer, peerKey);
   }
 
-  // TODO: Document
-  setNetworkData({ networkName, networkDescription }) {
-    this._networkName = networkName;
-    this._networkDescription = networkDescription;
+  /**
+   * @param {string} clientSocketId
+   * @param {string} clientDeviceAddress
+   * @param {string} clientSignalBrokerId
+   * @return {VirtualServerZenRTCPeer}
+   */
+  getOrCreateZenRTCPeer(
+    clientSocketId,
+    clientDeviceAddress,
+    clientSignalBrokerId
+  ) {
+    const existingPeer = this.getChildWithKey(
+      VirtualServerZenRTCPeerManager.getPeerKey(
+        clientDeviceAddress,
+        clientSignalBrokerId
+      )
+    );
 
-    // Sync network data to all peers
-    this._sharedWritableSyncObject.setState({
-      networkData: {
+    if (existingPeer) {
+      return existingPeer;
+    } else {
+      // Create peer
+
+      const virtualServerZenRTCPeer = new VirtualServerZenRTCPeer({
+        ourSocket: this._socket,
         realmId: this._realmId,
         channelId: this._channelId,
-        networkName: this._networkName,
-        networkDescription: this._networkDescription,
-        hostDeviceAddress: this._deviceAddress,
-      },
-    });
+        clientSocketId,
+        clientSignalBrokerId,
 
-    this.emit(EVT_UPDATED);
-  }
+        // TODO: Re-enable sync objects
 
-  /**
-   * Called when the given peer has connected.
-   *
-   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
-   * @return {void}
-   */
-  _peerHasConnected(virtualServerZenRTCPeer) {
-    this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
-
-    // Map streams from other peers to this peer
-    (() => {
-      const otherPeers = virtualServerZenRTCPeer.getOtherThreadInstances();
-
-      otherPeers.forEach(otherPeer => {
-        otherPeer
-          .getIncomingMediaStreams()
-          .forEach(mediaStream =>
-            mediaStream
-              .getTracks()
-              .forEach(mediaStreamTrack =>
-                virtualServerZenRTCPeer.addOutgoingMediaStreamTrack(
-                  mediaStreamTrack,
-                  mediaStream
-                )
-              )
-          );
+        // zenRTCSignalBrokerId: zenRTCSignalBrokerId,
+        // NOTE: The writable is shared between all of the participants and
+        // does not represent a single participant (it symbolized all of them)
+        // writableSyncObject: this._sharedWritableSyncObject,
+        // readOnlySyncObject,
       });
-    })();
-  }
 
-  /**
-   * Called when the given peer has updated.
-   *
-   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
-   */
-  _peerHasUpdated(virtualServerZenRTCPeer) {
-    this.emit(EVT_PEER_UPDATED, virtualServerZenRTCPeer);
-  }
+      // Register the peer in the collection
+      this.addChild(
+        virtualServerZenRTCPeer,
+        clientDeviceAddress,
+        clientSignalBrokerId
+      );
 
-  // TODO: Document
-  _peerHasDisconnected(virtualServerZenRTCPeer) {
-    this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
-  }
+      // Automatically connect
+      virtualServerZenRTCPeer.connect();
 
-  // TODO: Document
-  _peerHasDestroyed(virtualServerZenRTCPeer) {
-    this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
+      return virtualServerZenRTCPeer;
+    }
   }
 
   /**
@@ -171,7 +169,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
    * @param {string} initiatorSignalBrokerId
    * @return {VirtualServerZenRTCPeer} Returns a new, or cached, instance.
    */
-  _getOrCreateVirtualServerZenRTCPeer(
+  TODO_REMOVE_getOrCreateVirtualServerZenRTCPeer(
     // initiatorSocketIoId,
     initiatorDeviceAddress,
     initiatorSignalBrokerId
@@ -367,6 +365,74 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       return virtualServerZenRTCPeer;
       */
     }
+  }
+
+  // TODO: Document
+  setNetworkData({ networkName, networkDescription }) {
+    this._networkName = networkName;
+    this._networkDescription = networkDescription;
+
+    // Sync network data to all peers
+    this._sharedWritableSyncObject.setState({
+      networkData: {
+        realmId: this._realmId,
+        channelId: this._channelId,
+        networkName: this._networkName,
+        networkDescription: this._networkDescription,
+        hostDeviceAddress: this._deviceAddress,
+      },
+    });
+
+    this.emit(EVT_UPDATED);
+  }
+
+  /**
+   * Called when the given peer has connected.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   * @return {void}
+   */
+  _peerHasConnected(virtualServerZenRTCPeer) {
+    this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
+
+    // Map streams from other peers to this peer
+    (() => {
+      const otherPeers = virtualServerZenRTCPeer.getOtherThreadInstances();
+
+      otherPeers.forEach(otherPeer => {
+        otherPeer
+          .getIncomingMediaStreams()
+          .forEach(mediaStream =>
+            mediaStream
+              .getTracks()
+              .forEach(mediaStreamTrack =>
+                virtualServerZenRTCPeer.addOutgoingMediaStreamTrack(
+                  mediaStreamTrack,
+                  mediaStream
+                )
+              )
+          );
+      });
+    })();
+  }
+
+  /**
+   * Called when the given peer has updated.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   */
+  _peerHasUpdated(virtualServerZenRTCPeer) {
+    this.emit(EVT_PEER_UPDATED, virtualServerZenRTCPeer);
+  }
+
+  // TODO: Document
+  _peerHasDisconnected(virtualServerZenRTCPeer) {
+    this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
+  }
+
+  // TODO: Document
+  _peerHasDestroyed(virtualServerZenRTCPeer) {
+    this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
   }
 
   // TODO: Refactor

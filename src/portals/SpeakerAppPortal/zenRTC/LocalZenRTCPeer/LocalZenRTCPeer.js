@@ -41,6 +41,7 @@ export {
 export default class LocalZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
   constructor({
+    // TODO: Pass in distinct realmId, channelId, virtualServerSocketId instead of network
     network,
     ourSocket,
     iceServers,

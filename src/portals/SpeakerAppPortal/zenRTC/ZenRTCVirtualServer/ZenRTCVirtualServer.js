@@ -42,17 +42,20 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._userAgent = userAgent;
 
     this._socketService = socketService;
+    this._socket = socketService.getSocket();
 
     this._peerManager = new VirtualServerZenRTCPeerManager({
       realmId: this._realmId,
       channelId: this._channelId,
       deviceAddress: this._deviceAddress,
+      socket: this._socket,
     });
     this.registerShutdownHandler(() => this._peerManager.destroy());
 
     this._init().catch(err => {
       this.log.error(err);
 
+      // Automatically destruct if not able to init
       this.destroy();
     });
   }
@@ -72,7 +75,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
   // TODO: Document
   _initSocketListener() {
-    const socket = this._socketService.getSocket();
+    const socket = this._socket;
 
     // TODO: Refactor into signal broker?
     const _handleReceiveZenRTCSignal = signal => {
@@ -96,16 +99,16 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         realmId === this._realmId &&
         channelId === this._channelId
       ) {
-        // TODO: Relay signal to appropriate peer
-        /*
-        const zenRTCPeer = this._getOrCreateVirtualServerZenRTCPeer(
+        // TODO: Remove
+        console.log("relay", { signal });
+
+        const zenRTCPeer = this._peerManager.getOrCreateZenRTCPeer(
           socketIdFrom,
           senderDeviceAddress,
           signalBrokerIdFrom
         );
 
         zenRTCPeer.receiveZenRTCSignal(signal);
-        */
       }
     };
 
