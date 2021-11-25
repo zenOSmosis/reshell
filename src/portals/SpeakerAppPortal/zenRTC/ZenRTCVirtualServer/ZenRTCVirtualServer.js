@@ -46,13 +46,10 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     // TODO: Use local storage sync object, or web worker based
     // Shared between all peers
     this._sharedWritableSyncObject = new SyncObject({
-      backgroundImage: null,
-
-      peers: {},
-
-      networkData: {},
-
-      chatMessages: {},
+      // backgroundImage: null,
+      phantomPeers: {},
+      // networkData: {},
+      // chatMessages: {},
     });
 
     this._socketService = socketService;
