@@ -828,6 +828,14 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {void}
    */
   async addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError("mediaStreamTrack is not a MediaStreamTrack");
+    }
+
+    if (!(mediaStream instanceof MediaStream)) {
+      throw new TypeError("mediaStream is not a MediaStream");
+    }
+
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     if (!this._webrtcPeer) {
@@ -842,9 +850,7 @@ export default class ZenRTCPeer extends PhantomCore {
       // in which case that error could make the other states out of sync
 
       // Add track to local representation of stream
-      if (mediaStream) {
-        mediaStream.addTrack(mediaStreamTrack);
-      }
+      mediaStream.addTrack(mediaStreamTrack);
 
       // Add stream to outgoing list of streams
       this._outgoingMediaStreams = addMediaStreamToList(
