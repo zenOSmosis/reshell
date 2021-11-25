@@ -7,6 +7,8 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_UPDATED,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
 
+import SyncObject from "sync-object";
+
 import { SOCKET_EVT_ZENRTC_SIGNAL } from "./subClasses/VirtualServerZenRTCSignalBroker";
 
 import {
@@ -41,16 +43,24 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._buildHash = buildHash;
     this._userAgent = userAgent;
 
+    // TODO: Move to virtual server
+    // TODO: Use local storage sync object, or web worker based
+    // Shared between all peers
+    this._sharedWritableSyncObject = new SyncObject({
+      backgroundImage: null,
+
+      peers: {},
+
+      networkData: {},
+
+      chatMessages: {},
+    });
+
     this._socketService = socketService;
     this._socket = socketService.getSocket();
 
-    this._peerManager = new VirtualServerZenRTCPeerManager({
-      realmId: this._realmId,
-      channelId: this._channelId,
-      deviceAddress: this._deviceAddress,
-      socket: this._socket,
-    });
-    this.registerShutdownHandler(() => this._peerManager.destroy());
+    // Will be defined during _init sequence
+    this._peerManager = null;
 
     this._init().catch(err => {
       this.log.error(err);
@@ -62,15 +72,32 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
   // TODO: Document
   async _init() {
+    // Start managing peers (IMPORTANT: Must come before initSocketListener)
+    this._initPeerManager();
+
     // Start listening for socket events
     this._initSocketListener();
 
     // Tell the real server we're starting a session
     await this._emitSessionStart();
+
     // When destructed, tell the real server we're stopping the session
     this.registerShutdownHandler(() => this._emitSessionEnd());
 
     return super._init();
+  }
+
+  // TODO: Document
+  _initPeerManager() {
+    this._peerManager = new VirtualServerZenRTCPeerManager({
+      realmId: this._realmId,
+      channelId: this._channelId,
+      deviceAddress: this._deviceAddress,
+      socket: this._socket,
+      sharedWritableSyncObject: this._sharedWritableSyncObject,
+    });
+
+    this.registerShutdownHandler(() => this._peerManager.destroy());
   }
 
   // TODO: Document
