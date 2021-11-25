@@ -19,9 +19,9 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
   }
 
   // TODO: Document
-  signal(data) {
-    this.log.debug("sending message", {
-      data,
+  signal(signal) {
+    this.log("sending message", {
+      signal,
       to: this._socketIdTo,
     });
 
@@ -32,7 +32,7 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
       socketIdFrom: this._socket.id,
       signalBrokerIdFrom: this._signalBrokerIdFrom,
       signalBrokerIdTo: this._signalBrokerIdTo,
-      ...data,
+      ...signal,
     });
   }
 }

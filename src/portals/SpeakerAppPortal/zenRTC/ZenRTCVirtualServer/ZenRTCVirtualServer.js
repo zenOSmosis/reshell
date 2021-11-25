@@ -223,9 +223,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     const socket = this._socket;
 
     // Listens for SOCKET_EVT_ZENRTC_SIGNAL on the socket connection and
-    // determines if they should be routed to a relevant peer on this virtual
+    // determines if it should be routed to a relevant peer on this virtual
     // network
-    const _handleReceiveZenRTCSignal = signal => {
+    const _handleFilterSocketZenRTCSignal = signal => {
       const {
         socketIdFrom,
         senderDeviceAddress,
@@ -234,6 +234,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         channelId,
         signalBrokerIdTo,
       } = signal;
+
+      // TODO: Remove
+      console.log({ signal });
 
       if (
         // IMPORTANT: Clients do not know the signalBrokerId they are sending
@@ -253,11 +256,11 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       }
     };
 
-    socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal);
+    socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
 
     // Unbind from socket when destructed
     this.registerShutdownHandler(() =>
-      socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveZenRTCSignal)
+      socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal)
     );
   }
 

@@ -41,7 +41,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
     })();
   }
 
-  signal(data) {
+  signal(signal) {
     const {
       realmId = this._realmId,
       channelId = this._channelId,
@@ -49,7 +49,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       socketIdTo = this._socketIdTo,
       signalBrokerIdFrom = this._signalBrokerIdFrom,
       ...rest
-    } = data;
+    } = signal;
 
     this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId,
