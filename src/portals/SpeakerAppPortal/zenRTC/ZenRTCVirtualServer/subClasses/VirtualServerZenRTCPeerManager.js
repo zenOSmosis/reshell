@@ -102,23 +102,25 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         // readOnlySyncObject,
       });
 
-      this.proxyOn(virtualServerZenRTCPeer, EVT_CONNECTED, () => {
+      virtualServerZenRTCPeer.on(EVT_CONNECTED, () => {
         this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
       });
 
-      this.proxyOn(virtualServerZenRTCPeer, EVT_DISCONNECTED, () => {
+      virtualServerZenRTCPeer.on(EVT_DISCONNECTED, () => {
         this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
       });
 
-      this.proxyOn(virtualServerZenRTCPeer, EVT_UPDATED, () => {
+      virtualServerZenRTCPeer.on(EVT_UPDATED, () => {
         this.emit(EVT_PEER_UPDATED, virtualServerZenRTCPeer);
       });
 
-      this.proxyOn(virtualServerZenRTCPeer, EVT_DESTROYED, () => {
+      virtualServerZenRTCPeer.on(EVT_DESTROYED, () => {
         this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
       });
 
       // Register the peer in the collection
+      // NOTE: Since part of the collection, once the collection is destructed,
+      // the peer will be destructed as well
       this.addChild(
         virtualServerZenRTCPeer,
         clientDeviceAddress,
