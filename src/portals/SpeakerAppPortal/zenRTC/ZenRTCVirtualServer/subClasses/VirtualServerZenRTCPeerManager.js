@@ -1,16 +1,16 @@
 import { PhantomCollection, EVT_DESTROYED } from "phantom-core";
+import SyncObject, { EVT_UPDATED } from "sync-object";
 import VirtualServerZenRTCPeer, {
   EVT_CONNECTED,
   EVT_DISCONNECTED,
-  EVT_UPDATED,
 } from "./VirtualServerZenRTCPeer";
 
 export { EVT_DESTROYED };
 
 export const EVT_PEER_CONNECTED = "peer-connected";
+export const EVT_PEER_SHARED_STATE_UPDATED = "peer-shared-state-updated";
 export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
-export const EVT_PEER_UPDATED = "peer-updated";
 
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
@@ -86,6 +86,8 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
     } else {
       // Create peer
 
+      const readOnlySyncObject = new SyncObject();
+
       const virtualServerZenRTCPeer = new VirtualServerZenRTCPeer({
         ourSocket: this._socket,
         realmId: this._realmId,
@@ -98,8 +100,12 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         // does not represent a single participant (it symbolized all of them)
         writableSyncObject: this._sharedWritableSyncObject,
 
-        // TODO: Re-enable
-        // readOnlySyncObject,
+        readOnlySyncObject,
+      });
+
+      // Destruct read-only sync object when peer is destructed
+      virtualServerZenRTCPeer.registerShutdownHandler(() => {
+        readOnlySyncObject.destroy();
       });
 
       virtualServerZenRTCPeer.on(EVT_CONNECTED, () => {
@@ -110,8 +116,8 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
       });
 
-      virtualServerZenRTCPeer.on(EVT_UPDATED, () => {
-        this.emit(EVT_PEER_UPDATED, virtualServerZenRTCPeer);
+      readOnlySyncObject.on(EVT_UPDATED, () => {
+        this.emit(EVT_PEER_SHARED_STATE_UPDATED, virtualServerZenRTCPeer);
       });
 
       virtualServerZenRTCPeer.on(EVT_DESTROYED, () => {

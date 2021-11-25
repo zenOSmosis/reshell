@@ -1,9 +1,9 @@
 import PhantomCore, { EVT_READY, EVT_DESTROYED } from "phantom-core";
 import VirtualServerZenRTCPeerManager, {
   EVT_PEER_CONNECTED,
+  EVT_PEER_SHARED_STATE_UPDATED,
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
-  EVT_PEER_UPDATED,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
 
 import SyncObject from "sync-object";
@@ -96,21 +96,32 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._peerManager.on(EVT_PEER_CONNECTED, zenRTCPeer => {
       // TODO: Remove
       console.log("zenRTCPeer connected", zenRTCPeer);
+
+      // TODO: Re-emit
+    });
+
+    this._peerManager.on(EVT_PEER_SHARED_STATE_UPDATED, zenRTCPeer => {
+      // TODO: Remove
+      console.log("zenRTCPeer read-only state updated", {
+        zenRTCPeer,
+        readOnlyState: zenRTCPeer.getReadOnlySyncObject().getState(),
+      });
+
+      // TODO: Re-emit
     });
 
     this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
       // TODO: Remove
       console.log("zenRTCPeer disconnected", zenRTCPeer);
-    });
 
-    this._peerManager.on(EVT_PEER_UPDATED, zenRTCPeer => {
-      // TODO: Remove
-      console.log("zenRTCPeer updated", zenRTCPeer);
+      // TODO: Re-emit
     });
 
     this._peerManager.on(EVT_PEER_DESTROYED, zenRTCPeer => {
       // TODO: Remove
       console.log("zenRTCPeer destructed", zenRTCPeer);
+
+      // TODO: Re-emit
     });
 
     this.registerShutdownHandler(() => this._peerManager.destroy());
