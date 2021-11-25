@@ -9,7 +9,6 @@ import ScreenCapturerService from "@services/ScreenCapturerService";
 
 export { EVT_UPDATED };
 
-// 1-many binding relationship of service to controllers
 // TODO: Consider renaming to non-speaker-app for more dynamic usage
 export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
@@ -54,7 +53,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       channelId,
     })?.destroy();
 
-    // TODO: Consider refactoring by passing in socket service; could span multiple socket connections
     const socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
@@ -62,8 +60,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     const inputMediaDevicesService = this.useServiceClass(
       InputMediaDevicesService
     );
-    // TODO: Remove
-    console.log({ inputMediaDevicesService });
 
     const screenCapturerService = this.useServiceClass(ScreenCapturerService);
     const networkService = this.useServiceClass(SpeakerAppNetworkService);

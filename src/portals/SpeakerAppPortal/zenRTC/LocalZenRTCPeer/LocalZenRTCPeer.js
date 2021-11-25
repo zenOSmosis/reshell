@@ -114,25 +114,20 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       this.receiveZenRTCSignal(data);
     });
 
-    this._inputMediaDevicesService = inputMediaDevicesService;
-    this._screenCapturerService = screenCapturerService;
+    this._mediaCaptureServices = [
+      inputMediaDevicesService,
+      screenCapturerService,
+    ];
 
     // Handle dynamic media capture factory publishing
     (() => {
-      [this._inputMediaDevicesService, this._screenCapturerService].forEach(
-        mediaCaptureService => {
-          this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
-            // TODO: Remove
-            console.log("mediaCaptureService updated", {
-              mediaCaptureService,
-            });
-
-            if (this.getIsConnected()) {
-              this._publishMediaCaptureFactories();
-            }
-          });
-        }
-      );
+      this._mediaCaptureServices.forEach(mediaCaptureService => {
+        this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
+          if (this.getIsConnected()) {
+            this._publishMediaCaptureFactories();
+          }
+        });
+      });
 
       this.on(EVT_CONNECTED, () => {
         this._publishMediaCaptureFactories();
@@ -152,10 +147,9 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
   // TODO: Document
   _getMediaCaptureFactories() {
-    return [
-      ...this._inputMediaDevicesService.getCaptureFactories(),
-      ...this._screenCapturerService.getCaptureFactories(),
-    ];
+    return this._mediaCaptureServices
+      .map(service => service.getCaptureFactories())
+      .flat();
   }
 
   // TODO: Document
