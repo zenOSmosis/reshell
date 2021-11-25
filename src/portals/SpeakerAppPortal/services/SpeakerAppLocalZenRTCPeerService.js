@@ -4,6 +4,7 @@ import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
+import MediaDevicesService from "@services/MediaDevicesService";
 
 export { EVT_UPDATED };
 
@@ -57,6 +58,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       SpeakerAppSocketAuthenticationService
     );
 
+    const mediaDevicesService = this.useServiceClass(MediaDevicesService);
+
     // TODO: Consider refactoring by passing in network service; could span multiple network types
     const networkService = this.useServiceClass(SpeakerAppNetworkService);
 
@@ -67,6 +70,13 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       network,
       ourSocket,
       iceServers,
+      initialMediaCaptureFactories: mediaDevicesService.getCaptureFactories(),
+    });
+
+    localZenRTCPeer.proxyOn(mediaDevicesService, EVT_UPDATED, () => {
+      localZenRTCPeer.setMediaCaptureFactories(
+        mediaDevicesService.getCaptureFactories()
+      );
     });
 
     // Adds the localZenRTCPeer to a collection; if the service is destructed,

@@ -47,6 +47,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     iceServers,
     writableSyncObject,
     readOnlySyncObject,
+    initialMediaCaptureFactories = [],
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
   }) {
@@ -110,6 +111,25 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
     this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, data => {
       this.receiveZenRTCSignal(data);
+    });
+
+    this.setMediaCaptureFactories(initialMediaCaptureFactories);
+  }
+
+  // TODO: Document
+  setMediaCaptureFactories(mediaCaptureFactories) {
+    this._mediaCaptureFactories = mediaCaptureFactories;
+
+    const outputMediaStreams = this._mediaCaptureFactories.map(factory =>
+      factory.getOutputMediaStream()
+    );
+
+    outputMediaStreams.forEach(mediaStream => {
+      const tracks = mediaStream.getTracks();
+
+      for (const mediaStreamTrack of tracks) {
+        this.addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
+      }
     });
   }
 }
