@@ -75,7 +75,7 @@ const CallCentralStation = {
               // [networks]  [private network]
             }
             <NoWrap style={{ float: "right" }} className="button-group">
-              <button>Private Network</button>
+              <button disabled>Private Network</button>
               {/*
                 <button>Search</button>
                 */}
