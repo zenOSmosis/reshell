@@ -16,9 +16,7 @@ import ZenRTCPeer, {
   EVT_ZENRTC_SIGNAL,
 } from "../../ZenRTCPeer";
 
-import VirtualServerZenRTCSignalBroker, {
-  EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
-} from "./VirtualServerZenRTCSignalBroker";
+import VirtualServerZenRTCSignalBroker from "./VirtualServerZenRTCSignalBroker";
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
@@ -42,11 +40,11 @@ export {
   EVT_ZENRTC_SIGNAL,
 };
 
-// TODO: Move this handling into VirtualServerZenRTCManager
+// TODO: Move this handling into VirtualServerZenRTCPeerManager?
 const MAX_INSTANCES = 20;
 
 /**
- * Represents a remote ZenRTCPeer running in a multiplexed environment.
+ * Virtual Server ZenRTCPeer class, a part of the ZenRTCVirtualServer tool set.
  */
 export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
@@ -113,23 +111,12 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
     this._zenRTCSignalBroker = zenRTCSignalBroker;
     this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
 
-    this.on(EVT_ZENRTC_SIGNAL, data => {
-      this._zenRTCSignalBroker.signal(data);
+    this.on(EVT_ZENRTC_SIGNAL, signal => {
+      this._zenRTCSignalBroker.signal(signal);
     });
 
-    this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, data => {
-      this.receiveZenRTCSignal(data);
-    });
+    // IMPORTANT: Socket listening for the virtual server peer signaling is
+    // handled in the ZenRTCVirtualServer class, and it will call
+    // receiveZenRTCSignal directly on this peer
   }
-
-  /**
-   * @return {SyncObject}
-   */
-  /*
-  getSessionUserSyncObject() {
-    // TODO: Document where this comes from
-
-    return this._sessionUserSyncObject;
-  }
-  */
 }

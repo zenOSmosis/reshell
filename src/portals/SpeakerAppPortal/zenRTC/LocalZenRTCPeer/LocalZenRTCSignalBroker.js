@@ -7,7 +7,6 @@ import ZenRTCSignalBroker, {
 export { EVT_ZENRTC_SIGNAL, EVT_DESTROYED, SOCKET_EVT_ZENRTC_SIGNAL };
 
 // TODO: Document
-// @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCSignalBroker/WebZenRTCSignalBroker.js
 export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
   // TODO: Document
   constructor({ socket, socketIdTo, realmId, channelId }) {
@@ -17,12 +16,11 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
 
     this._socket = socket;
 
-    // Handle all incoming WebIPC messages
-    //
-    // IMPORTANT: These are not multiplexed at the moment; all
-    // WebZenRTCSignalBroker instances will receive the same message
+    // Listens for SOCKET_EVT_ZENRTC_SIGNAL on the socket connection and
+    // determines if it should be routed to a relevant peer on this virtual
+    // network
     (() => {
-      const _handleReceiveSocketSignal = signal => {
+      const _handleFilterSocketZenRTCSignal = signal => {
         // Filter out irrelevant received signals for this broker
         if (
           signal.signalBrokerIdTo === this._signalBrokerIdFrom &&
@@ -33,10 +31,10 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
         }
       };
 
-      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveSocketSignal);
+      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
 
       this.registerShutdownHandler(() => {
-        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleReceiveSocketSignal);
+        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
       });
     })();
   }
