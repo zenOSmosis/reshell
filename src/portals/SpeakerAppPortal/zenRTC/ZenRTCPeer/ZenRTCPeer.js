@@ -112,10 +112,11 @@ export default class ZenRTCPeer extends PhantomCore {
    *
    * @return {ZenRTCPeer[]}
    */
-   static getInstances() {
+  static getInstances() {
     return Object.values(_instances);
   }
 
+  // TODO: Sync these comments with the actual properties
   /**
    * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction // TODO: Rename
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
