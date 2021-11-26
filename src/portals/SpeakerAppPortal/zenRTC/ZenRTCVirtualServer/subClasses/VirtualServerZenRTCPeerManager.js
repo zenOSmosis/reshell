@@ -20,11 +20,9 @@ export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED = `peer-${EVT_INCOMING
 export const EVT_PEER_DISCONNECTED = "peer-disconnected";
 export const EVT_PEER_DESTROYED = "peer-destroyed";
 
-// TODO: Use secured indexeddb for storing of messages, etc.
-// (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
-
 /**
- * Manages the creation, updating, and destroying of VirtualServerZenRTCPeer instances.
+ * Manages the creation, initial event routing, and destruction of
+ * VirtualServerZenRTCPeer instances.
  */
 export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
   /**

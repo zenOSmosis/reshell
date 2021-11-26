@@ -109,13 +109,4 @@ export default class VirtualServerZenRTCPeerMediaStreamRouter extends PhantomCol
       otherPeer.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
     }
   }
-
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    this.destroyAllChildren();
-
-    return super.destroy();
-  }
 }
