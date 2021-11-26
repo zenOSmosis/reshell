@@ -1,10 +1,14 @@
 import { PhantomCollection } from "phantom-core";
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import LocalZenRTCPeer from "../zenRTC/LocalZenRTCPeer";
+import LocalZenRTCPeer, {
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+} from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
+import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
 
 export { EVT_UPDATED };
@@ -76,6 +80,37 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       inputMediaDevicesService,
       screenCapturerService,
     });
+
+    // Handle media stream routing
+    (() => {
+      const outputMediaDevicesService = this.useServiceClass(
+        OutputMediaDevicesService
+      );
+
+      localZenRTCPeer.on(
+        EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        mediaStreamData => {
+          const { mediaStreamTrack, mediaStream } = mediaStreamData;
+
+          outputMediaDevicesService.addOutputMediaStreamTrack(
+            mediaStreamTrack,
+            mediaStream
+          );
+        }
+      );
+
+      localZenRTCPeer.on(
+        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        mediaStreamData => {
+          const { mediaStreamTrack, mediaStream } = mediaStreamData;
+
+          outputMediaDevicesService.removeOutputMediaStreamTrack(
+            mediaStreamTrack,
+            mediaStream
+          );
+        }
+      );
+    })();
 
     // Adds the localZenRTCPeer to a collection; if the service is destructed,
     // the peer will automatically destruct

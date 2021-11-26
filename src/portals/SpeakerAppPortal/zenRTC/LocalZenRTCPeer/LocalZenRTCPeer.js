@@ -133,16 +133,6 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
         this._publishMediaCaptureFactories();
       });
     })();
-
-    // TODO: Remove
-    this.on(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, mediaStreamData => {
-      console.log("added incoming media stream data", mediaStreamData);
-    });
-
-    // TODO: Remove
-    this.on(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, mediaStreamData => {
-      console.log("removed incoming media stream data", mediaStreamData);
-    });
   }
 
   // TODO: Document
