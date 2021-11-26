@@ -14,8 +14,8 @@ import SecureLocalStorageEngine from "./engines/SecureLocalStorageEngine";
 // - https://www.npmjs.com/package/secure-ls
 
 export default class KeyVaultService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({ ...args });
+  constructor(...args) {
+    super(...args);
 
     this.setTitle("Key Vault Service");
 

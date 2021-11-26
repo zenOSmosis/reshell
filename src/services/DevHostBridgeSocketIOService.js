@@ -1,8 +1,8 @@
 import SocketIOService from "@services/SocketIOService";
 
 export default class DevHostBridgeSocketIOService extends SocketIOService {
-  constructor({ ...args }) {
-    super({ ...args });
+  constructor(...args) {
+    super(...args);
 
     // Automatically connect
     this.connect();

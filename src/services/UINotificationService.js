@@ -7,8 +7,8 @@ export const EVT_NOTIFICATION = "notification";
  * Handles management of UI notifications.
  */
 export default class UINotificationService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({ ...args });
+  constructor(...args) {
+    super(...args);
 
     this.setTitle("UI Notification Service");
 

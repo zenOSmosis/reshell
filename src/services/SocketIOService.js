@@ -10,8 +10,8 @@ export const EVT_DISCONNECTED = "disconnected";
  * Provides SocketIO servicing for ReShell.
  */
 export default class SocketIOService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({ ...args });
+  constructor(...args) {
+    super(...args);
 
     this._socket = null;
 

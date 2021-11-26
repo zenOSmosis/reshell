@@ -8,10 +8,8 @@ import ZenRTCVirtualServer from "../zenRTC/ZenRTCVirtualServer";
 
 // TODO: Document
 export default class SpeakerAppVirtualServerService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({
-      ...args,
-    });
+  constructor(...args) {
+    super(...args);
 
     this._virtualServer = null;
 
