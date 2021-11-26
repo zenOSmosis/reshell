@@ -1,3 +1,8 @@
+import VirtualServer from "./ZenRTCVirtualServer";
+
+export default VirtualServer;
+
+/*
 import VirtualServerZenRTCPeerManager, {
   EVT_UPDATED,
   EVT_DESTROYED,
@@ -16,3 +21,4 @@ export {
   EVT_PEER_DESTROYED,
   EVT_PEER_UPDATED,
 };
+*/

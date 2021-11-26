@@ -13,7 +13,7 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
     this._heartbeatInterval = null;
 
     // Perform initial ping on connect
-    zenRTCPeer.once(EVT_CONNECTED, () => {
+    zenRTCPeer.on(EVT_CONNECTED, () => {
       // Perform initial ping
       this.ping();
 

@@ -10,11 +10,10 @@ import {
 } from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
+// TODO: Document
 export default class SpeakerAppNetworkService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({
-      ...args,
-    });
+  constructor(...args) {
+    super(...args);
 
     // TODO: Move to setInitialState once available
     this.setState({

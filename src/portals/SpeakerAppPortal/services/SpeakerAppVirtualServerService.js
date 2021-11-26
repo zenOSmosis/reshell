@@ -1,25 +1,17 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
-import VirtualServerZenRTCPeerManager from "../zenRTC/VirtualServerZenRTCPeerManager";
-import {
-  SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
-  SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION,
-} from "../shared/socketAPIRoutes";
+import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
+import ZenRTCVirtualServer from "../zenRTC/ZenRTCVirtualServer";
 
 // TODO: Document (used for network hosting)
 
+// TODO: Document
 export default class SpeakerAppVirtualServerService extends UIServiceCore {
-  constructor({ ...args }) {
-    super({
-      ...args,
-    });
+  constructor(...args) {
+    super(...args);
 
-    this._socketService = this.useServiceClass(
-      SpeakerAppSocketAuthenticationService
-    );
-
-    this._peerManager = null;
+    this._virtualServer = null;
 
     // TODO: Migrate to setInitialState once available
     this.setState({
@@ -45,42 +37,60 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
   }
 
   // TODO: Document
-  async createVirtualServer(params) {
-    if (this._peerManager) {
-      console.warn(
-        "Peer manager already exists; ignoring createVirtualManager call"
+  async createVirtualServer({
+    realmId,
+    channelId,
+    networkName,
+    networkDescription,
+    isPublic,
+
+    // TODO: Obtain buildHash and userAgent internally
+    buildHash,
+    userAgent,
+  }) {
+    if (this._virtualServer) {
+      throw new Error(
+        "Virtual Server is currently in session. You may wish to call stopVirtualServer() instead."
       );
-      return;
     }
 
     // TODO: Init multi-peer manager here
     // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
-    const socket = this._socketService.getSocket();
+    // const socket = this._socketService.getSocket();
 
-    const hostDeviceAddress = await this.useServiceClass(
+    const socketService = this.useServiceClass(
+      SpeakerAppSocketAuthenticationService
+    );
+
+    const deviceAddress = await this.useServiceClass(
       LocalDeviceIdentificationService
     ).fetchLocalAddress();
 
-    // Register server on network
-    await this._socketService.fetchSocketAPICall(
-      SOCKET_API_ROUTE_INIT_VIRTUAL_SERVER_SESSION,
-      params
-    );
+    const iceServers = await this.useServiceClass(
+      SpeakerAppNetworkService
+    ).fetchICEServers();
 
-    const { realmId, channelId } = params;
-
-    this._peerManager = new VirtualServerZenRTCPeerManager({
+    this._virtualServer = new ZenRTCVirtualServer({
       realmId,
       channelId,
-      hostDeviceAddress,
-      socket,
+      networkName,
+      networkDescription,
+      isPublic,
+      deviceAddress,
+      buildHash,
+      userAgent,
+      socketService,
+      iceServers,
     });
 
-    this._peerManager.registerShutdownHandler(async () => {
+    this._virtualServer.registerShutdownHandler(async () => {
       await this.stopVirtualServer();
 
-      this._peerManager = null;
+      this.setState({ isHosting: false, realmId: null, channelId: null });
+      this._virtualServer = null;
     });
+
+    await this._virtualServer.onceReady();
 
     this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
   }
@@ -88,12 +98,6 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
   // TODO: Document
   // TODO: Wire up to virtualServer
   async stopVirtualServer() {
-    await this._socketService.fetchSocketAPICall(
-      SOCKET_API_ROUTE_END_VIRTUAL_SERVER_SESSION
-    );
-
-    await this._peerManager.destroy();
-
-    this.setState({ isHosting: false, realmId: null, channelId: null });
+    return this._virtualServer.destroy();
   }
 }

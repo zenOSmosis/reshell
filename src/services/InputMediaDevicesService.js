@@ -5,19 +5,20 @@ import {
   utils,
 } from "media-stream-track-controller";
 
-// TODO: Build out; ensuring added children are media device controller factories
-class MediaDeviceFactoryCollection extends PhantomCollection {}
+class InputMediaDeviceFactoryCollection extends PhantomCollection {
+  // TODO: Ensure that added children are of MediaStreamTrackControllerFactory type
+}
 
-export default class MediaDevicesService extends UIServiceCore {
+export default class InputMediaDevicesService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Media Devices Service");
+    this.setTitle("Input Media Devices Service");
 
     // TODO: Re-run when devices have been changed
     this.fetchAudioInputDevices();
 
-    this.bindCollectionClass(MediaDeviceFactoryCollection);
+    this.bindCollectionClass(InputMediaDeviceFactoryCollection);
   }
 
   // TODO: Document
@@ -40,7 +41,7 @@ export default class MediaDevicesService extends UIServiceCore {
   // TODO: Document
   getCaptureFactories() {
     return this.getCollectionInstance(
-      MediaDeviceFactoryCollection
+      InputMediaDeviceFactoryCollection
     ).getChildren();
   }
 
@@ -58,7 +59,9 @@ export default class MediaDevicesService extends UIServiceCore {
   async captureDefaultAudioInputDevice(constraints = {}, factoryOptions = {}) {
     const factory = await utils.captureMediaDevice(constraints, factoryOptions);
 
-    this.getCollectionInstance(MediaDeviceFactoryCollection).addChild(factory);
+    this.getCollectionInstance(InputMediaDeviceFactoryCollection).addChild(
+      factory
+    );
 
     return factory;
   }
@@ -88,7 +91,9 @@ export default class MediaDevicesService extends UIServiceCore {
       factoryOptions
     );
 
-    this.getCollectionInstance(MediaDeviceFactoryCollection).addChild(factory);
+    this.getCollectionInstance(InputMediaDeviceFactoryCollection).addChild(
+      factory
+    );
 
     return factory;
   }

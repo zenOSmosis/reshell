@@ -14,11 +14,13 @@ import ZenRTCPeer, {
   EVT_SDP_OFFERED,
   EVT_SDP_ANSWERED,
   EVT_ZENRTC_SIGNAL,
-} from "../ZenRTCPeer";
+} from "../../ZenRTCPeer";
+
+import VirtualServerZenRTCSignalBroker from "./VirtualServerZenRTCSignalBroker";
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
-import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../capabilities";
+import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../../capabilities";
 
 export {
   EVT_UPDATED,
@@ -38,16 +40,38 @@ export {
   EVT_ZENRTC_SIGNAL,
 };
 
-// TODO: Move this handling into VirtualServerZenRTCManager
+// TODO: Move this handling into VirtualServerZenRTCPeerManager?
 const MAX_INSTANCES = 20;
 
 /**
- * Represents a remote ZenRTCPeer running in a multiplexed environment.
+ * Virtual Server ZenRTCPeer class, a part of the ZenRTCVirtualServer tool set.
  */
 export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
-  constructor({ socketId, ...rest }) {
-    super({ socketId, ...rest });
+  constructor({
+    ourSocket,
+    realmId,
+    channelId,
+    clientSocketId,
+    clientSignalBrokerId,
+    ...rest
+  }) {
+    // ZenRTC Signal Broker
+    const zenRTCSignalBroker = new VirtualServerZenRTCSignalBroker({
+      socket: ourSocket,
+      realmId,
+      channelId,
+      socketIdTo: clientSocketId,
+      socketIdFrom: ourSocket.id,
+      signalBrokerIdTo: clientSignalBrokerId,
+    });
+
+    super({
+      zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
+      realmId,
+      channelId,
+      ...rest,
+    });
 
     // this._cssColor = getNextPeerCSSColor();
 
@@ -83,16 +107,16 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
         }
       });
     })();
-  }
 
-  /**
-   * @return {SyncObject}
-   */
-  /*
-  getSessionUserSyncObject() {
-    // TODO: Document where this comes from
+    this._zenRTCSignalBroker = zenRTCSignalBroker;
+    this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
 
-    return this._sessionUserSyncObject;
+    this.on(EVT_ZENRTC_SIGNAL, signal => {
+      this._zenRTCSignalBroker.signal(signal);
+    });
+
+    // IMPORTANT: Socket listening for the virtual server peer signaling is
+    // handled in the ZenRTCVirtualServer class, and it will call
+    // receiveZenRTCSignal directly on this peer
   }
-  */
 }

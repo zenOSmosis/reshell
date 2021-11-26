@@ -1,11 +1,11 @@
 import ZenRTCSignalBroker, {
-  TYPE_ZEN_RTC_SIGNAL,
-} from "../../shared/ZenRTCSignalBroker";
+  SOCKET_EVT_ZENRTC_SIGNAL,
+  EVT_ZENRTC_SIGNAL,
+} from "../../../shared/ZenRTCSignalBroker";
 
-export { TYPE_ZEN_RTC_SIGNAL };
+export { SOCKET_EVT_ZENRTC_SIGNAL, EVT_ZENRTC_SIGNAL };
 
-// TODO: Build out
-// TODO: @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/baseApps/VirtualServerApp/subClasses/VirtualServerZenRTCSignalBroker.js
+// TODO: Document
 export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker {
   constructor({ socketIdTo, socket, signalBrokerIdTo, ...rest }) {
     super({ socketIdTo, ...rest });
@@ -18,20 +18,15 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
   }
 
   // TODO: Document
-  sendMessage(data) {
-    this.log.debug("sending message", {
-      data,
-      to: this._socketIdTo,
-    });
-
-    this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
+  signal(signal) {
+    this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId: this._realmId,
       channelId: this._channelId,
       socketIdTo: this._socketIdTo,
       socketIdFrom: this._socket.id,
       signalBrokerIdFrom: this._signalBrokerIdFrom,
       signalBrokerIdTo: this._signalBrokerIdTo,
-      ...data,
+      ...signal,
     });
   }
 }

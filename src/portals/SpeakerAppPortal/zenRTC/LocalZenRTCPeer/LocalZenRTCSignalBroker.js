@@ -1,13 +1,12 @@
 import ZenRTCSignalBroker, {
   EVT_DESTROYED,
-  EVT_MESSAGE_RECEIVED,
-  TYPE_ZEN_RTC_SIGNAL,
+  EVT_ZENRTC_SIGNAL,
+  SOCKET_EVT_ZENRTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { EVT_MESSAGE_RECEIVED, EVT_DESTROYED, TYPE_ZEN_RTC_SIGNAL };
+export { EVT_ZENRTC_SIGNAL, EVT_DESTROYED, SOCKET_EVT_ZENRTC_SIGNAL };
 
 // TODO: Document
-// @see https://github.com/zenOSmosis/speaker.app/blob/main/frontend.web/src/WebZenRTCSignalBroker/WebZenRTCSignalBroker.js
 export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
   // TODO: Document
   constructor({ socket, socketIdTo, realmId, channelId }) {
@@ -17,33 +16,30 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
 
     this._socket = socket;
 
-    // Handle all incoming WebIPC messages
-    //
-    // IMPORTANT: These are not multiplexed at the moment; all
-    // WebZenRTCSignalBroker instances will receive the same message
+    // Listens for SOCKET_EVT_ZENRTC_SIGNAL on the socket connection and
+    // determines if it should be routed to a relevant peer on this virtual
+    // network
     (() => {
-      const _handleReceiveMessage = message => {
-        if (!message.signalBrokerIdTo) {
-          return;
-        }
-
-        // TODO: Only emit if the received message corresponds to same realmId and channelId
-
-        // TODO: Additional checks need to be made for this...
-        if (message.signalBrokerIdTo === this._signalBrokerIdFrom) {
-          this.receiveMessage(message);
+      const _handleFilterSocketZenRTCSignal = signal => {
+        // Filter out irrelevant received signals for this broker
+        if (
+          signal.signalBrokerIdTo === this._signalBrokerIdFrom &&
+          signal.realmId === realmId &&
+          signal.channelId === channelId
+        ) {
+          this.receiveSignal(signal);
         }
       };
 
-      socket.on(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
+      socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
 
       this.registerShutdownHandler(() => {
-        socket.off(TYPE_ZEN_RTC_SIGNAL, _handleReceiveMessage);
+        socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
       });
     })();
   }
 
-  sendMessage(message) {
+  signal(signal) {
     const {
       realmId = this._realmId,
       channelId = this._channelId,
@@ -51,9 +47,9 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       socketIdTo = this._socketIdTo,
       signalBrokerIdFrom = this._signalBrokerIdFrom,
       ...rest
-    } = message;
+    } = signal;
 
-    this._socket.emit(TYPE_ZEN_RTC_SIGNAL, {
+    this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId,
       channelId,
       socketIdFrom,

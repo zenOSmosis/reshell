@@ -16,7 +16,7 @@ import ZenRTCPeer, {
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
 import LocalZenRTCSignalBroker, {
-  EVT_MESSAGE_RECEIVED,
+  EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
 } from "./LocalZenRTCSignalBroker";
 
 export {
@@ -41,11 +41,14 @@ export {
 export default class LocalZenRTCPeer extends ZenRTCPeer {
   // TODO: Document
   constructor({
+    // TODO: Pass in distinct realmId, channelId, virtualServerSocketId instead of network
     network,
     ourSocket,
     iceServers,
     writableSyncObject,
     readOnlySyncObject,
+    inputMediaDevicesService,
+    screenCapturerService,
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
   }) {
@@ -104,11 +107,53 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
 
     this.on(EVT_ZENRTC_SIGNAL, data => {
-      this._zenRTCSignalBroker.sendMessage(data);
+      this._zenRTCSignalBroker.signal(data);
     });
 
-    this._zenRTCSignalBroker.on(EVT_MESSAGE_RECEIVED, data => {
-      this.receiveZenRTCSignal(data);
+    this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, signal => {
+      this.receiveZenRTCSignal(signal);
+    });
+
+    this._mediaCaptureServices = [
+      inputMediaDevicesService,
+      screenCapturerService,
+    ];
+
+    // Handle dynamic media capture factory publishing
+    (() => {
+      this._mediaCaptureServices.forEach(mediaCaptureService => {
+        this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
+          if (this.getIsConnected()) {
+            this._publishMediaCaptureFactories();
+          }
+        });
+      });
+
+      this.on(EVT_CONNECTED, () => {
+        this._publishMediaCaptureFactories();
+      });
+    })();
+  }
+
+  // TODO: Document
+  _getMediaCaptureFactories() {
+    return this._mediaCaptureServices
+      .map(service => service.getCaptureFactories())
+      .flat();
+  }
+
+  // TODO: Document
+  _publishMediaCaptureFactories() {
+    const outputMediaStreams = this._getMediaCaptureFactories().map(factory =>
+      factory.getOutputMediaStream()
+    );
+
+    outputMediaStreams.forEach(mediaStream => {
+      const tracks = mediaStream.getTracks();
+
+      for (const mediaStreamTrack of tracks) {
+        this.addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
+      }
     });
   }
 }
