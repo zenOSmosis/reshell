@@ -44,6 +44,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
     channelId,
     deviceAddress,
     socket,
+    iceServers,
     sharedWritableSyncObject,
   }) {
     super();
@@ -52,6 +53,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
     this._channelId = channelId;
     this._deviceAddress = deviceAddress;
     this._socket = socket;
+    this._iceServers = iceServers;
     this._sharedWritableSyncObject = sharedWritableSyncObject;
   }
 
@@ -98,6 +100,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
 
       const virtualServerZenRTCPeer = new VirtualServerZenRTCPeer({
         ourSocket: this._socket,
+        iceServers: this._iceServers,
         realmId: this._realmId,
         channelId: this._channelId,
         clientSocketId,

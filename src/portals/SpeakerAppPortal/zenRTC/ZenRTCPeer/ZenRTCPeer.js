@@ -4,7 +4,7 @@ import SDPAdapter from "./utils/sdp-adapter";
 
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-import getUnixTime from "@portals/SpeakerAppPortal/shared//time/getUnixTime";
+import getUnixTime from "@portals/SpeakerAppPortal/shared/time/getUnixTime";
 import {
   getTrackMediaStream,
   // getListHasMediaStream,
@@ -20,7 +20,7 @@ import {
   SYNC_EVT_KICK,
   SYNC_EVT_TRACK_REMOVED,
   SYNC_EVT_DEBUG,
-} from "@portals/SpeakerAppPortal/shared//syncEvents";
+} from "@portals/SpeakerAppPortal/shared/syncEvents";
 
 import HeartbeatModule from "./modules/ZenRTCPeer.HeartbeatModule";
 import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule";
@@ -112,34 +112,12 @@ export default class ZenRTCPeer extends PhantomCore {
    *
    * @return {ZenRTCPeer[]}
    */
-  static getInstances() {
+   static getInstances() {
     return Object.values(_instances);
   }
 
   /**
-   * TODO: Rename to getOtherThreadInstances?
-   *
-   * Fetches ZenRTCPeer instances without the given peer, with the same CPU
-   * thread.
-   *
-   * IMPORTANT: This does not handle multiplexed peers.
-   *
-   * @param {ZenRTCPeer} peer
-   * @return {ZenRTCPeer[]}
-   */
-  static getOtherInstances(peer) {
-    const peerSocketIoId = peer.getSocketIoId();
-
-    const otherPeers = ZenRTCPeer.getInstances().filter(
-      testPeer => testPeer.getSocketIoId() !== peerSocketIoId
-    );
-
-    return otherPeers;
-  }
-
-  // TODO: Sync these
-  /**
-   * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction
+   * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction // TODO: Rename
    * @param {boolean} isInitiator? [default=false] Whether or not this peer is
    * the origination peer in the connection signaling.
    * @param {boolean} shouldAutoReconnect? [default=true] Has no effect if is
@@ -150,9 +128,9 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   constructor({
     zenRTCSignalBrokerId,
-    iceServers,
     realmId,
     channelId,
+    iceServers,
     isInitiator = false,
     shouldAutoReconnect = true, // Only if isInitiator
     offerToReceiveAudio = true,
@@ -162,13 +140,17 @@ export default class ZenRTCPeer extends PhantomCore {
     preferredAudioCodecs = ["opus"],
   }) {
     if (!zenRTCSignalBrokerId) {
-      throw new Error("No zenRTCSignalBrokerId present");
+      throw new ReferenceError("No zenRTCSignalBrokerId present");
     }
 
     if (_instances[zenRTCSignalBrokerId]) {
-      throw new Error(
-        `Thread already contains ZenRTCPeer instance with zenRTCSignalBrokerId ${zenRTCSignalBrokerId}`
+      throw new ReferenceError(
+        `CPU thread already contains ZenRTCPeer instance with zenRTCSignalBrokerId ${zenRTCSignalBrokerId}`
       );
+    }
+
+    if (!iceServers) {
+      throw new ReferenceError("No ICE servers present");
     }
 
     super();
@@ -177,11 +159,13 @@ export default class ZenRTCPeer extends PhantomCore {
     // TODO: Move this to transcoder only
     this.setMaxListeners(100);
 
+    this._iceServers = iceServers;
+    this._realmId = realmId;
+    this._channelId = channelId;
+
     this.preferredAudioCodecs = preferredAudioCodecs;
 
     _instances[zenRTCSignalBrokerId] = this;
-
-    this._iceServers = iceServers;
 
     this.log.debug(
       `Constructing new ${
@@ -190,9 +174,6 @@ export default class ZenRTCPeer extends PhantomCore {
         isInitiator ? "initiator" : "guest"
       }"`
     );
-
-    this._realmId = realmId;
-    this._channelId = channelId;
 
     // Built-in support for stream multiplexing
     this._outgoingMediaStreams = []; // TODO: Use Set
@@ -524,7 +505,7 @@ export default class ZenRTCPeer extends PhantomCore {
       if (outgoingMediaStream) {
         // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
         // connected
-        this.on(EVT_CONNECTED, async () => {
+        this.once(EVT_CONNECTED, async () => {
           const mediaStreamTracks = outgoingMediaStream.getTracks();
 
           for (const mediaStreamTrack of mediaStreamTracks) {
@@ -828,14 +809,6 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {void}
    */
   async addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
-      throw new TypeError("mediaStreamTrack is not a MediaStreamTrack");
-    }
-
-    if (!(mediaStream instanceof MediaStream)) {
-      throw new TypeError("mediaStream is not a MediaStream");
-    }
-
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     if (!this._webrtcPeer) {

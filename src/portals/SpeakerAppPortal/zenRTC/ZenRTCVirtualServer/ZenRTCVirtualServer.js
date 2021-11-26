@@ -36,6 +36,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     buildHash,
     userAgent,
     socketService,
+    iceServers,
   }) {
     super({ isAsync: true });
 
@@ -47,6 +48,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._deviceAddress = deviceAddress;
     this._buildHash = buildHash;
     this._userAgent = userAgent;
+    this._iceServers = iceServers;
 
     // TODO: Move to virtual server
     // TODO: Use local storage sync object, or web worker based
@@ -99,14 +101,16 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       channelId: this._channelId,
       deviceAddress: this._deviceAddress,
       socket: this._socket,
+      iceServers: this._iceServers,
       sharedWritableSyncObject: this._sharedWritableSyncObject,
     });
 
     this._peerManager.on(EVT_PEER_CONNECTED, zenRTCPeer => {
-      this._mediaStreamRouter.addChild(zenRTCPeer);
-
       // TODO: Remove
       console.log("zenRTCPeer connected", zenRTCPeer);
+
+      // Start media stream routing
+      this._mediaStreamRouter.addChild(zenRTCPeer);
 
       // Emit count to real server
       this._socketService.fetchSocketAPICall(
@@ -151,7 +155,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       }
     );
 
-    /*
     this._peerManager.on(
       EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
       ([zenRTCPeer, mediaStreamTrack]) => {
@@ -162,9 +165,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         });
       }
     );
-    */
 
-    /*
     this._peerManager.on(
       EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
       ([zenRTCPeer, mediaStreamTrack]) => {
@@ -175,7 +176,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         });
       }
     );
-    */
 
     this._peerManager.on(
       EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,

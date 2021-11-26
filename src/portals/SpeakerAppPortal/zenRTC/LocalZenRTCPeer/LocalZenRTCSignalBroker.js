@@ -51,11 +51,6 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
       ...rest
     } = signal;
 
-    // TODO: Remove
-    console.log({
-      sendingSignal: signal,
-    });
-
     this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId,
       channelId,

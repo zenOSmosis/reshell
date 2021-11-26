@@ -1,6 +1,7 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
+import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
 import ZenRTCVirtualServer from "../zenRTC/ZenRTCVirtualServer";
 
 // TODO: Document (used for network hosting)
@@ -67,6 +68,10 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
       LocalDeviceIdentificationService
     ).fetchLocalAddress();
 
+    const iceServers = await this.useServiceClass(
+      SpeakerAppNetworkService
+    ).fetchICEServers();
+
     this._virtualServer = new ZenRTCVirtualServer({
       realmId,
       channelId,
@@ -77,6 +82,7 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
       buildHash,
       userAgent,
       socketService,
+      iceServers,
     });
 
     this._virtualServer.registerShutdownHandler(async () => {

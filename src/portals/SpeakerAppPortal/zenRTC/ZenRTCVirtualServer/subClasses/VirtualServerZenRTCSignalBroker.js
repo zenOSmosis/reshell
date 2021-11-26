@@ -20,11 +20,6 @@ export default class VirtualServerZenRTCSignalBroker extends ZenRTCSignalBroker 
 
   // TODO: Document
   signal(signal) {
-    this.log("sending message", {
-      signal,
-      to: this._socketIdTo,
-    });
-
     this._socket.emit(SOCKET_EVT_ZENRTC_SIGNAL, {
       realmId: this._realmId,
       channelId: this._channelId,

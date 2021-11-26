@@ -110,8 +110,8 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       this._zenRTCSignalBroker.signal(data);
     });
 
-    this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, data => {
-      this.receiveZenRTCSignal(data);
+    this._zenRTCSignalBroker.on(EVT_SIGNAL_BROKER_ZENRTC_SIGNAL, signal => {
+      this.receiveZenRTCSignal(signal);
     });
 
     this._mediaCaptureServices = [
