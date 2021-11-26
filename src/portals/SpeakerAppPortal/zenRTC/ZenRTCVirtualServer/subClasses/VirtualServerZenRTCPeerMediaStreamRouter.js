@@ -17,25 +17,29 @@ export default class VirtualServerZenRTCPeerMediaStreamRouter extends PhantomCol
         pred => pred !== virtualServerZenRTCPeer
       );
 
+      const outgoingMediaStreams =
+        virtualServerZenRTCPeer.getOutgoingMediaStreams();
+
       for (const otherPeer of otherPeers) {
+        // Add the other peers' media streams to this peer
         for (const mediaStream of otherPeer.getIncomingMediaStreams()) {
           for (const mediaStreamTrack of mediaStream.getTracks()) {
             virtualServerZenRTCPeer.addOutgoingMediaStreamTrack(
-              mediaStream,
-              mediaStreamTrack
+              mediaStreamTrack,
+              mediaStream
             );
           }
         }
-      }
 
-      // Route this media streams to the other peers
-      for (const mediaStream of virtualServerZenRTCPeer.getOutgoingMediaStreams()) {
-        for (const mediaStreamTrack of mediaStream.getTracks()) {
-          this.addIncomingMediaStreamTrack(
-            virtualServerZenRTCPeer,
-            mediaStreamTrack,
-            mediaStream
-          );
+        // Route this peer's media streams to the other peers
+        for (const mediaStream of outgoingMediaStreams) {
+          for (const mediaStreamTrack of mediaStream.getTracks()) {
+            this.addOutgoingMediaStreamTrack(
+              otherPeer,
+              mediaStreamTrack,
+              mediaStream
+            );
+          }
         }
       }
     })();
@@ -69,5 +73,14 @@ export default class VirtualServerZenRTCPeerMediaStreamRouter extends PhantomCol
     for (const otherPeer of otherPeers) {
       otherPeer.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
     }
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    this.destroyAllChildren();
+
+    return super.destroy();
   }
 }

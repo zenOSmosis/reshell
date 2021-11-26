@@ -180,8 +180,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       });
 
       // Register the peer in the collection
-      // NOTE: Since part of the collection, once the collection is destructed,
-      // the peer will be destructed as well
+      // NOTE: This child will be destructed once the collection is
       this.addChild(
         virtualServerZenRTCPeer,
         clientDeviceAddress,
@@ -200,5 +199,14 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
    */
   getConnectedZenRTCPeers() {
     return this.getChildren().filter(zenRTCPeer => zenRTCPeer.getIsConnected());
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    this.destroyAllChildren();
+
+    return super.destroy();
   }
 }

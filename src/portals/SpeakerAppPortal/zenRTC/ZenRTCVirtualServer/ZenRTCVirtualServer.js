@@ -235,9 +235,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         signalBrokerIdTo,
       } = signal;
 
-      // TODO: Remove
-      console.log({ signal });
-
       if (
         // IMPORTANT: Clients do not know the signalBrokerId they are sending
         // to, as the virtual server's signal broker isn't set up for that

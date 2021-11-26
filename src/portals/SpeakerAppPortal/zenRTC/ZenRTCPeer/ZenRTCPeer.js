@@ -177,8 +177,8 @@ export default class ZenRTCPeer extends PhantomCore {
     );
 
     // Built-in support for stream multiplexing
-    this._outgoingMediaStreams = []; // TODO: Use Set
-    this._incomingMediaStreams = []; // TODO: Use Set
+    this._outgoingMediaStreams = []; // TODO: Use PhantomCollection
+    this._incomingMediaStreams = []; // TODO: Use PhantomCollection
 
     this._zenRTCSignalBrokerId = zenRTCSignalBrokerId;
     this._isInitiator = isInitiator;
@@ -810,12 +810,26 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {void}
    */
   async addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError("mediaStreamTrack is not a MediaStreamTrack type");
+    }
+
+    if (!(mediaStream instanceof MediaStream)) {
+      throw new TypeError("mediaStream is not a MediaStream type");
+    }
+
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     if (!this._webrtcPeer) {
       this.log.warn("WebRTCPeer is not open");
       return;
     }
+
+    // TODO: Remove
+    console.log("adding outgoing media stream track", {
+      mediaStreamTrack,
+      mediaStream,
+    });
 
     try {
       // TODO: Should the mediaStream.addTrack and addMediaStreamToList calls
