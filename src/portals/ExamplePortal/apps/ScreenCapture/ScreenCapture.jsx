@@ -8,6 +8,7 @@ import { Video } from "@components/audioVideoRenderers";
 import LED from "@components/LED";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
+import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
 
 import useGetIsUnmounting from "@hooks/useGetIsUnmounting";
 
@@ -73,29 +74,53 @@ const ScreenCaptureWindow = {
     return (
       <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
         <Content>
-          <Video mediaStreamTrack={videoTrack} />
-          {!screenCaptureFactory && (
-            <Cover>
-              <Center>
-                <div>
-                  <button
-                    onClick={() => handleStartScreenCapture()}
-                    style={{
-                      backgroundColor: "green",
-                      width: 200,
-                      height: 200,
-                      borderRadius: 200,
-                      fontWeight: "bold",
-                      fontSize: "1.4rem",
-                      border: "8px #ccc solid",
-                    }}
-                  >
-                    Start Screen Capture
-                  </button>
-                </div>
-              </Center>
-            </Cover>
-          )}
+          <Row>
+            <Column>
+              <Video mediaStreamTrack={videoTrack} />
+              {!screenCaptureFactory && (
+                <Cover>
+                  <Center>
+                    <div>
+                      <button
+                        onClick={() => handleStartScreenCapture()}
+                        style={{
+                          backgroundColor: "green",
+                          width: 200,
+                          height: 200,
+                          borderRadius: 200,
+                          fontWeight: "bold",
+                          fontSize: "1.4rem",
+                          border: "8px #ccc solid",
+                        }}
+                      >
+                        Start Screen Capture
+                      </button>
+                    </div>
+                  </Center>
+                </Cover>
+              )}
+            </Column>
+            <Column style={{ width: "10%", maxWidth: 80 }}>
+              <Row style={{ textAlign: "center" }}>
+                <Column>
+                  <Layout>
+                    <Content>
+                      <AudioMediaStreamTrackLevelMeter />
+                    </Content>
+                    <Footer>L</Footer>
+                  </Layout>
+                </Column>
+                <Column>
+                  <Layout>
+                    <Content>
+                      <AudioMediaStreamTrackLevelMeter />
+                    </Content>
+                    <Footer>R</Footer>
+                  </Layout>
+                </Column>
+              </Row>
+            </Column>
+          </Row>
         </Content>
         <Footer>
           <Padding>
