@@ -99,9 +99,10 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
            * The problem seems to be that the WebAudio graph's clock is driven
            * from its sink, so if the sink doesn't connect to anything with a
            * clock, nothing happens.
+           *
            * @see https://bugs.chromium.org/p/chromium/issues/detail?id=933677
            */
-          const elMedia = document.createElement("video");
+          const elMedia = document.createElement("audio");
           elMedia.srcObject = new MediaStream([mediaStreamTrack]);
           // TODO: Does this need clean-up on media stream end?
         }
