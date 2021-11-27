@@ -197,7 +197,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
       this._peerManager.on(
         EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-        ([zenRTCPeer, mediaStreamData]) => {
+        async ([zenRTCPeer, mediaStreamData]) => {
           // TODO: Remove
           console.log("zenRTCPeer added incoming media stream track", {
             zenRTCPeer,
@@ -206,17 +206,21 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
-          this._mediaStreamRouter.addOutgoingMediaStreamTrack(
+          await this._mediaStreamRouter.addOutgoingMediaStreamTrack(
             zenRTCPeer,
             mediaStreamTrack,
             mediaStream
+          );
+
+          this._phantomPeerRouter.handlePeerIncomingMediaStreamsUpdated(
+            zenRTCPeer
           );
         }
       );
 
       this._peerManager.on(
         EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-        ([zenRTCPeer, mediaStreamData]) => {
+        async ([zenRTCPeer, mediaStreamData]) => {
           // TODO: Remove
           console.log("zenRTCPeer removed incoming media stream track", {
             zenRTCPeer,
@@ -225,10 +229,14 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
-          this._mediaStreamRouter.removeOutgoingMediaStreamTrack(
+          await this._mediaStreamRouter.removeOutgoingMediaStreamTrack(
             zenRTCPeer,
             mediaStreamTrack,
             mediaStream
+          );
+
+          this._phantomPeerRouter.handlePeerIncomingMediaStreamsUpdated(
+            zenRTCPeer
           );
         }
       );

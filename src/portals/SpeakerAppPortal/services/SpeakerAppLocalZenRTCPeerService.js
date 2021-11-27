@@ -79,6 +79,18 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
+    // TODO: Remove
+    console.warn("local signal broker id", localZenRTCPeer.getSignalBrokerId());
+
+    // TODO: Remove
+    (() => {
+      const writableSyncObject = localZenRTCPeer.getWritableSyncObject();
+      writableSyncObject.on(EVT_UPDATED, () => {
+        // TODO: Remove
+        console.log({ writableSyncObject: writableSyncObject.getState() });
+      });
+    })();
+
     localZenRTCPeer.registerShutdownHandler(() => readOnlySyncObject.destroy());
 
     this._localZenRTCPeer = localZenRTCPeer;

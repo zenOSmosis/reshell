@@ -249,12 +249,23 @@ export default class ZenRTCPeer extends PhantomCore {
     this._reconnectArgs = [];
   }
 
-  // TODO: Document
+  /**
+   * @return {string}
+   */
+  getSignalBrokerId() {
+    return this._zenRTCSignalBrokerId;
+  }
+
+  /**
+   * @return {string}
+   */
   getRealmId() {
     return this._realmId;
   }
 
-  // TODO: Document
+  /**
+   * @return {string}
+   */
   getChannelId() {
     return this._channelId;
   }

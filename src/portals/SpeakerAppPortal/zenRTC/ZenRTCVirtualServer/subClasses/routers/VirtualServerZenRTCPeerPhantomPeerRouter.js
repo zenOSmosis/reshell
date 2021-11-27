@@ -39,60 +39,52 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
    *
    * @see https://github.com/zenOSmosis/sync-object
    *
-   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
    * @return {void}
    */
-  sync(virtualServerZenRTCPeer) {
-    const otherPeers = this.getChildren().filter(
-      pred => pred !== virtualServerZenRTCPeer
-    );
+  sync() {
+    // Batch remote updates so that we update ours in a single run
+    const batchUpdate = {};
 
-    const ourWritableSyncObject =
-      virtualServerZenRTCPeer.getWritableSyncObject();
-    const ourReadOnlySyncObject =
-      virtualServerZenRTCPeer.getReadOnlySyncObject();
+    for (const zenRTCPeer of this.getChildren()) {
+      const readOnlySyncObject = zenRTCPeer.getReadOnlySyncObject();
+      const clientSignalBrokerId = zenRTCPeer.getClientSignalBrokerId();
 
-    const ourClientSignalBrokerId =
-      virtualServerZenRTCPeer.getClientSignalBrokerId();
-
-    const ourReadOnlyState = virtualServerZenRTCPeer.getIsConnected()
-      ? ourReadOnlySyncObject.getState()
-      : // IMPORTANT: At this time, SyncObject does not support setting
-        // undefined and syncing over the wire, so null is used instead
-        //
-        // @see https://github.com/zenOSmosis/sync-object/issues/40
-        null;
-
-    for (const otherPeer of otherPeers) {
-      const theirWritableSyncObject = otherPeer.getWritableSyncObject();
-      const theirReadOnlySyncObject = otherPeer.getReadOnlySyncObject();
-
-      // TODO: Prevent loop-back where our state is written to theirs, then written to ours
-
-      const theirReadOnlyState = otherPeer.getIsConnected()
-        ? theirReadOnlySyncObject.getState()
+      const readOnlyState = zenRTCPeer.getIsConnected()
+        ? readOnlySyncObject.getState()
         : // IMPORTANT: At this time, SyncObject does not support setting
           // undefined and syncing over the wire, so null is used instead
           //
           // @see https://github.com/zenOSmosis/sync-object/issues/40
           null;
 
+      // TODO: Remove
+      console.log(
+        "length incoming media streams",
+        zenRTCPeer.getIncomingMediaStreams().length
+      );
+
       // if (otherPeer.getIsConnected()) {
       // Write our state to the other clients
-      theirWritableSyncObject.setState({
-        [ourClientSignalBrokerId]: ourReadOnlyState,
-      });
-      // }
-
-      const theirClientSignalBrokerId = otherPeer.getClientSignalBrokerId();
-
-      // if (virtualServerZenRTCPeer.getIsConnected()) {
-      // Write other client state to ours
-      ourWritableSyncObject.setState({
-        [theirClientSignalBrokerId]: theirReadOnlyState,
-      });
-      // }
+      batchUpdate[clientSignalBrokerId] = {
+        ...readOnlyState,
+        media: zenRTCPeer
+          .getIncomingMediaStreams()
+          .map(({ id }) => id)
+          .join(","),
+      };
     }
+
+    // FIXME: (jh) If moving to shared writable, only write the shared
+    for (const zenRTCPeer of this.getChildren()) {
+      const writeableSyncObject = zenRTCPeer.getWritableSyncObject();
+
+      writeableSyncObject.setState(batchUpdate);
+    }
+  }
+
+  // TODO: Document
+  handlePeerIncomingMediaStreamsUpdated(virtualServerZenRTCPeer) {
+    this.sync(virtualServerZenRTCPeer);
   }
 
   // TODO: Document
