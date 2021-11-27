@@ -49,7 +49,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
         AudioMediaStreamTrackCollection
       );
 
-      function OutputMediaDevicesAudioAudio({}) {
+      function OutputMediaDevicesAudioAudio() {
         const [audioMediaStreamTracks, setAudioMediaStreamTracks] = useState(
           []
         );
