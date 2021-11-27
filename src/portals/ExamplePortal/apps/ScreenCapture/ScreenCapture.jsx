@@ -71,6 +71,10 @@ const ScreenCaptureWindow = {
       ?.getVideoTrackControllers()[0]
       ?.getOutputTrack();
 
+    const audioTrack = screenCaptureFactory
+      ?.getAudioTrackControllers()[0]
+      ?.getOutputTrack();
+
     return (
       <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
         <Content>
@@ -100,22 +104,27 @@ const ScreenCaptureWindow = {
                 </Cover>
               )}
             </Column>
-            <Column style={{ width: "10%", maxWidth: 80 }}>
+            <Column style={{ width: 50, maxWidth: 50 }}>
+              {/**
+               * Audio level monitoring.
+               *
+               * FIXME: (jh) This was originally set up for two-channel
+               * support, with independent meters, and it will require the
+               * audio track to be split into independent tracks in order to
+               * function as desired.
+               *
+               * The current functionality should represent both channels as
+               * a mono representation.
+               */}
               <Row style={{ textAlign: "center" }}>
                 <Column>
                   <Layout>
                     <Content>
-                      <AudioMediaStreamTrackLevelMeter />
+                      <AudioMediaStreamTrackLevelMeter
+                        mediaStreamTrack={audioTrack}
+                      />
                     </Content>
-                    <Footer>L</Footer>
-                  </Layout>
-                </Column>
-                <Column>
-                  <Layout>
-                    <Content>
-                      <AudioMediaStreamTrackLevelMeter />
-                    </Content>
-                    <Footer>R</Footer>
+                    <Footer>Audio</Footer>
                   </Layout>
                 </Column>
               </Row>
