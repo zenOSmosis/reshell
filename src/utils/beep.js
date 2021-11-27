@@ -6,7 +6,7 @@ const BEEP_BASE64 =
  *
  * @see https://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep/11730158
  */
-export default function Beep() {
+export default function beep() {
   var snd = new Audio(BEEP_BASE64);
   snd.play();
 }
