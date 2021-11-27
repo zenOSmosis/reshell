@@ -1,6 +1,8 @@
 import { PhantomCollection } from "phantom-core";
 import VirtualServerZenRTCPeer from "../VirtualServerZenRTCPeer";
 
+// TODO: Send remote remove event when peer has disconnected?
+
 /**
  * Performs media stream routing for all of the peers.
  */
@@ -37,47 +39,49 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       pred => pred !== virtualServerZenRTCPeer
     );
 
-    const writableSyncObject = virtualServerZenRTCPeer.getWritableSyncObject();
-    const readOnlySyncObject = virtualServerZenRTCPeer.getReadOnlySyncObject();
+    const ourWritableSyncObject =
+      virtualServerZenRTCPeer.getWritableSyncObject();
+    const ourReadOnlySyncObject =
+      virtualServerZenRTCPeer.getReadOnlySyncObject();
+
+    const ourClientSignalBrokerId =
+      virtualServerZenRTCPeer.getClientSignalBrokerId();
 
     // TODO: Remove
-    console.log({
-      writableSyncObject: writableSyncObject.getState(),
-      readOnlySyncObject: readOnlySyncObject.getState(),
-    });
-
     /*
-    for (const otherPeer of otherPeers) {
-      // Add the other peers' media streams to this peer
-      for (const mediaStream of otherPeer.getIncomingMediaStreams()) {
-        for (const mediaStreamTrack of mediaStream.getTracks()) {
-          virtualServerZenRTCPeer.addOutgoingMediaStreamTrack(
-            mediaStreamTrack,
-            mediaStream
-          );
-        }
-      }
-
-      // Route this peer's media streams to the other peers
-      for (const mediaStream of outgoingMediaStreams) {
-        for (const mediaStreamTrack of mediaStream.getTracks()) {
-          this.addOutgoingMediaStreamTrack(
-            otherPeer,
-            mediaStreamTrack,
-            mediaStream
-          );
-        }
-      }
-    }
+    console.log({
+      writableSyncObject: ourWritableSyncObject.getState(),
+      readOnlySyncObject: ourReadOnlySyncObject.getState(),
+    });
     */
+
+    for (const otherPeer of otherPeers) {
+      const theirWritableSyncObject = otherPeer.getWritableSyncObject();
+      const theirReadOnlySyncObject = otherPeer.getReadOnlySyncObject();
+
+      // Write our state to the other clients
+      theirWritableSyncObject.setState({
+        [ourClientSignalBrokerId]: virtualServerZenRTCPeer.getIsConnected()
+          ? ourReadOnlySyncObject.getState()
+          : undefined,
+      });
+
+      const theirClientSignalBrokerId = otherPeer.getClientSignalBrokerId();
+
+      ourWritableSyncObject.setState({
+        [theirClientSignalBrokerId]: otherPeer.getIsConnected()
+          ? theirReadOnlySyncObject.getState()
+          : undefined,
+      });
+    }
   }
 
   // TODO: Implement and document
-  handlePeerSharedStateUpdated(virtualServerZenRTCPeer, updatedState) {
-    // TODO: Remove
-    console.log("handleReadOnlyStateUpdate", {
-      virtualServerZenRTCPeer,
-      updatedState,
-    });
+  handlePeerSharedStateUpdated(virtualServerZenRTCPeer) {
+    this.fullSync(virtualServerZenRTCPeer);
+  }
+
+  handlePeerDisconnect(virtualServerZenRTCPeer) {
+    this.fullSync(virtualServerZenRTCPeer);
   }
 }

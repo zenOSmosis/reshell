@@ -141,6 +141,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         // TODO: Remove
         console.log("zenRTCPeer disconnected", zenRTCPeer);
 
+        // Emit to other peers that this peer has disconnected
+        this._phantomPeerRouter.handlePeerDisconnect(zenRTCPeer);
+
         // Emit count to real server
         this._socketService.fetchSocketAPICall(
           SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,

@@ -73,6 +73,8 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
       ...rest,
     });
 
+    this._clientSignalBrokerId = clientSignalBrokerId;
+
     // this._cssColor = getNextPeerCSSColor();
 
     this.addCapability(CAPABILITY_NETWORK_VIRTUAL_SERVER);
@@ -119,5 +121,12 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
     // IMPORTANT: Socket listening for the virtual server peer signaling is
     // handled in the ZenRTCVirtualServer class, and it will call
     // receiveZenRTCSignal directly on this peer
+  }
+
+  /**
+   * @return {string}
+   */
+  getClientSignalBrokerId() {
+    return this._clientSignalBrokerId;
   }
 }
