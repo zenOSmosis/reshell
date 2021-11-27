@@ -9,6 +9,8 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
+
+import VirtualServerZenRTCPeerPhantomPeerRouter from "./subClasses/routers/VirtualServerZenRTCPeerPhantomPeerRouter";
 import VirtualServerZenRTCPeerMediaStreamRouter from "./subClasses/routers/VirtualServerZenRTCPeerMediaStreamRouter";
 
 import SyncObject from "sync-object";
@@ -66,6 +68,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._socketService = socketService;
     this._socket = socketService.getSocket();
 
+    this._phantomPeerRouter = new VirtualServerZenRTCPeerPhantomPeerRouter();
+    this.registerShutdownHandler(() => this._phantomPeerRouter.destroy());
+
     this._mediaStreamRouter = new VirtualServerZenRTCPeerMediaStreamRouter();
     this.registerShutdownHandler(() => this._mediaStreamRouter.destroy());
 
@@ -117,6 +122,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         // TODO: Remove
         console.log("zenRTCPeer connected", zenRTCPeer);
 
+        // Start peer routing
+        this._phantomPeerRouter.addChild(zenRTCPeer);
+
         // Start media stream routing
         this._mediaStreamRouter.addChild(zenRTCPeer);
 
@@ -152,12 +160,11 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       this._peerManager.on(
         EVT_PEER_SHARED_STATE_UPDATED,
         ([zenRTCPeer, readOnlyUpdatedState]) => {
-          // TODO: Remove
-          console.log("zenRTCPeer read-only state updated", {
+          // Send updated state to peer router
+          this._phantomPeerRouter.handlePeerSharedStateUpdated(
             zenRTCPeer,
-            readOnlyUpdatedState,
-            readOnlyFullState: zenRTCPeer.getReadOnlySyncObject().getState(),
-          });
+            readOnlyUpdatedState
+          );
 
           // TODO: Re-emit
         }
