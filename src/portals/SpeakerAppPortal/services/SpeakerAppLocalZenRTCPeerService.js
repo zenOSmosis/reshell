@@ -14,6 +14,8 @@ import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
 import SyncObject from "sync-object";
 
+import beep from "@utils/beep";
+
 export { EVT_UPDATED };
 
 // TODO: Consider renaming to non-speaker-app for more dynamic usage
@@ -44,6 +46,12 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
   // TODO: Document
   async connect(network) {
+    // IMPORTANT! This is necessary to jump-start the audio output on web
+    // Safari if no input audio device is selected
+    //
+    // TODO: Fix issue where iOS won't capture audio without an input device
+    beep();
+
     // Destruct previous zenRTCPeer for this network, if exists
     await this.disconnect();
 
