@@ -62,7 +62,7 @@ export default function Networks({
               onClick={() =>
                 !isConnected
                   ? onConnectToNetwork(network)
-                  : onDisconnectFromNetwork(network)
+                  : onDisconnectFromNetwork()
               }
               title={
                 `[${strPubPrivNetwork}]\n\n` +

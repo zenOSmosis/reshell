@@ -2,7 +2,6 @@ import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService, {
   EVT_CONNECTED,
 } from "./SpeakerAppSocketAuthenticationService";
-import SpeakerAppLocalZenRTCPeerService from "./SpeakerAppLocalZenRTCPeerService";
 
 import {
   SOCKET_API_ROUTE_FETCH_NETWORKS,
@@ -51,10 +50,6 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
         this.fetchNetworks();
       }
     });
-
-    this._localZenRTCPeerService = this.useServiceClass(
-      SpeakerAppLocalZenRTCPeerService
-    );
   }
 
   // TODO: Document
@@ -82,15 +77,5 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
     return this._socketService.fetchSocketAPICall(
       SOCKET_API_ROUTE_FETCH_ICE_SERVERS
     );
-  }
-
-  // TODO: Document
-  async connectToNetwork(network) {
-    return this._localZenRTCPeerService.connect(network);
-  }
-
-  // TODO: Document
-  disconnectFromNetwork(network) {
-    return this._localZenRTCPeerService.disconnect(network);
   }
 }

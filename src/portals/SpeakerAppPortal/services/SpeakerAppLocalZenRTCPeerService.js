@@ -20,6 +20,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Speaker.app Local ZenRTC Peer Service");
+
     this.setState({
       isConnecting: false,
       isConnected: false,
@@ -80,15 +82,15 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       );
 
       localZenRTCPeer.on(EVT_CONNECTING, () => {
-        this.setState({ isConnecting: true });
+        this.setState({ isConnecting: true, isConnected: false });
       });
 
       localZenRTCPeer.on(EVT_CONNECTED, () => {
-        this.setState({ isConnected: true, isConnecting: false });
+        this.setState({ isConnecting: false, isConnected: true });
       });
 
       localZenRTCPeer.on(EVT_DISCONNECTED, () => {
-        this.setState({ isConnected: false, isConnecting: false });
+        this.setState({ isConnecting: false, isConnected: false });
       });
 
       localZenRTCPeer.on(

@@ -18,6 +18,7 @@ import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/Exam
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
+import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
 
 export const REGISTRATION_ID = "network";
 
@@ -38,12 +39,16 @@ const CallCentralStation = {
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
     SpeakerAppNetworkDiscoveryService,
+    SpeakerAppLocalZenRTCPeerService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
-    const networkService = appServices[SpeakerAppNetworkDiscoveryService];
+    const networkDiscoveryService =
+      appServices[SpeakerAppNetworkDiscoveryService];
+    const localZenRTCPeerService =
+      appServices[SpeakerAppLocalZenRTCPeerService];
 
-    const networks = networkService.getNetworks();
+    const networks = networkDiscoveryService.getNetworks();
     const lenNetworks = networks.length;
 
     /*
@@ -59,6 +64,9 @@ const CallCentralStation = {
       alert("TODO: Implement handleOpenPrivateNetwork");
     }, []);
     */
+
+    const isZenRTCConnecting = localZenRTCPeerService.getIsConnecting();
+    const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
 
     return (
       <Layout>
@@ -93,8 +101,8 @@ const CallCentralStation = {
                   // isConnected,
                   // realmId,
                   // channelId,
-                  onConnectToNetwork={networkService.connectToNetwork}
-                  onDisconnectFromNetwork={networkService.disconnectFromNetwork}
+                  onConnectToNetwork={localZenRTCPeerService.connect}
+                  onDisconnectFromNetwork={localZenRTCPeerService.disconnect}
                 />
               )}
             </Center>
@@ -108,11 +116,22 @@ const CallCentralStation = {
                 title="Configure Audio"
               />
               <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
-              <LabeledLED
-                label="Socket"
-                color={socketService.getIsConnected() ? "green" : "gray"}
-                style={{ float: "right" }}
-              />
+              <div style={{ float: "right" }}>
+                <LabeledLED
+                  label="Socket"
+                  color={socketService.getIsConnected() ? "green" : "gray"}
+                />
+                <LabeledLED
+                  label="zenRTC"
+                  color={
+                    isZenRTCConnected
+                      ? "green"
+                      : isZenRTCConnecting
+                      ? "yellow"
+                      : "gray"
+                  }
+                />
+              </div>
             </span>
           </Padding>
         </Footer>
