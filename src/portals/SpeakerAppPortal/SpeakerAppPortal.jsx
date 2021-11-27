@@ -2,6 +2,7 @@ import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
+import BeepPrototype from "../ExamplePortal/apps/BeepPrototype";
 import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
 import KeyVault from "../ExamplePortal/apps/KeyVault";
 import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
@@ -31,6 +32,7 @@ export default function SpeakerAppPortal() {
       backgroundView={<SpeakerAppLogoBackground />}
       appDescriptors={[
         Applications,
+        BeepPrototype,
         BackgroundSelector,
         AboutReShell,
         KeyVault,
