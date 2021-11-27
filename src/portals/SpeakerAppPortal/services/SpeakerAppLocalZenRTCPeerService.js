@@ -1,6 +1,8 @@
-import { PhantomCollection } from "phantom-core";
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import LocalZenRTCPeer, {
+  EVT_CONNECTING,
+  EVT_CONNECTED,
+  EVT_DISCONNECTED,
   EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "../zenRTC/LocalZenRTCPeer";
@@ -18,44 +20,29 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    // Goal is for local peer to be able to connect to multiple networks at the
-    // same time
-    this._LocalZenRTCPeerCollection = new PhantomCollection();
-    this.registerShutdownHandler(() =>
-      this._LocalZenRTCPeerCollection.destroy()
-    );
+    this.setState({
+      isConnecting: false,
+      isConnected: false,
+    });
+
+    this._localZenRTCPeer = null;
+    this.registerShutdownHandler(() => this.disconnect());
   }
 
   // TODO: Document
-  _getLocalZenRTCPeerInstance({ realmId, channelId }) {
-    const collectionKey = this._getCollectionKey({ realmId, channelId });
-    const controller =
-      this._LocalZenRTCPeerCollection.getChildWithKey(collectionKey);
-    return controller;
+  getIsConnecting() {
+    return this.getState().isConnecting;
   }
 
   // TODO: Document
-  _getCollectionKey({ realmId, channelId }) {
-    return JSON.stringify({ realmId, channelId });
-  }
-
-  // TODO: Document
-  _addLocalZenRTCPeerInstance(localZenRTCPeer) {
-    const realmId = localZenRTCPeer.getRealmId();
-    const channelId = localZenRTCPeer.getChannelId();
-    const collectionKey = this._getCollectionKey({ realmId, channelId });
-    this._LocalZenRTCPeerCollection.addChild(localZenRTCPeer, collectionKey);
+  getIsConnected() {
+    return this.getState().isConnected;
   }
 
   // TODO: Document
   async connect(network) {
-    const { realmId, channelId } = network;
-
     // Destruct previous zenRTCPeer for this network, if exists
-    await this._getLocalZenRTCPeerInstance({
-      realmId,
-      channelId,
-    })?.destroy();
+    await this.disconnect();
 
     const socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
@@ -71,6 +58,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     const iceServers = await networkService.fetchICEServers();
 
     const ourSocket = socketService.getSocket();
+
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
       ourSocket,
@@ -81,11 +69,25 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
-    // Handle media stream routing
+    this._localZenRTCPeer = localZenRTCPeer;
+
+    // Handle event routing
     (() => {
       const outputMediaDevicesService = this.useServiceClass(
         OutputMediaDevicesService
       );
+
+      localZenRTCPeer.on(EVT_CONNECTING, () => {
+        this.setState({ isConnecting: true });
+      });
+
+      localZenRTCPeer.on(EVT_CONNECTED, () => {
+        this.setState({ isConnected: true, isConnecting: false });
+      });
+
+      localZenRTCPeer.on(EVT_DISCONNECTED, () => {
+        this.setState({ isConnected: false, isConnecting: false });
+      });
 
       localZenRTCPeer.on(
         EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
@@ -112,22 +114,11 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       );
     })();
 
-    // Adds the localZenRTCPeer to a collection; if the service is destructed,
-    // the peer will automatically destruct
-    this._addLocalZenRTCPeerInstance(localZenRTCPeer);
-
     return localZenRTCPeer.connect();
   }
 
   // TODO: Document
-  async disconnect(network) {
-    const { realmId, channelId } = network;
-
-    // Destruct previous controller for this network, if exists, and remove it
-    // from the service collection
-    return this._getLocalZenRTCPeerInstance({
-      realmId,
-      channelId,
-    })?.destroy();
+  async disconnect() {
+    this._localZenRTCPeer?.destroy();
   }
 }
