@@ -2,9 +2,11 @@
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Center from "@components/Center";
+import Cover from "@components/Cover";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 import NoWrap from "@components/NoWrap";
+import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
@@ -107,6 +109,13 @@ const CallCentralStation = {
               )}
             </Center>
           </Padding>
+          {isZenRTCConnecting && (
+            <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+              <Center>
+                <StaggeredWaveLoading />
+              </Center>
+            </Cover>
+          )}
         </Content>
         <Footer>
           <Padding>
