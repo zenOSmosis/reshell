@@ -4,6 +4,7 @@ import {
   MediaStreamTrackControllerFactory,
   utils,
 } from "media-stream-track-controller";
+import { untilAudioContextResumed as libUntilAudioContextResumed } from "media-stream-track-controller/src/utils";
 
 class InputMediaDeviceFactoryCollection extends PhantomCollection {
   // TODO: Ensure that added children are of MediaStreamTrackControllerFactory type
@@ -15,6 +16,10 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
     this.setTitle("Input Media Devices Service");
 
+    this.setState({
+      isAudioContextStarted: false,
+    });
+
     // TODO: Re-run when devices have been changed
     this.fetchAudioInputDevices();
 
@@ -22,13 +27,25 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
-  fetchAudioInputDevices(isAggressive) {
-    utils
+  async fetchAudioInputDevices(isAggressive) {
+    // Fixes issue where sending media stream track to remote peers is muted
+    // until something starts the audio context
+    await this.untilAudioContextResumed();
+
+    const audioInputDevices = await utils
       .fetchMediaDevices(isAggressive)
-      .then(utils.fetchMediaDevices.filterAudioInputDevices)
-      .then(devices => this.setState({ devices }))
-      // TODO: Route error to service; make it pipe out UI; etc.
-      .catch(err => console.error(err));
+      .then(utils.fetchMediaDevices.filterAudioInputDevices);
+
+    this.setState({ devices: audioInputDevices });
+  }
+
+  // TODO: Document
+  async untilAudioContextResumed() {
+    await libUntilAudioContextResumed();
+
+    this.setState({
+      isAudioContextStarted: true,
+    });
   }
 
   // TODO: Document
@@ -73,17 +90,13 @@ export default class InputMediaDevicesService extends UIServiceCore {
     factoryOptions = {}
   ) {
     // TODO: Fix issue in media-stream-controller where constraint may look like '0: "a", 2: "u"'
-    /*
     const specificConstraints =
       utils.constraints.getSpecificDeviceCaptureConstraints(
         mediaDeviceInfo,
-        "audio",
         constraints
       );
-
-    // TODO: Handle
+    // TODO: Remove
     console.log({ mediaDeviceInfo, specificConstraints });
-    */
 
     const factory = await utils.captureMediaDevice.captureSpecificMediaDevice(
       mediaDeviceInfo,
