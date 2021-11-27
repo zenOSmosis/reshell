@@ -17,7 +17,7 @@ import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/Exam
 // import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
-import SpeakerAppNetworkService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkService";
+import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
 
 export const REGISTRATION_ID = "network";
 
@@ -37,11 +37,11 @@ const CallCentralStation = {
   isPinnedToDock: true,
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
-    SpeakerAppNetworkService,
+    SpeakerAppNetworkDiscoveryService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
-    const networkService = appServices[SpeakerAppNetworkService];
+    const networkService = appServices[SpeakerAppNetworkDiscoveryService];
 
     const networks = networkService.getNetworks();
     const lenNetworks = networks.length;

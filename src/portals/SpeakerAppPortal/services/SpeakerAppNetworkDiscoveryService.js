@@ -11,9 +11,11 @@ import {
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
 
 // TODO: Document
-export default class SpeakerAppNetworkService extends UIServiceCore {
+export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
   constructor(...args) {
     super(...args);
+
+    this.setTitle("Speaker.app Network Discovery Service");
 
     // TODO: Move to setInitialState once available
     this.setState({

@@ -7,7 +7,7 @@ import LocalZenRTCPeer, {
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "../zenRTC/LocalZenRTCPeer";
 
-import SpeakerAppNetworkService from "./SpeakerAppNetworkService";
+import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
@@ -53,7 +53,9 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     );
 
     const screenCapturerService = this.useServiceClass(ScreenCapturerService);
-    const networkService = this.useServiceClass(SpeakerAppNetworkService);
+    const networkService = this.useServiceClass(
+      SpeakerAppNetworkDiscoveryService
+    );
 
     const iceServers = await networkService.fetchICEServers();
 
