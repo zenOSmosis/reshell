@@ -12,6 +12,7 @@ import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticat
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
+import SyncObject from "sync-object";
 
 export { EVT_UPDATED };
 
@@ -63,15 +64,22 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
     const ourSocket = socketService.getSocket();
 
+    const readOnlySyncObject = new SyncObject();
+    readOnlySyncObject.on(EVT_UPDATED, () => {
+      // TODO: Remove
+      console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
+    });
+
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
       ourSocket,
       iceServers,
-      // writableSyncObject,
-      // readOnlySyncObject,
+      readOnlySyncObject,
       inputMediaDevicesService,
       screenCapturerService,
     });
+
+    localZenRTCPeer.registerShutdownHandler(() => readOnlySyncObject.destroy());
 
     this._localZenRTCPeer = localZenRTCPeer;
 

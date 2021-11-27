@@ -18,6 +18,7 @@ import ZenRTCPeer, {
 import LocalZenRTCSignalBroker, {
   EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
 } from "./LocalZenRTCSignalBroker";
+import LocalPhantomPeer from "./LocalPhantomPeer";
 
 export {
   EVT_UPDATED,
@@ -45,10 +46,9 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     network,
     ourSocket,
     iceServers,
-    writableSyncObject,
-    readOnlySyncObject,
     inputMediaDevicesService,
     screenCapturerService,
+    readOnlySyncObject,
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
   }) {
@@ -90,12 +90,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       socketIdTo: virtualServerSocketId,
     });
 
+    const localPhantomPeer = new LocalPhantomPeer();
+
     super({
       iceServers,
       zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
       realmId,
       channelId,
-      writableSyncObject,
+      writableSyncObject: localPhantomPeer,
       readOnlySyncObject,
       offerToReceiveAudio,
       offerToReceiveVideo,
@@ -104,7 +106,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     });
 
     this._zenRTCSignalBroker = zenRTCSignalBroker;
-    this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
+    this._localPhantomPeer = localPhantomPeer;
+
+    this.registerShutdownHandler(() =>
+      Promise.all([
+        this._zenRTCSignalBroker.destroy(),
+        this._localPhantomPeer.destroy(),
+      ])
+    );
 
     this.on(EVT_ZENRTC_SIGNAL, data => {
       this._zenRTCSignalBroker.signal(data);
