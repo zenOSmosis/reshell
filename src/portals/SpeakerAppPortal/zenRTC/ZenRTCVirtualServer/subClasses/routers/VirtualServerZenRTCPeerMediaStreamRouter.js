@@ -1,5 +1,5 @@
 import { PhantomCollection } from "phantom-core";
-import VirtualServerZenRTCPeer from "./VirtualServerZenRTCPeer";
+import VirtualServerZenRTCPeer from "../VirtualServerZenRTCPeer";
 
 /**
  * Performs media stream routing for all of the peers.

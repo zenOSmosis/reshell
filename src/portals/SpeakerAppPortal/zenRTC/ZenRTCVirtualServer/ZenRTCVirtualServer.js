@@ -9,7 +9,7 @@ import VirtualServerZenRTCPeerManager, {
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
-import VirtualServerZenRTCPeerMediaStreamRouter from "./subClasses/VirtualServerZenRTCPeerMediaStreamRouter";
+import VirtualServerZenRTCPeerMediaStreamRouter from "./subClasses/routers/VirtualServerZenRTCPeerMediaStreamRouter";
 
 import SyncObject from "sync-object";
 
