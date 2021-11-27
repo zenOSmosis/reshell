@@ -10,6 +10,7 @@ import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
+import NetworkConnected from "./views/NetworkConnected";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfile";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
@@ -94,20 +95,24 @@ const CallCentralStation = {
         </Header>
         <Content>
           <Padding>
-            <Center canOverflow={true}>
-              {lenNetworks === 0 ? (
-                <NoNetworks />
-              ) : (
-                <Networks
-                  networks={networks}
-                  // isConnected,
-                  // realmId,
-                  // channelId,
-                  onConnectToNetwork={localZenRTCPeerService.connect}
-                  onDisconnectFromNetwork={localZenRTCPeerService.disconnect}
-                />
-              )}
-            </Center>
+            {!isZenRTCConnected ? (
+              <Center canOverflow={true}>
+                {lenNetworks === 0 ? (
+                  <NoNetworks />
+                ) : (
+                  <Networks
+                    networks={networks}
+                    // isConnected,
+                    // realmId,
+                    // channelId,
+                    onConnectToNetwork={localZenRTCPeerService.connect}
+                    onDisconnectFromNetwork={localZenRTCPeerService.disconnect}
+                  />
+                )}
+              </Center>
+            ) : (
+              <NetworkConnected />
+            )}
           </Padding>
           {isZenRTCConnecting && (
             <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
