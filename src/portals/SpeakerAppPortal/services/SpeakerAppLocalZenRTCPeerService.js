@@ -7,12 +7,16 @@ import LocalZenRTCPeer, {
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "../zenRTC/LocalZenRTCPeer";
 
+import SyncObject from "sync-object";
+
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
-import SyncObject from "sync-object";
+import UIModalService from "@services/UIModalService";
+
+import InputDeviceSelectorModal from "@components/modals/InputDeviceSelectorModal";
 
 import beep from "@utils/beep";
 
@@ -46,23 +50,40 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
   // TODO: Document
   async connect(network) {
-    // IMPORTANT! This is necessary to jump-start the audio output on web
-    // Safari if no input audio device is selected
-    //
-    // TODO: Fix issue where iOS won't capture audio without an input device
-    beep();
-
-    // TODO: Determine if hardware media is being captured, and if not, present a modal to ask for media (iOS might not play WebRTC audio if no hardware device is being captured)
-
     // Destruct previous zenRTCPeer for this network, if exists
     await this.disconnect();
 
-    const socketService = this.useServiceClass(
-      SpeakerAppSocketAuthenticationService
-    );
-
     const inputMediaDevicesService = this.useServiceClass(
       InputMediaDevicesService
+    );
+
+    // Fixes for possible no media streaming on iOS
+    await (async () => {
+      // IMPORTANT! This is necessary to jump-start the audio output on web
+      // Safari if no input audio device is selected (does not resolve issue on
+      // iOS 15 [and possibly >= 14])
+      beep();
+
+      // Determine if hardware media is being captured, and if not, present a
+      // modal to ask for media (iOS might not play WebRTC audio if no hardware
+      // device is being captured)
+      if (!inputMediaDevicesService.getCaptureFactories().length) {
+        await new Promise((resolve, reject) => {
+          const uiModalService = this.useServiceClass(UIModalService);
+
+          uiModalService.showModal(({ onCancel, ...rest }) => (
+            <InputDeviceSelectorModal
+              onDeviceCapture={resolve}
+              onCancel={reject}
+              {...rest}
+            />
+          ));
+        });
+      }
+    })();
+
+    const socketService = this.useServiceClass(
+      SpeakerAppSocketAuthenticationService
     );
 
     const screenCapturerService = this.useServiceClass(ScreenCapturerService);
