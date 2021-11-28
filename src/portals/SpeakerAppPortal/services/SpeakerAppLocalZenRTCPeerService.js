@@ -52,6 +52,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     // TODO: Fix issue where iOS won't capture audio without an input device
     beep();
 
+    // TODO: Determine if hardware media is being captured, and if not, present a modal to ask for media (iOS might not play WebRTC audio if no hardware device is being captured)
+
     // Destruct previous zenRTCPeer for this network, if exists
     await this.disconnect();
 
