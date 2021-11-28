@@ -30,6 +30,10 @@ export default class InputMediaDevicesService extends UIServiceCore {
   async fetchAudioInputDevices(isAggressive) {
     // Fixes issue where sending media stream track to remote peers is muted
     // until something starts the audio context
+    //
+    // IMPORTANT: This isn't the ONLY fix related to this, and others are
+    // specified in the LocalZenRTCPeer connect sequence (currently part of
+    // SpeakerAppPortal)
     await this.untilAudioContextResumed();
 
     const audioInputDevices = await utils
