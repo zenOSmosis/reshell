@@ -5,6 +5,7 @@ import styles from "./NotificationsStack.module.css";
 import Notification from "../Notification";
 
 // TODO: Document
+// IMPORTANT: This should not be utilized directly (consider refactoring)
 // Handles multiple-rendered notifications
 export default function NotificationsStack({
   notifications = [],
