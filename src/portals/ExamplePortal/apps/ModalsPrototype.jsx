@@ -1,3 +1,4 @@
+import Full from "@components/Full";
 import Center from "@components/Center";
 
 import UIModalService from "@services/UIModalService";
@@ -19,11 +20,13 @@ const ModalsPrototype = {
           onClick={() =>
             modalService.showModal({
               view: ({ onClose }) => (
-                <Center>
-                  <div>
-                    <button onClick={onClose}>Close</button>
-                  </div>
-                </Center>
+                <Full style={{ backgroundColor: "rgba(0,0,0,.4)" }}>
+                  <Center>
+                    <div>
+                      <button onClick={onClose}>Close</button>
+                    </div>
+                  </Center>
+                </Full>
               ),
             })
           }
