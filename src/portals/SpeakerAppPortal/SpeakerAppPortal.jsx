@@ -8,7 +8,7 @@ import KeyVault from "../ExamplePortal/apps/KeyVault";
 import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
 import VUMeter from "../ExamplePortal/apps/VUMeter";
 import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
-import ScreenShot from "../ExamplePortal/apps/ScreenShot";
+// import ScreenShot from "../ExamplePortal/apps/ScreenShot";
 import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
 import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
 import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
@@ -39,7 +39,7 @@ export default function SpeakerAppPortal() {
         InputMediaDevices,
         VUMeter,
         ScreenCapture,
-        ScreenShot,
+        // ScreenShot,
         ApplicationMonitor,
         ServiceMonitor,
         ColorAdjuster,
