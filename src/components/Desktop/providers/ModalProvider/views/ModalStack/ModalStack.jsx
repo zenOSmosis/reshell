@@ -5,9 +5,6 @@ import Modal from "../Modal";
 // TODO: Document
 // Handles multiple-rendered modals
 export default function ModalStack({ modals = [] }) {
-  // TODO: Remove
-  console.log({ modals });
-
   return (
     <>
       {modals.map(({ view, uuid, onClose, ...rest }) => {
