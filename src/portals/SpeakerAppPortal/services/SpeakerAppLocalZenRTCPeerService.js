@@ -163,6 +163,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
+          // Route to media stream output handler
           outputMediaDevicesService.addOutputMediaStreamTrack(
             mediaStreamTrack,
             mediaStream
@@ -175,6 +176,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
+          // Un-route from media stream output handler
           outputMediaDevicesService.removeOutputMediaStreamTrack(
             mediaStreamTrack,
             mediaStream
