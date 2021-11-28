@@ -1,4 +1,4 @@
-.notifications-stack {
+.notification-stack {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -19,7 +19,7 @@
 }
 
 /** Enable too many UI notifications to be scrollable */
-.notifications-stack .inner-wrap {
+.notification-stack .inner-wrap {
   width: 100%;
   max-height: 100%;
 

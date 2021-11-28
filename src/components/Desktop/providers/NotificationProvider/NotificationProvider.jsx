@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { NotificationsStack } from "./views/Notification";
+import { NotificationStack } from "./views/Notification";
 import useServiceClass from "@hooks/useServiceClass";
 import UINotificationService from "@services/UINotificationService";
 
@@ -33,7 +33,7 @@ export default function NotificationProvider({ children }) {
     >
       {children}
 
-      <NotificationsStack
+      <NotificationStack
         notifications={serviceState.notifications}
         onNotificationClose={closeNotificationWithUUID}
       />

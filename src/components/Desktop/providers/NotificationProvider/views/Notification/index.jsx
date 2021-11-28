@@ -1,5 +1,5 @@
 import Notification from "./Notification";
-import NotificationsStack from "./NotificationsStack";
+import NotificationStack from "./NotificationStack";
 
 export default Notification;
-export { NotificationsStack };
+export { NotificationStack };
