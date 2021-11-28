@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { NotificationStack } from "./views/Notification";
+import NotificationStack from "./views/NotificationStack";
 import useServiceClass from "@hooks/useServiceClass";
 import UINotificationService from "@services/UINotificationService";
 
