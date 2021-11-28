@@ -16,6 +16,8 @@ import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
 import UIModalService from "@services/UIModalService";
 
+import UINotificationService from "@services/UINotificationService";
+
 import InputDeviceSelectorModal from "@components/modals/InputDeviceSelectorModal";
 
 import beep from "@utils/beep";
@@ -50,6 +52,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
   // TODO: Document
   async connect(network) {
+    const { realmId, channelId } = network;
+
     // Destruct previous zenRTCPeer for this network, if exists
     await this.disconnect();
 
@@ -138,10 +142,20 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
       localZenRTCPeer.on(EVT_CONNECTED, () => {
         this.setState({ isConnecting: false, isConnected: true });
+
+        this.useServiceClass(UINotificationService).showNotification({
+          title: "Connected to Network",
+          body: `Connected to realm "${realmId}" / channel "${channelId}"`,
+        });
       });
 
       localZenRTCPeer.on(EVT_DISCONNECTED, () => {
         this.setState({ isConnecting: false, isConnected: false });
+
+        this.useServiceClass(UINotificationService).showNotification({
+          title: "Disconnected from Network",
+          body: `Disconnected from realm "${realmId}" / channel "${channelId}"`,
+        });
       });
 
       localZenRTCPeer.on(

@@ -4,6 +4,8 @@ import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticat
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import ZenRTCVirtualServer from "../zenRTC/ZenRTCVirtualServer";
 
+import UINotificationService from "@services/UINotificationService";
+
 // TODO: Document (used for network hosting)
 
 // TODO: Document
@@ -88,11 +90,21 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
 
       this.setState({ isHosting: false, realmId: null, channelId: null });
       this._virtualServer = null;
+
+      this.useServiceClass(UINotificationService).showNotification({
+        title: "Stopped hosting",
+        body: `Stopped hosting realm "${realmId}" / channel "${channelId}"`,
+      });
     });
 
     await this._virtualServer.onceReady();
 
     this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
+
+    this.useServiceClass(UINotificationService).showNotification({
+      title: "You are now hosting",
+      body: `Hosting realm "${realmId}" / channel "${channelId}"`,
+    });
   }
 
   // TODO: Document
