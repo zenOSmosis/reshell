@@ -16,15 +16,17 @@ export default class UIModalService extends UIServiceCore {
   }
 
   // TODO: Document
-  showModal({ view, onClose = () => null }) {
+  showModal(view) {
+    const uuid = uuidv4();
+
     this.setState({
       // Add new modals to end of stack
       modals: [
         ...this.getState().modals,
         {
           view,
-          onClose,
-          uuid: uuidv4(),
+          uuid,
+          onClose: () => this.closeModalWithUUID(uuid),
         },
       ],
     });
@@ -32,18 +34,11 @@ export default class UIModalService extends UIServiceCore {
 
   // TODO: Document
   closeModalWithUUID(uuid) {
-    const next = this.getState().modals.filter(
-      ({ uuid: prevUUID, onClose }) => {
-        const isKept = uuid !== prevUUID;
+    const next = this.getState().modals.filter(({ uuid: prevUUID }) => {
+      const isKept = uuid !== prevUUID;
 
-        if (!isKept) {
-          // Call the onClose handler passed to showNotification
-          onClose();
-        }
-
-        return isKept;
-      }
-    );
+      return isKept;
+    });
 
     this.setState({
       modals: next,

@@ -18,17 +18,15 @@ const ModalsPrototype = {
       <Center>
         <button
           onClick={() =>
-            modalService.showModal({
-              view: ({ onClose }) => (
-                <Full style={{ backgroundColor: "rgba(0,0,0,.4)" }}>
-                  <Center>
-                    <div>
-                      <button onClick={onClose}>Close</button>
-                    </div>
-                  </Center>
-                </Full>
-              ),
-            })
+            modalService.showModal(({ onClose }) => (
+              <Full style={{ backgroundColor: "rgba(0,0,0,.4)" }}>
+                <Center>
+                  <div>
+                    <button onClick={onClose}>Close</button>
+                  </div>
+                </Center>
+              </Full>
+            ))
           }
         >
           Generate Test Modal

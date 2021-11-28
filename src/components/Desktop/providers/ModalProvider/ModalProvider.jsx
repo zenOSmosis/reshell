@@ -16,12 +16,6 @@ export default function ModalProvider({ children }) {
     [serviceInstance]
   );
 
-  // TODO: Document
-  const closeModalWithUUID = useCallback(
-    uuid => serviceInstance.closeModalWithUUID(uuid),
-    [serviceInstance]
-  );
-
   return (
     <ModalContext.Provider
       value={{
@@ -30,12 +24,7 @@ export default function ModalProvider({ children }) {
     >
       {children}
 
-      {
-        <ModalStack
-          modals={serviceState.modals}
-          onModalClose={closeModalWithUUID}
-        />
-      }
+      <ModalStack modals={serviceState.modals} />
     </ModalContext.Provider>
   );
 }

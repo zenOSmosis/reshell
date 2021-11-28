@@ -4,23 +4,16 @@ import Modal from "../Modal";
 
 // TODO: Document
 // Handles multiple-rendered modals
-export default function ModalStack({ modals = [], onModalClose }) {
+export default function ModalStack({ modals = [] }) {
+  // TODO: Remove
+  console.log({ modals });
+
   return (
     <>
-      {modals.map(({ view, onClose, uuid }) => {
+      {modals.map(({ view, uuid, onClose, ...rest }) => {
         return (
           <div key={uuid}>
-            <Modal
-              view={view}
-              uuid={uuid}
-              onClose={() => {
-                if (typeof onClose === "function") {
-                  onClose();
-                }
-
-                onModalClose(uuid);
-              }}
-            />
+            <Modal {...rest} view={view} uuid={uuid} onClose={onClose} />
           </div>
         );
       })}
