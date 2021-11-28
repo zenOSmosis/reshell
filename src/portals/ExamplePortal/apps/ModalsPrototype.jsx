@@ -18,7 +18,13 @@ const ModalsPrototype = {
         <button
           onClick={() =>
             modalService.showModal({
-              view: () => <div>Test Modal</div>,
+              view: ({ onClose }) => (
+                <Center>
+                  <div>
+                    <button onClick={onClose}>Close</button>
+                  </div>
+                </Center>
+              ),
             })
           }
         >

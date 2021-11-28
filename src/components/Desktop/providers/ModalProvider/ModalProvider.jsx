@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-// import { ModalsStack } from "./views/Modal";
+import ModalStack from "./views/ModalStack";
 import useServiceClass from "@hooks/useServiceClass";
 import UIModalService from "@services/UIModalService";
 
@@ -31,13 +31,10 @@ export default function ModalProvider({ children }) {
       {children}
 
       {
-        // TODO: Implement
-        /*
-        <ModalsStack
-        modals={serviceState.notifications}
-        onModalClose={closeModalWithUUID}
-      />
-        */
+        <ModalStack
+          modals={serviceState.modals}
+          onModalClose={closeModalWithUUID}
+        />
       }
     </ModalContext.Provider>
   );
