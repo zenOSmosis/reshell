@@ -1,14 +1,14 @@
 import React, { useCallback } from "react";
 
-import { NotificationsStack } from "@components/Notification";
+import { NotificationsStack } from "./views/Notification";
 import useServiceClass from "@hooks/useServiceClass";
 import UINotificationService from "@services/UINotificationService";
 
-export const NotificationsContext = React.createContext({});
+export const NotificationContext = React.createContext({});
 
 // TODO: Document
 // TODO: Borrow API logic from https://www.npmjs.com/package/react-notifications
-export default function NotificationsProvider({ children }) {
+export default function NotificationProvider({ children }) {
   const { serviceInstance, serviceState } = useServiceClass(
     UINotificationService
   );
@@ -26,7 +26,7 @@ export default function NotificationsProvider({ children }) {
   );
 
   return (
-    <NotificationsContext.Provider
+    <NotificationContext.Provider
       value={{
         showNotification,
       }}
@@ -37,6 +37,6 @@ export default function NotificationsProvider({ children }) {
         notifications={serviceState.notifications}
         onNotificationClose={closeNotificationWithUUID}
       />
-    </NotificationsContext.Provider>
+    </NotificationContext.Provider>
   );
 }

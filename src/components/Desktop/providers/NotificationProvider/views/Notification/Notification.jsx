@@ -5,8 +5,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Animation from "../Animation";
-import ButtonTransparent from "../ButtonTransparent";
+import Animation from "@components/Animation";
+import ButtonTransparent from "@components/ButtonTransparent";
 
 import styles from "./Notification.module.css";
 
@@ -30,7 +30,7 @@ export default function Notification({
   // notifications would restart the internal timer
   const refOnClose = useRef(onClose);
   const handleClose = useCallback(
-    (evt) => {
+    evt => {
       if (evt) {
         evt.stopPropagation();
       }
