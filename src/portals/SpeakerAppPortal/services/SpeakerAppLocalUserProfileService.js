@@ -6,5 +6,11 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 
 // TODO: Document
 export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
+  constructor(...args) {
+    super(...args);
+
+    this.setTitle("Speaker.app Local User Profile Service");
+  }
+
   // TODO: Build out
 }

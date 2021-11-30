@@ -35,6 +35,8 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Speaker.app Socket Authentication Service");
+
     // Automatically connect
     this.connect();
   }

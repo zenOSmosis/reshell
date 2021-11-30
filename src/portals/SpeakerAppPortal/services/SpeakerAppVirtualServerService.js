@@ -13,6 +13,8 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Speaker.app Virtual Server Service");
+
     this._virtualServer = null;
 
     // TODO: Migrate to setInitialState once available
