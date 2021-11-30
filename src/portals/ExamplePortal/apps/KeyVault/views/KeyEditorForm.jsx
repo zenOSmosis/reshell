@@ -11,7 +11,17 @@ export default function KeyEditorForm({
 }) {
   return (
     <Center canOverflow={true}>
-      <Form onSubmit={onSubmit}>
+      <Form
+        onSubmit={onSubmit}
+        validator={formValues => {
+          return {
+            // TODO: Refactor into KeyEditorForm
+            key:
+              formValues.key.length < 1 &&
+              "Key must contain at least one character",
+          };
+        }}
+      >
         {({ errors, isValid }) => (
           <>
             <Padding>

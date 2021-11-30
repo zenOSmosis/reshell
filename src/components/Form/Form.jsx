@@ -1,26 +1,19 @@
 import useFormController from "./hooks/useFormController";
 
-// TODO: Document
+// TODO: Document and add prop-types
 export default function Form({
   children,
   onSubmit,
   onChange = () => null,
   autoComplete = "off",
+  validator = formValues => null,
   ...rest
 }) {
   const { setFormRef, handleFormChange, handleFormSubmit, errors, isValid } =
     useFormController({
       onSubmit,
       onChange,
-      // TODO: Expose validator as Form property
-      validator: formValues => {
-        return {
-          // TODO: Refactor into KeyEditorForm
-          key:
-            formValues.key.length < 1 &&
-            "Key must contain at least one character",
-        };
-      },
+      validator,
     });
 
   return (
