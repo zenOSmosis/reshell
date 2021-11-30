@@ -117,13 +117,13 @@ export default function CreateNetwork({ deviceAddress, onSubmit }) {
   ]);
 
   // Auto-populate channel id based on network name
-  /*
+  //
+  // TODO: Improve / refactor this handling...
   useEffect(() => {
     setState({
       channelId: networkName.toLowerCase().replaceAll(" ", "-"),
     });
   }, [networkName, setState]);
-  */
 
   return (
     <Center canOverflow={true} style={{ maxWidth: 720 }}>
