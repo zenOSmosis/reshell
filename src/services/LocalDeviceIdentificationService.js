@@ -75,6 +75,8 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
   }
 
   // TODO: Implement and document
+  // NOTE: Consideration was made to make this available through getState() and
+  // it was shelved due to not yet determining how reliable that would be
   async fetchLocalAddress() {
     const { address } = await this.fetchLocalIdentity();
 
@@ -83,6 +85,11 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     }
 
     return address;
+  }
+
+  // Alias for this.fetchLocalAddress
+  async fetchDeviceAddress() {
+    return this.fetchLocalAddress();
   }
 
   // TODO: Document

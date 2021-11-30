@@ -3,6 +3,7 @@ import React, { useEffect, useCallback, useState } from "react";
 import Center from "@components/Center";
 import Section from "@components/Section";
 import ButtonPanel from "@components/ButtonPanel";
+import Form from "@components/Form";
 
 import styles from "./NetworkCreatorForm.module.css";
 
@@ -44,7 +45,7 @@ import useVirtualServerSandboxContext, {
 
 // TODO: Implement auto-connect-to-network toggle (perhaps in advanced; default to true)
 
-export default function CreateNetwork({ onSubmit }) {
+export default function CreateNetwork({ deviceAddress, onSubmit }) {
   // const { getItem, setItem } = useLocalStorage();
   // const { openRoute } = useAppRoutesContext();
 
@@ -59,6 +60,7 @@ export default function CreateNetwork({ onSubmit }) {
     }
   }, [elInputNetworkName]);
 
+  // TODO: Use Form component to manage internal state?
   const [
     {
       networkName,
@@ -71,6 +73,8 @@ export default function CreateNetwork({ onSubmit }) {
     },
     setState,
   ] = useObjectState(
+    // TODO: Obtain defaults from storage cache
+
     /* getItem(KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS) || */ {
       // Default form values
       //
@@ -78,7 +82,7 @@ export default function CreateNetwork({ onSubmit }) {
       networkDescription: "",
       // TODO: Change isPublic default to false after adding in ability to connect to private networks
       isPublic: true,
-      // realmId: deviceAddress,
+      realmId: deviceAddress,
       channelId: "",
       isShowingAdvanced: false,
       // launchTarget: LAUNCH_TARGET_IFRAME,
@@ -121,294 +125,203 @@ export default function CreateNetwork({ onSubmit }) {
   }, [networkName, setState]);
   */
 
-  /*
-  if (isVirtualServerConnected) {
-    return (
-      <Center canOverflow={true}>
-        {
-          // TODO: Handle a bit nicer
-        }
-        <Section style={{ maxWidth: 640, margin: "0px auto" }}>
-          <div style={{ fontWeight: "bold" }}>Network Hosting in Progress</div>
-
-          <div style={{ margin: "20px 0px" }}>
-            <div className="note">
-              Share this URL with others whom you wish to join your network.
-            </div>
-            <input
-              defaultValue={getCallURL({ realmId, channelId })}
-              readOnly
-              style={{ textAlign: "center" }}
-            />
-          </div>
-
-          <div style={{ textAlign: "right" }}>
-            <button
-              onClick={() =>
-                openRoute(ROUTE_CALL_URL, {
-                  realmId,
-                  channelId,
-                })
-              }
-              style={{ backgroundColor: "rgb(52, 127, 232)", marginRight: 8 }}
-            >
-              Open Network
-            </button>
-
-            <button
-              onClick={destroyVirtualServer}
-              style={{ backgroundColor: "red" }}
-            >
-              Stop
-            </button>
-          </div>
-        </Section>
-      </Center>
-    );
-  }
-  */
-
   return (
     <Center canOverflow={true} style={{ maxWidth: 720 }}>
       <div className={styles["create-network-form"]}>
-        <form onSubmit={evt => evt.preventDefault()}>
-          <Section style={{ textAlign: "center" }}>
-            <div className="note" style={{ textAlign: "center", margin: 20 }}>
-              <p>
-                All traffic in / out of this network will be routed through your
-                device.
-              </p>
-              <p>
-                Networks created here are temporary and only active while this
-                device is online.
-              </p>
-            </div>
+        <Form
+        // onSubmit={values => console.log({ values })}
+        >
+          {({ errors, isValid }) => (
+            <>
+              <Section style={{ textAlign: "center" }}>
+                <div
+                  className="note"
+                  style={{ textAlign: "center", margin: 20 }}
+                >
+                  <p>
+                    All traffic in / out of this network will be routed through
+                    your device.
+                  </p>
+                  <p>
+                    Networks created here are temporary and only active while
+                    this device is online.
+                  </p>
+                </div>
 
-            <ButtonPanel
-              buttons={[
-                {
-                  content: () => (
-                    <span>
-                      Simple{" "}
-                      <SimpleIcon
-                        style={{ marginLeft: 4, fontSize: "1.2em" }}
-                      />
-                    </span>
-                  ),
-                  onClick: () =>
-                    setState({
-                      isShowingAdvanced: false,
-                    }),
-                  isSelected: !isShowingAdvanced,
-                },
-                {
-                  content: () => (
-                    <span>
-                      Advanced{" "}
-                      <AdvancedIcon
-                        style={{ marginLeft: 4, fontSize: "1.2em" }}
-                      />
-                    </span>
-                  ),
-                  onClick: () => setState({ isShowingAdvanced: true }),
-                  isSelected: isShowingAdvanced,
-                },
-              ]}
-            />
-          </Section>
-
-          <div
-            style={{
-              width: "100%",
-              // maxWidth: 640,
-              // display: "inline-block",
-              // textAlign: "left",
-            }}
-          >
-            <Section>
-              {
-                // TODO:: Use htmlFor attributes on the labels
-                // TODO: Add error handling / messages
-              }
-              <label>Network Name</label>
-              <input
-                ref={setElInputNetworkName}
-                type="text"
-                value={networkName}
-                onChange={evt =>
-                  setState({
-                    networkName: evt.target.value,
-                  })
-                }
-              />
-            </Section>
-
-            <Section>
-              <div style={{ textAlign: "center" }}>
-                <div className="note">Select network type:</div>
                 <ButtonPanel
                   buttons={[
                     {
                       content: () => (
                         <span>
-                          Public{" "}
-                          <PadlockOpenIcon style={{ fontSize: "1.2em" }} />
+                          Simple{" "}
+                          <SimpleIcon
+                            style={{ marginLeft: 4, fontSize: "1.2em" }}
+                          />
                         </span>
                       ),
-                      onClick: () => setState({ isPublic: true }),
-                      isSelected: isPublic,
+                      onClick: () =>
+                        setState({
+                          isShowingAdvanced: false,
+                        }),
+                      isSelected: !isShowingAdvanced,
                     },
                     {
                       content: () => (
                         <span>
-                          Private{" "}
-                          <PadlockCloseIcon style={{ fontSize: "1.2em" }} />
+                          Advanced{" "}
+                          <AdvancedIcon
+                            style={{ marginLeft: 4, fontSize: "1.2em" }}
+                          />
                         </span>
                       ),
-                      onClick: () => setState({ isPublic: false }),
-                      isSelected: !isPublic,
+                      onClick: () => setState({ isShowingAdvanced: true }),
+                      isSelected: isShowingAdvanced,
                     },
                   ]}
                 />
-              </div>
-              <div className="note" style={{ marginTop: 10 }}>
-                Public networks can be seen by everyone and are displayed within
-                the "Networks" tab.
-              </div>
-            </Section>
+              </Section>
 
-            <Section>
-              <label>Description (optional)</label>
-              <textarea
-                value={networkDescription}
-                onChange={evt =>
-                  setState({
-                    networkDescription: evt.target.value,
-                  })
-                }
-                placeholder="The topic or some other interesting detail to let others know what this network is about"
-              ></textarea>
-            </Section>
+              <div
+                style={{
+                  width: "100%",
+                  // maxWidth: 640,
+                  // display: "inline-block",
+                  // textAlign: "left",
+                }}
+              >
+                <Section>
+                  {
+                    // TODO:: Use htmlFor attributes on the labels
+                    // TODO: Add error handling / messages
+                  }
+                  <label>Network Name</label>
+                  <input
+                    ref={setElInputNetworkName}
+                    type="text"
+                    name="networkName"
+                    value={networkName}
+                    onChange={evt =>
+                      setState({
+                        networkName: evt.target.value,
+                      })
+                    }
+                  />
+                </Section>
 
-            {isShowingAdvanced && (
-              <>
-                <Section style={{ overflow: "auto" }}>
-                  <h2>Routing</h2>
-                  <div style={{ width: "48%", float: "left" }}>
-                    <label>Realm</label>
-                    <input
-                      type="text"
-                      value={realmId}
-                      onChange={evt =>
-                        setState({
-                          realmId: evt.target.value,
-                        })
-                      }
+                <Section>
+                  <input
+                    type="hidden"
+                    name="isPublic"
+                    value={isPublic ? "on" : "off"}
+                  />
+
+                  <div style={{ textAlign: "center" }}>
+                    <div className="note">Select network type:</div>
+                    <ButtonPanel
+                      buttons={[
+                        {
+                          content: () => (
+                            <span>
+                              Public{" "}
+                              <PadlockOpenIcon style={{ fontSize: "1.2em" }} />
+                            </span>
+                          ),
+                          onClick: () => setState({ isPublic: true }),
+                          isSelected: isPublic,
+                        },
+                        {
+                          content: () => (
+                            <span>
+                              Private{" "}
+                              <PadlockCloseIcon style={{ fontSize: "1.2em" }} />
+                            </span>
+                          ),
+                          onClick: () => setState({ isPublic: false }),
+                          isSelected: !isPublic,
+                        },
+                      ]}
                     />
                   </div>
-
-                  <div
-                    style={{
-                      width: "48%",
-                      float: "right",
-                    }}
-                  >
-                    <label>Channel</label>
-                    <input
-                      type="text"
-                      value={channelId}
-                      onChange={evt =>
-                        setState({
-                          channelId: evt.target.value,
-                        })
-                      }
-                    />
+                  <div className="note" style={{ marginTop: 10 }}>
+                    Public networks can be seen by everyone and are displayed
+                    within the "Networks" tab.
                   </div>
                 </Section>
 
-                {
-                  // TODO: Provide documentation describing what each of these option mean
-                  /*
-              <Section>
-                <h2>Launch Target</h2>
-                <div style={{ textAlign: "center" }}>
-                  <button
-                    style={{ width: 100 }}
-                    onClick={() =>
+                <Section>
+                  <label>Description (optional)</label>
+                  <textarea
+                    name="networkDescription"
+                    value={networkDescription}
+                    onChange={evt =>
                       setState({
-                        launchTarget: LAUNCH_TARGET_IFRAME,
+                        networkDescription: evt.target.value,
                       })
                     }
-                    className={
-                      launchTarget === LAUNCH_TARGET_IFRAME ? "active" : null
-                    }
-                  >
-                    Embed
-                    <div>
-                      <EmbeddedIcon style={{ fontSize: 40 }} />
-                    </div>
-                  </button>
+                    placeholder="The topic or some other interesting detail to let others know what this network is about"
+                  ></textarea>
+                </Section>
+
+                {isShowingAdvanced && (
+                  <>
+                    <Section style={{ overflow: "auto" }}>
+                      <h2>Routing</h2>
+                      <div style={{ width: "48%", float: "left" }}>
+                        <label>Realm</label>
+                        <input
+                          type="text"
+                          name="realmId"
+                          value={realmId}
+                          onChange={evt =>
+                            setState({
+                              realmId: evt.target.value,
+                            })
+                          }
+                        />
+                      </div>
+
+                      <div
+                        style={{
+                          width: "48%",
+                          float: "right",
+                        }}
+                      >
+                        <label>Channel</label>
+                        <input
+                          type="text"
+                          name="channelId"
+                          value={channelId}
+                          onChange={evt =>
+                            setState({
+                              channelId: evt.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </Section>
+                  </>
+                )}
+
+                <Section style={{ textAlign: "center" }}>
+                  {
+                    // TODO: After launching, show share URL / QR code
+                  }
 
                   <button
-                    style={{ width: 100 }}
-                    onClick={() =>
-                      setState({
-                        launchTarget: LAUNCH_TARGET_NEW_WINDOW,
-                      })
-                    }
-                    className={
-                      launchTarget === LAUNCH_TARGET_NEW_WINDOW
-                        ? "active"
-                        : null
-                    }
+                    disabled={!networkName.length}
+                    style={{ backgroundColor: "green" }}
+                    onClick={handleSubmit}
                   >
-                    New Tab
-                    <div>
-                      <NewTabIcon style={{ fontSize: 40 }} />
-                    </div>
+                    Launch{" "}
+                    <RocketIcon
+                      style={{ fontSize: "1.8rem", verticalAlign: "middle" }}
+                    />
                   </button>
-
-                  <button
-                    style={{ width: 100 }}
-                    onClick={() =>
-                      setState({
-                        launchTarget: LAUNCH_TARGET_SELF,
-                      })
-                    }
-                    className={
-                      launchTarget === LAUNCH_TARGET_SELF ? "active" : null
-                    }
-                  >
-                    Replace
-                    <div>
-                      <ReplaceIcon style={{ fontSize: 40 }} />
-                    </div>
-                  </button>
-                </div>
-              </Section>
-                  */
-                }
-              </>
-            )}
-
-            <Section style={{ textAlign: "center" }}>
-              {
-                // TODO: After launching, show share URL / QR code
-              }
-
-              <button
-                disabled={!networkName.length}
-                style={{ backgroundColor: "green" }}
-                onClick={handleSubmit}
-              >
-                Launch{" "}
-                <RocketIcon
-                  style={{ fontSize: "1.8rem", verticalAlign: "middle" }}
-                />
-              </button>
-            </Section>
-          </div>
-        </form>
+                </Section>
+              </div>
+            </>
+          )}
+        </Form>
       </div>
     </Center>
   );

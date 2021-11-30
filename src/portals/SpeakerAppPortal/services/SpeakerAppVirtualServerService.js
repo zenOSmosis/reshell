@@ -68,7 +68,7 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
 
     const deviceAddress = await this.useServiceClass(
       LocalDeviceIdentificationService
-    ).fetchLocalAddress();
+    ).fetchDeviceAddress();
 
     const iceServers = await this.useServiceClass(
       SpeakerAppNetworkDiscoveryService

@@ -1,9 +1,10 @@
-// import { useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
+import Center from "@components/Center";
 
 import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import HostingView from "./views/HostingView";
@@ -12,6 +13,7 @@ import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../Call
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
+import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 export const REGISTRATION_ID = "virtual-server";
 
@@ -25,16 +27,29 @@ const VirtualServer = {
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
     SpeakerAppVirtualServerService,
+    LocalDeviceIdentificationService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const virtualServerService = appServices[SpeakerAppVirtualServerService];
+    const localDeviceIdentificationService =
+      appServices[LocalDeviceIdentificationService];
 
     const isHosting = virtualServerService.getIsHosting();
     const { realmId, channelId } = virtualServerService.getNetworkRoute();
 
-    // TODO: Implement?
-    // const handleStopVirtualServer = useCallback(() => {}, []);
+    const [deviceAddress, setDeviceAddress] = useState(null);
+
+    useEffect(() => {
+      localDeviceIdentificationService
+        .fetchDeviceAddress()
+        .then(setDeviceAddress)
+        .catch(console.error);
+    }, [localDeviceIdentificationService]);
+
+    if (!deviceAddress) {
+      return <Center>Fetching device address...</Center>;
+    }
 
     return (
       <Layout>
@@ -67,13 +82,12 @@ const VirtualServer = {
         <Content>
           {!isHosting ? (
             <NetworkCreatorForm
-              // TODO: Refactor
+              deviceAddress={deviceAddress}
               onSubmit={formData =>
                 virtualServerService.createVirtualServer({
                   ...formData,
-                  // TODO: Remove hardcoding
                   ...{
-                    deviceAddress: 12345,
+                    // TODO: Remove hardcoding
                     buildHash: 123422,
                     userAgent: "test-user-agent",
                   },
