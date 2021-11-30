@@ -3,10 +3,10 @@ import useFormController from "./hooks/useFormController";
 // TODO: Document and add prop-types
 export default function Form({
   children,
-  onSubmit,
-  onChange = () => null,
   autoComplete = "off",
   validator = formValues => null,
+  onChange = formValues => null,
+  onSubmit = formValues => null,
   ...rest
 }) {
   const { setFormRef, handleFormChange, handleFormSubmit, errors, isValid } =

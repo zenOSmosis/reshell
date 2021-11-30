@@ -48,7 +48,7 @@ export default function useFormController({
       const formValues = getFormValues(formElement);
       validate(formValues);
 
-      onChange();
+      onChange(formValues);
     },
     [validate, formElement, onChange]
   );
