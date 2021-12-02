@@ -20,7 +20,9 @@ export default class InputMediaDevicesService extends UIServiceCore {
       isAudioContextStarted: false,
     });
 
-    // TODO: Re-run when devices have been changed
+    // TODO: Re-fetch when devices have been changed
+    // TODO: Capture fetch errors and set them as state / UI notifications
+
     this.fetchAudioInputDevices();
 
     this.bindCollectionClass(InputMediaDeviceFactoryCollection);
