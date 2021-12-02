@@ -45,7 +45,17 @@ import useVirtualServerSandboxContext, {
 
 // TODO: Implement auto-connect-to-network toggle (perhaps in advanced; default to true)
 
-export default function CreateNetwork({ deviceAddress, onSubmit }) {
+// TODO: Document and use prop-types
+export default function CreateNetwork({
+  deviceAddress,
+  onSubmit,
+  initialNetworkName = "",
+  initialNetworkDescription = "",
+  initialIsPublic = true,
+  initialRealmId = "",
+  initialChannelId = "",
+  initialIsShowingAdvanced = false,
+}) {
   // const { getItem, setItem } = useLocalStorage();
   // const { openRoute } = useAppRoutesContext();
 
@@ -78,13 +88,13 @@ export default function CreateNetwork({ deviceAddress, onSubmit }) {
     /* getItem(KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS) || */ {
       // Default form values
       //
-      networkName: "",
-      networkDescription: "",
+      networkName: initialNetworkName,
+      networkDescription: initialNetworkDescription,
       // TODO: Change isPublic default to false after adding in ability to connect to private networks
-      isPublic: true,
-      realmId: deviceAddress,
-      channelId: "",
-      isShowingAdvanced: false,
+      isPublic: initialIsPublic,
+      realmId: initialRealmId || deviceAddress,
+      channelId: initialChannelId,
+      isShowingAdvanced: initialIsShowingAdvanced,
       // launchTarget: LAUNCH_TARGET_IFRAME,
     }
   );
@@ -307,6 +317,9 @@ export default function CreateNetwork({ deviceAddress, onSubmit }) {
                     // TODO: After launching, show share URL / QR code
                   }
 
+                  {
+                    // TODO: Move launch button to window footer
+                  }
                   <button
                     disabled={!networkName.length}
                     style={{ backgroundColor: "green" }}

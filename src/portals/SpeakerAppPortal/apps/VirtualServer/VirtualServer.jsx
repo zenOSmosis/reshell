@@ -87,12 +87,21 @@ const VirtualServer = {
                 virtualServerService.createVirtualServer({
                   ...formData,
                   ...{
-                    // TODO: Remove hardcoding
+                    // TODO:  Supply internally within virtualServerService
                     buildHash: 123422,
                     userAgent: "test-user-agent",
                   },
                 })
               }
+              // TODO: Supply cached data
+              /*
+              initialNetworkName = "",
+              initialNetworkDescription = "",
+              initialIsPublic = true,
+              initialRealmId = "",
+              initialChannelId = "",
+              initialIsShowingAdvanced = false,
+              */
             />
           ) : (
             <HostingView />
