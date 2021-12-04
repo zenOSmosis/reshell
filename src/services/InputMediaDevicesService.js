@@ -96,16 +96,6 @@ export default class InputMediaDevicesService extends UIServiceCore {
     constraints = {},
     factoryOptions = {}
   ) {
-    // TODO: Fix issue in media-stream-controller where constraint may look like '0: "a", 2: "u"'
-    const specificConstraints =
-      utils.constraints.getSpecificDeviceCaptureConstraints(
-        mediaDeviceInfo,
-        constraints
-      );
-
-    // TODO: Remove
-    console.log({ mediaDeviceInfo, specificConstraints });
-
     const factory = await utils.captureMediaDevice.captureSpecificMediaDevice(
       mediaDeviceInfo,
       constraints,
