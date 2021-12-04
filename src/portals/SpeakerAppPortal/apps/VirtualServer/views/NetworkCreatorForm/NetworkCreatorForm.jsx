@@ -131,6 +131,7 @@ export default function CreateNetwork({
   // TODO: Improve / refactor this handling...
   useEffect(() => {
     setState({
+      // TODO: Use encodeURIComponent for this and other related handling
       channelId: networkName.toLowerCase().replaceAll(" ", "-"),
     });
   }, [networkName, setState]);
