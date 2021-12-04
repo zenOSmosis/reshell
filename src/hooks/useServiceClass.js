@@ -2,7 +2,16 @@ import { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import { useEffect, useState } from "react";
 import useServicesContext from "./useServicesContext";
 
-// TODO: Document
+/**
+ * @typedef {Object} UseServiceClassReturn
+ * @property {PhantomServiceCore} serviceInstance Instantiated
+ * PhantomServiceCore extension.
+ * @property {Object} serviceState Current state of the instantiated service
+ * class.
+ *
+ * @param {PhantomServiceCore} ServiceClass Non-instantiated
+ * PhantomServiceCore extension.
+ */
 export default function useServiceClass(ServiceClass) {
   const { startService } = useServicesContext();
 
