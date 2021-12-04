@@ -25,18 +25,7 @@ import RocketIcon from "@icons/RocketIcon";
 // import meshNetwork from "@assets/network/mesh.svg";
 // import mfuNetwork from "@assets/network/mfu.svg";
 
-/*
-import useVirtualServerSandboxContext, {
-  LAUNCH_TARGET_SELF,
-  LAUNCH_TARGET_IFRAME,
-  LAUNCH_TARGET_NEW_WINDOW,
-} from "@baseApps/MainApp/subHooks/useVirtualServerSandboxContext";
-*/
-
 // import { KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS } from "@local/localStorageKeys";
-
-// import useLocalStorage from "@hooks/useLocalStorage";
-// import useAppRoutesContext from "@hooks/useAppRoutesContext";
 
 // import { getCallURL, ROUTE_CALL_URL } from "@baseApps/MainApp/routes";
 
