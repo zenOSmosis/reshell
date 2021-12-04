@@ -6,16 +6,21 @@ import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
 export default function InputMediaDevices() {
-  const {
-    serviceInstance: inputMediaDevicesService,
-    serviceState: { devices = [] },
-  } = useServiceClass(InputMediaDevicesService);
+  const { serviceInstance: inputMediaDevicesService } = useServiceClass(
+    InputMediaDevicesService
+  );
 
   useEffect(() => {
     if (inputMediaDevicesService) {
       inputMediaDevicesService.fetchAudioInputDevices();
     }
   }, [inputMediaDevicesService]);
+
+  if (!inputMediaDevicesService) {
+    return null;
+  }
+
+  const devices = inputMediaDevicesService.getMediaDevices();
 
   return (
     <Full style={{ overflowY: "auto" }}>
