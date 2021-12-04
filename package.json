@@ -36,6 +36,7 @@
     "sdp-transform": "^2.14.1",
     "secure-ls": "^1.2.6",
     "socket.io-client": "^4.3.0",
+    "spark-md5": "^3.0.2",
     "sync-object": "github:zenosmosis/sync-object#v1.0.0",
     "web-vitals": "^1.0.1",
     "webrtc-peer": "github:zenosmosis/webrtc-peer#v1.0.0",
