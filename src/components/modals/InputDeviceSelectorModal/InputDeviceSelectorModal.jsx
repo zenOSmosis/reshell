@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import Full from "@components/Full";
-import Center from "@components/Center";
+// import Center from "@components/Center";
+import InputMediaDevices from "@components/InputMediaDevices";
+import SystemModal from "../SystemModal";
 
 // TODO: Implement and add prop-types
 export default function InputDeviceSelectorModal({
@@ -21,13 +22,17 @@ export default function InputDeviceSelectorModal({
   }, [onCancel, onClose]);
 
   return (
-    <Full style={{ backgroundColor: "rgba(0,0,0,.4)" }}>
-      <Center>
+    // TODO: Render audio input selector
+    <SystemModal>
+      {/*
+        <Center>
         <div>
           <button onClick={handleDeviceCapture}>onDeviceCapture</button>
           <button onClick={handleCancel}>onCancel</button>
         </div>
       </Center>
-    </Full>
+        */}
+      <InputMediaDevices />
+    </SystemModal>
   );
 }
