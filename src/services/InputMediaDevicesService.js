@@ -109,6 +109,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
     return factory;
   }
 
+  // TODO: Document
   async uncaptureSpecificAudioInputDevice(mediaDeviceInfo) {
     return utils.captureMediaDevice.uncaptureSpecificMediaDevice(
       mediaDeviceInfo
