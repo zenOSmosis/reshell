@@ -18,6 +18,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
     this.setState({
       isAudioContextStarted: false,
+      devices: [],
     });
 
     // TODO: Re-fetch when devices have been changed
@@ -101,6 +102,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
         mediaDeviceInfo,
         constraints
       );
+
     // TODO: Remove
     console.log({ mediaDeviceInfo, specificConstraints });
 
