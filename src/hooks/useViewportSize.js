@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { debounce } from "lodash";
 
-const DEBOUNCE_TIME = 100;
+const DEFAULT_DEBOUNCE_TIME = 100;
 
 /**
  * Calls onChange handler whenever viewport size changes.
@@ -11,17 +11,16 @@ const DEBOUNCE_TIME = 100;
  * mobile software keyboards render.
  *
  * @param {function | any} onChange If a non-functional value is passed the
- * hook will not monitor viewport size.
+ * hook will not monitor viewport size
+ * @param {number} debounceTime? [default = 100] Minimum number of milliseconds
+ * to wait between subsequent onChange callbacks
  */
 export default function useViewportSize(
-  onChange
-  /*
-  onChange = ({ width, height }) =>
-    console.debug("Viewport size change", {
-      width,
-      height,
-    })
-    */
+  /**
+   * i.e. ({ width, height }) => console.log({width, height})
+   */
+  onChange,
+  debounceTime = DEFAULT_DEBOUNCE_TIME
 ) {
   const _getViewportSize = useCallback(() => {
     const { innerWidth: width, innerHeight: height } = window;
@@ -47,7 +46,7 @@ export default function useViewportSize(
 
           onChange(size);
         },
-        DEBOUNCE_TIME,
+        debounceTime,
         {
           leading: false,
           trailing: true,
@@ -63,5 +62,5 @@ export default function useViewportSize(
         window.removeEventListener("resize", _handleViewportSize);
       };
     }
-  }, [_getViewportSize]);
+  }, [debounceTime, _getViewportSize]);
 }
