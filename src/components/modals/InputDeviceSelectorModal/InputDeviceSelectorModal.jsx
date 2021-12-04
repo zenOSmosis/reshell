@@ -1,12 +1,14 @@
 import { useCallback } from "react";
-// import Center from "@components/Center";
+import Center from "@components/Center";
+import Padding from "@components/Padding";
 import InputMediaDevices from "@components/InputMediaDevices";
 import SystemModal from "../SystemModal";
 
 // TODO: Implement and add prop-types
 export default function InputDeviceSelectorModal({
   onDeviceCapture,
-  onCancel,
+  onDeviceUncapture,
+  // onCancel,
   onClose,
 }) {
   const handleDeviceCapture = useCallback(() => {
@@ -15,15 +17,17 @@ export default function InputDeviceSelectorModal({
     onClose();
   }, [onDeviceCapture, onClose]);
 
+  /*
   const handleCancel = useCallback(() => {
     onCancel();
 
     onClose();
   }, [onCancel, onClose]);
+  */
 
   return (
     // TODO: Render audio input selector
-    <SystemModal>
+    <SystemModal onClose={onClose}>
       {/*
         <Center>
         <div>
@@ -32,7 +36,14 @@ export default function InputDeviceSelectorModal({
         </div>
       </Center>
         */}
-      <InputMediaDevices />
+      <Padding>
+        <Center canOverflow={true}>
+          <InputMediaDevices
+            onDeviceCapture={handleDeviceCapture}
+            onDeviceUncapture={onDeviceUncapture}
+          />
+        </Center>
+      </Padding>
     </SystemModal>
   );
 }

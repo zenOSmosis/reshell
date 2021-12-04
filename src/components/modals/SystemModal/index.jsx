@@ -1,4 +1,3 @@
-import SystemModal, { THEME_DARK, THEME_DARKER } from "./SystemModal";
+import SystemModal from "./SystemModal";
 
 export default SystemModal;
-export { THEME_DARK, THEME_DARKER };

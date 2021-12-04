@@ -1,5 +1,5 @@
 .system-modal {
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .system-modal .outer-wrap {
@@ -14,13 +14,13 @@
   width: 90%;
   height: 90%;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
   position: relative;
 }
 
-.system-modal.darker .inner-wrap {
-  background-color: #000;
+.system-modal:not(.small-viewport) .inner-wrap {
+  border: 1px #ccc solid;
 }
 
 .system-modal.small-viewport .inner-wrap {

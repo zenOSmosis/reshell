@@ -80,7 +80,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
           uiModalService.showModal(({ onCancel, ...rest }) => (
             <InputDeviceSelectorModal
               onDeviceCapture={resolve}
-              onCancel={reject}
+              onClose={reject}
               {...rest}
             />
           ));

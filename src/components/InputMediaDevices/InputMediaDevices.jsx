@@ -1,20 +1,43 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Full from "../Full";
 import LED from "../LED";
 
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
-export default function InputMediaDevices() {
+export default function InputMediaDevices({
+  onDeviceCapture = device => null,
+  onDeviceUncapture = device => null,
+}) {
   const { serviceInstance: inputMediaDevicesService } = useServiceClass(
     InputMediaDevicesService
   );
 
+  // TODO: Document
   useEffect(() => {
     if (inputMediaDevicesService) {
       inputMediaDevicesService.fetchAudioInputDevices();
     }
   }, [inputMediaDevicesService]);
+
+  // TODO: Document
+  const toggleSpecificMediaDevice = useCallback(
+    async device => {
+      const isCapturing =
+        inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured(device);
+
+      if (!isCapturing) {
+        await inputMediaDevicesService.captureSpecificAudioInputDevice(device);
+
+        onDeviceCapture(device);
+      } else {
+        inputMediaDevicesService.uncaptureSpecificAudioInputDevice(device);
+
+        onDeviceUncapture(device);
+      }
+    },
+    [inputMediaDevicesService, onDeviceCapture, onDeviceUncapture]
+  );
 
   if (!inputMediaDevicesService) {
     return null;
@@ -46,15 +69,7 @@ export default function InputMediaDevices() {
                 <td className="center">{device.kind}</td>
                 <td className="center">
                   <button
-                    onClick={() =>
-                      !isCapturing
-                        ? inputMediaDevicesService.captureSpecificAudioInputDevice(
-                            device
-                          )
-                        : inputMediaDevicesService.uncaptureSpecificAudioInputDevice(
-                            device
-                          )
-                    }
+                    onClick={() => toggleSpecificMediaDevice(device)}
                     style={{
                       backgroundColor: isCapturing ? "red" : "green",
                       width: "100%",
