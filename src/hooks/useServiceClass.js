@@ -24,7 +24,9 @@ export default function useServiceClass(ServiceClass) {
     setServiceInstance(serviceInstance);
 
     const _handleServiceUpdate = () => {
-      setServiceState(serviceInstance.getState());
+      // IMPORTANT: Must set shallow clone of state or attached components may
+      // not update
+      setServiceState({ ...serviceInstance.getState() });
     };
 
     serviceInstance.on(EVT_UPDATED, _handleServiceUpdate);
