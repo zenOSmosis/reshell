@@ -66,6 +66,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       // IMPORTANT! This is necessary to jump-start the audio output on web
       // Safari if no input audio device is selected (does not resolve issue on
       // iOS 15 [and possibly >= 14])
+      //
+      // FIXME: (jh) This may not be necessary with the following step
       beep();
 
       // Determine if hardware media is being captured, and if not, present a
