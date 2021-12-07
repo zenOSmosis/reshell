@@ -17,6 +17,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
     this.setTitle("Input Media Devices Service");
 
     this.setState({
+      isFetchingMediaDevices: false,
       isAudioContextStarted: false,
       devices: [],
     });
@@ -31,6 +32,8 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   async fetchAudioInputDevices(isAggressive) {
+    this.setState({ isFetchingMediaDevices: true });
+
     // Fixes issue where sending media stream track to remote peers is muted
     // until something starts the audio context
     //
@@ -41,7 +44,9 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
     const audioInputDevices = await utils
       .fetchMediaDevices(isAggressive)
-      .then(utils.fetchMediaDevices.filterAudioInputDevices);
+      .then(utils.fetchMediaDevices.filterAudioInputDevices)
+      .catch(console.error)
+      .finally(() => this.setState({ isFetchingMediaDevices: false }));
 
     this.setState({ devices: audioInputDevices });
   }
@@ -53,6 +58,15 @@ export default class InputMediaDevicesService extends UIServiceCore {
     this.setState({
       isAudioContextStarted: true,
     });
+  }
+
+  /**
+   * Retreives whether or not this service is currently fetching media devices.
+   *
+   * @return {boolean}
+   */
+  getIsFetchingMediaDevices() {
+    return this.getState().isFetchingMediaDevices;
   }
 
   // TODO: Document

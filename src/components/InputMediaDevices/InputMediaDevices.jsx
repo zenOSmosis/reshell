@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import Full from "../Full";
 import LED from "../LED";
+import Center from "../Center";
 
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
@@ -13,7 +14,7 @@ export default function InputMediaDevices({
     InputMediaDevicesService
   );
 
-  // TODO: Document
+  // Automatically fetch input media devices when component mounts
   useEffect(() => {
     if (inputMediaDevicesService) {
       inputMediaDevicesService.fetchAudioInputDevices();
@@ -44,6 +45,17 @@ export default function InputMediaDevices({
   }
 
   const devices = inputMediaDevicesService.getMediaDevices();
+  const isFetching = inputMediaDevicesService.getIsFetchingMediaDevices();
+
+  if (!devices.length) {
+    return (
+      <Center style={{ fontWeight: "bold" }}>
+        {isFetching
+          ? "Fetching media devices..."
+          : "No input media devices are currently available."}
+      </Center>
+    );
+  }
 
   return (
     <Full style={{ overflowY: "auto" }}>
