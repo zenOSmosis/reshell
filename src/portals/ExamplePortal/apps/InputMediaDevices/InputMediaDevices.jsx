@@ -15,7 +15,7 @@ const InputMediaDevicesApp = {
   title: "Input Media Devices",
   style: {
     width: 640,
-    height: 300,
+    height: 380,
   },
   serviceClasses: [InputMediaDevicesService],
   view: function View({ appServices }) {
