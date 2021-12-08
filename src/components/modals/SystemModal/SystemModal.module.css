@@ -1,5 +1,5 @@
 .system-modal {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .system-modal .outer-wrap {
@@ -13,6 +13,8 @@
 .system-modal .inner-wrap {
   width: 90%;
   height: 90%;
+  max-width: 640px;
+  max-height: 480px;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;

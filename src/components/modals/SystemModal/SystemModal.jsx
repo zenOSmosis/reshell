@@ -22,7 +22,7 @@ export default function SystemModal({
   className,
   onClose,
   headerView = ({ onClose }) => (
-    <div>
+    <div style={{ textAlign: "right" }}>
       {
         // TODO: Use Close icon
       }

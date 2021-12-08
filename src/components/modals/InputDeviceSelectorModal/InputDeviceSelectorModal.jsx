@@ -37,12 +37,10 @@ export default function InputDeviceSelectorModal({
       </Center>
         */}
       <Padding>
-        <Center canOverflow={true}>
-          <InputMediaDevices
-            onDeviceCapture={handleDeviceCapture}
-            onDeviceUncapture={onDeviceUncapture}
-          />
-        </Center>
+        <InputMediaDevices
+          onDeviceCapture={handleDeviceCapture}
+          onDeviceUncapture={onDeviceUncapture}
+        />
       </Padding>
     </SystemModal>
   );

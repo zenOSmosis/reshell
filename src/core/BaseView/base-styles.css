@@ -302,11 +302,11 @@ code {
 table {
   border-spacing: 0px;
   border-collapse: separate;
+  text-align: left;
 }
 
 table thead tr {
   background-color: rgba(0, 0, 0, 0.4);
-  text-align: center;
   font-weight: bold;
 }
 
