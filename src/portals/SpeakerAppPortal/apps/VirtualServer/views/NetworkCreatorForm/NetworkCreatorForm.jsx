@@ -238,6 +238,9 @@ export default function CreateNetwork({
                           ),
                           onClick: () => setState({ isPublic: false }),
                           isSelected: !isPublic,
+
+                          // TODO: Enable private network selection
+                          disabled: true,
                         },
                       ]}
                     />
