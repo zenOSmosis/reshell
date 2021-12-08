@@ -85,8 +85,15 @@ const CallCentralStation = {
             {
               // [networks]  [private network]
             }
-            <NoWrap style={{ float: "right" }} className="button-group">
-              <button disabled>Private Network</button>
+            <NoWrap style={{ float: "right" }}>
+              {isZenRTCConnected && (
+                <button
+                  style={{ backgroundColor: "red" }}
+                  onClick={localZenRTCPeerService.disconnect}
+                >
+                  Disconnect
+                </button>
+              )}
               {/*
                 <button>Search</button>
                 */}
