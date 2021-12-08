@@ -94,6 +94,19 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
+  getMediaDeviceCaptureFactory(mediaDeviceInfo) {
+    const factories =
+      MediaStreamTrackControllerFactory.getFactoriesWithInputMediaDevice(
+        mediaDeviceInfo,
+        "audio"
+      );
+
+    if (factories) {
+      return factories[0];
+    }
+  }
+
+  // TODO: Document
   async captureDefaultAudioInputDevice(constraints = {}, factoryOptions = {}) {
     const factory = await utils.captureMediaDevice(constraints, factoryOptions);
 

@@ -1,9 +1,10 @@
 import { useCallback, useEffect } from "react";
 import Full from "../Full";
-import Layout, { Header, Content, Footer } from "../Layout";
+import Layout, { Header, Content } from "../Layout";
 import Padding from "../Padding";
 import Center from "../Center";
 import LED from "../LED";
+import { AudioMediaStreamTrackLevelMeter } from "../audioMeters/AudioLevelMeter";
 
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
@@ -61,7 +62,7 @@ export default function InputMediaDevices({
 
   return (
     <Layout>
-      <Header>Select a device for sound input:</Header>
+      <Header>Select device(s) for sound input:</Header>
       <Content>
         <Padding>
           <Full
@@ -75,9 +76,9 @@ export default function InputMediaDevices({
               <thead>
                 <tr>
                   <td>Name</td>
-                  <td>Kind</td>
-                  <td>f(x)</td>
-                  <td>State</td>
+                  <td className="center">Kind</td>
+                  <td className="center">f(x)</td>
+                  <td></td>
                 </tr>
               </thead>
               <tbody>
@@ -87,10 +88,14 @@ export default function InputMediaDevices({
                       device
                     );
 
+                  const deviceCaptureFactory =
+                    inputMediaDevicesService.getMediaDeviceCaptureFactory(
+                      device
+                    );
+
                   return (
                     <tr key={idx}>
                       <td>{device.label || `[Unknown Label]`}</td>
-                      <td>{device.kind}</td>
                       <td>
                         <button
                           onClick={() => toggleSpecificMediaDevice(device)}
@@ -105,6 +110,18 @@ export default function InputMediaDevices({
                       <td className="center">
                         <LED color={isCapturing ? "green" : "gray"} />{" "}
                         {isCapturing ? "on" : "off"}
+                      </td>
+                      <td className="center">
+                        {device.kind === "audioinput" && (
+                          <AudioMediaStreamTrackLevelMeter
+                            style={{ height: 50 }}
+                            mediaStreamTrack={
+                              deviceCaptureFactory
+                                ?.getOutputMediaStream()
+                                ?.getTracks()[0]
+                            }
+                          />
+                        )}
                       </td>
                     </tr>
                   );
