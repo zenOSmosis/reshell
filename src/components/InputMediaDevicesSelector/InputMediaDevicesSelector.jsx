@@ -77,9 +77,9 @@ export default function InputMediaDevicesSelector({
               <thead>
                 <tr>
                   <td>Name</td>
-                  <td className="center">Kind</td>
                   <td className="center">f(x)</td>
-                  <td></td>
+                  <td className="center">State</td>
+                  <td className="center">Level</td>
                 </tr>
               </thead>
               <tbody>
