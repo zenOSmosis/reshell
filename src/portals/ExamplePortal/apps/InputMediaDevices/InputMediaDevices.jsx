@@ -3,7 +3,7 @@ import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
-import InputMediaDevices from "@components/InputMediaDevices";
+import InputMediaDevicesSelector from "@components/InputMediaDevicesSelector";
 
 import { REGISTRATION_ID as VU_METER_REGISTRATION_ID } from "../VUMeter";
 import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "../ScreenCapture";
@@ -25,7 +25,7 @@ const InputMediaDevicesApp = {
       <Padding>
         <Layout>
           <Content>
-            <InputMediaDevices />
+            <InputMediaDevicesSelector />
           </Content>
           <Footer>
             <button

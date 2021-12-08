@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import Padding from "@components/Padding";
-import InputMediaDevices from "@components/InputMediaDevices";
+import InputMediaDevicesSelector from "@components/InputMediaDevicesSelector";
 import SystemModal from "../SystemModal";
 
 // TODO: Add prop-types
@@ -27,7 +27,7 @@ export default function InputDeviceSelectorModal({
   return (
     <SystemModal onClose={onClose}>
       <Padding>
-        <InputMediaDevices
+        <InputMediaDevicesSelector
           onDeviceCapture={handleDeviceCapture}
           onDeviceUncapture={onDeviceUncapture}
         />

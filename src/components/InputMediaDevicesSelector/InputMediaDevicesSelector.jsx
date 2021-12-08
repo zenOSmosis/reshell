@@ -9,7 +9,8 @@ import { AudioMediaStreamTrackLevelMeter } from "../audioMeters/AudioLevelMeter"
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
-export default function InputMediaDevices({
+// TODO: Document and add prop-types
+export default function InputMediaDevicesSelector({
   onDeviceCapture = device => null,
   onDeviceUncapture = device => null,
 }) {

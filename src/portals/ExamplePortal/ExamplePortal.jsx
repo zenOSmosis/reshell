@@ -29,7 +29,7 @@ import ModalsPrototype from "./apps/ModalsPrototype";
 import SystemInformation from "./apps/SystemInformation";
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
-// import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
+// import InputMediaDevicesSelectorView from "./views/InputMediaDevicesSelectorView";
 
 export default function ExamplePortal() {
   return (

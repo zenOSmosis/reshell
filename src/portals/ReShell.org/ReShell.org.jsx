@@ -16,7 +16,7 @@ import KeyVault from "../ExamplePortal/apps/KeyVault";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
-// import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
+// import InputMediaDevicesSelectorView from "./views/InputMediaDevicesSelectorView";
 
 export default function ReShellOrgPortal() {
   return (
