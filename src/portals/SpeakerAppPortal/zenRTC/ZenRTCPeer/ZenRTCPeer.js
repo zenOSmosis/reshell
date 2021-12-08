@@ -1214,12 +1214,6 @@ export default class ZenRTCPeer extends PhantomCore {
           });
         }
       }
-
-      if (this._isConnected) {
-        this.emit(EVT_DISCONNECTED);
-
-        this._isConnected = false;
-      }
     })();
 
     await super.destroy();
