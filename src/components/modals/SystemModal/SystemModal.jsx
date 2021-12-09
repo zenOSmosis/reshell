@@ -27,9 +27,6 @@ export default function SystemModal({
   headerView = null,
   footerView = ({ onClose }) => (
     <div style={{ textAlign: "center" }}>
-      {
-        // TODO: Use Close icon
-      }
       <Padding>
         <button onClick={onClose}>
           <CloseIcon /> Cancel
