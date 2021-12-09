@@ -17,6 +17,8 @@ export default function FullViewport({ className, children, ...rest }) {
       const handleResize = () => {
         // NOTE: The setImmediate wrap seems to help fix layout issues on iOS
         // 14 after screen rotation
+        //
+        // TODO: Potentially don't run this if the user is typing
         setImmediate(() => {
           elContainer.style.height = window.innerHeight + "px";
 
@@ -32,7 +34,7 @@ export default function FullViewport({ className, children, ...rest }) {
       window.addEventListener("resize", handleResize);
 
       // Poll the resize handler every second to help fix layout issues with iOS
-      const resizeInterval = setInterval(handleResize, 1000);
+      // const resizeInterval = setInterval(handleResize, 1000);
 
       return () => {
         // Dynamically remove .full-viewport from html / body elements
@@ -43,7 +45,7 @@ export default function FullViewport({ className, children, ...rest }) {
         window.removeEventListener("resize", handleResize);
 
         // Stop poll interval
-        clearInterval(resizeInterval);
+        // clearInterval(resizeInterval);
       };
     }
   }, [elContainer]);
