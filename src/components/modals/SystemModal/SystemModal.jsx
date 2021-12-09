@@ -76,6 +76,7 @@ export default function SystemModal({
             )}
 
             <Content>{children}</Content>
+
             {footerView && (
               <Footer className={styles["footer"]}>
                 {typeof footerView === "function"
