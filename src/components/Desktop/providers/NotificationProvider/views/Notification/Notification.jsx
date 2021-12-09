@@ -66,7 +66,7 @@ export default function Notification({
       startTimeout();
 
       const stopTimeout = () => {
-        clearInterval(autoCloseTimeout);
+        clearTimeout(autoCloseTimeout);
       };
 
       el.addEventListener("mouseover", stopTimeout, { passive: true });
