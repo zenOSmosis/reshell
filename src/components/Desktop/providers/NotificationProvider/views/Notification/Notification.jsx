@@ -8,7 +8,9 @@ import React, {
 import Animation from "@components/Animation";
 import ButtonTransparent from "@components/ButtonTransparent";
 import Padding from "@components/Padding";
+
 import InfoIcon from "@icons/InfoIcon";
+import CloseIcon from "@icons/CloseIcon";
 
 import styles from "./Notification.module.css";
 
@@ -145,7 +147,9 @@ export default function Notification({
             </Padding>
           </MessageButton>
           <ButtonTransparent onClick={handleClose} className={styles["close"]}>
-            X
+            <Padding>
+              <CloseIcon />
+            </Padding>
           </ButtonTransparent>
         </div>
       </Animation>
