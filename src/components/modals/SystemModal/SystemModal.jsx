@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Full from "@components/Full";
 import Layout, { Header, Content, Footer } from "@components/Layout";
+import Padding from "@components/Padding";
+
+import CloseIcon from "@icons/CloseIcon";
 
 import classNames from "classnames";
 import styles from "./SystemModal.module.css";
@@ -21,15 +24,19 @@ export default function SystemModal({
   children,
   className,
   onClose,
-  headerView = ({ onClose }) => (
-    <div style={{ textAlign: "right" }}>
+  headerView = null,
+  footerView = ({ onClose }) => (
+    <div style={{ textAlign: "center" }}>
       {
         // TODO: Use Close icon
       }
-      <button onClick={onClose}>Close</button>
+      <Padding>
+        <button onClick={onClose}>
+          <CloseIcon /> Cancel
+        </button>
+      </Padding>
     </div>
   ),
-  footerView = null,
   // theme = THEME_DARK,
 }) {
   const [isSmallViewport, _setIsSmallViewport] = useState(_prevIsSmallViewport);
@@ -60,17 +67,22 @@ export default function SystemModal({
       <div className={styles["outer-wrap"]}>
         <div className={styles["inner-wrap"]}>
           <Layout>
-            <Header className={styles["header"]}>
-              {typeof headerView === "function"
-                ? headerView({ onClose })
-                : headerView}
-            </Header>
+            {headerView && (
+              <Header className={styles["header"]}>
+                {typeof headerView === "function"
+                  ? headerView({ onClose })
+                  : headerView}
+              </Header>
+            )}
+
             <Content>{children}</Content>
-            <Footer className={styles["footer"]}>
-              {typeof footerView === "function"
-                ? footerView({ onClose })
-                : footerView}
-            </Footer>
+            {footerView && (
+              <Footer className={styles["footer"]}>
+                {typeof footerView === "function"
+                  ? footerView({ onClose })
+                  : footerView}
+              </Footer>
+            )}
           </Layout>
         </div>
       </div>

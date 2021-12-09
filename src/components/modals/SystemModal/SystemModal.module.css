@@ -16,13 +16,13 @@
   max-width: 640px;
   max-height: 480px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgb(41, 41, 41);
   overflow: hidden;
   position: relative;
 }
 
 .system-modal:not(.small-viewport) .inner-wrap {
-  border: 1px #ccc solid;
+  border: 1px rgb(82, 82, 82) solid;
 }
 
 .system-modal.small-viewport .inner-wrap {
@@ -34,9 +34,4 @@
   padding: 4px;
   border-bottom: 2px black solid;
   text-align: left;
-}
-
-.system-modal .header,
-.system-modal .footer {
-  background-color: rgba(0, 0, 0, 0.2);
 }
