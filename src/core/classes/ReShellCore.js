@@ -1,7 +1,7 @@
 import "@core/startupHelpers";
 
 import PhantomCore from "phantom-core";
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 import UIServiceManager from "../classes/UIServiceManager";
@@ -160,9 +160,7 @@ export default class ReShellCore extends PhantomCore {
 
     ReactDOM.render(
       <React.StrictMode>
-        <Suspense fallback={<div />}>
-          <BaseView portal={portal} />
-        </Suspense>
+        <BaseView portal={portal} />
       </React.StrictMode>,
       this._elBase
     );

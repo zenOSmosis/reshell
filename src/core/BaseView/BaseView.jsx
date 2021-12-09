@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import FullViewport from "@components/FullViewport";
+import React, { useEffect, useMemo, useState } from "react";
 
-import ParadigmProvider from "./providers/ParadigmProvider";
-import UIServicesProvider from "./providers/UIServicesProvider";
-import AppRegistrationsProvider from "./providers/AppRegistrationsProvider";
-import AppRuntimesProvider from "./providers/AppRuntimesProvider";
-import DesktopProvider from "./providers/DesktopProvider";
+// IMPORTANT: All other view components must be loaded as children of this
+// component, and not included directly here, or the CSS modules may not load
+// (i.e. put all view components inside of PortalWrapper)
 
 // TODO: Document and add prop-types
 export default function BaseView({ portal }) {
@@ -20,24 +17,18 @@ export default function BaseView({ portal }) {
       .catch(err => console.error(err));
   }, []);
 
+  const PortalWrapper = useMemo(
+    () => React.lazy(() => import("./PortalWrapper")),
+    []
+  );
+
   if (!areBaseStylesLoaded) {
     return null;
   }
 
-  const PortalView = portal;
   return (
-    <FullViewport>
-      <ParadigmProvider>
-        <UIServicesProvider>
-          <AppRegistrationsProvider>
-            <AppRuntimesProvider>
-              <DesktopProvider>
-                <PortalView />
-              </DesktopProvider>
-            </AppRuntimesProvider>
-          </AppRegistrationsProvider>
-        </UIServicesProvider>
-      </ParadigmProvider>
-    </FullViewport>
+    <React.Suspense fallback={<div>Loading base utilities...</div>}>
+      <PortalWrapper portal={portal} />
+    </React.Suspense>
   );
 }
