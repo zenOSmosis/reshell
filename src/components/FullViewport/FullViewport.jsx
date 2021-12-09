@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import getIsElOverflown from "@utils/getIsElOverflown";
 
-// NOTE: This intentionally does not make use of *.module.css because it also
-// includes internal styling for the html and body tags
-//
-// TODO: Maybe this can work for adding module support w/ global styles?  https://stackoverflow.com/a/40065474
-import "./FullViewport.css";
+import styles from "./FullViewport.module.css";
 
 const EVT_RESIZE = "resize";
 const EVT_TOUCH_START = "touchstart";
@@ -74,14 +70,14 @@ export default class FullViewport extends Component {
     );
 
     // Dynamically add .full-viewport to html / body elements
-    document.documentElement.classList.add("full-viewport");
-    document.body.classList.add("full-viewport");
+    document.documentElement.classList.add(styles["html-full-viewport"]);
+    document.body.classList.add(styles["body-full-viewport"]);
   }
 
   componentWillUnmount() {
     // Dynamically remove .full-viewport from html / body elements
-    document.documentElement.classList.remove("full-viewport");
-    document.body.classList.remove("full-viewport");
+    document.documentElement.classList.remove(styles["html-full-viewport"]);
+    document.body.classList.remove(styles["body-full-viewport"]);
 
     window.removeEventListener(EVT_TOUCH_START, this._handleTouchStart);
     window.removeEventListener(EVT_TOUCH_MOVE, this._handleTouchMove, {
@@ -245,7 +241,7 @@ export default class FullViewport extends Component {
       <div
         ref={c => (this._ref = c)}
         {...propsRest}
-        className={classNames("full-viewport", className)}
+        className={classNames(styles["full-viewport"], className)}
       >
         {children}
       </div>
