@@ -113,7 +113,7 @@ export default function Notification({
           <ButtonTransparent
             {...rest}
             onClick={onClick}
-            className={styles["main-button"]}
+            className={styles["action"]}
           />
         ) : (
           <React.Fragment {...rest} />
@@ -146,10 +146,7 @@ export default function Notification({
               <div className={styles["body"]}>{body}</div>
             </Padding>
           </MessageButton>
-          <ButtonTransparent
-            onClick={handleClose}
-            className={styles["close-button"]}
-          >
+          <ButtonTransparent onClick={handleClose} className={styles["close"]}>
             X
           </ButtonTransparent>
         </div>
