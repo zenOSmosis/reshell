@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import Animation from "@components/Animation";
 import ButtonTransparent from "@components/ButtonTransparent";
+import Padding from "@components/Padding";
+import InfoIcon from "@icons/InfoIcon";
 
 import styles from "./Notification.module.css";
 
@@ -94,7 +96,7 @@ export default function Notification({
           return image();
 
         default:
-          return image || null;
+          return image || <InfoIcon />;
       }
     },
     [image, title]
@@ -133,15 +135,16 @@ export default function Notification({
       >
         <div className={styles["body-outer-wrap"]}>
           <MessageButton>
-            <div className={styles["body-inner-wrap"]}>
-              <div className={styles["title"]}>{title}</div>
-
-              <div className={styles["main-image-wrap"]}>
-                <Image />
+            <Padding>
+              <div className={styles["title"]}>
+                <div className={styles["main-image-wrap"]}>
+                  <Image />
+                </div>{" "}
+                {title}
               </div>
 
               <div className={styles["body"]}>{body}</div>
-            </div>
+            </Padding>
           </MessageButton>
           <ButtonTransparent
             onClick={handleClose}
