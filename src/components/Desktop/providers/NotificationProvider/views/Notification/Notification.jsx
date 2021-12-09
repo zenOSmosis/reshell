@@ -136,12 +136,10 @@ export default function Notification({
         <div className={styles["body-outer-wrap"]}>
           <MessageButton>
             <Padding>
-              <div className={styles["title"]}>
-                <div className={styles["main-image-wrap"]}>
-                  <Image />
-                </div>{" "}
-                {title}
+              <div className={styles["main-image-wrap"]}>
+                <Image />
               </div>
+              <div className={styles["title"]}>{title}</div>
 
               <div className={styles["body"]}>{body}</div>
             </Padding>

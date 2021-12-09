@@ -14,17 +14,17 @@
   height: 100%;
 }
 
-.notification .title {
-  font-weight: bold;
-  text-align: left;
-}
-
-.notification .title .main-image-wrap {
+.notification .main-image-wrap {
   width: 25px;
   height: 25px;
   overflow: hidden;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
+}
+
+.notification .title {
+  font-weight: bold;
+  display: inline-block;
 }
 
 .notification .body-outer-wrap {
@@ -39,7 +39,6 @@
 
 .notification .body {
   font-size: 0.9rem;
-  margin-top: 10px;
 
   /* Break long words with auto hyphenation */
   overflow-wrap: break-word;
