@@ -6,6 +6,8 @@ import { io } from "socket.io-client";
 export const EVT_CONNECTED = "connected";
 export const EVT_DISCONNECTED = "disconnected";
 
+// TODO: Generate UI notifications when socket goes offline / comes online
+
 /**
  * Provides SocketIO servicing for ReShell.
  */
