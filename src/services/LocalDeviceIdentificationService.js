@@ -69,12 +69,14 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     }
   }
 
-  // TODO: Document
+  // TODO: Implement and document
+  /*
   validateLocalPublicKey() {
     // @see https://www.npmjs.com/package/eth-crypto#publickeytoaddress (publicKey.toAddress())
   }
+  */
 
-  // TODO: Implement and document
+  // TODO: Document
   // NOTE: Consideration was made to make this available through getState() and
   // it was shelved due to not yet determining how reliable that would be
   async fetchLocalAddress() {
@@ -106,7 +108,9 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
   }
 
   // TODO: Implement and document
+  /*
   async fetchLocalPrivateKey(requestor) {
     // TODO: Validate requestor
   }
+  */
 }
