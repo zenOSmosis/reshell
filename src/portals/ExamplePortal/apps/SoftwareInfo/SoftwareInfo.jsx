@@ -45,7 +45,7 @@ const SoftwareInfo = {
                     style={{ float: "left", textAlign: "left" }}
                     className="note"
                   >
-                    ReShell version: {packageJson.version}
+                    ReShell version: {ReShellCore.getReShellVersion()}
                     <br />
                     Phantom Core version: {PhantomCore.getPhantomCoreVersion()}
                     <br />

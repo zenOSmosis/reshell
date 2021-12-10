@@ -13,6 +13,7 @@ import BaseView from "../BaseView";
 import queryString from "query-string";
 
 import fetchIsLatestVersion from "@utils/fetchIsLatestVersion";
+import getReShellVersion from "@utils/getReShellVersion";
 
 const KEY_SESSION_STORAGE_DEFAULT_PORTAL_NAME = "reshell-default-portal";
 
@@ -24,6 +25,13 @@ let _instance = null;
  * establishes lifecycle control methods for the base ReShell environment.
  */
 export default class ReShellCore extends PhantomCore {
+  /**
+   * @return {string}
+   */
+  static getReShellVersion() {
+    return getReShellVersion();
+  }
+
   // TODO: Document
   static async forceUpdate() {
     if (_instance) {

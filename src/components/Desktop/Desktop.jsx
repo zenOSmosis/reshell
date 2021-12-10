@@ -1,4 +1,5 @@
 import PhantomCore from "phantom-core";
+import ReShellCore from "@core";
 
 import WindowManager from "../WindowManager";
 import Cover from "../Cover";
@@ -8,8 +9,6 @@ import Dock from "../Dock";
 import AutoScaler from "../AutoScaler";
 
 import { BrowserRouter as Router } from "react-router-dom";
-
-import ReShellCore from "@core";
 
 // TODO: Change this to use data-driven Menubar
 import Menu, {
@@ -341,7 +340,10 @@ export default function Desktop({
                   }
                   <AutoScaler style={{ whiteSpace: "nowrap" }}>
                     <div style={{ textAlign: "left", fontSize: ".7em" }}>
-                      <div>ReShell 0.0.1-alpha</div>
+                      {
+                        // TODO: Load as env variable
+                      }
+                      <div>ReShell {ReShellCore.getReShellVersion()}</div>
                       <div>
                         PhantomCore {PhantomCore.getPhantomCoreVersion()}
                       </div>
