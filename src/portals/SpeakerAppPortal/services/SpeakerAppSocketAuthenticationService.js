@@ -5,7 +5,7 @@ import SocketIOService, {
 import {
   sendCachedAuthorization,
   getMergedAuthorization,
-} from "@portals/SpeakerAppPortal/shared/adapters/serviceAuthorization/client";
+} from "@portals/SpeakerAppPortal/shared//serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
 import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
 import KeyVaultService from "@services/KeyVaultService";
