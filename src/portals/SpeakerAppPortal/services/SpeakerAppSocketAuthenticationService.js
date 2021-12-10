@@ -7,8 +7,8 @@ import {
   validateClientAuthorization,
 } from "@portals/SpeakerAppPortal/shared/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
-import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
-import KeyVaultService from "@services/KeyVaultService";
+// import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
+// import KeyVaultService from "@services/KeyVaultService";
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
@@ -30,8 +30,6 @@ import { EVT_CONNECT_ERROR } from "./socketConstants";
 
 // import useLocalStorage from "@portals/SpeakerAppPortal/hooks/useLocalStorage";
 
-const CLIENT_BUILD_HASH = process.env.REACT_APP_GIT_HASH;
-
 // TODO: Document
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {
   constructor(...args) {
@@ -42,37 +40,6 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
     // Automatically connect
     this.connect();
   }
-
-  // TODO: Remove or refactor
-  // TODO: Document
-  /*
-  async fetchCachedAuthorization() {
-    const deviceIdService = this.useServiceClass(
-      LocalDeviceIdentificationService
-    );
-
-    // TODO: Remove
-    console.log({ deviceIdService });
-
-    // TODO: Obtain following from deviceIdService
-
-    const rawCachedAuthorization = await this.useServiceClass(KeyVaultService)
-      .getSecureLocalStorageEngine()
-      .fetchItem(KEY_SERVICE_AUTHORIZATION);
-
-    let cachedAuthorization = {};
-
-    try {
-      if (rawCachedAuthorization) {
-        cachedAuthorization = JSON.parse(rawCachedAuthorization);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      return cachedAuthorization;
-    }
-  }
-  */
 
   // TODO: Document
   async connect() {
@@ -96,11 +63,18 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
 
     // TODO: Build out & refactor
     const _handleAuthorizationGranted = async clientAuthorization => {
-      validateClientAuthorization(
-        clientAuthorization,
-        clientPublicKey,
-        clientDeviceAddress
-      );
+      try {
+        validateClientAuthorization(
+          clientAuthorization,
+          clientPublicKey,
+          clientDeviceAddress
+        );
+      } catch (err) {
+        console.error(err);
+
+        // Force disconnect if incorrect client authorization
+        this.destroy();
+      }
     };
 
     this._socket.once(
