@@ -18,7 +18,7 @@ import ZenRTCPeer, {
 import LocalZenRTCSignalBroker, {
   EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
 } from "./LocalZenRTCSignalBroker";
-import LocalPhantomPeer from "./LocalPhantomPeer";
+import LocalPhantomPeerSyncObject from "./LocalPhantomPeerSyncObject";
 
 export {
   EVT_UPDATED,
@@ -90,14 +90,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       socketIdTo: virtualServerSocketId,
     });
 
-    const localPhantomPeer = new LocalPhantomPeer();
+    const localPhantomPeerSyncObject = new LocalPhantomPeerSyncObject();
 
     super({
       iceServers,
       zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
       realmId,
       channelId,
-      writableSyncObject: localPhantomPeer,
+      writableSyncObject: localPhantomPeerSyncObject,
       readOnlySyncObject,
       offerToReceiveAudio,
       offerToReceiveVideo,
@@ -106,12 +106,12 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     });
 
     this._zenRTCSignalBroker = zenRTCSignalBroker;
-    this._localPhantomPeer = localPhantomPeer;
+    this._localPhantomPeerSyncObject = localPhantomPeerSyncObject;
 
     this.registerShutdownHandler(() =>
       Promise.all([
         this._zenRTCSignalBroker.destroy(),
-        this._localPhantomPeer.destroy(),
+        this._localPhantomPeerSyncObject.destroy(),
       ])
     );
 
@@ -142,6 +142,15 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
         this._publishMediaCaptureFactories();
       });
     })();
+  }
+
+  /**
+   * Retrieves the writable SyncObject bound to this peer.
+   *
+   * @return {LocalPhantomPeerSyncObject}
+   */
+  getLocalPhantomPeerSyncObject() {
+    return this._localPhantomPeerSyncObject;
   }
 
   // TODO: Document

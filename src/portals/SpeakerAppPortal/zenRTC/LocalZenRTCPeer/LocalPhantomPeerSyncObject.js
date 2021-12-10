@@ -1,10 +1,10 @@
-import PhantomPeer from "../PhantomPeerSyncObject";
+import PhantomPeerSyncObject from "../PhantomPeerSyncObject";
 
 /**
  * A virtual participant from the perspective of a web browser, or other
  * web-based client device.
  */
-export default class LocalPhantomPeer extends PhantomPeer {
+export default class LocalPhantomPeerSyncObject extends PhantomPeerSyncObject {
   constructor(socketId, rest = {}) {
     super(socketId, {
       mediaStreamTracks: [],

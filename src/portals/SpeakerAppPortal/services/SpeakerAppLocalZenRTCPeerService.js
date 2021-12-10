@@ -118,6 +118,15 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
+    // TODO: Handle
+    const localPhantomPeerSyncObject =
+      localZenRTCPeer.getLocalPhantomPeerSyncObject();
+
+    // TODO: Remove
+    console.log({
+      localPhantomPeerSyncObject,
+    });
+
     // TODO: Remove
     console.warn("local signal broker id", localZenRTCPeer.getSignalBrokerId());
 
