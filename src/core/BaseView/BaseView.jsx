@@ -23,6 +23,7 @@ export default function BaseView({ portal }) {
   );
 
   if (!areBaseStylesLoaded) {
+    // TODO: Display configurable fallback message / component
     return null;
   }
 
