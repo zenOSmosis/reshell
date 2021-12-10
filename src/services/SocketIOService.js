@@ -36,6 +36,7 @@ export default class SocketIOService extends UIServiceCore {
       // seem to work, in contract to what the docs indicate)
       const socket = io(options);
 
+      // TODO: Use event constant
       socket.on("connect", () => {
         this.setState({
           isConnected: true,
@@ -44,6 +45,7 @@ export default class SocketIOService extends UIServiceCore {
         this.emit(EVT_CONNECTED);
       });
 
+      // TODO: Use event constant
       socket.on("disconnect", () => {
         this.setState({
           isConnected: false,

@@ -590,6 +590,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
       // TODO: Build out
       // TODO: Send up ipcMessageBroker
+      // TODO: Use event constant
       /** @see https://github.com/feross/simple-peer#error-codes */
       this._webrtcPeer.on("error", async err => {
         // TODO: Debug error and determine if we need to try to reconnect
@@ -603,9 +604,11 @@ export default class ZenRTCPeer extends PhantomCore {
       });
 
       // Handle outgoing WebRTC signaling
+      // TODO: Use event constant
       this._webrtcPeer.on("signal", data => this.sendZenRTCSignal(data));
 
       // Handle WebRTC connect
+      // TODO: Use event constant
       this._webrtcPeer.on("connect", () => {
         this._isConnected = true;
         this._connectTime = getUnixTime();
@@ -614,6 +617,7 @@ export default class ZenRTCPeer extends PhantomCore {
       });
 
       // Handle WebRTC disconnect
+      // TODO: Use event constant
       this._webrtcPeer.on("close", async () => {
         this._isConnected = false;
         this.emit(EVT_DISCONNECTED);
@@ -633,6 +637,7 @@ export default class ZenRTCPeer extends PhantomCore {
       // setTimeout(() => this._webrtcPeer && this._webrtcPeer.destroy(), 5000);
 
       // Handle incoming MediaStreamTrack from remote peer
+      // TODO: Use event constant
       this._webrtcPeer.on("track", (mediaStreamTrack, mediaStream) => {
         // NOTE (jh): This timeout seems to improve an issue w/ iOS 14
         // sometimes disconnecting when tracks are added
@@ -641,6 +646,7 @@ export default class ZenRTCPeer extends PhantomCore {
         }, 500);
       });
 
+      // TODO: Use event constant
       this._webrtcPeer.on("data", data => {
         this.emit(EVT_DATA_RECEIVED, data);
       });
