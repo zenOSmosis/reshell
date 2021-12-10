@@ -305,22 +305,26 @@ table {
   text-align: left;
 }
 
-table thead tr {
-  background-color: rgba(0, 0, 0, 0.4);
-  font-weight: bold;
-}
-
 table,
 table tr td {
   padding: 0px;
   margin: 0px;
+}
 
+table thead tr {
+  font-weight: bold;
+}
+
+table:not(.layout) {
   border: 1px rgba(255, 255, 255, 0.2) solid;
-
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-table tbody tr:nth-child(even) {
+table:not(.layout) thead tr {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+table:not(.layout) tbody tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
