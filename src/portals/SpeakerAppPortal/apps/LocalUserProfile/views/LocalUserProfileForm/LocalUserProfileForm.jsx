@@ -82,7 +82,7 @@ export default function LocalUserProfileForm({
             </div>
           </div>
 
-          <table style={{ width: "100%" }}>
+          <table style={{ width: "100%" }} className="layout">
             <tbody>
               <tr>
                 <td style={{ textAlign: "left" }}>
