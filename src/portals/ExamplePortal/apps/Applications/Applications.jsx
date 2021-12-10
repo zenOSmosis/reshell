@@ -60,7 +60,8 @@ const Applications = {
     const handleDoubleClick = useCallback(
       evt => {
         // Prevent double-clicks from resizing the window if there is text in
-        // the search bar
+        // the search bar (i.e. so that all text can be selected w/ the
+        // gesture)
         if (Boolean(sharedState.searchQuery)) {
           evt.stopPropagation();
         }
@@ -73,6 +74,7 @@ const Applications = {
         {
           // TODO: Automatically focus when window is activated (unless on mobile)
           // TODO: Switch to Applications view on change
+          // TODO: Clear input on escape
         }
         <input
           placeholder="Search Applications"
