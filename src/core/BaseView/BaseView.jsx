@@ -11,7 +11,7 @@ export default function BaseView({ portal }) {
   useEffect(() => {
     // Lazy-load BaseView style so it doesn't override before the app is mounted
     //
-    // TODO: Use preload
+    // TODO: Use usePreload hook
     import("./base-styles.css")
       .then(() => setAreBaseStylesLoaded(true))
       .catch(err => console.error(err));
