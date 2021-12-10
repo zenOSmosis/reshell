@@ -40,6 +40,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     this.registerShutdownHandler(() => this.disconnect());
   }
 
+  // TODO: Provide ability to update LocalZenRTCPeer's LocalPhantomPeerSyncObject state, for example, to sync user profile, etc
+
   // TODO: Document
   getIsConnecting() {
     return this.getState().isConnecting;
@@ -101,7 +103,9 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
     const ourSocket = socketService.getSocket();
 
+    // Contains read-only state, sent from the remote peer
     const readOnlySyncObject = new SyncObject();
+
     readOnlySyncObject.on(EVT_UPDATED, () => {
       // TODO: Remove
       console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
