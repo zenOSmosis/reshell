@@ -1,4 +1,4 @@
-import PhantomPeerCore from "../../PhantomPeerCore";
+import PhantomPeerSyncObject from "../../PhantomPeerSyncObject";
 
 // TODO: Use map or collection
 const _instances = {};
@@ -6,7 +6,7 @@ const _instances = {};
 /**
  * A virtual participant from the perspective of the virtualServer.
  */
-export default class VirtualServerPhantomPeer extends PhantomPeerCore {
+export default class VirtualServerPhantomPeer extends PhantomPeerSyncObject {
   /**
    * @param {string} clientSignalBrokerId
    * @returns {VirtualServerPhantomPeer | void}
@@ -24,7 +24,7 @@ export default class VirtualServerPhantomPeer extends PhantomPeerCore {
   /**
    * @param {string} clientSignalBrokerId
    * @param {Object} rest? [optional; default = {}] The this value is passed to
-   * the super PhantomPeerCore class.
+   * the super PhantomPeerSyncObject class.
    */
   constructor(clientSignalBrokerId, rest = {}) {
     if (!clientSignalBrokerId) {

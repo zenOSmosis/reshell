@@ -49,13 +49,11 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       const readOnlySyncObject = zenRTCPeer.getReadOnlySyncObject();
       const clientSignalBrokerId = zenRTCPeer.getClientSignalBrokerId();
 
-      const readOnlyState = zenRTCPeer.getIsConnected()
-        ? readOnlySyncObject.getState()
-        : // IMPORTANT: At this time, SyncObject does not support setting
-          // undefined and syncing over the wire, so null is used instead
-          //
-          // @see https://github.com/zenOSmosis/sync-object/issues/40
-          null;
+      const isPeerConnected = zenRTCPeer.getIsConnected();
+
+      // FIXME: (jh) Perform any state structure updating here, unless we
+      // want every peer to be aware of every other peer's shared state
+      const readOnlyState = isPeerConnected && readOnlySyncObject.getState();
 
       // TODO: Remove
       console.log(
@@ -63,15 +61,19 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
         zenRTCPeer.getIncomingMediaStreams().length
       );
 
-      // if (otherPeer.getIsConnected()) {
-      // Write our state to the other clients
-      batchUpdate[clientSignalBrokerId] = {
-        ...readOnlyState,
-        media: zenRTCPeer
-          .getIncomingMediaStreams()
-          .map(({ id }) => id)
-          .join(","),
-      };
+      if (isPeerConnected) {
+        batchUpdate[clientSignalBrokerId] = {
+          ...readOnlyState,
+          media: zenRTCPeer
+            .getIncomingMediaStreams()
+            .map(({ id }) => id)
+            .join(","),
+        };
+      } else {
+        // Delete the shared client state
+        // FIXME: (jh) This method of deletion may be subject to change (see https://github.com/zenOSmosis/sync-object/issues/40)
+        batchUpdate[clientSignalBrokerId] = undefined;
+      }
     }
 
     // FIXME: (jh) If moving to shared writable, only write the shared

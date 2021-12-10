@@ -1,4 +1,4 @@
-import PhantomPeer from "../PhantomPeerCore";
+import PhantomPeer from "../PhantomPeerSyncObject";
 
 /**
  * A virtual participant from the perspective of a web browser, or other

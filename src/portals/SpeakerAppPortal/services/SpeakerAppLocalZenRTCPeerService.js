@@ -105,6 +105,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     readOnlySyncObject.on(EVT_UPDATED, () => {
       // TODO: Remove
       console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
+
+      // TODO: Handle state setting
     });
 
     const localZenRTCPeer = new LocalZenRTCPeer({

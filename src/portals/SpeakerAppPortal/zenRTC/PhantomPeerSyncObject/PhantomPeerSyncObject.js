@@ -2,7 +2,7 @@ import SyncObject, { EVT_UPDATED, EVT_DESTROYED } from "sync-object";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
-export default class PhantomPeerCore extends SyncObject {
+export default class PhantomPeerSyncObject extends SyncObject {
   /**
    * @param {Object} rest? [optional; default = {}]
    */
