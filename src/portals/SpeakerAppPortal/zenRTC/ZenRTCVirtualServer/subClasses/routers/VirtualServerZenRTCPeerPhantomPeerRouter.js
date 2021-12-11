@@ -4,12 +4,12 @@ import VirtualServerZenRTCPeer from "../VirtualServerZenRTCPeer";
 // TODO: Send remote remove event when peer has disconnected?
 
 /**
- * Performs media stream routing for all of the peers.
+ * Performs state routing for all of the peers.
  */
 export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCollection {
   /**
    * Adds a VirtualServerZenRTCPeer instance to the router collection and sets
-   * up an initial full media stream sync.
+   * up an initial full state sync.
    *
    * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
    * @return {void}
