@@ -3,8 +3,9 @@ import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 import LocalPhantomPeerSyncObject from "./LocalPhantomPeerSyncObject";
-// import RemotePhantomPeerSyncObject from "./RemotePhantomPeerSyncObject";
 import SyncObject from "sync-object";
+
+import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 
 export { EVT_UPDATED };
 
@@ -13,13 +14,20 @@ export default class SpeakerAppPhantomSessionService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
+    this.setTitle("Speaker.app Phantom Session Service");
+
     this.setState({
       isSessionActive: false,
       realmId: null,
       channelId: null,
+      localSignalBrokerId: null,
     });
 
     this._zenRTCPeerSyncObjects = {};
+
+    // FIXME: (jh) Add collection as class property once implemented in PhantomCore
+    // @see https://github.com/zenOSmosis/phantom-core/issues/102
+    this.bindCollectionClass(RemotePhantomPeerCollection);
 
     this.registerShutdownHandler(() => this.endZenRTCPeerSession());
   }
@@ -47,6 +55,10 @@ export default class SpeakerAppPhantomSessionService extends UIServiceCore {
     return this.getState().isSessionActive;
   }
 
+  setLocalSignalBrokerId(localSignalBrokerId) {
+    this.setState({ localSignalBrokerId });
+  }
+
   // TODO: Document
   async initZenRTCPeerSyncObject({ realmId, channelId }) {
     await this.endZenRTCPeerSession();
@@ -62,11 +74,43 @@ export default class SpeakerAppPhantomSessionService extends UIServiceCore {
 
     const readOnlySyncObject = new SyncObject();
 
-    // TODO: RemotePhantomPeerSyncObject multiplexing, etc.
-    readOnlySyncObject.on(EVT_UPDATED, () => {
-      // TODO: Remove
-      console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
-    });
+    (() => {
+      const remotePhantomPeerCollection = this.getCollectionInstance(
+        RemotePhantomPeerCollection
+      );
+
+      // TODO: RemotePhantomPeerSyncObject multiplexing, etc.
+      // TODO: Refactor
+      readOnlySyncObject.on(EVT_UPDATED, () => {
+        const localSignalBrokerId = this.getState().localSignalBrokerId;
+
+        const { peers } = readOnlySyncObject.getState();
+
+        for (const signalBrokerId of Object.keys(peers)) {
+          const peerState = peers[signalBrokerId];
+
+          const isLocal = signalBrokerId === localSignalBrokerId;
+
+          if (!isLocal) {
+            remotePhantomPeerCollection.syncRemotePeerState(
+              peerState,
+              signalBrokerId
+            );
+          }
+        }
+      });
+
+      readOnlySyncObject.registerShutdownHandler(() =>
+        remotePhantomPeerCollection.destroyAllChildren()
+      );
+
+      // TODO: Remove or refactor
+      remotePhantomPeerCollection.on(EVT_UPDATED, () => {
+        console.log({
+          remotePhantomPeers: remotePhantomPeerCollection.getChildren(),
+        });
+      });
+    })();
 
     this._zenRTCPeerSyncObjects = {
       writableSyncObject,
@@ -80,7 +124,12 @@ export default class SpeakerAppPhantomSessionService extends UIServiceCore {
 
   // TODO: Document
   async endZenRTCPeerSession() {
-    this.setState({ isSessionActive: false, realmId: null, channelId: null });
+    this.setState({
+      isSessionActive: false,
+      realmId: null,
+      channelId: null,
+      localSignalBrokerId: null,
+    });
 
     await Promise.all(
       Object.values(this._zenRTCPeerSyncObjects).map(syncObject =>

@@ -119,6 +119,9 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
+    const localSignalBrokerId = localZenRTCPeer.getSignalBrokerId();
+    phantomPeerService.setLocalSignalBrokerId(localSignalBrokerId);
+
     localZenRTCPeer.registerShutdownHandler(() =>
       phantomPeerService.endZenRTCPeerSession()
     );

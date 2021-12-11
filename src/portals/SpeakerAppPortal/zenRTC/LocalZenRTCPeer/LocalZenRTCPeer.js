@@ -107,8 +107,9 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
     this.registerShutdownHandler(() =>
       Promise.all([
-        this._zenRTCSignalBroker.destroy(),
-        this._localPhantomPeerSyncObject.destroy(),
+        this._zenRTCSignalBroker && this._zenRTCSignalBroker.destroy(),
+        this._localPhantomPeerSyncObject &&
+          this._localPhantomPeerSyncObject.destroy(),
       ])
     );
 
