@@ -55,6 +55,7 @@ export default class SpeakerAppPhantomSessionService extends UIServiceCore {
     return this.getState().isSessionActive;
   }
 
+  // TODO: Document
   setLocalSignalBrokerId(localSignalBrokerId) {
     this.setState({ localSignalBrokerId });
   }

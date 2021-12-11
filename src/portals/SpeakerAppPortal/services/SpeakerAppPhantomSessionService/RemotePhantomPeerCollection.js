@@ -3,6 +3,7 @@ import RemotePhantomPeerSyncObject from "./RemotePhantomPeerSyncObject";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+// TODO: Document
 export default class RemotePhantomPeerCollection extends PhantomCollection {
   // TODO: Document
   addChild(nextSyncState, remoteSignalBrokerId) {
@@ -21,7 +22,7 @@ export default class RemotePhantomPeerCollection extends PhantomCollection {
       super.addChild(nextChild, remoteSignalBrokerId);
     }
 
-    nextChild.setState({ nextSyncState });
+    nextChild.setState(nextSyncState);
   }
 
   // TODO: Document
