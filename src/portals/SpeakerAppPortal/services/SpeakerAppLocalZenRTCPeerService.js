@@ -7,16 +7,13 @@ import LocalZenRTCPeer, {
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "../zenRTC/LocalZenRTCPeer";
 
-import SyncObject from "sync-object";
-
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
-import SpeakerAppPhantomPeerService from "./SpeakerAppPhantomPeerService";
+import SpeakerAppPhantomSessionService from "./SpeakerAppPhantomSessionService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
 import UIModalService from "@services/UIModalService";
-import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 import UINotificationService from "@services/UINotificationService";
 
@@ -36,8 +33,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     this.setState({
       isConnecting: false,
       isConnected: false,
-      realmId: null,
-      channelId: null,
     });
 
     this._localZenRTCPeer = null;
@@ -54,16 +49,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   // TODO: Document
   getIsConnected() {
     return this.getState().isConnected;
-  }
-
-  // TODO: Document
-  getRealmId() {
-    return this.getState().realmId;
-  }
-
-  // TODO: Document
-  getChannelId() {
-    return this.getState().channelId;
   }
 
   // TODO: Document
@@ -117,62 +102,26 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
 
     const ourSocket = socketService.getSocket();
 
-    // Contains read-only state, sent from the remote peer
-    const readOnlySyncObject = new SyncObject();
+    const phantomPeerService = this.useServiceClass(
+      SpeakerAppPhantomSessionService
+    );
 
-    const localDeviceAddress = await this.useServiceClass(
-      LocalDeviceIdentificationService
-    ).fetchDeviceAddress();
+    const { writableSyncObject, readOnlySyncObject } =
+      await phantomPeerService.initZenRTCPeerSyncObject({ realmId, channelId });
 
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
-      localDeviceAddress,
       ourSocket,
       iceServers,
+      writableSyncObject,
       readOnlySyncObject,
       inputMediaDevicesService,
       screenCapturerService,
     });
 
-    // TODO: Handle
-    const localPhantomPeerSyncObject =
-      localZenRTCPeer.getLocalPhantomPeerSyncObject();
-
-    // TODO: Remove
-    console.log({
-      localPhantomPeerSyncObject,
-    });
-
-    // TODO: Remove
-    console.warn("local signal broker id", localZenRTCPeer.getSignalBrokerId());
-
-    // Handle PhantomPeer servicing
-    (() => {
-      const phantomPeerService = this.useServiceClass(
-        SpeakerAppPhantomPeerService
-      );
-
-      readOnlySyncObject.on(EVT_UPDATED, () => {
-        phantomPeerService.handleUpdatedPhantomPeerState(
-          readOnlySyncObject.getState().peers
-        );
-      });
-
-      this.proxyOn(localZenRTCPeer, EVT_DISCONNECTED, () => {
-        phantomPeerService.clear();
-      });
-    })();
-
-    // TODO: Remove
-    (() => {
-      const writableSyncObject = localZenRTCPeer.getWritableSyncObject();
-      writableSyncObject.on(EVT_UPDATED, () => {
-        // TODO: Remove
-        console.log({ writableSyncObject: writableSyncObject.getState() });
-      });
-    })();
-
-    localZenRTCPeer.registerShutdownHandler(() => readOnlySyncObject.destroy());
+    localZenRTCPeer.registerShutdownHandler(() =>
+      phantomPeerService.endZenRTCPeerSession()
+    );
 
     this._localZenRTCPeer = localZenRTCPeer;
 
@@ -187,8 +136,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         this.setState({
           isConnecting: true,
           isConnected: false,
-          realmId,
-          channelId,
         });
       });
 
@@ -207,8 +154,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         this.setState({
           isConnecting: false,
           isConnected: false,
-          realmId: null,
-          channelId: null,
         });
 
         this.useServiceClass(UINotificationService).showNotification({

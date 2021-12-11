@@ -1,4 +1,4 @@
-import PhantomPeerSyncObject from "../PhantomPeerSyncObject";
+import PhantomPeerSyncObject from "@portals/SpeakerAppPortal/zenRTC/PhantomPeerSyncObject";
 
 /**
  * A virtual participant from the perspective of a web browser, or other

@@ -18,7 +18,6 @@ import ZenRTCPeer, {
 import LocalZenRTCSignalBroker, {
   EVT_ZENRTC_SIGNAL as EVT_SIGNAL_BROKER_ZENRTC_SIGNAL,
 } from "./LocalZenRTCSignalBroker";
-import LocalPhantomPeerSyncObject from "./LocalPhantomPeerSyncObject";
 
 export {
   EVT_UPDATED,
@@ -44,11 +43,11 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
   constructor({
     // TODO: Pass in distinct realmId, channelId, virtualServerSocketId instead of network
     network,
-    localDeviceAddress,
     ourSocket,
     iceServers,
     inputMediaDevicesService,
     screenCapturerService,
+    writableSyncObject,
     readOnlySyncObject,
     offerToReceiveAudio = true,
     offerToReceiveVideo = true,
@@ -91,16 +90,12 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       socketIdTo: virtualServerSocketId,
     });
 
-    const localPhantomPeerSyncObject = new LocalPhantomPeerSyncObject({
-      deviceAddress: localDeviceAddress,
-    });
-
     super({
       iceServers,
       zenRTCSignalBrokerId: zenRTCSignalBroker.getUUID(),
       realmId,
       channelId,
-      writableSyncObject: localPhantomPeerSyncObject,
+      writableSyncObject,
       readOnlySyncObject,
       offerToReceiveAudio,
       offerToReceiveVideo,
@@ -109,7 +104,6 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     });
 
     this._zenRTCSignalBroker = zenRTCSignalBroker;
-    this._localPhantomPeerSyncObject = localPhantomPeerSyncObject;
 
     this.registerShutdownHandler(() =>
       Promise.all([
@@ -145,15 +139,6 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
         this._publishMediaCaptureFactories();
       });
     })();
-  }
-
-  /**
-   * Retrieves the writable SyncObject bound to this peer.
-   *
-   * @return {LocalPhantomPeerSyncObject}
-   */
-  getLocalPhantomPeerSyncObject() {
-    return this._localPhantomPeerSyncObject;
   }
 
   // TODO: Document
