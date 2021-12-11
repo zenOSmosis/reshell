@@ -71,8 +71,10 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
         };
       } else {
         // Delete the shared client state
-        // FIXME: (jh) This method of deletion may be subject to change (see https://github.com/zenOSmosis/sync-object/issues/40)
-        batchPeersUpdate[clientSignalBrokerId] = undefined;
+        //
+        // TODO: Fix issue where setting undefined does not sync the hash across the wire
+        // @see https://github.com/zenOSmosis/sync-object/issues/40
+        batchPeersUpdate[clientSignalBrokerId] = null;
       }
     }
 
