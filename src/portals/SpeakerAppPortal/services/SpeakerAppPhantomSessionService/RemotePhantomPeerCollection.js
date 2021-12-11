@@ -6,6 +6,13 @@ export { EVT_UPDATED, EVT_DESTROYED };
 export default class RemotePhantomPeerCollection extends PhantomCollection {
   // TODO: Document
   addChild(nextSyncState, remoteSignalBrokerId) {
+    if (!nextSyncState) {
+      console.warn(
+        "No nextSyncState has been passed.  Did you mean to call removeChild() instead?"
+      );
+      return;
+    }
+
     const prevChild = this.getChildWithKey(remoteSignalBrokerId);
 
     let nextChild = prevChild || new RemotePhantomPeerSyncObject();
@@ -19,7 +26,15 @@ export default class RemotePhantomPeerCollection extends PhantomCollection {
 
   // TODO: Document
   syncRemotePeerState(nextSyncState, remoteSignalBrokerId) {
-    return this.addChild(nextSyncState, remoteSignalBrokerId);
+    if (nextSyncState) {
+      return this.addChild(nextSyncState, remoteSignalBrokerId);
+    } else {
+      const prevChild = this.getChildWithKey(remoteSignalBrokerId);
+
+      if (prevChild) {
+        this.removeChild(prevChild);
+      }
+    }
   }
 
   /**
