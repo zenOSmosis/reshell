@@ -7,6 +7,8 @@ export default class PhantomPeerSyncObject extends SyncObject {
    * @param {Object} rest? [optional; default = {}]
    */
   constructor(rest = {}) {
+    // TODO: Implement ability to determine local time / offset?
+
     super({
       avatarURL: null,
       description: null,
