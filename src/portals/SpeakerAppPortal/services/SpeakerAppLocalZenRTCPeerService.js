@@ -9,7 +9,7 @@ import LocalZenRTCPeer, {
 
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
-import SpeakerAppPhantomSessionService from "./SpeakerAppPhantomSessionService";
+import SpeakerAppClientPhantomSessionService from "./SpeakerAppClientPhantomSessionService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
@@ -103,7 +103,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     const ourSocket = socketService.getSocket();
 
     const phantomPeerService = this.useServiceClass(
-      SpeakerAppPhantomSessionService
+      SpeakerAppClientPhantomSessionService
     );
 
     const { writableSyncObject, readOnlySyncObject } =

@@ -10,11 +10,11 @@ import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 export { EVT_UPDATED };
 
 // TODO: Document
-export default class SpeakerAppPhantomSessionService extends UIServiceCore {
+export default class SpeakerAppClientPhantomSessionService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Speaker.app Phantom Session Service");
+    this.setTitle("Speaker.app Client Phantom Session Service");
 
     this.setState({
       isSessionActive: false,
