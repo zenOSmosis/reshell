@@ -11,6 +11,7 @@ import SyncObject from "sync-object";
 
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
+import SpeakerAppPhantomPeerService from "./SpeakerAppPhantomPeerService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
@@ -35,6 +36,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     this.setState({
       isConnecting: false,
       isConnected: false,
+      realmId: null,
+      channelId: null,
     });
 
     this._localZenRTCPeer = null;
@@ -51,6 +54,16 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
   // TODO: Document
   getIsConnected() {
     return this.getState().isConnected;
+  }
+
+  // TODO: Document
+  getRealmId() {
+    return this.getState().realmId;
+  }
+
+  // TODO: Document
+  getChannelId() {
+    return this.getState().channelId;
   }
 
   // TODO: Document
@@ -107,13 +120,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     // Contains read-only state, sent from the remote peer
     const readOnlySyncObject = new SyncObject();
 
-    readOnlySyncObject.on(EVT_UPDATED, () => {
-      // TODO: Remove
-      console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
-
-      // TODO: Handle remote state reading
-    });
-
     const localDeviceAddress = await this.useServiceClass(
       LocalDeviceIdentificationService
     ).fetchDeviceAddress();
@@ -140,6 +146,23 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     // TODO: Remove
     console.warn("local signal broker id", localZenRTCPeer.getSignalBrokerId());
 
+    // Handle PhantomPeer servicing
+    (() => {
+      const phantomPeerService = this.useServiceClass(
+        SpeakerAppPhantomPeerService
+      );
+
+      readOnlySyncObject.on(EVT_UPDATED, () => {
+        phantomPeerService.handleUpdatedPhantomPeerState(
+          readOnlySyncObject.getState().peers
+        );
+      });
+
+      this.proxyOn(localZenRTCPeer, EVT_DISCONNECTED, () => {
+        phantomPeerService.clear();
+      });
+    })();
+
     // TODO: Remove
     (() => {
       const writableSyncObject = localZenRTCPeer.getWritableSyncObject();
@@ -159,10 +182,17 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         OutputMediaDevicesService
       );
 
+      // TODO: Use proxy on?
       localZenRTCPeer.on(EVT_CONNECTING, () => {
-        this.setState({ isConnecting: true, isConnected: false });
+        this.setState({
+          isConnecting: true,
+          isConnected: false,
+          realmId,
+          channelId,
+        });
       });
 
+      // TODO: Use proxy on?
       localZenRTCPeer.on(EVT_CONNECTED, () => {
         this.setState({ isConnecting: false, isConnected: true });
 
@@ -172,8 +202,14 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         });
       });
 
+      // TODO: Use proxy on?
       localZenRTCPeer.on(EVT_DISCONNECTED, () => {
-        this.setState({ isConnecting: false, isConnected: false });
+        this.setState({
+          isConnecting: false,
+          isConnected: false,
+          realmId: null,
+          channelId: null,
+        });
 
         this.useServiceClass(UINotificationService).showNotification({
           title: "Disconnected from Network",
@@ -181,6 +217,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         });
       });
 
+      // TODO: Use proxy on?
       localZenRTCPeer.on(
         EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
         mediaStreamData => {
@@ -194,6 +231,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         }
       );
 
+      // TODO: Use proxy on?
       localZenRTCPeer.on(
         EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
         mediaStreamData => {

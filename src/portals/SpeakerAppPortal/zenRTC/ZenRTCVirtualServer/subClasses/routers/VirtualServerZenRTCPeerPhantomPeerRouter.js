@@ -43,7 +43,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
    */
   sync() {
     // Batch remote updates so that we update ours in a single run
-    const batchUpdate = {};
+    const batchPeersUpdate = {};
 
     for (const zenRTCPeer of this.getChildren()) {
       const readOnlySyncObject = zenRTCPeer.getReadOnlySyncObject();
@@ -62,7 +62,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       );
 
       if (isPeerConnected) {
-        batchUpdate[clientSignalBrokerId] = {
+        batchPeersUpdate[clientSignalBrokerId] = {
           ...readOnlyState,
           media: zenRTCPeer
             .getIncomingMediaStreams()
@@ -72,7 +72,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       } else {
         // Delete the shared client state
         // FIXME: (jh) This method of deletion may be subject to change (see https://github.com/zenOSmosis/sync-object/issues/40)
-        batchUpdate[clientSignalBrokerId] = undefined;
+        batchPeersUpdate[clientSignalBrokerId] = undefined;
       }
     }
 
@@ -80,7 +80,9 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
     for (const zenRTCPeer of this.getChildren()) {
       const writeableSyncObject = zenRTCPeer.getWritableSyncObject();
 
-      writeableSyncObject.setState(batchUpdate);
+      writeableSyncObject.setState({
+        peers: batchPeersUpdate,
+      });
     }
   }
 
