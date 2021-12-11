@@ -44,6 +44,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
   constructor({
     // TODO: Pass in distinct realmId, channelId, virtualServerSocketId instead of network
     network,
+    localDeviceAddress,
     ourSocket,
     iceServers,
     inputMediaDevicesService,
@@ -90,7 +91,9 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
       socketIdTo: virtualServerSocketId,
     });
 
-    const localPhantomPeerSyncObject = new LocalPhantomPeerSyncObject();
+    const localPhantomPeerSyncObject = new LocalPhantomPeerSyncObject({
+      deviceAddress: localDeviceAddress,
+    });
 
     super({
       iceServers,

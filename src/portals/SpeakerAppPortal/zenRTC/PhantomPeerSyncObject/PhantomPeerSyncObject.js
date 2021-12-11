@@ -13,8 +13,10 @@ export default class PhantomPeerSyncObject extends SyncObject {
       detectedDevice: {},
       deviceAddress: null,
       isMuted: true,
-      media: {},
+      media: "",
       ...rest,
     });
   }
+
+  // TODO: Include helper methods to obtain media stream tracks, etc. based off of media object
 }

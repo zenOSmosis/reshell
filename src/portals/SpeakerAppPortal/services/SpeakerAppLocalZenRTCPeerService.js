@@ -15,6 +15,7 @@ import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 import ScreenCapturerService from "@services/ScreenCapturerService";
 import UIModalService from "@services/UIModalService";
+import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 import UINotificationService from "@services/UINotificationService";
 
@@ -110,11 +111,16 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       // TODO: Remove
       console.log({ readOnlySyncObject: readOnlySyncObject.getState() });
 
-      // TODO: Handle state setting
+      // TODO: Handle remote state reading
     });
+
+    const localDeviceAddress = await this.useServiceClass(
+      LocalDeviceIdentificationService
+    ).fetchDeviceAddress();
 
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
+      localDeviceAddress,
       ourSocket,
       iceServers,
       readOnlySyncObject,
