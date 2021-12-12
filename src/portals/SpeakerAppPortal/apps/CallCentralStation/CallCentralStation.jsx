@@ -22,6 +22,7 @@ import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/Exam
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
 import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
+import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
 
 export const REGISTRATION_ID = "network";
 
@@ -43,6 +44,7 @@ const CallCentralStation = {
     SpeakerAppSocketAuthenticationService,
     SpeakerAppNetworkDiscoveryService,
     SpeakerAppLocalZenRTCPeerService,
+    SpeakerAppClientPhantomSessionService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
@@ -50,6 +52,8 @@ const CallCentralStation = {
       appServices[SpeakerAppNetworkDiscoveryService];
     const localZenRTCPeerService =
       appServices[SpeakerAppLocalZenRTCPeerService];
+    const phantomSessionService =
+      appServices[SpeakerAppClientPhantomSessionService];
 
     const networks = networkDiscoveryService.getNetworks();
     const lenNetworks = networks.length;
@@ -118,7 +122,9 @@ const CallCentralStation = {
                 )}
               </Center>
             ) : (
-              <NetworkConnected />
+              <NetworkConnected
+                remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
+              />
             )}
           </Padding>
           {isZenRTCConnecting && (

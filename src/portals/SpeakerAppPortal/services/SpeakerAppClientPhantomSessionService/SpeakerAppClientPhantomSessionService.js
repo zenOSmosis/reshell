@@ -47,6 +47,18 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
   }
 
   /**
+   * TODO: Import type and document further
+   * @return {RemotePhantomPeerSyncObject[]}
+   */
+  getRemotePhantomPeers() {
+    const remotePhantomPeerCollection = this.getCollectionInstance(
+      RemotePhantomPeerCollection
+    );
+
+    return remotePhantomPeerCollection.getChildren();
+  }
+
+  /**
    * Retrieves whether the current session is active or not.
    *
    * @return {boolean}
@@ -101,16 +113,10 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
         }
       });
 
+      // Remove all PhantomPeers once read-only state is destructed
       readOnlySyncObject.registerShutdownHandler(() =>
         remotePhantomPeerCollection.destroyAllChildren()
       );
-
-      // TODO: Remove or refactor
-      remotePhantomPeerCollection.on(EVT_UPDATED, () => {
-        console.log({
-          remotePhantomPeers: remotePhantomPeerCollection.getChildren(),
-        });
-      });
     })();
 
     this._zenRTCPeerSyncObjects = {
