@@ -15,7 +15,9 @@ export default class OutputMediaDevicesService extends UIServiceCore {
 
     this.setTitle("Output Media Devices Service");
 
-    this.bindCollectionClass(OutputAudioMediaStreamTrackCollection);
+    this._outputAudioMediaStreamTrackCollection = this.bindCollectionClass(
+      OutputAudioMediaStreamTrackCollection
+    );
 
     // TODO: Refactor and document
     (() => {
@@ -93,12 +95,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   addOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // TODO: Use class property once https://github.com/zenOSmosis/phantom-core/issues/102 is implemented
-    const audioMediaStreamTrackCollection = this.getCollectionInstance(
-      OutputAudioMediaStreamTrackCollection
-    );
-
-    return audioMediaStreamTrackCollection.addOutputMediaStreamTrack(
+    return this._outputAudioMediaStreamTrackCollection.addOutputMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
     );
@@ -106,12 +103,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   removeOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // TODO: Use class property once https://github.com/zenOSmosis/phantom-core/issues/102 is implemented
-    const audioMediaStreamTrackCollection = this.getCollectionInstance(
-      OutputAudioMediaStreamTrackCollection
-    );
-
-    return audioMediaStreamTrackCollection.removeOutputMediaStreamTrack(
+    return this._outputAudioMediaStreamTrackCollection.removeOutputMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
     );

@@ -25,9 +25,9 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     this._zenRTCPeerSyncObjects = {};
 
-    // FIXME: (jh) Add collection as class property once implemented in PhantomCore
-    // @see https://github.com/zenOSmosis/phantom-core/issues/102
-    this.bindCollectionClass(RemotePhantomPeerCollection);
+    this._remotePhantomPeerCollection = this.bindCollectionClass(
+      RemotePhantomPeerCollection
+    );
 
     this.registerShutdownHandler(() => this.endZenRTCPeerSession());
   }
@@ -51,11 +51,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
    * @return {RemotePhantomPeerSyncObject[]}
    */
   getRemotePhantomPeers() {
-    const remotePhantomPeerCollection = this.getCollectionInstance(
-      RemotePhantomPeerCollection
-    );
-
-    return remotePhantomPeerCollection.getChildren();
+    return this._remotePhantomPeerCollection.getChildren();
   }
 
   /**
@@ -88,10 +84,6 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
     const readOnlySyncObject = new SyncObject();
 
     (() => {
-      const remotePhantomPeerCollection = this.getCollectionInstance(
-        RemotePhantomPeerCollection
-      );
-
       // TODO: RemotePhantomPeerSyncObject multiplexing, etc.
       // TODO: Refactor
       readOnlySyncObject.on(EVT_UPDATED, () => {
@@ -105,7 +97,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
           const isLocal = signalBrokerId === localSignalBrokerId;
 
           if (!isLocal) {
-            remotePhantomPeerCollection.syncRemotePeerState(
+            this._remotePhantomPeerCollection.syncRemotePeerState(
               peerState,
               signalBrokerId
             );
@@ -115,7 +107,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
       // Remove all PhantomPeers once read-only state is destructed
       readOnlySyncObject.registerShutdownHandler(() =>
-        remotePhantomPeerCollection.destroyAllChildren()
+        this._remotePhantomPeerCollection.destroyAllChildren()
       );
     })();
 
