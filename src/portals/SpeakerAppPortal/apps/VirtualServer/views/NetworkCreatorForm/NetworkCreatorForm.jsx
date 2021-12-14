@@ -128,7 +128,13 @@ export default function CreateNetwork({
   return (
     <Center canOverflow={true} style={{ maxWidth: 720 }}>
       <div className={styles["create-network-form"]}>
-        <Form onSubmit={handleSubmit}>
+        <Form
+          onSubmit={handleSubmit}
+          // TODO: Use form validator
+        >
+          {
+            // TODO: Use error handler / validity checks
+          }
           {({ errors, isValid }) => (
             <>
               <Section style={{ textAlign: "center" }}>
