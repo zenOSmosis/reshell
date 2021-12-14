@@ -1,33 +1,34 @@
 import { useCallback, useMemo } from "react";
 import useObjectState from "./useObjectState";
+import objectHash from "object-hash";
 
 /**
  * A savable state wrapper around useObjectState, with the ability to cancel
  * back to previously saved state.
  *
- * @param {Object} defaultState?
+ * @param {Object} initialState?
  * @return {Object} TODO: Document return object
  */
-export default function useDirtyState(defaultState = {}) {
+export default function useDirtyState(initialState = {}) {
   /**
    * Saved state.
    *
    * @type {Object}
    */
-  const [cleanState, setCleanState] = useObjectState(defaultState);
+  const [cleanState, setCleanState] = useObjectState(initialState);
 
   /**
    * Unsaved state.
    *
    * @type {Object}
    */
-  const [dirtyState, setDirtyState] = useObjectState(defaultState);
+  const [dirtyState, setDirtyState] = useObjectState(initialState);
 
   /**
    * @type {boolean}
    */
   const isDirty = useMemo(() => {
-    const isDirty = JSON.stringify(cleanState) !== JSON.stringify(dirtyState);
+    const isDirty = objectHash(cleanState) !== objectHash(dirtyState);
 
     return isDirty;
   }, [cleanState, dirtyState]);
@@ -50,26 +51,15 @@ export default function useDirtyState(defaultState = {}) {
     }
   }, [setDirtyState, cleanState, isDirty]);
 
-  /**
-   * Sets new clean state (i.e. "saved")
-   */
-  const handleSetCleanState = useCallback(
-    state => {
-      setCleanState(state);
-      setDirtyState(state);
-    },
-    [setCleanState, setDirtyState]
-  );
-
   return {
     state: dirtyState,
     setState: setDirtyState,
 
-    // TODO: Don't expose?
-    setCleanState: handleSetCleanState,
-
     isDirty,
     save,
+
     cancel,
+
+    // FIXME: (jh) Could also add cancel (alias of reset)
   };
 }

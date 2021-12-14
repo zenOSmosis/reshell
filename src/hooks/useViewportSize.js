@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { debounce } from "lodash";
+import { debounce } from "debounce";
 
 const DEFAULT_DEBOUNCE_TIME = 100;
 
@@ -47,10 +47,8 @@ export default function useViewportSize(
           onChange(size);
         },
         debounceTime,
-        {
-          leading: false,
-          trailing: true,
-        }
+        // Trailing edge
+        false
       );
 
       // Perform initial sync
