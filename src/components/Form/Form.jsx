@@ -24,7 +24,10 @@ export default function Form({
       onChange={handleFormChange}
       onSubmit={handleFormSubmit}
     >
-      {children({ errors, isValid })}
+      {
+        // TODO: Modify so that non-functional children presents an error showing how to use.  Look for other examples for how other libraries do this and adapt accordingly.
+        children({ errors, isValid, submit: handleFormSubmit })
+      }
     </form>
   );
 }
