@@ -133,19 +133,18 @@ export default class ReShellCore extends PhantomCore {
       }
     });
 
-    // Establish local device identity
-    // TODO: Document why
+    // Initialize local device identity so that it can be uniquely identified
+    // on any sub networks (i.e. Speaker.app).
+    //
+    // NOTE: Being browser-based, this will actually be unique per browser
+    // profile instead of per device
     await (async () => {
       const localDeviceIdentificationService =
         this._uiServiceManager.getServiceInstance(
           LocalDeviceIdentificationService
         );
 
-      const localIdentity =
-        await localDeviceIdentificationService.fetchLocalIdentity();
-
-      // TODO: Remove
-      console.log({ localIdentity });
+      await localDeviceIdentificationService.initLocalIdentity();
     })();
 
     this._activePortalName = portalName;

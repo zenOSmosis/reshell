@@ -26,18 +26,13 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     this._keyVaultService = this.useServiceClass(KeyVaultService);
   }
 
-  // TODO: Document
-  _generateLocalIdentity() {
-    // const entropy = Buffer.from('f2dacf...', 'utf-8'); // must contain at least 128 chars
-
-    const { address, privateKey, publicKey } =
-      EthCrypto.createIdentity(/* entropy */);
-
-    return {
-      address,
-      privateKey,
-      publicKey,
-    };
+  /**
+   * @return {Promise<void>}
+   */
+  async initLocalIdentity() {
+    // NOTE: We're not concerned about returning the identity itself here, just
+    // initializing it
+    await this.fetchLocalIdentity();
   }
 
   // TODO: Document
@@ -69,6 +64,24 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     }
   }
 
+  /**
+   * Generates a local identity without storing it directly.
+   *
+   * @return {Object}
+   */
+  _generateLocalIdentity() {
+    // const entropy = Buffer.from('f2dacf...', 'utf-8'); // must contain at least 128 chars
+
+    const { address, privateKey, publicKey } =
+      EthCrypto.createIdentity(/* entropy */);
+
+    return {
+      address,
+      privateKey,
+      publicKey,
+    };
+  }
+
   // TODO: Implement and document
   /*
   validateLocalPublicKey() {
@@ -76,9 +89,12 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
   }
   */
 
-  // TODO: Document
-  // NOTE: Consideration was made to make this available through getState() and
-  // it was shelved due to not yet determining how reliable that would be
+  /**
+   * Retrieves local address, derived from Ethereum identity associated with
+   * this service.
+   *
+   * @return {Promise<string>}
+   */
   async fetchLocalAddress() {
     const { address } = await this.fetchLocalIdentity();
 
@@ -89,12 +105,21 @@ export default class LocalDeviceIdentificationService extends UIServiceCore {
     return address;
   }
 
-  // Alias for this.fetchLocalAddress
+  /**
+   * Alias to this.fetchLocalAddress().
+   *
+   * @return {Promise<string>}
+   */
   async fetchDeviceAddress() {
     return this.fetchLocalAddress();
   }
 
-  // TODO: Document
+  /**
+   * Retrieves local public key, derived from Ethereum identity associated with
+   * this service.
+   *
+   * @return {Promise<string}
+   */
   async fetchLocalPublicKey() {
     const { publicKey } = await this.fetchLocalIdentity();
 
