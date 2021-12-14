@@ -10,11 +10,11 @@ import { useCallback, useRef, useState } from "react";
  * migrated to hook versions, without having to write a bunch of useState
  * references for every state property.
  *
- * @param {Object} defaultState
+ * @param {Object} initialState
  * @return {[state: Object, setState: function, changeIdx: number]} Merged state
  */
-export default function useObjectState(defaultState = {}) {
-  const [state, _setMergedState] = useState(defaultState);
+export default function useObjectState(initialState = {}) {
+  const [state, _setMergedState] = useState(initialState);
 
   const refState = useRef(state);
   refState.current = state;
@@ -31,13 +31,11 @@ export default function useObjectState(defaultState = {}) {
           updatedState = JSON.parse(updatedState);
         } catch (err) {
           console.error(
-            "Unable to parse string.  Did you forget to use an Object when setting object state?",
-            {
-              err,
-            }
+            "Unable to parse string into JSON.  Did you forget to use an Object when setting object state?"
           );
-        }
 
+          throw err;
+        }
         break;
 
       case "function":
@@ -49,10 +47,9 @@ export default function useObjectState(defaultState = {}) {
         break;
 
       default:
-        // TODO: Eventually throw this error once we know it doesn't raise a
-        // bunch of warnings in the app as it is (August 6, 2021)
-        console.warn(`Unhandled updatedState type: ${typeof updatedState}`);
-        break;
+        throw new TypeError(
+          `Unhandled useObjectState type: ${typeof updatedState}`
+        );
     }
 
     return _setMergedState(prevState => ({ ...prevState, ...updatedState }));
