@@ -1,4 +1,7 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, {
+  EVT_UPDATED,
+  EVT_DESTROYED,
+} from "@core/classes/UIServiceCore";
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
@@ -7,7 +10,7 @@ import SyncObject from "sync-object";
 
 import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 
-export { EVT_UPDATED };
+export { EVT_UPDATED, EVT_DESTROYED };
 
 // TODO: Document
 export default class SpeakerAppClientPhantomSessionService extends UIServiceCore {
@@ -80,6 +83,8 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
     const writableSyncObject = new LocalPhantomPeerSyncObject({
       deviceAddress: localDeviceAddress,
     });
+
+    // TODO: Map SpeakerAppLocalUserProfileService updates to LocalPhantomPeerSyncObject
 
     const readOnlySyncObject = new SyncObject();
 
