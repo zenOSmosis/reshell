@@ -46,23 +46,8 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
       // Set default state, if acquired from local storage profile
       await this._initLocalStorageProfile();
 
-      const { avatarURL, name, description } = this.getState();
-
-      // Show UI notification here
-      this.useServiceClass(UINotificationService).showNotification({
-        image: avatarURL,
-        title: `You are ${name}`,
-        body: (
-          <div>
-            {description}
-            <AppLinkButton
-              id={LOCAL_USER_PROFILE_REGISTRATION_ID}
-              title="Update User Profile"
-              style={{ float: "right" }}
-            />
-          </div>
-        ),
-      });
+      // Tell the users who they are, with the ability to switch
+      this.showProfileUINotification();
 
       const handleUpdate = debounce(
         () => {
@@ -120,6 +105,31 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
       avatarURL,
       name,
       description,
+    });
+  }
+
+  /**
+   * Show UI notification, letting the user know who they are with the ability
+   * to change profile information.
+   *
+   * @return {void}
+   */
+  showProfileUINotification() {
+    const { avatarURL, name, description } = this.getState();
+
+    this.useServiceClass(UINotificationService).showNotification({
+      image: avatarURL,
+      title: `You are ${name}`,
+      body: (
+        <div>
+          {description}
+          <AppLinkButton
+            id={LOCAL_USER_PROFILE_REGISTRATION_ID}
+            title="Update User Profile"
+            style={{ float: "right" }}
+          />
+        </div>
+      ),
     });
   }
 
