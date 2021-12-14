@@ -9,12 +9,18 @@ export default function Form({
   onSubmit = formValues => null,
   ...rest
 }) {
-  const { setFormRef, handleFormChange, handleFormSubmit, errors, isValid } =
-    useFormController({
-      onSubmit,
-      onChange,
-      validator,
-    });
+  const {
+    setFormRef,
+    handleFormChange,
+    handleFormSubmit,
+    handleFormValidate,
+    errors,
+    isValid,
+  } = useFormController({
+    onSubmit,
+    onChange,
+    validator,
+  });
 
   return (
     <form
@@ -26,7 +32,12 @@ export default function Form({
     >
       {
         // TODO: Modify so that non-functional children presents an error showing how to use.  Look for other examples for how other libraries do this and adapt accordingly.
-        children({ errors, isValid, submit: handleFormSubmit })
+        children({
+          errors,
+          isValid,
+          submit: handleFormSubmit,
+          validate: handleFormValidate,
+        })
       }
     </form>
   );

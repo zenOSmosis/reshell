@@ -43,7 +43,7 @@ export default function useFormController({
   const [errors, setErrors] = useState({});
 
   // TODO: Document
-  const validate = useCallback(
+  const handleFormValidate = useCallback(
     formValues => {
       let hasErrors = false;
 
@@ -71,11 +71,11 @@ export default function useFormController({
   const handleFormChange = useCallback(
     evt => {
       const formValues = getFormValues(formElement);
-      validate(formValues);
+      handleFormValidate(formValues);
 
       onChange(formValues);
     },
-    [validate, formElement, onChange]
+    [handleFormValidate, formElement, onChange]
   );
 
   // TODO: Document
@@ -84,18 +84,18 @@ export default function useFormController({
       evt.preventDefault();
 
       const formValues = getFormValues(formElement);
-      const isValid = validate(formValues);
+      const isValid = handleFormValidate(formValues);
 
       if (isValid) {
         onSubmit(formValues);
       }
     },
-    [validate, formElement, onSubmit]
+    [handleFormValidate, formElement, onSubmit]
   );
 
   return {
     isValid,
-    validate,
+    handleFormValidate,
     handleFormChange,
     handleFormSubmit,
     errors,
