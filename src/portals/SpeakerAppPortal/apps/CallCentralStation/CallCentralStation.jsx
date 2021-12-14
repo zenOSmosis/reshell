@@ -23,6 +23,7 @@ import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/ser
 import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
 import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
 import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
+import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
 export const REGISTRATION_ID = "network";
 
@@ -45,6 +46,7 @@ const CallCentralStation = {
     SpeakerAppNetworkDiscoveryService,
     SpeakerAppLocalZenRTCPeerService,
     SpeakerAppClientPhantomSessionService,
+    SpeakerAppLocalUserProfileService,
   ],
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];

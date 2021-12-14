@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import getFormValues from "@utils/getFormValues";
 
@@ -14,11 +14,36 @@ export default function useFormController({
 }) {
   const [formElement, setFormRef] = useState(null);
 
+  // Perform initial checks to help ensure field values can be obtained and
+  // that the form will not submit when the user doesn't expect it to
+  useEffect(() => {
+    if (formElement) {
+      // Ensure form values can be detected
+      if (!Object.values(getFormValues(formElement)).length) {
+        console.warn(
+          "No form values detected for form element.  All input fields should have a name or id attribute.",
+          formElement
+        );
+      }
+
+      // Ensure button elements have a type attribute
+      for (const el of formElement.elements) {
+        if (el.tagName.toUpperCase() === "BUTTON" && !el.getAttribute("type")) {
+          console.warn(
+            `All button elements should have a type attribute specified or they will default to "submit"`,
+            el
+          );
+          break;
+        }
+      }
+    }
+  }, [formElement]);
+
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({});
 
   // TODO: Document
-  const validate = useCallback(
+  const handleFormValidate = useCallback(
     formValues => {
       let hasErrors = false;
 
@@ -46,11 +71,11 @@ export default function useFormController({
   const handleFormChange = useCallback(
     evt => {
       const formValues = getFormValues(formElement);
-      validate(formValues);
+      handleFormValidate(formValues);
 
       onChange(formValues);
     },
-    [validate, formElement, onChange]
+    [handleFormValidate, formElement, onChange]
   );
 
   // TODO: Document
@@ -59,18 +84,18 @@ export default function useFormController({
       evt.preventDefault();
 
       const formValues = getFormValues(formElement);
-      const isValid = validate(formValues);
+      const isValid = handleFormValidate(formValues);
 
       if (isValid) {
         onSubmit(formValues);
       }
     },
-    [validate, formElement, onSubmit]
+    [handleFormValidate, formElement, onSubmit]
   );
 
   return {
     isValid,
-    validate,
+    handleFormValidate,
     handleFormChange,
     handleFormSubmit,
     errors,

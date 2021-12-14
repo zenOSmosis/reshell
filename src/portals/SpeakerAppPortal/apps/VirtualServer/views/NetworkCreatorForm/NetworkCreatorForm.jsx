@@ -129,8 +129,12 @@ export default function CreateNetwork({
     <Center canOverflow={true} style={{ maxWidth: 720 }}>
       <div className={styles["create-network-form"]}>
         <Form
-        // onSubmit={values => console.log({ values })}
+          onSubmit={handleSubmit}
+          // TODO: Use form validator
         >
+          {
+            // TODO: Use error handler / validity checks
+          }
           {({ errors, isValid }) => (
             <>
               <Section style={{ textAlign: "center" }}>
@@ -316,7 +320,7 @@ export default function CreateNetwork({
                   <button
                     disabled={!networkName.length}
                     style={{ backgroundColor: "green" }}
-                    onClick={handleSubmit}
+                    type="submit"
                   >
                     Launch{" "}
                     <RocketIcon

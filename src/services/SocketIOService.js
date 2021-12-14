@@ -1,4 +1,4 @@
-import UIServiceCore from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_DESTROYED } from "@core/classes/UIServiceCore";
 import SocketChannel from "@shared/SocketChannel";
 
 import { io } from "socket.io-client";
@@ -14,6 +14,12 @@ export const EVT_DISCONNECTED = "disconnected";
 export default class SocketIOService extends UIServiceCore {
   constructor(...args) {
     super(...args);
+
+    this.setState({
+      isConnected: false,
+      // TODO: Include connecting state
+      // TODO: Include error state
+    });
 
     this._socket = null;
 
@@ -60,6 +66,37 @@ export default class SocketIOService extends UIServiceCore {
     }
   }
 
+  /**
+   * @param {function} callback? [default = () => null] An optional callback to
+   * call once connected.
+   * @return {Promise<void>} Resolves once the class instance is ready.
+   */
+  async onceConnected(callback = () => null) {
+    if (this.getIsConnected()) {
+      return callback();
+    } else {
+      return new Promise((resolve, reject) => {
+        function handleResolve() {
+          this.off(EVT_DESTROYED, handleReject);
+
+          callback();
+
+          resolve();
+        }
+
+        function handleReject() {
+          this.off(EVT_CONNECTED, handleResolve);
+
+          reject();
+        }
+
+        this.once(EVT_CONNECTED, handleResolve);
+
+        this.once(EVT_DESTROYED, handleReject);
+      });
+    }
+  }
+
   // TODO: Document
   disconnect() {
     this._socket?.disconnect();
@@ -89,7 +126,9 @@ export default class SocketIOService extends UIServiceCore {
    * @param {Object} requestData [optional]
    * @return {Promise<Object>} requestResponse; TODO: Document
    */
-  fetchSocketAPICall(apiName, requestData = {}) {
+  async fetchSocketAPICall(apiName, requestData = {}) {
+    await this.onceConnected();
+
     return new Promise((resolve, reject) => {
       // TODO: Replace this w/ a shorter hash
       //
