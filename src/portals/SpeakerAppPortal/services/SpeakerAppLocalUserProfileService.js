@@ -5,6 +5,10 @@ import UIServiceCore, {
 
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
 import KeyVaultService from "@services/KeyVaultService";
+import UINotificationService from "@services/UINotificationService";
+
+import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/LocalUserProfile";
+import AppLinkButton from "@components/AppLinkButton";
 
 import { debounce } from "debounce";
 
@@ -13,7 +17,6 @@ import {
   SOCKET_API_ROUTE_GENERATE_PROFILE_NAME,
   SOCKET_API_ROUTE_GENERATE_PROFILE_DESCRIPTION,
 } from "../shared/socketAPIRoutes";
-
 import { KEY_LOCAL_PROFILE } from "@portals/SpeakerAppPortal/local/localStorageKeys";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -42,6 +45,24 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
     (async () => {
       // Set default state, if acquired from local storage profile
       await this._initLocalStorageProfile();
+
+      const { avatarURL, name, description } = this.getState();
+
+      // Show UI notification here
+      this.useServiceClass(UINotificationService).showNotification({
+        image: avatarURL,
+        title: `You are ${name}`,
+        body: (
+          <div>
+            {description}
+            <AppLinkButton
+              id={LOCAL_USER_PROFILE_REGISTRATION_ID}
+              title="Update User Profile"
+              style={{ float: "right" }}
+            />
+          </div>
+        ),
+      });
 
       const handleUpdate = debounce(
         () => {
