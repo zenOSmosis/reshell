@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export const EVT_NOTIFICATION = "notification";
 
+// TODO: Implement ability to store previous notifications so they can be retrieved
+
 /**
  * Handles management of UI notifications.
  */
@@ -20,6 +22,8 @@ export default class UINotificationService extends UIServiceCore {
   // TODO: Document
   // TODO: Borrow API from Apple: https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html#//apple_ref/doc/uid/TP40016239-CH61-SW1
   showNotification({ image, title, body, onClick, onClose = () => null }) {
+    // TODO: Capture notification time
+
     this.setState({
       // Add new notifications to end of stack
       notifications: [

@@ -4,6 +4,9 @@ import styles from "./NotificationStack.module.css";
 
 import Notification from "../Notification";
 
+// TODO: Fix issue where notifications may move up if previous notifications
+// are closed before-hand
+
 // TODO: Document
 // Handles multiple-rendered notifications
 export default function NotificationStack({
