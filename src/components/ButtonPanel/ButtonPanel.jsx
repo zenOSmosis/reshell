@@ -11,6 +11,8 @@ ButtonPanel.propTypes = {
 
       onClick: PropTypes.func.isRequired,
 
+      type: PropTypes.string,
+
       disabled: PropTypes.bool,
 
       // Optional style override
@@ -53,6 +55,7 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
             isSelected,
             style,
             className,
+            type = "button",
             ...args
           },
           idx
@@ -71,6 +74,7 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
             <button
               {...args}
               key={idx}
+              type={type}
               onClick={() => {
                 setSelectedIdx(idx);
 
