@@ -19,7 +19,9 @@ export default class KeyVaultService extends UIServiceCore {
 
     this.setTitle("Key Vault Service");
 
-    this._storageEngineCollection = new StorageEngineCollection();
+    this._storageEngineCollection = this.bindCollectionClass(
+      StorageEngineCollection
+    );
 
     // Proxy storage engine collection EVT_UPDATED events through this instance
     this.proxyOn(this._storageEngineCollection, EVT_UPDATED, (...args) =>
@@ -114,6 +116,7 @@ export default class KeyVaultService extends UIServiceCore {
   }
 }
 
+// TODO: Refactor and document
 class StorageEngineCollection extends PhantomCollection {
   // TODO: Document
   addChild(StorageEngineClass) {
