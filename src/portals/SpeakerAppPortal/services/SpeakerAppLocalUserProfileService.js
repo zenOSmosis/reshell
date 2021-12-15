@@ -51,7 +51,14 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
       await this._initLocalStorageProfile();
 
       // Tell the users who they are, with the ability to switch
-      this.showProfileUINotification();
+      (() => {
+        // NOTE: The timeout is used to give the UI a little time to "settle"
+        // (i.e. "fade-in", etc.) before showing the notification
+        const to = setTimeout(() => {
+          this.showProfileUINotification();
+        }, 1000);
+        this.registerShutdownHandler(() => clearTimeout(to));
+      })();
 
       const handleUpdate = debounce(
         () => {
