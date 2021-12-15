@@ -125,7 +125,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
           {description}
           <AppLinkButton
             id={LOCAL_USER_PROFILE_REGISTRATION_ID}
-            title="Update User Profile"
+            title="Update Your Profile"
             style={{ float: "right" }}
           />
         </div>
