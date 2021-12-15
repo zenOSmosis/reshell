@@ -1222,6 +1222,6 @@ export default class ZenRTCPeer extends PhantomCore {
       }
     })();
 
-    await super.destroy();
+    return super.destroy();
   }
 }
