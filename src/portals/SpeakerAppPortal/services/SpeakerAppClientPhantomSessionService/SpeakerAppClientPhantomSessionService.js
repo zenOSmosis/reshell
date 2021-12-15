@@ -22,6 +22,8 @@ import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+// TODO: Add events for when remote peers connect / disconnect; add UI notifications
+
 // TODO: Document
 export default class SpeakerAppClientPhantomSessionService extends UIServiceCore {
   constructor(...args) {
@@ -89,7 +91,6 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       LocalDeviceIdentificationService
     ).fetchDeviceAddress();
 
-    // TODO: Handle user profile syncing, etc
     const writableSyncObject = new LocalPhantomPeerSyncObject({
       [PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS]: localDeviceAddress,
     });
