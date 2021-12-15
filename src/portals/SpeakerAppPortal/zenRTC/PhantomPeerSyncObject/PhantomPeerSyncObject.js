@@ -29,5 +29,33 @@ export default class PhantomPeerSyncObject extends SyncObject {
     });
   }
 
+  /**
+   * @return {string | null}
+   */
+  getDeviceAddress() {
+    return this.getState()[STATE_KEY_DEVICE_ADDRESS];
+  }
+
+  /**
+   * @return {string | null}
+   */
+  getAvatarURL() {
+    return this.getState()[STATE_KEY_AVATAR_URL];
+  }
+
+  /**
+   * @return {string | null}
+   */
+  getProfileName() {
+    return this.getState()[STATE_KEY_NAME];
+  }
+
+  /**
+   * @return {string | null}
+   */
+  getProfileDescription() {
+    return this.getState()[STATE_KEY_DESCRIPTION];
+  }
+
   // TODO: Include helper methods to obtain media stream tracks, etc. based off of media object
 }

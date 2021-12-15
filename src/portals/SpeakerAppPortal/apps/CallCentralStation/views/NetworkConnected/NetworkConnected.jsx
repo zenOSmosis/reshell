@@ -1,12 +1,15 @@
 import Center from "@components/Center";
+import Avatar from "@components/Avatar";
 
 export default function NetworkConnected({ remotePhantomPeers = [] }) {
   // TODO: If no remote peers, show a notice
 
   return (
-    <Center>
+    <Center canOverflow={true}>
       {remotePhantomPeers.map(phantomPeer => {
-        const { deviceAddress } = phantomPeer.getState();
+        const deviceAddress = phantomPeer.getDeviceAddress();
+        const avatarURL = phantomPeer.getAvatarURL();
+        const profileName = phantomPeer.getProfileName();
 
         // TODO: If no device address, show loading indicator
 
@@ -15,12 +18,17 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
             key={deviceAddress}
             style={{
               display: "inline-block",
-              width: 320,
-              height: 320,
+              width: 150,
+              height: 150,
               border: "1px #ccc solid",
             }}
           >
-            {deviceAddress}
+            <Center>
+              <div>
+                <Avatar src={avatarURL} />
+              </div>
+              <div>{profileName}</div>
+            </Center>
           </div>
         );
       })}
