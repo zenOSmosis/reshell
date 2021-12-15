@@ -195,6 +195,16 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     return localZenRTCPeer.connect();
   }
 
+  /**
+   * Retrieves number of seconds since the WebRTC connection was made,
+   * returning 0 if no connection is present.
+   *
+   * @return {number}
+   **/
+  getConnectionUptime() {
+    return this._localZenRTCPeer?.getConnectionUptime() || 0;
+  }
+
   // TODO: Document
   async disconnect() {
     this._localZenRTCPeer?.destroy();

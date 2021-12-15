@@ -7,6 +7,7 @@ import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 import NoWrap from "@components/NoWrap";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
+import Timer from "@components/Timer";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
@@ -48,6 +49,35 @@ const CallCentralStation = {
     SpeakerAppClientPhantomSessionService,
     SpeakerAppLocalUserProfileService,
   ],
+  titleBarView: function View({ windowController, appServices }) {
+    const title = windowController.getTitle();
+    const localZenRTCPeerService =
+      appServices[SpeakerAppLocalZenRTCPeerService];
+
+    const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
+
+    return !isZenRTCConnected ? (
+      <div
+        style={{ fontWeight: "bold", textAlign: "center", marginLeft: "10%" }}
+      >
+        {title}
+      </div>
+    ) : (
+      <NoWrap>
+        <button
+          style={{ backgroundColor: "red" }}
+          onClick={localZenRTCPeerService.disconnect}
+        >
+          Disconnect
+        </button>
+        <Timer
+          onTick={localZenRTCPeerService.getConnectionUptime}
+          style={{ marginLeft: 10 }}
+        />
+        <span style={{ fontWeight: "bold", marginLeft: 10 }}>{title}</span>
+      </NoWrap>
+    );
+  },
   view: function View({ appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkDiscoveryService =
@@ -90,20 +120,10 @@ const CallCentralStation = {
             </NoWrap>
             {
               // [networks]  [private network]
-            }
-            <NoWrap style={{ float: "right" }}>
-              {isZenRTCConnected && (
-                <button
-                  style={{ backgroundColor: "red" }}
-                  onClick={localZenRTCPeerService.disconnect}
-                >
-                  Disconnect
-                </button>
-              )}
-              {/*
+              /*
                 <button>Search</button>
-                */}
-            </NoWrap>
+                */
+            }
           </Padding>
         </Header>
         <Content>
