@@ -40,6 +40,9 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
             ) : (
               <Center>
                 <div>
+                  {
+                    // TODO: Use AudioMediaStreamTrackLevelAvatar instead (or equivalent)
+                  }
                   <Avatar src={avatarURL} />
                 </div>
                 <div>{profileName}</div>
