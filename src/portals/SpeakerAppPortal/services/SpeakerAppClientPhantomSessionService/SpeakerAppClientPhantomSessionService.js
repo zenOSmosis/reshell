@@ -4,8 +4,18 @@ import UIServiceCore, {
 } from "@core/classes/UIServiceCore";
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
+import SpeakerAppLocalUserProfileService, {
+  STATE_KEY_AVATAR_URL as USER_PROFILE_STATE_KEY_AVATAR_URL,
+  STATE_KEY_NAME as USER_PROFILE_STATE_KEY_NAME,
+  STATE_KEY_DESCRIPTION as USER_PROFILE_STATE_KEY_DESCRIPTION,
+} from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
-import LocalPhantomPeerSyncObject from "./LocalPhantomPeerSyncObject";
+import LocalPhantomPeerSyncObject, {
+  STATE_KEY_DEVICE_ADDRESS as PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS,
+  STATE_KEY_AVATAR_URL as PHANTOM_PEER_STATE_KEY_AVATAR_URL,
+  STATE_KEY_NAME as PHANTOM_PEER_STATE_KEY_NAME,
+  STATE_KEY_DESCRIPTION as PHANTOM_PEER_STATE_KEY_DESCRIPTION,
+} from "./LocalPhantomPeerSyncObject";
 import SyncObject from "sync-object";
 
 import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
@@ -81,10 +91,35 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     // TODO: Handle user profile syncing, etc
     const writableSyncObject = new LocalPhantomPeerSyncObject({
-      deviceAddress: localDeviceAddress,
+      [PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS]: localDeviceAddress,
     });
 
-    // TODO: Map SpeakerAppLocalUserProfileService updates to LocalPhantomPeerSyncObject
+    // Map SpeakerAppLocalUserProfileService updates to LocalPhantomPeerSyncObject
+    (() => {
+      const profileService = this.useServiceClass(
+        SpeakerAppLocalUserProfileService
+      );
+
+      const syncProfile = () => {
+        const {
+          [USER_PROFILE_STATE_KEY_AVATAR_URL]: avatarURL,
+          [USER_PROFILE_STATE_KEY_NAME]: name,
+          [USER_PROFILE_STATE_KEY_DESCRIPTION]: description,
+        } = profileService.getState();
+
+        writableSyncObject.setState({
+          [PHANTOM_PEER_STATE_KEY_AVATAR_URL]: avatarURL,
+          [PHANTOM_PEER_STATE_KEY_NAME]: name,
+          [PHANTOM_PEER_STATE_KEY_DESCRIPTION]: description,
+        });
+      };
+
+      // Perform initial sync
+      syncProfile();
+
+      // Sync profile on service updates
+      writableSyncObject.proxyOn(profileService, EVT_UPDATED, syncProfile);
+    })();
 
     const readOnlySyncObject = new SyncObject();
 
