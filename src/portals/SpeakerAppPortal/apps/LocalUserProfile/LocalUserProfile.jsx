@@ -8,7 +8,11 @@ import useDirtyState from "@hooks/useDirtyState";
 
 import toFormValues from "@utils/toFormValues";
 
-import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
+import SpeakerAppLocalUserProfileService, {
+  STATE_KEY_AVATAR_URL,
+  STATE_KEY_NAME,
+  STATE_KEY_DESCRIPTION,
+} from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
 import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
 
@@ -36,7 +40,11 @@ const LocalUserProfile = {
       }
     }, [isDirty, state, localProfileService]);
 
-    const { avatarURL, name, description } = state;
+    const {
+      [STATE_KEY_AVATAR_URL]: avatarURL,
+      [STATE_KEY_NAME]: name,
+      [STATE_KEY_DESCRIPTION]: description,
+    } = state;
 
     /**
      * Auto-generate avatar and save it as dirty state.

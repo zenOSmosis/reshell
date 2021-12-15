@@ -21,15 +21,19 @@ import { KEY_LOCAL_PROFILE } from "@portals/SpeakerAppPortal/local/localStorageK
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
+export const STATE_KEY_AVATAR_URL = "avatarURL";
+export const STATE_KEY_NAME = "name";
+export const STATE_KEY_DESCRIPTION = "description";
+
 // TODO: Document
 export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
     this.setState({
-      avatarURL: null,
-      name: null,
-      description: null,
+      [STATE_KEY_AVATAR_URL]: null,
+      [STATE_KEY_NAME]: null,
+      [STATE_KEY_DESCRIPTION]: null,
     });
 
     this.setTitle("Speaker.app Local User Profile Service");
@@ -125,7 +129,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
           {description}
           <AppLinkButton
             id={LOCAL_USER_PROFILE_REGISTRATION_ID}
-            title="Update User Profile"
+            title="Update Your Profile"
             style={{ float: "right" }}
           />
         </div>
@@ -137,7 +141,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
    * @return {string | null}
    */
   getAvatarURL() {
-    return this.getState().avatarURL;
+    return this.getState()[STATE_KEY_AVATAR_URL];
   }
 
   /**
@@ -157,7 +161,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
    * @return {string | null}
    */
   getName() {
-    return this.getState().name;
+    return this.getState()[STATE_KEY_NAME];
   }
 
   /**
@@ -177,7 +181,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
    * @return {string | null}
    */
   getDescription() {
-    return this.getState().description;
+    return this.getState()[STATE_KEY_DESCRIPTION];
   }
 
   /**
