@@ -158,9 +158,18 @@ export default class ReShellCore extends PhantomCore {
     });
 
     // Wipe existing styling
-    [...document.getElementsByTagName("style")].forEach(elStyle =>
-      elStyle.parentNode.removeChild(elStyle)
-    );
+    (() => {
+      const existingStyles = [...document.getElementsByTagName("style")];
+
+      // IMPORTANT: The timeout is utilized so that there is not a white "pop"
+      // during style transitioning, allowing time for JS-driven styles to be
+      // loaded
+      setTimeout(() => {
+        existingStyles.forEach(elStyle =>
+          elStyle.parentNode.removeChild(elStyle)
+        );
+      }, 1000);
+    })();
 
     this._elBase = document.createElement("div");
     document.body.appendChild(this._elBase);

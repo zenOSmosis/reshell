@@ -78,7 +78,7 @@ export default function Desktop({
       }
       <ModalProvider>
         <NotificationProvider>
-          <Cover>
+          <Cover style={{ backgroundColor: "#424242" }}>
             {
               // TODO: Refactor
             }

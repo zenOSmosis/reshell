@@ -1,7 +1,8 @@
 import FullViewport from "@components/FullViewport";
 
+import Animation from "@components/Animation";
 import Center from "@components/Center";
-
+import Cover from "@components/Cover";
 import ParadigmProvider from "./providers/ParadigmProvider";
 import UIServicesProvider from "./providers/UIServicesProvider";
 import AppRegistrationsProvider from "./providers/AppRegistrationsProvider";
@@ -11,7 +12,6 @@ import React from "react";
 
 // TODO: Document and add prop-types
 export default function PortalWrapperView({ portal }) {
-  const PortalView = portal;
   return (
     <FullViewport>
       <ParadigmProvider>
@@ -19,8 +19,14 @@ export default function PortalWrapperView({ portal }) {
           <AppRegistrationsProvider>
             <AppRuntimesProvider>
               <DesktopProvider>
-                <React.Suspense fallback={<Center>Loading portal...</Center>}>
-                  <PortalView />
+                <React.Suspense
+                  fallback={
+                    <Center style={{ fontWeight: "bold" }}>
+                      Loading portal...
+                    </Center>
+                  }
+                >
+                  <FadeOutPortalView portal={portal} />
                 </React.Suspense>
               </DesktopProvider>
             </AppRuntimesProvider>
@@ -28,5 +34,30 @@ export default function PortalWrapperView({ portal }) {
         </UIServicesProvider>
       </ParadigmProvider>
     </FullViewport>
+  );
+}
+
+// Sub-wrapper for portal view which fades it out
+function FadeOutPortalView({ portal, initialBackgroundColor = "#000" }) {
+  const PortalView = portal;
+
+  return (
+    <>
+      <Cover>
+        <PortalView />
+      </Cover>
+      <Cover
+        style={{
+          // Enable UI to be usable below cover
+          pointerEvents: "none",
+        }}
+      >
+        <Animation
+          animationName="fadeOut"
+          animationDuration="3s"
+          style={{ backgroundColor: initialBackgroundColor }}
+        />
+      </Cover>
+    </>
   );
 }
