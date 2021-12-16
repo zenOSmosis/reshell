@@ -16,6 +16,7 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
   addChild(mediaStreamTrack) {
     if (mediaStreamTrack.kind === "audio") {
       if (!this.getChildWithKey(mediaStreamTrack.id)) {
+        // TODO: Utilize ArbitraryPhantomWrapper from PhantomCore 2.2.0
         const phantomAudioWrapper = new PhantomCore();
         phantomAudioWrapper.__audioMediaStreamTrack = mediaStreamTrack;
 
