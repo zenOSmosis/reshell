@@ -23,7 +23,7 @@ const LocalUserProfile = {
   title: "User Profile",
   style: {
     width: 640,
-    height: 480,
+    height: 680,
   },
   serviceClasses: [SpeakerAppLocalUserProfileService],
   view: function View({ appServices }) {
