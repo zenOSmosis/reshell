@@ -94,18 +94,16 @@ export default class OutputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
-  addOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
+  addOutputMediaStreamTrack(mediaStreamTrack) {
     return this._outputAudioMediaStreamTrackCollection.addOutputMediaStreamTrack(
-      mediaStreamTrack,
-      mediaStream
+      mediaStreamTrack
     );
   }
 
   // TODO: Document
-  removeOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
+  removeOutputMediaStreamTrack(mediaStreamTrack) {
     return this._outputAudioMediaStreamTrackCollection.removeOutputMediaStreamTrack(
-      mediaStreamTrack,
-      mediaStream
+      mediaStreamTrack
     );
   }
 }
