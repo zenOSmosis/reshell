@@ -102,7 +102,7 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
 
     await this._virtualServer.onceReady();
 
-    this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
+    this.setState({ isHosting: true, realmId, channelId });
 
     this.useServiceClass(UINotificationService).showNotification({
       title: "You are now hosting",
