@@ -194,12 +194,14 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
                   signalBrokerId
                 );
 
-              // Emit EVT_UPDATED on remotePhantomPeer so that any track
-              // listeners can know to update
-              //
-              // NOTE: This also emits when localZenRTCPeer has updates (i.e.
-              // changed tracks, etc)
-              remotePhantomPeer.emit(EVT_UPDATED);
+              if (remotePhantomPeer) {
+                // Emit EVT_UPDATED on remotePhantomPeer so that any track
+                // listeners can know to update
+                //
+                // NOTE: This also emits when localZenRTCPeer has updates (i.e.
+                // changed tracks, etc)
+                remotePhantomPeer.emit(EVT_UPDATED);
+              }
             } else {
               // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
               // TODO: Emit EVT_UPDATED on localPhantomPeer
