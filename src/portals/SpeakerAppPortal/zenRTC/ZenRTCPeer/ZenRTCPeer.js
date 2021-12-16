@@ -8,6 +8,7 @@ import SDPAdapter from "./utils/sdp-adapter";
 
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
+// TODO: Replace handling w/ PhantomCollection extension
 import {
   getTrackMediaStream,
   // getListHasMediaStream,
