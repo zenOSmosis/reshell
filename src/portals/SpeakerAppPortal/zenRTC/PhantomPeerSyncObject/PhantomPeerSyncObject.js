@@ -58,7 +58,7 @@ export default class PhantomPeerSyncObject extends SyncObject {
   }
 
   /**
-   * MediaStream instances which the peer is sending.
+   * MediaStream IDs which the peer is sending.
    *
    * IMPORTANT: If this is a remote peer, this represents the MediaStream IDs
    * which the remote peer is sending (not streams which the local is sending
