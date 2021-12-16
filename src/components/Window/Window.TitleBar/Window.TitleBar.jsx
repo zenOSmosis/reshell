@@ -4,13 +4,13 @@ import Full from "@components/Full";
 import styles from "../Window.module.css";
 
 import {
-  WindowTitlebarMaximizeButton,
-  WindowTitlebarMinimizeButton,
-  WindowTitlebarCloseButton,
-} from "./Window.Titlebar.Button";
+  WindowTitleBarMaximizeButton,
+  WindowTitleBarMinimizeButton,
+  WindowTitleBarCloseButton,
+} from "./Window.TitleBar.Button";
 
-export default function WindowTitlebar({
-  onElTitlebar,
+export default function WindowTitleBar({
+  onElTitleBar,
   title,
   onRestoreOrMaximize,
   onMinimize,
@@ -23,8 +23,8 @@ export default function WindowTitlebar({
   return (
     <div
       {...rest}
-      ref={onElTitlebar}
-      className={styles["titlebar"]}
+      ref={onElTitleBar}
+      className={styles["title-bar"]}
       onDoubleClick={onRestoreOrMaximize}
     >
       {TitleBarView ? (
@@ -42,9 +42,9 @@ export default function WindowTitlebar({
       )}
 
       <NoWrap className={styles["window-controls"]}>
-        <WindowTitlebarMaximizeButton onClick={onRestoreOrMaximize} />
-        <WindowTitlebarMinimizeButton onClick={onMinimize} />
-        <WindowTitlebarCloseButton onClick={onClose} />
+        <WindowTitleBarMaximizeButton onClick={onRestoreOrMaximize} />
+        <WindowTitleBarMinimizeButton onClick={onMinimize} />
+        <WindowTitleBarCloseButton onClick={onClose} />
       </NoWrap>
     </div>
   );

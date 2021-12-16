@@ -5,7 +5,7 @@ import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
 
 import WindowBorder from "./Window.Border";
-import WindowTitlebar from "./Window.Titlebar";
+import WindowTitleBar from "./Window.TitleBar";
 
 import styles from "./Window.module.css";
 import classNames from "classnames";
@@ -204,7 +204,7 @@ const WindowView = ({
           >
             <Layout>
               <Header>
-                <WindowTitlebar
+                <WindowTitleBar
                   {...dragBind()}
                   title={title}
                   onRestoreOrMaximize={onRestoreOrMaximize}

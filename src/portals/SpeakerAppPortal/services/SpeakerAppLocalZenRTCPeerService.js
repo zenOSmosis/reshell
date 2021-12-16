@@ -105,7 +105,10 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     );
 
     const { writableSyncObject, readOnlySyncObject } =
-      await phantomPeerService.initZenRTCPeerSyncObject({ realmId, channelId });
+      await phantomPeerService.initZenRTCPeerSyncObjects({
+        realmId,
+        channelId,
+      });
 
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
@@ -117,8 +120,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
-    const localSignalBrokerId = localZenRTCPeer.getSignalBrokerId();
-    phantomPeerService.setLocalSignalBrokerId(localSignalBrokerId);
+    // Register the localZenRTCPeer with the phantomPeerService
+    phantomPeerService.setLocalZenRTCPeer(localZenRTCPeer);
 
     localZenRTCPeer.registerShutdownHandler(() =>
       phantomPeerService.endZenRTCPeerSession()
@@ -193,6 +196,16 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     })();
 
     return localZenRTCPeer.connect();
+  }
+
+  /**
+   * Retrieves number of seconds since the WebRTC connection was made,
+   * returning 0 if no connection is present.
+   *
+   * @return {number}
+   **/
+  getConnectionUptime() {
+    return this._localZenRTCPeer?.getConnectionUptime() || 0;
   }
 
   // TODO: Document

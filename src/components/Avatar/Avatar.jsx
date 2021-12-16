@@ -5,11 +5,13 @@ import styles from "./Avatar.module.css";
 
 import PropTypes from "prop-types";
 
+// TODO: Add remaining prop-types
 Avatar.propTypes = {
   // NOTE (jh): This was added for consistency between image and font-based avatars
-  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
+// TODO: Document
 export default function Avatar({
   className,
   src,

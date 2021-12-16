@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Center from "@components/Center";
 import Avatar from "@components/Avatar";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
+import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
 
 export default function NetworkConnected({ remotePhantomPeers = [] }) {
   const isInSync = useFakeIsInSync();
@@ -23,6 +24,8 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
         const deviceAddress = phantomPeer.getDeviceAddress();
         const avatarURL = phantomPeer.getAvatarURL();
         const profileName = phantomPeer.getProfileName();
+        const outgoingMediaStreamTracks =
+          phantomPeer.getOutgoingMediaStreamTracks();
 
         return (
           <div
@@ -40,9 +43,25 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
             ) : (
               <Center>
                 <div>
+                  {
+                    // TODO: Use AudioMediaStreamTrackLevelAvatar instead (or equivalent)
+                  }
                   <Avatar src={avatarURL} />
                 </div>
                 <div>{profileName}</div>
+                <div>
+                  {outgoingMediaStreamTracks
+                    .filter(
+                      mediaStreamTrack => mediaStreamTrack.kind === "audio"
+                    )
+                    .map(mediaStreamTrack => (
+                      <AudioMediaStreamTrackLevelMeter
+                        key={mediaStreamTrack.id}
+                        mediaStreamTrack={mediaStreamTrack}
+                        style={{ height: 50 }}
+                      />
+                    ))}
+                </div>
               </Center>
             )}
           </div>

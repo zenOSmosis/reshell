@@ -78,7 +78,7 @@ of the drag zone outside of the windows. */
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
 }
 
-.window .titlebar {
+.window .title-bar {
   background-color: #333335;
   color: #999;
   border-bottom: 1px rgba(0, 0, 0, 0.4) solid;
@@ -98,22 +98,22 @@ of the drag zone outside of the windows. */
   Also enables all child elements of title bar to act as actionable drag
   elements (i.e. able to drag a when event target is a button, etc.
 */
-.window .titlebar,
-.window .titlebar * {
+.window .title-bar,
+.window .title-bar * {
   touch-action: none !important;
 }
 
 /* @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
-.window.dragging .titlebar {
+.window.dragging .title-bar {
   cursor: grabbing;
 }
 
-.window.active .titlebar {
+.window.active .title-bar {
   background-color: #3e3f41;
   color: #fff;
 }
 
-.window .titlebar .title {
+.window .title-bar .title {
   text-align: center;
 
   font-weight: 600;
@@ -127,13 +127,13 @@ of the drag zone outside of the windows. */
 }
 
 /* @see https://stackoverflow.com/a/36182782 */
-.window .titlebar .window-controls {
+.window .title-bar .window-controls {
   margin-left: auto;
   order: 2;
 }
 
 /* TODO: Use rounded triangles instead of round buttons? */
-.window .titlebar .window-controls button {
+.window .title-bar .window-controls button {
   outline: 0px;
   padding: 0px;
   margin: 4px;
@@ -143,20 +143,20 @@ of the drag zone outside of the windows. */
   background-color: #504e52;
 }
 
-.window.active .titlebar .window-controls button.maximize,
-.window .titlebar .window-controls:hover button.maximize {
+.window.active .title-bar .window-controls button.maximize,
+.window .title-bar .window-controls:hover button.maximize {
   background-color: #00cd1e;
   filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.minimize,
-.window .titlebar .window-controls:hover button.minimize {
+.window.active .title-bar .window-controls button.minimize,
+.window .title-bar .window-controls:hover button.minimize {
   background-color: #ffbc00;
   filter: grayscale(0);
 }
 
-.window.active .titlebar .window-controls button.close,
-.window .titlebar .window-controls:hover button.close {
+.window.active .title-bar .window-controls button.close,
+.window .title-bar .window-controls:hover button.close {
   background-color: #ff5250;
   filter: grayscale(0);
 }

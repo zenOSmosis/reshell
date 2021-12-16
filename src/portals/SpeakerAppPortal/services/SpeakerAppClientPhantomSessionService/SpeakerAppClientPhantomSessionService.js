@@ -3,6 +3,10 @@ import UIServiceCore, {
   EVT_DESTROYED,
 } from "@core/classes/UIServiceCore";
 
+import { debounce } from "debounce";
+
+import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
+
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 import SpeakerAppLocalUserProfileService, {
   STATE_KEY_AVATAR_URL as USER_PROFILE_STATE_KEY_AVATAR_URL,
@@ -31,12 +35,16 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     this.setTitle("Speaker.app Client Phantom Session Service");
 
-    this.setState({
+    // TODO: Use setInitialState / reset once https://github.com/zenOSmosis/phantom-core/issues/112 is implemented
+    this._initialState = Object.freeze({
       isSessionActive: false,
       realmId: null,
       channelId: null,
+      localZenRTCPeer: null,
       localSignalBrokerId: null,
     });
+
+    this.setState(this._initialState);
 
     this._zenRTCPeerSyncObjects = {};
 
@@ -79,12 +87,8 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
   }
 
   // TODO: Document
-  setLocalSignalBrokerId(localSignalBrokerId) {
-    this.setState({ localSignalBrokerId });
-  }
-
-  // TODO: Document
-  async initZenRTCPeerSyncObject({ realmId, channelId }) {
+  // IMPORTANT: This is called before the localZenRTCPeer is instantiated
+  async initZenRTCPeerSyncObjects({ realmId, channelId }) {
     await this.endZenRTCPeerSession();
 
     const localDeviceAddress = await this.useServiceClass(
@@ -124,53 +128,101 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     const readOnlySyncObject = new SyncObject();
 
-    (() => {
-      // TODO: RemotePhantomPeerSyncObject multiplexing, etc.
-      // TODO: Refactor
-      readOnlySyncObject.on(EVT_UPDATED, () => {
-        const localSignalBrokerId = this.getState().localSignalBrokerId;
+    // Remove all PhantomPeers once read-only state is destructed
+    readOnlySyncObject.registerShutdownHandler(() =>
+      this._remotePhantomPeerCollection.destroyAllChildren()
+    );
 
-        const { peers } = readOnlySyncObject.getState();
-
-        for (const signalBrokerId of Object.keys(peers)) {
-          const peerState = peers[signalBrokerId];
-
-          const isLocal = signalBrokerId === localSignalBrokerId;
-
-          if (!isLocal) {
-            this._remotePhantomPeerCollection.syncRemotePeerState(
-              peerState,
-              signalBrokerId
-            );
-          }
-        }
-      });
-
-      // Remove all PhantomPeers once read-only state is destructed
-      readOnlySyncObject.registerShutdownHandler(() =>
-        this._remotePhantomPeerCollection.destroyAllChildren()
-      );
-    })();
+    // Set active state on next event tick
+    setImmediate(() => {
+      this.setState({ isSessionActive: true, realmId, channelId });
+    });
 
     this._zenRTCPeerSyncObjects = {
       writableSyncObject,
       readOnlySyncObject,
     };
 
-    this.setState({ isSessionActive: true, realmId, channelId });
-
     return this._zenRTCPeerSyncObjects;
+  }
+
+  /**
+   * @param {LocalZenRTCPeer} localZenRTCPeer
+   */
+  setLocalZenRTCPeer(localZenRTCPeer) {
+    if (!(localZenRTCPeer instanceof LocalZenRTCPeer)) {
+      throw new TypeError("localZenRTCPeer is not a LocalZenRTCPeer instance");
+    }
+
+    const localSignalBrokerId = localZenRTCPeer.getSignalBrokerId();
+
+    this.setState({
+      localSignalBrokerId,
+      localZenRTCPeer,
+    });
+
+    const { readOnlySyncObject } = this._zenRTCPeerSyncObjects;
+
+    // TODO: Refactor
+    // Initialize / update Local/RemotePhantomPeerSyncObject instances
+    (() => {
+      // TODO: Split updates between remote profile updates
+      // (readOnlySyncObject) and track updates (readOnlySyncObject /
+      // localZenRTCPeerUpdates)
+      const handleUpdate = debounce(
+        async () => {
+          const { peers } = readOnlySyncObject.getState();
+
+          if (!peers) {
+            return;
+          }
+
+          for (const signalBrokerId of Object.keys(peers)) {
+            const peerState = peers[signalBrokerId];
+
+            const isLocal = signalBrokerId === localSignalBrokerId;
+
+            if (!isLocal) {
+              await this._remotePhantomPeerCollection.syncRemotePeerState(
+                peerState,
+                signalBrokerId,
+                localZenRTCPeer
+              );
+
+              const remotePhantomPeer =
+                this._remotePhantomPeerCollection.getRemotePhantomPeerWithSignalBrokerId(
+                  signalBrokerId
+                );
+
+              // Emit EVT_UPDATED on remotePhantomPeer so that any track
+              // listeners can know to update
+              //
+              // NOTE: This also emits when localZenRTCPeer has updates (i.e.
+              // changed tracks, etc)
+              remotePhantomPeer.emit(EVT_UPDATED);
+            } else {
+              // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
+              // TODO: Emit EVT_UPDATED on localPhantomPeer
+            }
+          }
+        },
+        100,
+        // Debounce on trailing edge
+        false
+      );
+
+      this.proxyOn(readOnlySyncObject, EVT_UPDATED, handleUpdate);
+      this.proxyOn(localZenRTCPeer, EVT_UPDATED, handleUpdate);
+    })();
   }
 
   // TODO: Document
   async endZenRTCPeerSession() {
-    this.setState({
-      isSessionActive: false,
-      realmId: null,
-      channelId: null,
-      localSignalBrokerId: null,
-    });
+    // Reset state
+    // TODO: Use reset method once https://github.com/zenOSmosis/phantom-core/issues/112 is implemented
+    this.setState(this._initialState);
 
+    // Destruct the attached sync objects
     await Promise.all(
       Object.values(this._zenRTCPeerSyncObjects).map(syncObject =>
         syncObject.destroy()

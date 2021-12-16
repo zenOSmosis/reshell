@@ -23,7 +23,7 @@ const LocalUserProfile = {
   title: "User Profile",
   style: {
     width: 640,
-    height: 480,
+    height: 680,
   },
   serviceClasses: [SpeakerAppLocalUserProfileService],
   view: function View({ appServices }) {
@@ -36,7 +36,13 @@ const LocalUserProfile = {
     // Sync non-dirty state to localProfileService
     useEffect(() => {
       if (!isDirty) {
-        localProfileService.setState(state);
+        const { avatarURL, name, description } = state;
+
+        localProfileService.setState({
+          [STATE_KEY_AVATAR_URL]: avatarURL,
+          [STATE_KEY_NAME]: name,
+          [STATE_KEY_DESCRIPTION]: description,
+        });
       }
     }, [isDirty, state, localProfileService]);
 
