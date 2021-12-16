@@ -191,9 +191,6 @@ export default class ZenRTCPeer extends PhantomCore {
     this._offerToReceiveAudio = offerToReceiveAudio;
     this._offerToReceiveVideo = offerToReceiveVideo;
 
-    this._capabilities = [];
-    this._remoteCapabilities = [];
-
     this._isConnected = false;
 
     this._sdpOffer = null;
@@ -222,18 +219,6 @@ export default class ZenRTCPeer extends PhantomCore {
 
     /** @see https://github.com/feross/simple-peer */
     this._webrtcPeer = null;
-
-    // TODO: This is just an experiment with sending available CPU cores across the wire
-    // Either make addCapability accept an optional value, or handle this differently
-    //
-    // TODO: Refactor this so that the PhantomServer virtual peer can use it
-    (() => {
-      const hwConcurrency = navigator.hardwareConcurrency;
-
-      if (hwConcurrency) {
-        this.addCapability(`CORE-${hwConcurrency}`);
-      }
-    })();
 
     // Init modules
     (() => {
@@ -440,39 +425,6 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   setOfferToReceiveVideo(offerToReceiveVideo) {
     this._offerToReceiveVideo = offerToReceiveVideo;
-  }
-
-  // TODO: Document
-  // TODO: Remove?
-  getCapabilities() {
-    return this._capabilities;
-  }
-
-  // TODO: Document
-  // TODO: Remove?
-  getRemoteCapabilities() {
-    return this._remoteCapabilities;
-  }
-
-  /**
-   * IMPORTANT: This currently will only send capabilities on the next WebRTC signal.
-   *
-   * TODO: Remove?
-   *
-   * @param {string} capability
-   */
-  addCapability(name) {
-    if (!this._capabilities.includes(name)) {
-      this._capabilities.push(name);
-    }
-  }
-
-  // TODO: Document
-  // TODO: Remove?
-  _addRemoteCapability(name) {
-    if (!this._remoteCapabilities.includes(name)) {
-      this._remoteCapabilities.push(name);
-    }
   }
 
   /**
@@ -702,28 +654,14 @@ export default class ZenRTCPeer extends PhantomCore {
   async sendZenRTCSignal(data) {
     this.emit(EVT_ZENRTC_SIGNAL, {
       signal: data,
-
-      // TODO: Don't send capabilities which have already been sent (in order
-      // to save some bandwidth)
-      // TODO: Ensure that the other side has actually received all sent
-      // capabilities
-      capabilities: this._capabilities,
     });
   }
 
   /**
    * @param {Object} params TODO: Document
    */
-  async receiveZenRTCSignal({
-    signal,
-    capabilities,
-    // offerConstraints,
-  }) {
+  async receiveZenRTCSignal({ signal }) {
     if (this._webrtcPeer) {
-      for (const name of capabilities) {
-        this._addRemoteCapability(name);
-      }
-
       signal.sdp = this._handleSdpAnswerTransform(signal.sdp);
 
       try {

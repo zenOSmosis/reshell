@@ -20,8 +20,6 @@ import VirtualServerZenRTCSignalBroker from "./VirtualServerZenRTCSignalBroker";
 
 // import { getNextPeerCSSColor } from "@shared/peerCSSColorPalette";
 
-import { CAPABILITY_NETWORK_VIRTUAL_SERVER } from "../../capabilities";
-
 export {
   EVT_UPDATED,
   EVT_CONNECTING,
@@ -76,8 +74,6 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
     this._clientSignalBrokerId = clientSignalBrokerId;
 
     // this._cssColor = getNextPeerCSSColor();
-
-    this.addCapability(CAPABILITY_NETWORK_VIRTUAL_SERVER);
 
     // TODO: Move to VirtualServerZenRTCManager
     if (VirtualServerZenRTCPeer.getInstances().length > MAX_INSTANCES) {
