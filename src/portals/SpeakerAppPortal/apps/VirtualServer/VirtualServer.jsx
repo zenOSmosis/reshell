@@ -5,6 +5,7 @@ import Layout, { Header, Content, Footer } from "@components/Layout";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 import Center from "@components/Center";
+import Timer from "@components/Timer";
 
 import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import HostingView from "./views/HostingView";
@@ -109,6 +110,12 @@ const VirtualServer = {
         </Content>
         <Footer>
           <Padding>
+            {isHosting && (
+              <div style={{ float: "left" }}>
+                <Timer onTick={virtualServerService.getVirtualServerUptime} />
+              </div>
+            )}
+
             <div style={{ float: "right" }}>
               <LabeledLED
                 label="Socket"

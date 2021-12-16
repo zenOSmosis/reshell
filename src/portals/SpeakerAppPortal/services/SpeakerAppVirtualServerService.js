@@ -109,6 +109,18 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     });
   }
 
+  /**
+   * Retrieves number of seconds the virtual server has been running, or 0 if
+   * it is not running.
+   *
+   * @return {number}
+   */
+  getVirtualServerUptime() {
+    return this.getIsHosting() && this._virtualServer
+      ? this._virtualServer.getInstanceUptime()
+      : 0;
+  }
+
   // TODO: Document
   // TODO: Wire up to virtualServer
   async stopVirtualServer() {
