@@ -1,10 +1,13 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, {
+  EVT_UPDATED,
+  EVT_DESTROYED,
+  getUnixTime,
+} from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
 
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-import getUnixTime from "@portals/SpeakerAppPortal/shared/time/getUnixTime";
 import {
   getTrackMediaStream,
   // getListHasMediaStream,
@@ -1144,6 +1147,8 @@ export default class ZenRTCPeer extends PhantomCore {
 
   /**
    * Retrieves number of seconds since the WebRTC connection was made.
+   *
+   * NOTE: If not currently connected, it will return 0.
    *
    * @return {number}
    **/
