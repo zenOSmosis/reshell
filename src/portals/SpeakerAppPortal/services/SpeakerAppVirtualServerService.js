@@ -18,11 +18,14 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     this._virtualServer = null;
 
     // TODO: Migrate to setInitialState once available
-    this.setState({
+    // @see https://github.com/zenOSmosis/phantom-core/issues/112
+    this._initialState = Object.freeze({
       isHosting: false,
       realmId: null,
       channelId: null,
     });
+
+    this.setState(this._initialState);
   }
 
   // TODO: Document
@@ -86,7 +89,9 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     this._virtualServer.registerShutdownHandler(async () => {
       await this.stopVirtualServer();
 
-      this.setState({ isHosting: false, realmId: null, channelId: null });
+      // TODO: Use reset method once available
+      // @see https://github.com/zenOSmosis/phantom-core/issues/112
+      this.setState(this._initialState);
       this._virtualServer = null;
 
       this.useServiceClass(UINotificationService).showNotification({
