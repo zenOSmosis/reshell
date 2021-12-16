@@ -13,7 +13,7 @@ export { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
 // }
 export default class OutputAudioMediaStreamTrackCollection extends PhantomCollection {
   // TODO: Document
-  addChild(mediaStreamTrack, mediaStream) {
+  addChild(mediaStreamTrack) {
     if (mediaStreamTrack.kind === "audio") {
       if (!this.getChildWithKey(mediaStreamTrack.id)) {
         const phantomAudioWrapper = new PhantomCore();
@@ -25,19 +25,13 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
   }
 
   // TODO: Document
-  addOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    return this.addChild(mediaStreamTrack, mediaStream);
+  addOutputMediaStreamTrack(mediaStreamTrack) {
+    return this.addChild(mediaStreamTrack);
   }
 
   // TODO: Document
-  async removeChild(mediaStreamTrack, mediaStream) {
+  async removeChild(mediaStreamTrack) {
     if (mediaStreamTrack.kind === "audio") {
-      // TODO: Remove
-      console.log("TODO: Handle removeOutputMediaStreamTrack", {
-        mediaStreamTrack,
-        mediaStream,
-      });
-
       const phantomAudioWrapper = this.getChildWithKey(mediaStreamTrack.id);
 
       if (phantomAudioWrapper) {
@@ -47,8 +41,8 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
   }
 
   // TODO: Document
-  async removeOutputMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    return this.removeChild(mediaStreamTrack, mediaStream);
+  async removeOutputMediaStreamTrack(mediaStreamTrack) {
+    return this.removeChild(mediaStreamTrack);
   }
 
   /**

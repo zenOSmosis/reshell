@@ -18,11 +18,14 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     this._virtualServer = null;
 
     // TODO: Migrate to setInitialState once available
-    this.setState({
+    // @see https://github.com/zenOSmosis/phantom-core/issues/112
+    this._initialState = Object.freeze({
       isHosting: false,
       realmId: null,
       channelId: null,
     });
+
+    this.setState(this._initialState);
   }
 
   // TODO: Document
@@ -58,10 +61,6 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
       );
     }
 
-    // TODO: Init multi-peer manager here
-    // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
-    // const socket = this._socketService.getSocket();
-
     const socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
@@ -90,7 +89,9 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     this._virtualServer.registerShutdownHandler(async () => {
       await this.stopVirtualServer();
 
-      this.setState({ isHosting: false, realmId: null, channelId: null });
+      // TODO: Use reset method once available
+      // @see https://github.com/zenOSmosis/phantom-core/issues/112
+      this.setState(this._initialState);
       this._virtualServer = null;
 
       this.useServiceClass(UINotificationService).showNotification({
@@ -101,12 +102,24 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
 
     await this._virtualServer.onceReady();
 
-    this.setState({ isHosting: true, realmId: realmId, channelId: channelId });
+    this.setState({ isHosting: true, realmId, channelId });
 
     this.useServiceClass(UINotificationService).showNotification({
       title: "You are now hosting",
       body: `Hosting realm "${realmId}" / channel "${channelId}"`,
     });
+  }
+
+  /**
+   * Retrieves number of seconds the virtual server has been running, or 0 if
+   * it is not running.
+   *
+   * @return {number}
+   */
+  getVirtualServerUptime() {
+    return this.getIsHosting() && this._virtualServer
+      ? this._virtualServer.getInstanceUptime()
+      : 0;
   }
 
   // TODO: Document

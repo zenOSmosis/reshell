@@ -384,18 +384,20 @@ export default class ZenRTCPeer extends PhantomCore {
         this._latency = latency;
 
         resolve(latency);
-
-        this.emit(EVT_UPDATED);
       });
     });
   }
 
   /**
-   * @return {number} Retrieves the cached latency observed from the last ping
-   * call.
+   * Retrieves the cached latency observed from the last ping call.
+   *
+   * If the peer is not connected, it will return void.
+   *
+   * @return {number | void} Number of milliseconds for last completed ping /
+   * pong cycle.
    */
   getLatency() {
-    return this._latency;
+    return this._isConnected ? this._latency : undefined;
   }
 
   /**
