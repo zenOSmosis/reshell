@@ -58,10 +58,6 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
       );
     }
 
-    // TODO: Init multi-peer manager here
-    // TODO: Adjust params with some sort of parameter in order for remote peer's "LocalZenRTCSignalBroker" to be able to reach this network host
-    // const socket = this._socketService.getSocket();
-
     const socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
