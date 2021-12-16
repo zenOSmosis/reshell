@@ -10,6 +10,8 @@ import PhantomPeerSyncObject, {
   STATE_KEY_MEDIA,
 } from "@portals/SpeakerAppPortal/zenRTC/PhantomPeerSyncObject";
 
+import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
+
 export {
   EVT_UPDATED,
   EVT_DESTROYED,
@@ -26,4 +28,29 @@ export {
  * A virtual participant from the perspective of a web browser, or other
  * web-based client device.
  */
-export default class RemotePhantomPeerSyncObject extends PhantomPeerSyncObject {}
+export default class RemotePhantomPeerSyncObject extends PhantomPeerSyncObject {
+  // TODO: Document
+  constructor(initialState = {}, localZenRTCPeer) {
+    if (!(localZenRTCPeer instanceof LocalZenRTCPeer)) {
+      throw new TypeError("localZenRTCPeer is not a LocalZenRTCPeer instance");
+    }
+
+    super(initialState);
+
+    this._localZenRTCPeer = localZenRTCPeer;
+  }
+
+  /**
+   * MediaStream instances which the peer is sending.
+   *
+   * @return {MediaStream[]}
+   */
+  getOutgoingMediaStreams() {
+    const mediaStreamTrackIds = this.getOutgoingMediaStreamIds();
+    const mediaStreams = this._localZenRTCPeer
+      .getIncomingMediaStreams()
+      .filter(mediaStream => mediaStreamTrackIds.includes(mediaStream.id));
+
+    return mediaStreams;
+  }
+}

@@ -3,6 +3,8 @@ import UIServiceCore, {
   EVT_DESTROYED,
 } from "@core/classes/UIServiceCore";
 
+import { debounce } from "debounce";
+
 import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
@@ -161,65 +163,54 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     const { readOnlySyncObject } = this._zenRTCPeerSyncObjects;
 
+    // TODO: Refactor
+    // Initialize / update Local/RemotePhantomPeerSyncObject instances
     (() => {
       // TODO: Split updates between remote profile updates
       // (readOnlySyncObject) and track updates (readOnlySyncObject /
       // localZenRTCPeerUpdates)
-      const handleUpdate = async () => {
-        console.log({
-          localZenRTCPeer,
-          readOnlySyncObject,
-        });
+      const handleUpdate = debounce(
+        async () => {
+          const { peers } = readOnlySyncObject.getState();
 
-        const allIncomingMediaStreams =
-          localZenRTCPeer.getIncomingMediaStreams();
-
-        const { peers } = readOnlySyncObject.getState();
-
-        if (!peers) {
-          return;
-        }
-
-        for (const signalBrokerId of Object.keys(peers)) {
-          const peerState = peers[signalBrokerId];
-
-          const isLocal = signalBrokerId === localSignalBrokerId;
-
-          if (!isLocal) {
-            await this._remotePhantomPeerCollection.syncRemotePeerState(
-              peerState,
-              signalBrokerId
-            );
-
-            const remotePhantomPeer =
-              this._remotePhantomPeerCollection.getRemotePhantomPeerWithSignalBrokerId(
-                signalBrokerId
-              );
-
-            if (remotePhantomPeer) {
-              const mediaStreamTrackIds =
-                remotePhantomPeer.getOutgoingMediaStreamIds();
-              const mediaStreams = allIncomingMediaStreams.filter(mediaStream =>
-                mediaStreamTrackIds.includes(mediaStream.id)
-              );
-              const mediaStreamTracks = mediaStreams
-                .map(mediaStream => mediaStream.getTracks())
-                .flat();
-
-              // TODO: Remove
-              console.log({ mediaStreams, mediaStreamTracks });
-
-              // TODO: Map to remote peer
-            }
-          } else {
-            // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
+          if (!peers) {
+            return;
           }
-        }
-      };
 
-      // TODO: RemotePhantomPeerSyncObject multiplexing, etc.
-      // TODO: Refactor
-      // TODO: Also update when localZenRTCPeer does
+          for (const signalBrokerId of Object.keys(peers)) {
+            const peerState = peers[signalBrokerId];
+
+            const isLocal = signalBrokerId === localSignalBrokerId;
+
+            if (!isLocal) {
+              await this._remotePhantomPeerCollection.syncRemotePeerState(
+                peerState,
+                signalBrokerId,
+                localZenRTCPeer
+              );
+
+              const remotePhantomPeer =
+                this._remotePhantomPeerCollection.getRemotePhantomPeerWithSignalBrokerId(
+                  signalBrokerId
+                );
+
+              // Emit EVT_UPDATED on remotePhantomPeer so that any track
+              // listeners can know to update
+              //
+              // NOTE: This also emits when localZenRTCPeer has updates (i.e.
+              // changed tracks, etc)
+              remotePhantomPeer.emit(EVT_UPDATED);
+            } else {
+              // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
+              // TODO: Emit EVT_UPDATED on localPhantomPeer
+            }
+          }
+        },
+        100,
+        // Debounce on trailing edge
+        false
+      );
+
       this.proxyOn(readOnlySyncObject, EVT_UPDATED, handleUpdate);
       this.proxyOn(localZenRTCPeer, EVT_UPDATED, handleUpdate);
     })();
