@@ -6,6 +6,7 @@ import PhantomCore, {
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
 
+// TODO: Import utils/getWebRTCSignalStrength
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
 // TODO: Replace handling w/ PhantomCollection extension
