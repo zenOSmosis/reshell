@@ -26,16 +26,24 @@ export default class RemotePhantomPeerCollection extends PhantomCollection {
   }
 
   // TODO: Document
-  syncRemotePeerState(nextSyncState, remoteSignalBrokerId) {
+  async syncRemotePeerState(nextSyncState, remoteSignalBrokerId) {
     if (nextSyncState) {
       return this.addChild(nextSyncState, remoteSignalBrokerId);
     } else {
       const prevChild = this.getChildWithKey(remoteSignalBrokerId);
 
       if (prevChild) {
-        this.removeChild(prevChild);
+        await this.removeChild(prevChild);
       }
     }
+  }
+
+  /**
+   * @param {string} remoteSignalBrokerId
+   * @return {RemotePhantomPeerSyncObject | void}
+   */
+  getRemotePhantomPeerWithSignalBrokerId(remoteSignalBrokerId) {
+    return this.getChildWithKey(remoteSignalBrokerId);
   }
 
   /**

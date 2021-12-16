@@ -57,5 +57,31 @@ export default class PhantomPeerSyncObject extends SyncObject {
     return this.getState()[STATE_KEY_DESCRIPTION];
   }
 
-  // TODO: Include helper methods to obtain media stream tracks, etc. based off of media object
+  /**
+   * MediaStream instances which the peer is sending.
+   *
+   * IMPORTANT: If this is a remote peer, this represents the MediaStream IDs
+   * which the remote peer is sending (not streams which the local is sending
+   * to the remote).
+   *
+   * @return {string[]}
+   */
+  getOutgoingMediaStreamIds() {
+    return this.getState()
+      [STATE_KEY_MEDIA].split(",")
+      .map(id => id.trim());
+  }
+
+  /**
+   * MediaStream instances which the peer is sending.
+   *
+   * IMPORTANT: If this is a remote peer, this represents the MediaStream IDs
+   * which the remote peer is sending (not streams which the local is sending
+   * to the remote).
+   *
+   * @return {MediaStream[]}
+   */
+  getOutgoingMediaStreams() {
+    throw new ReferenceError("getOutgoingMediaStreams must be overridden");
+  }
 }

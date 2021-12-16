@@ -105,7 +105,10 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     );
 
     const { writableSyncObject, readOnlySyncObject } =
-      await phantomPeerService.initZenRTCPeerSyncObject({ realmId, channelId });
+      await phantomPeerService.initZenRTCPeerSyncObjects({
+        realmId,
+        channelId,
+      });
 
     const localZenRTCPeer = new LocalZenRTCPeer({
       network,
@@ -117,8 +120,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
       screenCapturerService,
     });
 
-    const localSignalBrokerId = localZenRTCPeer.getSignalBrokerId();
-    phantomPeerService.setLocalSignalBrokerId(localSignalBrokerId);
+    // Register the localZenRTCPeer with the phantomPeerService
+    phantomPeerService.setLocalZenRTCPeer(localZenRTCPeer);
 
     localZenRTCPeer.registerShutdownHandler(() =>
       phantomPeerService.endZenRTCPeerSession()
