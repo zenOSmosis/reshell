@@ -24,6 +24,7 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
         const deviceAddress = phantomPeer.getDeviceAddress();
         const avatarURL = phantomPeer.getAvatarURL();
         const profileName = phantomPeer.getProfileName();
+        const profileDescription = phantomPeer.getProfileDescription();
         const outgoingMediaStreamTracks =
           phantomPeer.getOutgoingMediaStreamTracks();
 
@@ -37,6 +38,7 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
               border: "1px #ccc solid",
               overflow: "hidden",
             }}
+            title={profileDescription}
           >
             {!deviceAddress ? (
               <StaggeredWaveLoading />
