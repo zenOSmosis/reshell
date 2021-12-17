@@ -10,17 +10,16 @@ import {
 const { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED } =
   PhantomCollection;
 
-export {
-  EVT_UPDATED,
-  EVT_DESTROYED,
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
-};
+export { EVT_DESTROYED, EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
+
+export const MEDIA_STREAM_TRACK_ADDED = "media-stream-track-added";
+export const MEDIA_STREAM_TRACK_REMOVED = "media-stream-track-removed";
 
 // TODO: Document
 // FIXME: (jh) This was chosen over media-stream-track-controller tooling out
 // of simplicity.  Eventual integration with media-stream-track-controller may
-// be better.
+// be better. This has some special handling due to the nature of the
+// underlying simple-peer library and WebRTC itself.
 export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
   /**
    * NOTE: If a duplicate stream is added, it will ignore the subsequent
@@ -78,25 +77,38 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
   }
 
   // TODO: Document
+  // @emits ...
   addMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+    // const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
-    if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
-      mediaStream.addTrack(mediaStreamTrack);
+    // if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
+    mediaStream.addTrack(mediaStreamTrack);
 
-      this.emit(EVT_UPDATED);
-    }
+    this.emit(MEDIA_STREAM_TRACK_ADDED, {
+      mediaStreamTrack,
+      mediaStream,
+    });
+    // }
   }
 
   // TODO: Document
   removeMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+    // TODO: Remove
+    console.log("removeMediaStreamTrack", { mediaStreamTrack, mediaStream });
 
-    if (mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
-      mediaStream.removeTrack(mediaStreamTrack);
+    // const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
-      this.emit(EVT_UPDATED);
-    }
+    // TODO: Check if this track has been "added" to this mediaStreamWrapper
+    // if (mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
+    mediaStream.removeTrack(mediaStreamTrack);
+
+    // TODO: If the media stream has no more tracks, remove the stream itself
+
+    this.emit(MEDIA_STREAM_TRACK_REMOVED, {
+      mediaStreamTrack,
+      mediaStream,
+    });
+    // }
   }
 
   /**
@@ -182,6 +194,12 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
   getHasMediaStreamTrack(mediaStreamTrack) {
     const mediaStream = this.getWrappedValue();
 
-    return mediaStream.getTracks().includes(mediaStreamTrack);
+    for (const pred of mediaStream.getTracks()) {
+      if (pred.id === mediaStreamTrack.id) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

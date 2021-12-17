@@ -1,20 +1,62 @@
 import BaseModule from "../ZenRTCPeer.BaseModule";
-import ZenRTCPeerMediaStreamCollection from "./ZenRTCPeerMediaStreamCollection";
+import ZenRTCPeerMediaStreamCollection, {
+  MEDIA_STREAM_TRACK_ADDED,
+  MEDIA_STREAM_TRACK_REMOVED,
+} from "./ZenRTCPeerMediaStreamCollection";
+
+// TODO: Document
+export const EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED =
+  "incoming-media-stream-track-added";
+// TODO: Document
+export const EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED =
+  "incoming-media-stream-track-removed";
+
+// TODO: Document
+export const EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED =
+  "outgoing-media-stream-track-added";
+// TODO: Document
+export const EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED =
+  "outgoing-media-stream-track-removed";
 
 export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
   constructor(zenRTCPeer) {
     super(zenRTCPeer);
 
-    this._outgoingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
     this._incomingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
+    this._outgoingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
 
     // Destruct stream collections once stream manager is destructed
     this.registerShutdownHandler(() =>
       Promise.all([
-        this._outgoingMediaStreamCollection.destroy(),
         this._incomingMediaStreamCollection.destroy(),
+        this._outgoingMediaStreamCollection.destroy(),
       ])
     );
+
+    // Event proxying
+    (() => {
+      this.proxyOn(
+        this._incomingMediaStreamCollection,
+        MEDIA_STREAM_TRACK_ADDED,
+        data => this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, data)
+      );
+      this.proxyOn(
+        this._incomingMediaStreamCollection,
+        MEDIA_STREAM_TRACK_REMOVED,
+        data => this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, data)
+      );
+
+      this.proxyOn(
+        this._outgoingMediaStreamCollection,
+        MEDIA_STREAM_TRACK_ADDED,
+        data => this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, data)
+      );
+      this.proxyOn(
+        this._outgoingMediaStreamCollection,
+        MEDIA_STREAM_TRACK_REMOVED,
+        data => this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, data)
+      );
+    })();
   }
 
   /**
@@ -122,7 +164,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
    * @return {void}
    */
   removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    this._incomingMediaStreamCollection.removeMediaStreamTrack(
+    this._outgoingMediaStreamCollection.removeMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
     );
