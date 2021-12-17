@@ -1,9 +1,14 @@
 import PhantomCore, { EVT_DESTROYED } from "phantom-core";
+import ZenRTCPeer from "../ZenRTCPeer";
 
 export { EVT_DESTROYED };
 
 export default class ZenRTCPeerBaseModule extends PhantomCore {
   constructor(zenRTCPeer) {
+    if (!(zenRTCPeer instanceof ZenRTCPeer)) {
+      throw new TypeError("zenRTCPeer must be a ZenRTCPeer instance");
+    }
+
     super();
 
     this._zenRTCPeer = zenRTCPeer;
