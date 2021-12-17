@@ -4,6 +4,8 @@ import Center from "@components/Center";
 import Avatar from "@components/Avatar";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
 import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
+import Layout, { Content, Footer } from "@components/Layout";
+import Padding from "@components/Padding";
 
 export default function NetworkConnected({ remotePhantomPeers = [] }) {
   const isInSync = useFakeIsInSync();
@@ -33,9 +35,12 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
             key={deviceAddress}
             style={{
               display: "inline-block",
-              width: 150,
-              height: 150,
+              width: 200,
+              height: 200,
               border: "1px #ccc solid",
+              backgroundColor: "rgba(255,255,255,.4)",
+              color: "#000",
+              borderRadius: 4,
               overflow: "hidden",
             }}
             title={profileDescription}
@@ -43,28 +48,36 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
             {!deviceAddress ? (
               <StaggeredWaveLoading />
             ) : (
-              <Center>
-                <div>
-                  {
-                    // TODO: Use AudioMediaStreamTrackLevelAvatar instead (or equivalent)
-                  }
-                  <Avatar src={avatarURL} />
-                </div>
-                <div>{profileName}</div>
-                <div>
-                  {outgoingMediaStreamTracks
-                    .filter(
-                      mediaStreamTrack => mediaStreamTrack.kind === "audio"
-                    )
-                    .map(mediaStreamTrack => (
-                      <AudioMediaStreamTrackLevelMeter
-                        key={mediaStreamTrack.id}
-                        mediaStreamTrack={mediaStreamTrack}
-                        style={{ height: 50 }}
-                      />
-                    ))}
-                </div>
-              </Center>
+              <Layout>
+                <Content>
+                  <Center>
+                    {
+                      // TODO: Use AudioMediaStreamTrackLevelAvatar instead (or equivalent)
+                    }
+                    <div>
+                      <Avatar src={avatarURL} />
+                    </div>
+                    <div style={{ marginTop: 10, fontWeight: "bold" }}>
+                      {profileName}
+                    </div>
+                  </Center>
+                </Content>
+                <Footer style={{ textAlign: "right", height: 60 }}>
+                  <Padding>
+                    {outgoingMediaStreamTracks
+                      .filter(
+                        mediaStreamTrack => mediaStreamTrack.kind === "audio"
+                      )
+                      .map(mediaStreamTrack => (
+                        <AudioMediaStreamTrackLevelMeter
+                          key={mediaStreamTrack.id}
+                          mediaStreamTrack={mediaStreamTrack}
+                          style={{ height: "100%" }}
+                        />
+                      ))}
+                  </Padding>
+                </Footer>
+              </Layout>
             )}
           </div>
         );
