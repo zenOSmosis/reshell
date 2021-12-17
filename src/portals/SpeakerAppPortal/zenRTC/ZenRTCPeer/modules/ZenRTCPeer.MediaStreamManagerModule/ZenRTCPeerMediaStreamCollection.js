@@ -1,9 +1,5 @@
-import {
-  ArbitraryPhantomWrapper,
-  PhantomCollection,
-  EVT_UPDATED,
-  EVT_DESTROYED,
-} from "phantom-core";
+import { PhantomCollection, EVT_DESTROYED } from "phantom-core";
+import ZenRTCPeerMediaStreamWrapper from "./ZenRTCPeerMediaStreamWrapper";
 
 // TODO: Change to ES6 imports once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
@@ -28,7 +24,7 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
    * @param {MediaStream} mediaStream
    * @throws {TypeError} Throws if given mediaStream is not a MediaStream
    * instance
-   * @return {PhantomMediaStreamWrapper}
+   * @return {ZenRTCPeerMediaStreamWrapper}
    */
   addChild(mediaStream) {
     if (!(mediaStream instanceof MediaStream)) {
@@ -42,7 +38,7 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
     if (prev) {
       return prev;
     } else {
-      const mediaStreamWrapper = new PhantomMediaStreamWrapper(mediaStream);
+      const mediaStreamWrapper = new ZenRTCPeerMediaStreamWrapper(mediaStream);
 
       super.addChild(mediaStreamWrapper, mediaStreamId);
 
@@ -70,7 +66,7 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
 
   /**
    * @param {MediaStream} mediaStream
-   * @return {PhantomMediaStreamWrapper}
+   * @return {ZenRTCPeerMediaStreamWrapper}
    */
   getMediaStreamWrapper(mediaStream) {
     return this.addChild(mediaStream);
@@ -183,87 +179,5 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
     await this.destroyAllChildren();
 
     return super.destroy();
-  }
-}
-
-// FIXME: (jh) This was chosen over media-stream-track-controller tooling out
-// of simplicity.  Eventual integration with media-stream-track-controller may
-// be better.
-export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
-  constructor(...args) {
-    super(...args);
-
-    // IMPORTANT: This is necessary because added media streams may already
-    // have a track associated with them, and we want to determine if they have
-    // been "added" with this class, instead
-    this._addedMediaStreamTrackIds = [];
-  }
-
-  /**
-   * @param {MediaStream} wrappedValue
-   * @return {void}
-   */
-  _setWrappedValue(wrappedValue) {
-    if (!(wrappedValue instanceof MediaStream)) {
-      throw new TypeError("wrappedValue must be a MediaStream instance");
-    }
-
-    return super._setWrappedValue(wrappedValue);
-  }
-
-  /**
-   * @return {MediaStream}
-   */
-  getMediaStream() {
-    return this.getWrappedValue();
-  }
-
-  // TODO: Document
-  addMediaStreamTrack(mediaStreamTrack) {
-    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
-      throw new TypeError(
-        "mediaStreamTrack must be a MediaStreamTrack instance"
-      );
-    }
-
-    const mediaStream = this.getMediaStream();
-    mediaStream.addTrack(mediaStreamTrack);
-
-    this._addedMediaStreamTrackIds = [
-      ...new Set([...this._addedMediaStreamTrackIds, mediaStreamTrack.id]),
-    ];
-  }
-
-  // TODO: Remove
-  removeMediaStreamTrack(mediaStreamTrack) {
-    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
-      throw new TypeError(
-        "mediaStreamTrack must be a MediaStreamTrack instance"
-      );
-    }
-
-    const mediaStream = this.getMediaStream();
-    mediaStream.removeTrack(mediaStreamTrack);
-
-    this._addedMediaStreamTrackIds = this._addedMediaStreamTrackIds.filter(
-      pred => pred.id !== mediaStreamTrack.id
-    );
-  }
-
-  /**
-   * Determines whether or not the wrapped MediaStream includes the given
-   * MediaStreamTrack.
-   *
-   * @param {MediaStreamTrack} mediaStreamTrack
-   * @return {boolean}
-   */
-  getHasMediaStreamTrack(mediaStreamTrack) {
-    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
-      throw new TypeError(
-        "mediaStreamTrack must be a MediaStreamTrack instance"
-      );
-    }
-
-    return this._addedMediaStreamTrackIds.includes(mediaStreamTrack.id);
   }
 }
