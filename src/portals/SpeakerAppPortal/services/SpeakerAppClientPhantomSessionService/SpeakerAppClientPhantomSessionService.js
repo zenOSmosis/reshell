@@ -171,6 +171,11 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       // localZenRTCPeerUpdates)
       const handleUpdate = debounce(
         async () => {
+          // Fix issue where the following getState() might return null
+          if (readOnlySyncObject.getIsDestroyed()) {
+            return;
+          }
+
           const { peers } = readOnlySyncObject.getState();
 
           if (!peers) {
