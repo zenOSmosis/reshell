@@ -81,9 +81,6 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
   addMediaStreamTrack(mediaStreamTrack, mediaStream) {
     const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
-    // TODO: Remove
-    console.log({ mediaStreamWrapper });
-
     if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
       mediaStream.addTrack(mediaStreamTrack);
 

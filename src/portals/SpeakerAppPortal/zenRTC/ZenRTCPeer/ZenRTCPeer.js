@@ -387,6 +387,7 @@ export default class ZenRTCPeer extends PhantomCore {
     return this._isInitiator;
   }
 
+  // TODO: Accept optional callback
   /**
    * Resolves once connected.
    *
@@ -460,14 +461,6 @@ export default class ZenRTCPeer extends PhantomCore {
       return;
     } else {
       this._webrtcPeer = null;
-
-      this.emit(EVT_CONNECTING);
-
-      // Fix issue where reconnecting streams causes tracks to build up
-      //
-      // FIXME: (jh) Is this really still necessary?
-      // await this._outgoingMediaStreamCollection.destroyAllChildren();
-      // await this._incomingMediaStreamCollection.destroyAllChildren();
 
       if (outgoingMediaStream) {
         // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
@@ -544,6 +537,8 @@ export default class ZenRTCPeer extends PhantomCore {
       /** @see https://github.com/feross/simple-peer */
       this._webrtcPeer = new WebRTCPeer(simplePeerOptions);
 
+      this.emit(EVT_CONNECTING);
+
       // TODO: Build out
       // TODO: Send up ipcMessageBroker
       // TODO: Use event constant
@@ -576,6 +571,11 @@ export default class ZenRTCPeer extends PhantomCore {
       // TODO: Use event constant
       this._webrtcPeer.on("close", async () => {
         this._isConnected = false;
+
+        // Fix issue where reconnecting streams causes tracks to build up
+        this._outgoingMediaStreamCollection.destroyAllChildren();
+        this._incomingMediaStreamCollection.destroyAllChildren();
+
         this.emit(EVT_DISCONNECTED);
 
         // Provide automated re-connect mechanism, if this is the initiator and
