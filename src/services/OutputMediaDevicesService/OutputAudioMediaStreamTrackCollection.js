@@ -1,4 +1,4 @@
-import PhantomCore, { PhantomCollection } from "phantom-core";
+import { ArbitraryPhantomWrapper, PhantomCollection } from "phantom-core";
 
 // TODO: Change to ES6 imports once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
@@ -16,8 +16,9 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
   addChild(mediaStreamTrack) {
     if (mediaStreamTrack.kind === "audio") {
       if (!this.getChildWithKey(mediaStreamTrack.id)) {
-        const phantomAudioWrapper = new PhantomCore();
-        phantomAudioWrapper.__audioMediaStreamTrack = mediaStreamTrack;
+        const phantomAudioWrapper = new PhantomMediaStreamTrackWrapper(
+          mediaStreamTrack
+        );
 
         super.addChild(phantomAudioWrapper);
       }
@@ -52,5 +53,29 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
     await this.destroyAllChildren();
 
     super.destroy();
+  }
+}
+
+// FIXME: (jh) This was chosen over media-stream-track-controller tooling out
+// of simplicity.  Eventual integration with media-stream-track-controller may
+// be better.
+export class PhantomMediaStreamTrackWrapper extends ArbitraryPhantomWrapper {
+  /**
+   * @param {MediaStreamTrack} wrappedValue
+   * @return {void}
+   */
+  _setWrappedValue(wrappedValue) {
+    if (!(wrappedValue instanceof MediaStreamTrack)) {
+      throw new TypeError("wrappedValue must be a MediaStreamTrack instance");
+    }
+
+    return super._setWrappedValue(wrappedValue);
+  }
+
+  /**
+   * @return {MediaStreamTrack}
+   */
+  getMediaStreamTrack() {
+    return this.getWrappedValue();
   }
 }

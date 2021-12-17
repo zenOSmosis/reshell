@@ -34,16 +34,18 @@ export default class OutputMediaDevicesService extends UIServiceCore {
         useEffect(() => {
           audioMediaStreamTrackCollection.on(
             EVT_CHILD_INSTANCE_ADDED,
-            phantomAudioWrapper => {
+            phantomMediaStreamTrackWrapper => {
               // TODO: Remove
-              console.log("added phantom audio wrapper", phantomAudioWrapper);
+              console.log(
+                "added phantom audio wrapper",
+                phantomMediaStreamTrackWrapper
+              );
 
               setAudioMediaStreamTracks(
                 audioMediaStreamTrackCollection
                   .getChildren()
-                  .map(
-                    phantomAudioWrapper =>
-                      phantomAudioWrapper.__audioMediaStreamTrack
+                  .map(phantomMediaStreamTrackWrapper =>
+                    phantomMediaStreamTrackWrapper.getMediaStreamTrack()
                   )
               );
             }
@@ -51,16 +53,18 @@ export default class OutputMediaDevicesService extends UIServiceCore {
 
           audioMediaStreamTrackCollection.on(
             EVT_CHILD_INSTANCE_REMOVED,
-            phantomAudioWrapper => {
+            phantomMediaStreamTrackWrapper => {
               // TODO: Remove
-              console.log("removed phantom audio wrapper", phantomAudioWrapper);
+              console.log(
+                "removed phantom audio wrapper",
+                phantomMediaStreamTrackWrapper
+              );
 
               setAudioMediaStreamTracks(
                 audioMediaStreamTrackCollection
                   .getChildren()
-                  .map(
-                    phantomAudioWrapper =>
-                      phantomAudioWrapper.__audioMediaStreamTrack
+                  .map(phantomMediaStreamTrackWrapper =>
+                    phantomMediaStreamTrackWrapper.getMediaStreamTrack()
                   )
               );
             }
