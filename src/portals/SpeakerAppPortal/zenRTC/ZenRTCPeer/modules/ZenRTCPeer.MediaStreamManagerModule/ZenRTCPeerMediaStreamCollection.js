@@ -169,6 +169,9 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
   constructor(...args) {
     super(...args);
 
+    // IMPORTANT: This is necessary because added media streams may already
+    // have a track associated with them, and we want to determine if they have
+    // been "added" with this class, instead
     this._addedMediaStreamTrackIds = [];
   }
 
@@ -199,6 +202,9 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
       );
     }
 
+    const mediaStream = this.getMediaStream();
+    mediaStream.addTrack(mediaStreamTrack);
+
     this._addedMediaStreamTrackIds = [
       ...new Set([...this._addedMediaStreamTrackIds, mediaStreamTrack.id]),
     ];
@@ -211,6 +217,9 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
         "mediaStreamTrack must be a MediaStreamTrack instance"
       );
     }
+
+    const mediaStream = this.getMediaStream();
+    mediaStream.removeTrack(mediaStreamTrack);
 
     this._addedMediaStreamTrackIds = this._addedMediaStreamTrackIds.filter(
       pred => pred.id !== mediaStreamTrack.id
@@ -230,9 +239,6 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
         "mediaStreamTrack must be a MediaStreamTrack instance"
       );
     }
-
-    // TODO: Remove
-    console.log({ mediaStreamTrack, added: this._addedMediaStreamTrackIds });
 
     return this._addedMediaStreamTrackIds.includes(mediaStreamTrack.id);
   }

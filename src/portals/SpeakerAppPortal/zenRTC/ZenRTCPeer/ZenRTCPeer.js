@@ -825,25 +825,35 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
     // FIXME: (jh) Firefox 86 doesn't listen to "ended" event, and the
-    // functionality has to be monkeypatched into the onended handler. Note
+    // functionality has to be monkey-patched into the onended handler. Note
     // that this still works in conjunction with
     // track.dispatchEvent(new Event("ended")).
     //
     // FIXME: (jh) media-stream-track-controller has some of this handling
     // built in, and it might be better to use it instead.
-    const oEnded = mediaStreamTrack.onended;
-    mediaStreamTrack.onended = (...args) => {
-      if (typeof oEnded === "function") {
-        oEnded(...args);
-      }
+    //
+    // FIXME: (jh) This handling needs to be improved so the same track can be
+    // associated to multiple ZenRTCPeer instances and the onended handler works
+    // across all of them.  It also shouldn't re-register itself on every
+    // addOutgoingMediaStreamTrack call.
+    if (mediaStreamTrack.__zenRTCTrackOnEnded === undefined) {
+      const oEnded = mediaStreamTrack.onended;
 
-      this.log.debug(
-        "Automatically removing ended media stream track",
-        mediaStreamTrack
-      );
+      mediaStreamTrack.__zenRTCTrackOnEnded = (...args) => {
+        if (typeof oEnded === "function") {
+          oEnded(...args);
+        }
 
-      this.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
-    };
+        this.log.debug(
+          "Automatically removing ended media stream track",
+          mediaStreamTrack
+        );
+
+        this.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
+      };
+
+      mediaStreamTrack.onended = mediaStreamTrack.__zenRTCTrackOnEnded;
+    }
 
     return this._mediaStreamManagerModule.addOutgoingMediaStreamTrack(
       mediaStreamTrack,
@@ -941,6 +951,9 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {void}
    */
   removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    // TODO: Remove
+    console.warn("removeOutgoingMediaStreamTrack");
+
     return this._mediaStreamManagerModule.removeOutgoingMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
