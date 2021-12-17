@@ -231,6 +231,8 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
+   * Utilized for peer identification.
+   *
    * @return {string}
    */
   getSignalBrokerId() {
@@ -418,18 +420,6 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   setOfferToReceiveVideo(offerToReceiveVideo) {
     this._offerToReceiveVideo = offerToReceiveVideo;
-  }
-
-  /**
-   * Utilized for peer identification and should match the Socket.io id
-   * provided in the signaling (ipcMessageBroker).
-   *
-   * TODO: Rename to getSignalingId?
-   *
-   * @return {string}
-   */
-  getSocketIoId() {
-    return this._zenRTCSignalBrokerId;
   }
 
   /**
