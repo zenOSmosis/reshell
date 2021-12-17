@@ -824,37 +824,6 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {void}
    */
   addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // FIXME: (jh) Firefox 86 doesn't listen to "ended" event, and the
-    // functionality has to be monkey-patched into the onended handler. Note
-    // that this still works in conjunction with
-    // track.dispatchEvent(new Event("ended")).
-    //
-    // FIXME: (jh) media-stream-track-controller has some of this handling
-    // built in, and it might be better to use it instead.
-    //
-    // FIXME: (jh) This handling needs to be improved so the same track can be
-    // associated to multiple ZenRTCPeer instances and the onended handler works
-    // across all of them.  It also shouldn't re-register itself on every
-    // addOutgoingMediaStreamTrack call.
-    if (mediaStreamTrack.__zenRTCTrackOnEnded === undefined) {
-      const oEnded = mediaStreamTrack.onended;
-
-      mediaStreamTrack.__zenRTCTrackOnEnded = (...args) => {
-        if (typeof oEnded === "function") {
-          oEnded(...args);
-        }
-
-        this.log.debug(
-          "Automatically removing ended media stream track",
-          mediaStreamTrack
-        );
-
-        this.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
-      };
-
-      mediaStreamTrack.onended = mediaStreamTrack.__zenRTCTrackOnEnded;
-    }
-
     return this._mediaStreamManagerModule.addOutgoingMediaStreamTrack(
       mediaStreamTrack,
       mediaStream

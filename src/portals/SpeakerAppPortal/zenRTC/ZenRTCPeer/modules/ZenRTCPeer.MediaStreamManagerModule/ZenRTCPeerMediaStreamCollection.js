@@ -82,6 +82,30 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
     const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
     if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
+      (() => {
+        const oEnded = mediaStreamTrack.onended;
+
+        // FIXME: (jh) Firefox 86 doesn't listen to "ended" event, and the
+        // functionality has to be monkey-patched into the onended handler. Note
+        // that this still works in conjunction with
+        // track.dispatchEvent(new Event("ended")).
+        //
+        // FIXME: (jh) media-stream-track-controller has some of this handling
+        // built in, and it might be better to use it instead.
+        mediaStreamTrack.onended = (...args) => {
+          if (typeof oEnded === "function") {
+            oEnded(...args);
+          }
+
+          this.log.debug(
+            "Automatically removing ended media stream track",
+            mediaStreamTrack
+          );
+
+          this.removeMediaStreamTrack(mediaStreamTrack, mediaStream);
+        };
+      })();
+
       mediaStreamWrapper.addMediaStreamTrack(mediaStreamTrack);
 
       this.emit(MEDIA_STREAM_TRACK_ADDED, {
