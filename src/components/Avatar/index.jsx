@@ -1,5 +1,5 @@
 import Avatar from "./Avatar";
-// import AudioMediaStreamTrackLevelAvatar from "./AudioMediaStreamTrackLevelAvatar";
+import AudioMediaStreamTrackLevelAvatar from "./AudioMediaStreamTrackLevelAvatar";
 
 export default Avatar;
-// export { AudioMediaStreamTrackLevelAvatar };
+export { AudioMediaStreamTrackLevelAvatar };

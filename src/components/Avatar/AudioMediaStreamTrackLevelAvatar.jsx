@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Avatar from "../Avatar";
+import Avatar from "./Avatar";
 
 import PropTypes from "prop-types";
 
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
-
-import getPercentColor from "@shared/string/getPercentColor";
+import getPercentColor from "@utils/getPercentColor";
 
 AudioMediaStreamTrackLevelAvatar.propTypes = {
   /** When multiple audio tracks may be used together */
