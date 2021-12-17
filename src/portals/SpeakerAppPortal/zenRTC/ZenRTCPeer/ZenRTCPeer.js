@@ -7,16 +7,10 @@ import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
 
 // TODO: Import utils/getWebRTCSignalStrength
+
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-// TODO: Replace handling w/ PhantomCollection extension
-import {
-  getTrackMediaStream,
-  // getListHasMediaStream,
-  addMediaStreamToList,
-  removeMediaStreamFromList,
-  getMediaStreamListTracks,
-} from "./utils/mediaStreamListUtils";
+import ZenRTCPeerMediaStreamCollection from "./utils/ZenRTCPeerMediaStreamCollection";
 
 import {
   SYNC_EVT_PING,
@@ -182,8 +176,8 @@ export default class ZenRTCPeer extends PhantomCore {
     );
 
     // Built-in support for stream multiplexing
-    this._outgoingMediaStreams = []; // TODO: Use PhantomCollection
-    this._incomingMediaStreams = []; // TODO: Use PhantomCollection
+    this._outgoingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
+    this._incomingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
 
     this._zenRTCSignalBrokerId = zenRTCSignalBrokerId;
     this._isInitiator = isInitiator;
@@ -470,8 +464,10 @@ export default class ZenRTCPeer extends PhantomCore {
       this.emit(EVT_CONNECTING);
 
       // Fix issue where reconnecting streams causes tracks to build up
-      this._outgoingMediaStreams = [];
-      this._incomingMediaStreams = [];
+      //
+      // FIXME: (jh) Is this really still necessary?
+      // await this._outgoingMediaStreamCollection.destroyAllChildren();
+      // await this._incomingMediaStreamCollection.destroyAllChildren();
 
       if (outgoingMediaStream) {
         // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
@@ -492,6 +488,7 @@ export default class ZenRTCPeer extends PhantomCore {
         initiator: this._isInitiator,
 
         // Set to false to disable trickle ICE and get a single 'signal' event (slower)
+        // FIXME: (jh) Make this configurable
         trickle: true,
 
         // @see https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration/iceTransportPolicy#value
@@ -681,19 +678,19 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * NOTE: getIncomingMediaStreamTracks() is more accurate.
-   *
    * @return {MediaStream[]}
    */
   getIncomingMediaStreams() {
-    return this._incomingMediaStreams;
+    return this._incomingMediaStreamCollection.getMediaStreams();
   }
 
   /**
+   * NOTE: getIncomingMediaStreams() is more accurate.
+   *
    * @return {MediaStreamTrack[]}
    */
   getIncomingMediaStreamTracks() {
-    return getMediaStreamListTracks(this._incomingMediaStreams);
+    return this._incomingMediaStreamCollection.getMediaStreamTracks();
   }
 
   /**
@@ -707,14 +704,15 @@ export default class ZenRTCPeer extends PhantomCore {
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     // If MediaStream is not already added to list of incoming media streams, add it
-    this._incomingMediaStreams = addMediaStreamToList(
-      mediaStream,
-      this._incomingMediaStreams
+    this._incomingMediaStreamCollection.addMediaStreamTrack(
+      mediaStreamTrack,
+      mediaStream
     );
 
     // WebRTCPeer should have already added this to the stream
     // mediaStream.addTrack(mediaStreamTrack);
 
+    // TODO: Refactor; listen to collection itself before emitting this event
     this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, {
       mediaStreamTrack,
       mediaStream,
@@ -735,6 +733,7 @@ export default class ZenRTCPeer extends PhantomCore {
     // the workaround process, and we have to remove the track on our own
     mediaStream.removeTrack(mediaStreamTrack);
 
+    // TODO: Refactor; listen to collection itself before emitting this event
     this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
       mediaStreamTrack,
       mediaStream,
@@ -752,14 +751,14 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {MediaStream[]}
    */
   getOutgoingMediaStreams() {
-    return this._outgoingMediaStreams;
+    return this._outgoingMediaStreamCollection.getMediaStreams();
   }
 
   /**
    * @return {MediaStreamTrack[]}
    */
   getOutgoingMediaStreamTracks() {
-    return getMediaStreamListTracks(this._outgoingMediaStreams);
+    return this._outgoingMediaStreamCollection.getMediaStreamTracks();
   }
 
   /**
@@ -799,21 +798,24 @@ export default class ZenRTCPeer extends PhantomCore {
       // will raise an error when trying to add a duplicate track to a stream,
       // in which case that error could make the other states out of sync
 
-      // Add track to local representation of stream
-      mediaStream.addTrack(mediaStreamTrack);
-
-      // Add stream to outgoing list of streams
-      this._outgoingMediaStreams = addMediaStreamToList(
-        mediaStream,
-        this._outgoingMediaStreams
+      this._outgoingMediaStreamCollection.addMediaStreamTrack(
+        mediaStreamTrack,
+        mediaStream
       );
 
+      // FIXME: (jh) Would it be better if the WebRTC handling is done w/
+      // events from outgoing collection?  This way, duplicate tracks wouldn't
+      // be tried to be added to the WebRTC connection, etc., even though they
+      // should be ignored anyway.
       this._webrtcPeer.addTrack(mediaStreamTrack, mediaStream);
 
-      // FIXME: Firefox 86 doesn't listen to "ended" event, and the
+      // FIXME: (jh) Firefox 86 doesn't listen to "ended" event, and the
       // functionality has to be monkeypatched into the onended handler. Note
       // that this still works in conjunction with
       // track.dispatchEvent(new Event("ended")).
+      //
+      // FIXME: (jh) media-stream-track-controller has some of this handling
+      // built in, and it might be better to use it instead.
       const oEnded = mediaStreamTrack.onended;
       mediaStreamTrack.onended = (...args) => {
         if (typeof oEnded === "function") {
@@ -828,6 +830,7 @@ export default class ZenRTCPeer extends PhantomCore {
         this.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
       };
 
+      // TODO: Refactor; listen to collection itself before emitting this event
       this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, {
         mediaStreamTrack,
         mediaStream,
@@ -860,18 +863,18 @@ export default class ZenRTCPeer extends PhantomCore {
     }
 
     // Remove local representation of stream
-    mediaStream.removeTrack(mediaStreamTrack);
-
-    this._outgoingMediaStreams = removeMediaStreamFromList(
-      mediaStream,
-      this._outgoingMediaStreams
+    this._outgoingMediaStreamCollection.removeMediaStreamTrack(
+      mediaStreamTrack,
+      mediaStream
     );
 
+    // TODO: Refactor; listen to collection itself before emitting this event
     this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, {
       mediaStreamTrack,
       mediaStream,
     });
 
+    // TODO: Refactor; listen to collection itself before emitting this event
     this.emit(EVT_UPDATED);
 
     // Signal to remote that we've removed the track
@@ -884,21 +887,24 @@ export default class ZenRTCPeer extends PhantomCore {
     });
   }
 
+  // TODO: Reimplement?
   /**
    * Performs a reverse-lookup of MediaStream from given MediaStreamTrack.
    *
-   * Note, if the same MediaStreamTrack were to be encased in more than one
+   * NOTE: If the same MediaStreamTrack were to be encased in more than one
    * MediaStream, only the first MediaStream will be returned.
    *
    * @param {MediaStreamTrack} mediaStreamTrack
    * @return {MediaStream}
    */
+  /*
   getTrackMediaStream(mediaStreamTrack) {
-    return getTrackMediaStream(mediaStreamTrack, [
-      ...this._outgoingMediaStreams,
-      ...this._incomingMediaStreams,
-    ]);
+    return [
+      this._outgoingMediaStreamCollection,
+      this._incomingMediaStreamCollection,
+    ].find(collection => collection.getTrackMediaStream(mediaStreamTrack));
   }
+  */
 
   // TODO: Document
   //
@@ -1143,12 +1149,13 @@ export default class ZenRTCPeer extends PhantomCore {
 
       if (incomingMediaStreamTracks) {
         for (const mediaStreamTrack of incomingMediaStreamTracks) {
+          // TODO: Refactor; listen to collection itself before emitting this event
           this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
             mediaStreamTrack,
-            mediaStream: getTrackMediaStream(
-              mediaStreamTrack,
-              this._incomingMediaStreams
-            ),
+            mediaStream:
+              this._incomingMediaStreamCollection.getTrackMediaStream(
+                mediaStreamTrack
+              ),
           });
         }
       }
@@ -1158,15 +1165,19 @@ export default class ZenRTCPeer extends PhantomCore {
 
       if (outgoingMediaStreamTracks) {
         for (const mediaStreamTrack of outgoingMediaStreamTracks) {
+          // TODO: Refactor; listen to collection itself before emitting this event
           this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, {
             mediaStreamTrack,
-            mediaStream: getTrackMediaStream(
-              mediaStreamTrack,
-              this._outgoingMediaStreams
-            ),
+            mediaStream:
+              this._outgoingMediaStreamCollection.getTrackMediaStream(
+                mediaStreamTrack
+              ),
           });
         }
       }
+
+      await this._incomingMediaStreamCollection.destroy();
+      await this._outgoingMediaStreamCollection.destroy();
     })();
 
     return super.destroy();
