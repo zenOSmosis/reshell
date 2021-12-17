@@ -10,8 +10,6 @@ import SDPAdapter from "./utils/sdp-adapter";
 
 import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-import ZenRTCPeerMediaStreamCollection from "./utils/ZenRTCPeerMediaStreamCollection";
-
 import {
   SYNC_EVT_PING,
   SYNC_EVT_PONG,
@@ -25,6 +23,7 @@ import HeartbeatModule from "./modules/ZenRTCPeer.HeartbeatModule";
 import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule";
 import DataChannelManagerModule from "./modules/ZenRTCPeer.DataChannelManagerModule";
 import SyncEventDataChannelModule from "./modules/ZenRTCPeer.SyncEventDataChannelModule";
+import MediaStreamManagerModule from "./modules/ZenRTCPeer.MediaStreamManagerModule";
 
 // ZenRTCPeer instances running on this thread, using zenRTCSignalBrokerId as reference
 // keys
@@ -175,10 +174,6 @@ export default class ZenRTCPeer extends PhantomCore {
       }"`
     );
 
-    // Built-in support for stream multiplexing
-    this._outgoingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
-    this._incomingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
-
     this._zenRTCSignalBrokerId = zenRTCSignalBrokerId;
     this._isInitiator = isInitiator;
     this._shouldAutoReconnect = shouldAutoReconnect;
@@ -228,6 +223,8 @@ export default class ZenRTCPeer extends PhantomCore {
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
+
+      this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
     })();
 
     this._reconnectArgs = [];
@@ -573,8 +570,8 @@ export default class ZenRTCPeer extends PhantomCore {
         this._isConnected = false;
 
         // Fix issue where reconnecting streams causes tracks to build up
-        this._outgoingMediaStreamCollection.destroyAllChildren();
-        this._incomingMediaStreamCollection.destroyAllChildren();
+        // this._outgoingMediaStreamCollection.destroyAllChildren();
+        // this._incomingMediaStreamCollection.destroyAllChildren();
 
         this.emit(EVT_DISCONNECTED);
 
@@ -681,16 +678,18 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {MediaStream[]}
    */
   getIncomingMediaStreams() {
-    return this._incomingMediaStreamCollection.getMediaStreams();
+    return this._mediaStreamManagerModule.getIncomingMediaStreams();
   }
 
   /**
-   * NOTE: getIncomingMediaStreams() is more accurate.
+   * IMPORTANT: When trying to associate a track with a multiplexed remote
+   * peer, it must be matched by the enclosing MediaStream ID (i.e. obtain from
+   * getIncomingMediaStreams()).
    *
    * @return {MediaStreamTrack[]}
    */
   getIncomingMediaStreamTracks() {
-    return this._incomingMediaStreamCollection.getMediaStreamTracks();
+    return this._mediaStreamManagerModule.getIncomingMediaStreamTracks();
   }
 
   /**
@@ -704,7 +703,7 @@ export default class ZenRTCPeer extends PhantomCore {
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     // If MediaStream is not already added to list of incoming media streams, add it
-    this._incomingMediaStreamCollection.addMediaStreamTrack(
+    this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
     );
@@ -729,9 +728,10 @@ export default class ZenRTCPeer extends PhantomCore {
    * @param {MediaStream} mediaStream
    */
   _removeIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // Since WebRTCPeer does not have a track-removed event, this is part of
-    // the workaround process, and we have to remove the track on our own
-    mediaStream.removeTrack(mediaStreamTrack);
+    this._mediaStreamManagerModule.removeIncomingMediaStreamTrack(
+      mediaStreamTrack,
+      mediaStream
+    );
 
     // TODO: Refactor; listen to collection itself before emitting this event
     this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
@@ -743,22 +743,17 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * NOTE: this.getOutgoingMediaStreamTracks is more accurate and should likely
-   * be used instead.
-   *
-   * TODO: Remove?
-   *
    * @return {MediaStream[]}
    */
   getOutgoingMediaStreams() {
-    return this._outgoingMediaStreamCollection.getMediaStreams();
+    return this._mediaStreamManagerModule.getOutgoingMediaStreams();
   }
 
   /**
    * @return {MediaStreamTrack[]}
    */
   getOutgoingMediaStreamTracks() {
-    return this._outgoingMediaStreamCollection.getMediaStreamTracks();
+    return this._mediaStreamManagerModule.getOutgoingMediaStreamTracks();
   }
 
   /**
@@ -798,7 +793,7 @@ export default class ZenRTCPeer extends PhantomCore {
       // will raise an error when trying to add a duplicate track to a stream,
       // in which case that error could make the other states out of sync
 
-      this._outgoingMediaStreamCollection.addMediaStreamTrack(
+      this._mediaStreamManagerModule.addOutgoingMediaStreamTrack(
         mediaStreamTrack,
         mediaStream
       );
@@ -863,7 +858,7 @@ export default class ZenRTCPeer extends PhantomCore {
     }
 
     // Remove local representation of stream
-    this._outgoingMediaStreamCollection.removeMediaStreamTrack(
+    this._mediaStreamManagerModule.removeOutgoingMediaStreamTrack(
       mediaStreamTrack,
       mediaStream
     );
@@ -1153,7 +1148,7 @@ export default class ZenRTCPeer extends PhantomCore {
           this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
             mediaStreamTrack,
             mediaStream:
-              this._incomingMediaStreamCollection.getTrackMediaStream(
+              this._mediaStreamManagerModule.getIncomingTrackMediaStream(
                 mediaStreamTrack
               ),
           });
@@ -1169,15 +1164,12 @@ export default class ZenRTCPeer extends PhantomCore {
           this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, {
             mediaStreamTrack,
             mediaStream:
-              this._outgoingMediaStreamCollection.getTrackMediaStream(
+              this._mediaStreamManagerModule.getOutgoingTrackMediaStream(
                 mediaStreamTrack
               ),
           });
         }
       }
-
-      await this._incomingMediaStreamCollection.destroy();
-      await this._outgoingMediaStreamCollection.destroy();
     })();
 
     return super.destroy();
