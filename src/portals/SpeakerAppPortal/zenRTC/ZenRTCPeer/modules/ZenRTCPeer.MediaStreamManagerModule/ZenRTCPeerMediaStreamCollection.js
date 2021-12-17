@@ -79,36 +79,34 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
   // TODO: Document
   // @emits ...
   addMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
-    // if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
-    mediaStream.addTrack(mediaStreamTrack);
+    if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
+      mediaStreamWrapper.addMediaStreamTrack(mediaStreamTrack);
 
-    this.emit(MEDIA_STREAM_TRACK_ADDED, {
-      mediaStreamTrack,
-      mediaStream,
-    });
-    // }
+      this.emit(MEDIA_STREAM_TRACK_ADDED, {
+        mediaStreamTrack,
+        mediaStream,
+      });
+    }
   }
 
   // TODO: Document
+  // @emits ...
   removeMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // TODO: Remove
-    console.log("removeMediaStreamTrack", { mediaStreamTrack, mediaStream });
-
-    // const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
 
     // TODO: Check if this track has been "added" to this mediaStreamWrapper
-    // if (mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
-    mediaStream.removeTrack(mediaStreamTrack);
+    if (mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
+      mediaStreamWrapper.removeMediaStreamTrack(mediaStreamTrack);
 
-    // TODO: If the media stream has no more tracks, remove the stream itself
+      // TODO: If the media stream has no more tracks, remove the stream from the collection
 
-    this.emit(MEDIA_STREAM_TRACK_REMOVED, {
-      mediaStreamTrack,
-      mediaStream,
-    });
-    // }
+      this.emit(MEDIA_STREAM_TRACK_REMOVED, {
+        mediaStreamTrack,
+        mediaStream,
+      });
+    }
   }
 
   /**
@@ -136,7 +134,11 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
    * @return {MediaStream[]}
    */
   getMediaStreams() {
-    return this.getChildren().map(wrapper => wrapper.getMediaStream());
+    const mediaStreams = this.getChildren().map(wrapper =>
+      wrapper.getMediaStream()
+    );
+
+    return mediaStreams;
   }
 
   /**
@@ -147,7 +149,6 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
   getMediaStreamTracks() {
     return this.getMediaStreams()
       .map(mediaStream => mediaStream?.getTracks())
-      .filter(tracks => Boolean(tracks))
       .flat();
   }
 
@@ -165,6 +166,12 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
 // of simplicity.  Eventual integration with media-stream-track-controller may
 // be better.
 export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
+  constructor(...args) {
+    super(...args);
+
+    this._addedMediaStreamTrackIds = [];
+  }
+
   /**
    * @param {MediaStream} wrappedValue
    * @return {void}
@@ -184,6 +191,32 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
     return this.getWrappedValue();
   }
 
+  // TODO: Document
+  addMediaStreamTrack(mediaStreamTrack) {
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError(
+        "mediaStreamTrack must be a MediaStreamTrack instance"
+      );
+    }
+
+    this._addedMediaStreamTrackIds = [
+      ...new Set([...this._addedMediaStreamTrackIds, mediaStreamTrack.id]),
+    ];
+  }
+
+  // TODO: Remove
+  removeMediaStreamTrack(mediaStreamTrack) {
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError(
+        "mediaStreamTrack must be a MediaStreamTrack instance"
+      );
+    }
+
+    this._addedMediaStreamTrackIds = this._addedMediaStreamTrackIds.filter(
+      pred => pred.id !== mediaStreamTrack.id
+    );
+  }
+
   /**
    * Determines whether or not the wrapped MediaStream includes the given
    * MediaStreamTrack.
@@ -192,14 +225,15 @@ export class PhantomMediaStreamWrapper extends ArbitraryPhantomWrapper {
    * @return {boolean}
    */
   getHasMediaStreamTrack(mediaStreamTrack) {
-    const mediaStream = this.getWrappedValue();
-
-    for (const pred of mediaStream.getTracks()) {
-      if (pred.id === mediaStreamTrack.id) {
-        return true;
-      }
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError(
+        "mediaStreamTrack must be a MediaStreamTrack instance"
+      );
     }
 
-    return false;
+    // TODO: Remove
+    console.log({ mediaStreamTrack, added: this._addedMediaStreamTrackIds });
+
+    return this._addedMediaStreamTrackIds.includes(mediaStreamTrack.id);
   }
 }
