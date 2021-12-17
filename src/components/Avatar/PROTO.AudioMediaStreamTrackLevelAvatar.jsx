@@ -3,7 +3,7 @@ import Avatar from "../Avatar";
 
 import PropTypes from "prop-types";
 
-import useAudioMediaStreamTrackLevelMonitor from "@hooks/useAudioMediaStreamTrackLevelMonitor";
+import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 
 import getPercentColor from "@shared/string/getPercentColor";
 
@@ -22,7 +22,7 @@ export default function AudioMediaStreamTrackLevelAvatar({
 }) {
   const [avatarEl, setAvatarEl] = useState(null);
 
-  const percent = useAudioMediaStreamTrackLevelMonitor(
+  const percent = useMultiAudioMediaStreamTrackLevelMonitor(
     mediaStreamTrack || mediaStreamTracks
   );
 

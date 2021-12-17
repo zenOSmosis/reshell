@@ -3,7 +3,7 @@ import VUMeter from "./VUMeter";
 
 import PropTypes from "prop-types";
 
-import useAudioMediaStreamTrackLevelMonitor from "@hooks/useAudioMediaStreamTrackLevelMonitor";
+import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 
 AudioMediaStreamTrackLevelVUMeter.propTypes = {
   /** When multiple audio tracks may be used together */
@@ -18,7 +18,7 @@ export default function AudioMediaStreamTrackLevelVUMeter({
   mediaStreamTrack,
   ...rest
 }) {
-  const percent = useAudioMediaStreamTrackLevelMonitor(
+  const percent = useMultiAudioMediaStreamTrackLevelMonitor(
     mediaStreamTrack || mediaStreamTracks
   );
 

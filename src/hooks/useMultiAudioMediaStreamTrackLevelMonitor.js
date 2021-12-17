@@ -17,7 +17,7 @@ const { EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK } =
  * MediaStreamTrack.
  * @return {number} The average percent of all of the input tracks.
  */
-export default function useAudioMediaStreamTrackLevelMonitor(
+export default function useMultiAudioMediaStreamTrackLevelMonitor(
   mediaStreamTrackOrTracks = []
 ) {
   // TODO: This needs optimization; something about this monitor causes an infinite loop cycle
