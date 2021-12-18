@@ -1,5 +1,3 @@
-import FullViewport from "@components/FullViewport";
-
 import Animation from "@components/Animation";
 import Center from "@components/Center";
 import Cover from "@components/Cover";
@@ -13,39 +11,46 @@ import React from "react";
 // TODO: Document and add prop-types
 export default function PortalWrapperView({ portal }) {
   return (
-    <FullViewport>
-      <ParadigmProvider>
-        <UIServicesProvider>
-          <AppRegistrationsProvider>
-            <AppRuntimesProvider>
-              <DesktopProvider>
-                <React.Suspense
-                  fallback={
+    <ParadigmProvider>
+      <UIServicesProvider>
+        <AppRegistrationsProvider>
+          <AppRuntimesProvider>
+            <DesktopProvider>
+              <React.Suspense
+                fallback={
+                  // NOTE: While Cover works as a FullScreen substitute, for
+                  // simple layouts, it doesn't contain all of the view hacks
+                  // the regular FullViewport component has.
+                  //
+                  // However, it seems that the usage of FullViewport is better
+                  // left up to the portal view itself rather than the wrapper.
+                  <Cover>
                     <Center style={{ fontWeight: "bold" }}>
                       Loading portal...
                     </Center>
-                  }
-                >
-                  <FadeOutPortalView portal={portal} />
-                </React.Suspense>
-              </DesktopProvider>
-            </AppRuntimesProvider>
-          </AppRegistrationsProvider>
-        </UIServicesProvider>
-      </ParadigmProvider>
-    </FullViewport>
+                  </Cover>
+                }
+              >
+                <PortalWrapperTransitiionView portal={portal} />
+              </React.Suspense>
+            </DesktopProvider>
+          </AppRuntimesProvider>
+        </AppRegistrationsProvider>
+      </UIServicesProvider>
+    </ParadigmProvider>
   );
 }
 
 // Sub-wrapper for portal view which fades it out
-function FadeOutPortalView({ portal, initialBackgroundColor = "#000" }) {
+function PortalWrapperTransitiionView({
+  portal,
+  initialBackgroundColor = "#000",
+}) {
   const PortalView = portal;
 
   return (
     <>
-      <Cover>
-        <PortalView />
-      </Cover>
+      <PortalView />
       <Cover
         style={{
           // Enable UI to be usable below cover

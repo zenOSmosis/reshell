@@ -1,6 +1,7 @@
 import PhantomCore from "phantom-core";
 import ReShellCore from "@core";
 
+import FullViewport from "../FullViewport";
 import WindowManager from "../WindowManager";
 import Cover from "../Cover";
 import Layout, { Header, Content, Row, Column } from "../Layout";
@@ -70,65 +71,81 @@ export default function Desktop({
   */
 
   return (
-    // NOTE: Typically this would take up the entire viewport
-    <Router>
-      {
-        // IMPORTANT: Using NotificationProvider directly on the BaseView does
-        // not apply CSS module styling
-      }
-      <ModalProvider>
-        <NotificationProvider>
-          <Cover style={{ backgroundColor: "#424242" }}>
-            {
-              // TODO: Refactor
-            }
-            {backgroundView}
-          </Cover>
-          <Cover>
-            <Layout>
-              <Header
-                style={{
-                  // borderBottom: "1px #ccc solid",
-                  whiteSpace: "nowrap",
-                  backgroundColor: "rgba(0,0,0,.5)",
-                }}
-              >
-                <Row>
-                  <Column style={{ width: "100%" }}>
-                    {
-                      // TODO: Replace menu with data-driven Menubar component
-                    }
-                    <div>
+    <FullViewport>
+      <Router>
+        {
+          // IMPORTANT: Using NotificationProvider directly on the BaseView does
+          // not apply CSS module styling
+        }
+        <ModalProvider>
+          <NotificationProvider>
+            <Cover style={{ backgroundColor: "#424242" }}>
+              {
+                // TODO: Refactor
+              }
+              {backgroundView}
+            </Cover>
+            <Cover>
+              <Layout>
+                <Header
+                  style={{
+                    // borderBottom: "1px #ccc solid",
+                    whiteSpace: "nowrap",
+                    backgroundColor: "rgba(0,0,0,.5)",
+                  }}
+                >
+                  <Row>
+                    <Column style={{ width: "100%" }}>
                       {
-                        // TODO: Include bookmark menu option (use browser bookmark system and / or store somewhere else); in combination w/ deep-linking functionality
+                        // TODO: Replace menu with data-driven Menubar component
                       }
-                      <Menu
-                        menuButton={
-                          <MenuButton>
-                            {
-                              // TODO: Make this string configurable
-                            }
-                            Desktop
-                          </MenuButton>
-                        }
-                      >
+                      <div>
                         {
-                          // TODO: Show divider
+                          // TODO: Include bookmark menu option (use browser bookmark system and / or store somewhere else); in combination w/ deep-linking functionality
                         }
-                        <SubMenu label="Applications">
-                          {appRegistrations
-                            .sort((a, b) => {
-                              const aTitle = a.getTitle();
-                              const bTitle = b.getTitle();
-
-                              if (aTitle < bTitle) {
-                                return -1;
-                              } else if (bTitle > aTitle) {
-                                return 1;
-                              } else {
-                                return 0;
+                        <Menu
+                          menuButton={
+                            <MenuButton>
+                              {
+                                // TODO: Make this string configurable
                               }
-                            })
+                              Desktop
+                            </MenuButton>
+                          }
+                        >
+                          {
+                            // TODO: Show divider
+                          }
+                          <SubMenu label="Applications">
+                            {appRegistrations
+                              .sort((a, b) => {
+                                const aTitle = a.getTitle();
+                                const bTitle = b.getTitle();
+
+                                if (aTitle < bTitle) {
+                                  return -1;
+                                } else if (bTitle > aTitle) {
+                                  return 1;
+                                } else {
+                                  return 0;
+                                }
+                              })
+                              .map(app => (
+                                <MenuItem
+                                  key={app.getUUID()}
+                                  onClick={() =>
+                                    bringToFrontOrStartAppRuntime(app)
+                                  }
+                                >
+                                  {app.getTitle()}
+                                </MenuItem>
+                              ))}
+                          </SubMenu>
+                          {
+                            // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+                          }
+                          {appRegistrations
+                            .filter(app => app.getIsPinned())
                             .map(app => (
                               <MenuItem
                                 key={app.getUUID()}
@@ -139,227 +156,214 @@ export default function Desktop({
                                 {app.getTitle()}
                               </MenuItem>
                             ))}
-                        </SubMenu>
-                        {
-                          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-                        }
-                        {appRegistrations
-                          .filter(app => app.getIsPinned())
-                          .map(app => (
-                            <MenuItem
-                              key={app.getUUID()}
-                              onClick={() => bringToFrontOrStartAppRuntime(app)}
-                            >
-                              {app.getTitle()}
-                            </MenuItem>
-                          ))}
-                        <MenuDivider />
-                        <MenuHeader>Global Window Management</MenuHeader>
-                        <MenuItem
-                          // TODO: Refactor
-                          onClick={() =>
-                            appRuntimes.forEach(runtime => {
-                              const windowController =
-                                runtime.getWindowController();
+                          <MenuDivider />
+                          <MenuHeader>Global Window Management</MenuHeader>
+                          <MenuItem
+                            // TODO: Refactor
+                            onClick={() =>
+                              appRuntimes.forEach(runtime => {
+                                const windowController =
+                                  runtime.getWindowController();
 
-                              if (windowController) {
-                                windowController.scatter();
-                              }
-                            })
-                          }
-                        >
-                          Scatter Windows
-                        </MenuItem>
-                        <MenuItem
-                          // TODO: Refactor
-                          onClick={() =>
-                            appRuntimes.forEach(runtime => {
-                              const windowController =
-                                runtime.getWindowController();
-
-                              if (windowController) {
-                                windowController.center();
-                              }
-                            })
-                          }
-                        >
-                          Center Windows
-                        </MenuItem>
-                        <MenuDivider />
-                        <MenuHeader>Desktop Operations</MenuHeader>
-                        <MenuItem
-                          onClick={() =>
-                            window.confirm(
-                              "Are you sure you wish to close the desktop?"
-                            ) && ReShellCore.destroy()
-                          }
-                        >
-                          Close
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() =>
-                            window.confirm(
-                              "Are you sure you wish to reload?"
-                            ) && ReShellCore.reload()
-                          }
-                        >
-                          Reload
-                        </MenuItem>
-                      </Menu>
-                      {activeWindowController && (
-                        <>
-                          {
-                            // TODO: Implement quadrant snapping here
-                          }
-                          <Menu
-                            portal={true}
-                            menuButton={
-                              <MenuButton>
-                                <span style={{ fontWeight: "bold" }}>
-                                  {activeWindowController.getTitle()}
-                                </span>
-                              </MenuButton>
+                                if (windowController) {
+                                  windowController.scatter();
+                                }
+                              })
                             }
                           >
-                            <MenuItem
-                              onClick={() => activeWindowController.destroy()}
-                            >
-                              Close
-                            </MenuItem>
-                          </Menu>
-                          <Menu
-                            portal={true}
-                            menuButton={<MenuButton>Window</MenuButton>}
+                            Scatter Windows
+                          </MenuItem>
+                          <MenuItem
+                            // TODO: Refactor
+                            onClick={() =>
+                              appRuntimes.forEach(runtime => {
+                                const windowController =
+                                  runtime.getWindowController();
+
+                                if (windowController) {
+                                  windowController.center();
+                                }
+                              })
+                            }
                           >
+                            Center Windows
+                          </MenuItem>
+                          <MenuDivider />
+                          <MenuHeader>Desktop Operations</MenuHeader>
+                          <MenuItem
+                            onClick={() =>
+                              window.confirm(
+                                "Are you sure you wish to close the desktop?"
+                              ) && ReShellCore.destroy()
+                            }
+                          >
+                            Close
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() =>
+                              window.confirm(
+                                "Are you sure you wish to reload?"
+                              ) && ReShellCore.reload()
+                            }
+                          >
+                            Reload
+                          </MenuItem>
+                        </Menu>
+                        {activeWindowController && (
+                          <>
                             {
-                              // TODO: Refresh items when activeWindowController updates
+                              // TODO: Implement quadrant snapping here
                             }
-                            <MenuItem
-                              onClick={() =>
-                                activeWindowController.setIsMinimized(true)
+                            <Menu
+                              portal={true}
+                              menuButton={
+                                <MenuButton>
+                                  <span style={{ fontWeight: "bold" }}>
+                                    {activeWindowController.getTitle()}
+                                  </span>
+                                </MenuButton>
                               }
-                              // disabled={activeWindowController?.getIsMinimized()}
                             >
-                              Minimize
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() =>
-                                activeWindowController.setIsMaximized(true)
+                              <MenuItem
+                                onClick={() => activeWindowController.destroy()}
+                              >
+                                Close
+                              </MenuItem>
+                            </Menu>
+                            <Menu
+                              portal={true}
+                              menuButton={<MenuButton>Window</MenuButton>}
+                            >
+                              {
+                                // TODO: Refresh items when activeWindowController updates
                               }
-                              // disabled={activeWindowController?.getIsMaximized()}
-                            >
-                              Maximize
+                              <MenuItem
+                                onClick={() =>
+                                  activeWindowController.setIsMinimized(true)
+                                }
+                                // disabled={activeWindowController?.getIsMinimized()}
+                              >
+                                Minimize
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() =>
+                                  activeWindowController.setIsMaximized(true)
+                                }
+                                // disabled={activeWindowController?.getIsMaximized()}
+                              >
+                                Maximize
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() => activeWindowController.restore()}
+                                // disabled={}
+                              >
+                                Restore
+                              </MenuItem>
+                              <MenuDivider />
+                              <MenuItem
+                                onClick={() => activeWindowController.center()}
+                              >
+                                Center
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() => activeWindowController.scatter()}
+                              >
+                                Scatter
+                              </MenuItem>
+                            </Menu>
+                          </>
+                        )}
+                      </div>
+                    </Column>
+                    <Column
+                      style={{
+                        // TODO: Rework so column width expands according to content
+                        maxWidth: 110,
+                      }}
+                    >
+                      <div style={{ textAlign: "right" }}>
+                        <Menu
+                          portal={true}
+                          menuButton={
+                            <MenuButton>
+                              Service Core{" "}
+                              <LED
+                                color={services.length > 0 ? "green" : "gray"}
+                              />
+                            </MenuButton>
+                          }
+                        >
+                          {services.length === 0 ? (
+                            <MenuItem>
+                              <span style={{ fontStyle: "italic" }}>
+                                No running services
+                              </span>
                             </MenuItem>
-                            <MenuItem
-                              onClick={() => activeWindowController.restore()}
-                              // disabled={}
-                            >
-                              Restore
-                            </MenuItem>
-                            <MenuDivider />
-                            <MenuItem
-                              onClick={() => activeWindowController.center()}
-                            >
-                              Center
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => activeWindowController.scatter()}
-                            >
-                              Scatter
-                            </MenuItem>
-                          </Menu>
-                        </>
-                      )}
-                    </div>
-                  </Column>
-                  <Column
+                          ) : (
+                            services.map(service => (
+                              <MenuItem
+                                key={service.getUUID()}
+                                // TODO: Open direct service in service monitor
+                                onClick={openServiceMonitor}
+                              >
+                                {service.getTitle()}
+                              </MenuItem>
+                            ))
+                          )}
+                        </Menu>
+                      </div>
+                    </Column>
+                  </Row>
+                </Header>
+                <Content>
+                  {
+                    // TODO: Allow videos to play on background
+                  }
+
+                  {
+                    // TODO: Refactor into a version component
+                  }
+                  <div
                     style={{
-                      // TODO: Rework so column width expands according to content
-                      maxWidth: 110,
+                      maxWidth: "50%",
+                      position: "absolute",
+                      bottom: 28,
+                      right: 10,
+                      color: "rgba(255,255,255,.2)",
+                      fontSize: "2rem",
                     }}
                   >
-                    <div style={{ textAlign: "right" }}>
-                      <Menu
-                        portal={true}
-                        menuButton={
-                          <MenuButton>
-                            Service Core{" "}
-                            <LED
-                              color={services.length > 0 ? "green" : "gray"}
-                            />
-                          </MenuButton>
+                    {
+                      // TODO: Read from package.json
+                      // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
+                      // (i.e. REACT_APP_VERSION=$npm_package_version)
+                      //
+                      // TODO: If wanting to overlay completely on top of all other windows, and ignore mouse, etc:
+                      // use CSS [pointer-events: none]
+                    }
+                    <AutoScaler style={{ whiteSpace: "nowrap" }}>
+                      <div style={{ textAlign: "left", fontSize: ".7em" }}>
+                        {
+                          // TODO: Load as env variable
                         }
-                      >
-                        {services.length === 0 ? (
-                          <MenuItem>
-                            <span style={{ fontStyle: "italic" }}>
-                              No running services
-                            </span>
-                          </MenuItem>
-                        ) : (
-                          services.map(service => (
-                            <MenuItem
-                              key={service.getUUID()}
-                              // TODO: Open direct service in service monitor
-                              onClick={openServiceMonitor}
-                            >
-                              {service.getTitle()}
-                            </MenuItem>
-                          ))
-                        )}
-                      </Menu>
-                    </div>
-                  </Column>
-                </Row>
-              </Header>
-              <Content>
-                {
-                  // TODO: Allow videos to play on background
-                }
-
-                {
-                  // TODO: Refactor into a version component
-                }
-                <div
-                  style={{
-                    maxWidth: "50%",
-                    position: "absolute",
-                    bottom: 28,
-                    right: 10,
-                    color: "rgba(255,255,255,.2)",
-                    fontSize: "2rem",
-                  }}
-                >
-                  {
-                    // TODO: Read from package.json
-                    // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
-                    // (i.e. REACT_APP_VERSION=$npm_package_version)
-                    //
-                    // TODO: If wanting to overlay completely on top of all other windows, and ignore mouse, etc:
-                    // use CSS [pointer-events: none]
-                  }
-                  <AutoScaler style={{ whiteSpace: "nowrap" }}>
-                    <div style={{ textAlign: "left", fontSize: ".7em" }}>
-                      {
-                        // TODO: Load as env variable
-                      }
-                      <div>ReShell {ReShellCore.getReShellVersion()}</div>
-                      <div>
-                        PhantomCore {PhantomCore.getPhantomCoreVersion()}
+                        <div>ReShell {ReShellCore.getReShellVersion()}</div>
+                        <div>
+                          PhantomCore {PhantomCore.getPhantomCoreVersion()}
+                        </div>
+                        <div>Portal: {ReShellCore.getPortalName()}</div>
+                        <div>Env: {process.env.NODE_ENV}</div>
                       </div>
-                      <div>Portal: {ReShellCore.getPortalName()}</div>
-                      <div>Env: {process.env.NODE_ENV}</div>
-                    </div>
-                  </AutoScaler>
-                </div>
-                <WindowManager appDescriptors={appDescriptors}>
-                  <Dock />
-                </WindowManager>
-              </Content>
-            </Layout>
-          </Cover>
-        </NotificationProvider>
-      </ModalProvider>
-    </Router>
+                    </AutoScaler>
+                  </div>
+                  <WindowManager appDescriptors={appDescriptors}>
+                    <Dock />
+                  </WindowManager>
+                </Content>
+              </Layout>
+            </Cover>
+          </NotificationProvider>
+        </ModalProvider>
+      </Router>
+    </FullViewport>
   );
 }
