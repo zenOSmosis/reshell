@@ -102,7 +102,11 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
            */
           const elMedia = document.createElement("audio");
           elMedia.srcObject = new MediaStream([mediaStreamTrack]);
+
           // TODO: Does this need clean-up on media stream end?
+          //
+          // FIXME: (jh) Fix issue where this does not seem to work all the time
+          // w/ iOS 15.  Not sure if the issue is here is somewhere else.
         }
       });
     })();

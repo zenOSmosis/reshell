@@ -7,16 +7,8 @@ import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
 
 // TODO: Import utils/getWebRTCSignalStrength
-import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
-// TODO: Replace handling w/ PhantomCollection extension
-import {
-  getTrackMediaStream,
-  // getListHasMediaStream,
-  addMediaStreamToList,
-  removeMediaStreamFromList,
-  getMediaStreamListTracks,
-} from "./utils/mediaStreamListUtils";
+import sleep from "@portals/SpeakerAppPortal/shared/sleep";
 
 import {
   SYNC_EVT_PING,
@@ -31,6 +23,12 @@ import HeartbeatModule from "./modules/ZenRTCPeer.HeartbeatModule";
 import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule";
 import DataChannelManagerModule from "./modules/ZenRTCPeer.DataChannelManagerModule";
 import SyncEventDataChannelModule from "./modules/ZenRTCPeer.SyncEventDataChannelModule";
+import MediaStreamManagerModule, {
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+} from "./modules/ZenRTCPeer.MediaStreamManagerModule";
 
 // ZenRTCPeer instances running on this thread, using zenRTCSignalBrokerId as reference
 // keys
@@ -49,19 +47,12 @@ export const EVT_DISCONNECTED = "disconnected";
 // Is emit when there is an outgoing ZenRTC signal
 export const EVT_ZENRTC_SIGNAL = "zenrtc-signal";
 
-// TODO: Document
-export const EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED =
-  "outgoing-media-stream-track-added";
-// TODO: Document
-export const EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED =
-  "outgoing-media-stream-track-removed";
-
-// TODO: Document
-export const EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED =
-  "incoming-media-stream-track-added";
-// TODO: Document
-export const EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED =
-  "incoming-media-stream-track-removed";
+export {
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+};
 
 // Emits, with the received data, once data has been received
 // TODO: Rename to EVT_DATA
@@ -181,10 +172,6 @@ export default class ZenRTCPeer extends PhantomCore {
       }"`
     );
 
-    // Built-in support for stream multiplexing
-    this._outgoingMediaStreams = []; // TODO: Use PhantomCollection
-    this._incomingMediaStreams = []; // TODO: Use PhantomCollection
-
     this._zenRTCSignalBrokerId = zenRTCSignalBrokerId;
     this._isInitiator = isInitiator;
     this._shouldAutoReconnect = shouldAutoReconnect;
@@ -234,12 +221,81 @@ export default class ZenRTCPeer extends PhantomCore {
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
+
+      // Media manager module
+      (() => {
+        this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
+
+        this.proxyOn(
+          this._mediaStreamManagerModule,
+          EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+          data => {
+            this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, data);
+
+            this.emit(EVT_UPDATED);
+          }
+        );
+        this.proxyOn(
+          this._mediaStreamManagerModule,
+          EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+          data => {
+            this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, data);
+
+            this.emit(EVT_UPDATED);
+          }
+        );
+        this.proxyOn(
+          this._mediaStreamManagerModule,
+          EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+          data => {
+            const { mediaStreamTrack, mediaStream } = data;
+
+            try {
+              this._webrtcPeer.addTrack(mediaStreamTrack, mediaStream);
+            } catch (err) {
+              this.log.error(err);
+            }
+
+            this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, data);
+
+            this.emit(EVT_UPDATED);
+          }
+        );
+        this.proxyOn(
+          this._mediaStreamManagerModule,
+          EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+          async data => {
+            const { mediaStreamTrack, mediaStream } = data;
+
+            try {
+              await this._webrtcPeer.removeTrack(mediaStreamTrack, mediaStream);
+            } catch (err) {
+              this.log.error(err);
+            }
+
+            // Signal to remote that we've removed the track
+            //
+            // NOTE (jh): This is a workaround since WebRTCPeer does not emit track
+            // removed events directly
+            this.emitSyncEvent(SYNC_EVT_TRACK_REMOVED, {
+              msid: mediaStream.id,
+              kind: mediaStreamTrack.kind,
+            });
+
+            this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, data);
+
+            this.emit(EVT_UPDATED);
+          }
+        );
+      })();
     })();
 
     this._reconnectArgs = [];
   }
 
   /**
+   * Utilized for peer identification.
+   *
    * @return {string}
    */
   getSignalBrokerId() {
@@ -393,6 +449,7 @@ export default class ZenRTCPeer extends PhantomCore {
     return this._isInitiator;
   }
 
+  // TODO: Accept optional callback
   /**
    * Resolves once connected.
    *
@@ -429,18 +486,6 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * Utilized for peer identification and should match the Socket.io id
-   * provided in the signaling (ipcMessageBroker).
-   *
-   * TODO: Rename to getSignalingId?
-   *
-   * @return {string}
-   */
-  getSocketIoId() {
-    return this._zenRTCSignalBrokerId;
-  }
-
-  /**
    * TODO: Make private; or auto-(re)connect?
    *
    * @param {MediaStream} outgoingMediaStream?
@@ -467,12 +512,6 @@ export default class ZenRTCPeer extends PhantomCore {
     } else {
       this._webrtcPeer = null;
 
-      this.emit(EVT_CONNECTING);
-
-      // Fix issue where reconnecting streams causes tracks to build up
-      this._outgoingMediaStreams = [];
-      this._incomingMediaStreams = [];
-
       if (outgoingMediaStream) {
         // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
         // connected
@@ -492,6 +531,7 @@ export default class ZenRTCPeer extends PhantomCore {
         initiator: this._isInitiator,
 
         // Set to false to disable trickle ICE and get a single 'signal' event (slower)
+        // FIXME: (jh) Make this configurable
         trickle: true,
 
         // @see https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration/iceTransportPolicy#value
@@ -525,7 +565,7 @@ export default class ZenRTCPeer extends PhantomCore {
           /*
           this.log.debug({
             offer: sdpTransform.parse(sdp),
-            zenRTCSignalBrokerId: this.getSocketIoId(),
+            zenRTCSignalBrokerId: this.getSignalBrokerId(),
           });
           */
 
@@ -546,6 +586,8 @@ export default class ZenRTCPeer extends PhantomCore {
 
       /** @see https://github.com/feross/simple-peer */
       this._webrtcPeer = new WebRTCPeer(simplePeerOptions);
+
+      this.emit(EVT_CONNECTING);
 
       // TODO: Build out
       // TODO: Send up ipcMessageBroker
@@ -579,6 +621,11 @@ export default class ZenRTCPeer extends PhantomCore {
       // TODO: Use event constant
       this._webrtcPeer.on("close", async () => {
         this._isConnected = false;
+
+        // Fix issue where reconnecting streams causes tracks to build up
+        // this._outgoingMediaStreamCollection.destroyAllChildren();
+        // this._incomingMediaStreamCollection.destroyAllChildren();
+
         this.emit(EVT_DISCONNECTED);
 
         // Provide automated re-connect mechanism, if this is the initiator and
@@ -601,7 +648,10 @@ export default class ZenRTCPeer extends PhantomCore {
         // NOTE (jh): This timeout seems to improve an issue w/ iOS 14
         // sometimes disconnecting when tracks are added
         setTimeout(() => {
-          this._addIncomingMediaStreamTrack(mediaStreamTrack, mediaStream);
+          this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
+            mediaStreamTrack,
+            mediaStream
+          );
         }, 500);
       });
 
@@ -681,21 +731,24 @@ export default class ZenRTCPeer extends PhantomCore {
   }
 
   /**
-   * NOTE: getIncomingMediaStreamTracks() is more accurate.
-   *
    * @return {MediaStream[]}
    */
   getIncomingMediaStreams() {
-    return this._incomingMediaStreams;
+    return this._mediaStreamManagerModule.getIncomingMediaStreams();
   }
 
   /**
+   * IMPORTANT: When trying to associate a track with a multiplexed remote
+   * peer, it must be matched by the enclosing MediaStream ID (i.e. obtain from
+   * getIncomingMediaStreams()).
+   *
    * @return {MediaStreamTrack[]}
    */
   getIncomingMediaStreamTracks() {
-    return getMediaStreamListTracks(this._incomingMediaStreams);
+    return this._mediaStreamManagerModule.getIncomingMediaStreamTracks();
   }
 
+  // TODO: Remove
   /**
    * Internally registers incoming MediaStreamTrack and associates it with the
    * given MediaStream.
@@ -703,26 +756,30 @@ export default class ZenRTCPeer extends PhantomCore {
    * @param {MediaStreamTrack} mediaStreamTrack
    * @param {MediaStream} mediaStream
    */
-  _addIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+  OLD_addIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
     // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
 
     // If MediaStream is not already added to list of incoming media streams, add it
-    this._incomingMediaStreams = addMediaStreamToList(
-      mediaStream,
-      this._incomingMediaStreams
+    this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
+      mediaStreamTrack,
+      mediaStream
     );
 
     // WebRTCPeer should have already added this to the stream
     // mediaStream.addTrack(mediaStreamTrack);
 
+    // TODO: Refactor; listen to collection itself before emitting this event
+    /*
     this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, {
       mediaStreamTrack,
       mediaStream,
     });
+    */
 
-    this.emit(EVT_UPDATED);
+    // this.emit(EVT_UPDATED);
   }
 
+  // TODO: Remove
   /**
    * Internally de-registers incoming MediaStreamTrack and disassociates it
    * from the given MediaStream.
@@ -730,208 +787,59 @@ export default class ZenRTCPeer extends PhantomCore {
    * @param {MediaStreamTrack} mediaStreamTrack
    * @param {MediaStream} mediaStream
    */
-  _removeIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // Since WebRTCPeer does not have a track-removed event, this is part of
-    // the workaround process, and we have to remove the track on our own
-    mediaStream.removeTrack(mediaStreamTrack);
+  OLD_removeIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    this._mediaStreamManagerModule.removeIncomingMediaStreamTrack(
+      mediaStreamTrack,
+      mediaStream
+    );
 
+    // TODO: Refactor; listen to collection itself before emitting this event
+    /*
     this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
       mediaStreamTrack,
       mediaStream,
     });
+    */
 
-    this.emit(EVT_UPDATED);
+    // this.emit(EVT_UPDATED);
   }
 
   /**
-   * NOTE: this.getOutgoingMediaStreamTracks is more accurate and should likely
-   * be used instead.
-   *
-   * TODO: Remove?
-   *
    * @return {MediaStream[]}
    */
   getOutgoingMediaStreams() {
-    return this._outgoingMediaStreams;
+    return this._mediaStreamManagerModule.getOutgoingMediaStreams();
   }
 
   /**
    * @return {MediaStreamTrack[]}
    */
   getOutgoingMediaStreamTracks() {
-    return getMediaStreamListTracks(this._outgoingMediaStreams);
+    return this._mediaStreamManagerModule.getOutgoingMediaStreamTracks();
   }
 
   /**
-   * i.e. publish
-   *
-   * TODO: Don't add track if peer is not accepting track of type
-   *
    * @param {MediaStreamTrack} mediaStreamTrack
    * @param {MediaStream} mediaStream
    * @return {void}
    */
-  async addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
-      throw new TypeError("mediaStreamTrack is not a MediaStreamTrack type");
-    }
-
-    if (!(mediaStream instanceof MediaStream)) {
-      throw new TypeError("mediaStream is not a MediaStream type");
-    }
-
-    // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
-
-    if (!this._webrtcPeer) {
-      this.log.warn("WebRTCPeer is not open");
-      return;
-    }
-
-    // TODO: Remove
-    console.log("adding outgoing media stream track", {
+  addOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    return this._mediaStreamManagerModule.addOutgoingMediaStreamTrack(
       mediaStreamTrack,
-      mediaStream,
-    });
-
-    try {
-      // TODO: Should the mediaStream.addTrack and addMediaStreamToList calls
-      // happen after this._webrtcPeer.addTrack happens, instead?  The peer
-      // will raise an error when trying to add a duplicate track to a stream,
-      // in which case that error could make the other states out of sync
-
-      // Add track to local representation of stream
-      mediaStream.addTrack(mediaStreamTrack);
-
-      // Add stream to outgoing list of streams
-      this._outgoingMediaStreams = addMediaStreamToList(
-        mediaStream,
-        this._outgoingMediaStreams
-      );
-
-      this._webrtcPeer.addTrack(mediaStreamTrack, mediaStream);
-
-      // FIXME: Firefox 86 doesn't listen to "ended" event, and the
-      // functionality has to be monkeypatched into the onended handler. Note
-      // that this still works in conjunction with
-      // track.dispatchEvent(new Event("ended")).
-      const oEnded = mediaStreamTrack.onended;
-      mediaStreamTrack.onended = (...args) => {
-        if (typeof oEnded === "function") {
-          oEnded(...args);
-        }
-
-        this.log.debug(
-          "Automatically removing ended media stream track",
-          mediaStreamTrack
-        );
-
-        this.removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream);
-      };
-
-      this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, {
-        mediaStreamTrack,
-        mediaStream,
-      });
-
-      this.emit(EVT_UPDATED);
-    } catch (err) {
-      this.log.warn("Caught error in addOutgoingMediaStreamTrack", err);
-    }
+      mediaStream
+    );
   }
 
   /**
-   * i.e. unpublish
-   *
    * @param {MediaStreamTrack} mediaStreamTrack
    * @param {MediaStream} mediaStream
-   * @return {Promise<void>}
+   * @return {void}
    */
-  async removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    if (!this._webrtcPeer) {
-      this.log.warn("WebRTCPeer is not open");
-      return;
-    }
-
-    try {
-      // Unpublish track
-      await this._webrtcPeer.removeTrack(mediaStreamTrack, mediaStream);
-    } catch (err) {
-      this.log.warn("Caught", err);
-    }
-
-    // Remove local representation of stream
-    mediaStream.removeTrack(mediaStreamTrack);
-
-    this._outgoingMediaStreams = removeMediaStreamFromList(
-      mediaStream,
-      this._outgoingMediaStreams
-    );
-
-    this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, {
+  removeOutgoingMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    return this._mediaStreamManagerModule.removeOutgoingMediaStreamTrack(
       mediaStreamTrack,
-      mediaStream,
-    });
-
-    this.emit(EVT_UPDATED);
-
-    // Signal to remote that we've removed the track
-    //
-    // NOTE (jh): This is a workaround since WebRTCPeer does not emit track
-    // removed events directly
-    this.emitSyncEvent(SYNC_EVT_TRACK_REMOVED, {
-      msid: mediaStream.id,
-      kind: mediaStreamTrack.kind,
-    });
-  }
-
-  /**
-   * Performs a reverse-lookup of MediaStream from given MediaStreamTrack.
-   *
-   * Note, if the same MediaStreamTrack were to be encased in more than one
-   * MediaStream, only the first MediaStream will be returned.
-   *
-   * @param {MediaStreamTrack} mediaStreamTrack
-   * @return {MediaStream}
-   */
-  getTrackMediaStream(mediaStreamTrack) {
-    return getTrackMediaStream(mediaStreamTrack, [
-      ...this._outgoingMediaStreams,
-      ...this._incomingMediaStreams,
-    ]);
-  }
-
-  // TODO: Document
-  //
-  // Helper / Convenience method
-  //
-  // TODO: Enable support to remotely publish/unpublish tracks based on what's
-  // added to / removed from this stream
-  async publishMediaStream(mediaStream) {
-    const tracks = mediaStream.getTracks();
-
-    for (const track of tracks) {
-      this.addOutgoingMediaStreamTrack(track, mediaStream);
-    }
-  }
-
-  /**
-   * Helper / Convenience method
-   *
-   * @return {MediaStream}
-   */
-  getPublishedMediaStreams() {
-    return this.getOutgoingMediaStreams();
-  }
-
-  // TODO: Document
-  //
-  // Helper / Convenience method
-  async unpublishMediaStream(mediaStream) {
-    const tracks = mediaStream.getTracks();
-
-    for (const track of tracks) {
-      this.removeOutgoingMediaStreamTrack(track, mediaStream);
-    }
+      mediaStream
+    );
   }
 
   /**
@@ -954,11 +862,12 @@ export default class ZenRTCPeer extends PhantomCore {
     if (
       this._isConnected &&
       this._webrtcPeer &&
-      // Simple-peer utilizes a single data channel
+      // WebRTCPeer (simple-peer) utilizes a single data channel
       //
       // Also
       // @see https://github.com/feross/simple-peer/issues/480
       // InvalidStateError: RTCDataChannel.readyState is not 'open'
+      // FIXME: (jh) Fix issue in WebRTCPeer?
       this._webrtcPeer._channel &&
       this._webrtcPeer._channel.readyState === "open"
     ) {
@@ -1028,11 +937,15 @@ export default class ZenRTCPeer extends PhantomCore {
       // Internal event to zenRTCPeer
       case SYNC_EVT_TRACK_REMOVED:
         (() => {
-          // TODO: Remove "tracksOfKind" and remove all tracks with this media stream
+          // Remove "tracksOfKind" and remove all tracks with this media stream
+          // FIXME: (jh) Try to remove only the relevant track
 
           // msid = media stream id
           // kind = "audio" | "video"
           const { msid, kind } = eventData;
+
+          // TODO: Remove
+          console.log("SYNC_EVT_TRACK_REMOVED", { msid, kind });
 
           const mediaStream = this.getIncomingMediaStreams().find(
             ({ id }) => id === msid
@@ -1049,7 +962,7 @@ export default class ZenRTCPeer extends PhantomCore {
                 : mediaStream.getVideoTracks();
 
             if (tracksOfKind.length) {
-              this._removeIncomingMediaStreamTrack(
+              this._mediaStreamManagerModule.removeIncomingMediaStreamTrack(
                 tracksOfKind[0],
                 mediaStream
               );
@@ -1130,41 +1043,6 @@ export default class ZenRTCPeer extends PhantomCore {
           this._webrtcPeer.destroy();
 
           this._webrtcPeer = null;
-        }
-      }
-
-      // NOTE: Because of previous await, this is utilized
-      if (this._isDestroyed) {
-        return;
-      }
-
-      // Remove incoming media stream tracks
-      const incomingMediaStreamTracks = this.getIncomingMediaStreamTracks();
-
-      if (incomingMediaStreamTracks) {
-        for (const mediaStreamTrack of incomingMediaStreamTracks) {
-          this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
-            mediaStreamTrack,
-            mediaStream: getTrackMediaStream(
-              mediaStreamTrack,
-              this._incomingMediaStreams
-            ),
-          });
-        }
-      }
-
-      // Remove outgoing media stream tracks
-      const outgoingMediaStreamTracks = this.getOutgoingMediaStreamTracks();
-
-      if (outgoingMediaStreamTracks) {
-        for (const mediaStreamTrack of outgoingMediaStreamTracks) {
-          this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, {
-            mediaStreamTrack,
-            mediaStream: getTrackMediaStream(
-              mediaStreamTrack,
-              this._outgoingMediaStreams
-            ),
-          });
         }
       }
     })();

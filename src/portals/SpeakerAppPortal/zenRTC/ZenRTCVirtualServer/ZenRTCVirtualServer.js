@@ -274,6 +274,10 @@ export default class ZenRTCVirtualServer extends PhantomCore {
           signalBrokerIdFrom
         );
 
+        // TODO: Fix issue where an error is thrown if there is an await within
+        // the connect sequence before the _webRTCPeer object is created within
+        // ZenRTCPeer (perhaps listen to once connecting)
+
         zenRTCPeer.receiveZenRTCSignal(signal);
       }
     };
