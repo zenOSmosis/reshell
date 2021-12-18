@@ -4,7 +4,7 @@ import Layout, { Header, Content } from "../Layout";
 import Padding from "../Padding";
 import Center from "../Center";
 import LED from "../LED";
-import { AudioMediaStreamTrackLevelMeter } from "../audioMeters/AudioLevelMeter";
+import AudioLevelMeter from "../audioMeters/AudioLevelMeter";
 
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
@@ -114,7 +114,7 @@ export default function InputMediaDevicesSelector({
                       </td>
                       <td className="center">
                         {device.kind === "audioinput" && (
-                          <AudioMediaStreamTrackLevelMeter
+                          <AudioLevelMeter
                             style={{ height: 50 }}
                             mediaStreamTrack={
                               deviceCaptureFactory

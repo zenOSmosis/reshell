@@ -19,6 +19,8 @@ export default function AVBase({
   );
 
   // TODO: Document
+  // Contains internal fixes which help Firefox and iOS start playing media
+  // tracks
   useEffect(() => {
     if (!el) {
       return;
@@ -33,7 +35,8 @@ export default function AVBase({
 
     el.srcObject = mediaStream;
 
-    // TODO: Emit events when playing in order to perform "read receipts" for remote participants
+    // TODO: Emit events when playing in order to perform "read receipts" for
+    // remote participants
 
     el.play()
       .then(() => (el.muted = false))

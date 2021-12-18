@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 import Center from "@components/Center";
-import Avatar from "@components/Avatar";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
-import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
+import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
+import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 
@@ -51,11 +51,13 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
               <Layout>
                 <Content>
                   <Center>
-                    {
-                      // TODO: Use AudioMediaStreamTrackLevelAvatar instead (or equivalent)
-                    }
                     <div>
-                      <Avatar src={avatarURL} />
+                      <AudioBorderAvatar
+                        src={avatarURL}
+                        mediaStreamTracks={outgoingMediaStreamTracks.filter(
+                          ({ kind }) => kind === "audio"
+                        )}
+                      />
                     </div>
                     <div style={{ marginTop: 10, fontWeight: "bold" }}>
                       {profileName}
@@ -69,7 +71,7 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
                         mediaStreamTrack => mediaStreamTrack.kind === "audio"
                       )
                       .map(mediaStreamTrack => (
-                        <AudioMediaStreamTrackLevelMeter
+                        <AudioLevelMeter
                           key={mediaStreamTrack.id}
                           mediaStreamTrack={mediaStreamTrack}
                           style={{ height: "100%" }}

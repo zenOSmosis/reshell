@@ -7,31 +7,14 @@ import {
   validateClientAuthorization,
 } from "@portals/SpeakerAppPortal/shared/serviceAuthorization/client";
 import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPortal/shared/socketEvents";
-// import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
-// import KeyVaultService from "@services/KeyVaultService";
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
 export { EVT_CONNECTED, EVT_DISCONNECTED };
 
-// TODO: Look into WebAuthn: https://webauthn.guide / https://dev.to/jsombie/say-goodbye-to-passwords-webauthn-the-foundations-27g7
-
-// TODO: Clean up
-/*
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import SocketAPIClient from "@portals/SpeakerAppPortal/shared/SocketAPIClient";
-*/
-
-/*
-import { KEY_SERVICE_AUTHORIZATION } from "@portals/SpeakerAppPortal/local/localStorageKeys";
-import { EVT_CONNECT_ERROR } from "./socketConstants";
-*/
-
-// import useLocalStorage from "@portals/SpeakerAppPortal/hooks/useLocalStorage";
-
 // TODO: Document
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {
+  // TODO: Document
   constructor(...args) {
     super(...args);
 
@@ -61,7 +44,7 @@ export default class SpeakerAppSocketAuthenticationService extends SocketIOServi
       },
     });
 
-    // TODO: Build out & refactor
+    // TODO: Document
     const _handleAuthorizationGranted = async clientAuthorization => {
       try {
         validateClientAuthorization(

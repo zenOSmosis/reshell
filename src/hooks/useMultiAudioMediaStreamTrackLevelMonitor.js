@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MultiAudioMediaStreamTrackLevelMonitor,
   MultiAudioMediaStreamTrackLevelMonitorEvents,
@@ -15,13 +15,13 @@ const { EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK } =
  * [default = []] A single track, or an array of tracks.  It is made optional
  * because rendered audio level meters may not already have an associated
  * MediaStreamTrack.
- * @return {number} The average percent of all of the input tracks.
+ * @param {function} onAudioLevelChange Callback which is executed each time the audio level is changed.
+ * @return {void}
  */
 export default function useMultiAudioMediaStreamTrackLevelMonitor(
-  mediaStreamTrackOrTracks = []
+  mediaStreamTrackOrTracks = [],
+  onAudioLevelChange
 ) {
-  // TODO: This needs optimization; something about this monitor causes an infinite loop cycle
-
   /**
    * @type {MediaStreamTrack[]}
    */
@@ -40,7 +40,8 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
 
   const [mediaStreamMonitor, _setMediaStreamMonitor] = useState(null);
 
-  const [percent, _setPercent] = useState(null);
+  const refOnAudioLevelChange = useRef(onAudioLevelChange);
+  refOnAudioLevelChange.current = onAudioLevelChange;
 
   useEffect(() => {
     const mediaStreamMonitor = new MultiAudioMediaStreamTrackLevelMonitor();
@@ -48,9 +49,17 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
     // NOTE: This event handler will automatically be unbound once the class
     // destructs
     mediaStreamMonitor.on(EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK, ({ rms }) => {
-      // FIXME: This is probably not supposed to be RMS, but it's close
-      // enough for prototyping
-      _setPercent(rms * 0.8);
+      // FIXME: This is probably not supposed to be RMS (nor even is RMS value
+      // itself very accurate), but it's close enough for prototyping
+      //
+      // TODO: Move calculation into track level monitor library so it is not
+      // redundant
+      let calcAudioLevelValue = rms * 0.8;
+      if (calcAudioLevelValue > 100) {
+        calcAudioLevelValue = 100;
+      }
+
+      refOnAudioLevelChange.current(calcAudioLevelValue);
     });
 
     _setMediaStreamMonitor(mediaStreamMonitor);
@@ -77,6 +86,4 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
       }
     }
   }, [mediaStreamMonitor, addedMediaStreamTracks, removedMediaStreamTracks]);
-
-  return percent;
 }

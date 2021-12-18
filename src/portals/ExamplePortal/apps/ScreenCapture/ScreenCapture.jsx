@@ -8,7 +8,7 @@ import { Video } from "@components/audioVideoRenderers";
 import LED from "@components/LED";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
-import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
+import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
 
 import useGetIsUnmounting from "@hooks/useGetIsUnmounting";
 
@@ -120,9 +120,7 @@ const ScreenCaptureWindow = {
                 <Column>
                   <Layout>
                     <Content>
-                      <AudioMediaStreamTrackLevelMeter
-                        mediaStreamTrack={audioTrack}
-                      />
+                      <AudioLevelMeter mediaStreamTrack={audioTrack} />
                     </Content>
                     <Footer>Audio</Footer>
                   </Layout>

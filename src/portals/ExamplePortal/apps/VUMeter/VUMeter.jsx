@@ -2,8 +2,8 @@ import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
-import { AudioMediaStreamTrackLevelMeter } from "@components/audioMeters/AudioLevelMeter";
-import { AudioMediaStreamTrackLevelVUMeter } from "@components/audioMeters/VUMeter";
+import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
+import VULevelMeter from "@components/audioMeters/VUMeter";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
 
@@ -39,10 +39,8 @@ const VUMeter = {
         <Content>
           <Center canOverflow={true}>
             <div>
-              <AudioMediaStreamTrackLevelVUMeter
-                mediaStreamTracks={mediaStreamTracks}
-              />
-              <AudioMediaStreamTrackLevelMeter
+              <VULevelMeter mediaStreamTracks={mediaStreamTracks} />
+              <AudioLevelMeter
                 style={{ marginLeft: 20, height: 160, width: 40 }}
                 mediaStreamTracks={mediaStreamTracks}
               />
