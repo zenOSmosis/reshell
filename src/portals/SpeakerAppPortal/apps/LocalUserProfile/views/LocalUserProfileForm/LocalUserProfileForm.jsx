@@ -54,6 +54,7 @@ export default function LocalUserProfileForm({
                     <input type="hidden" name="avatarURL" value={avatarURL} />
                     <Center>
                       {avatarURL && (
+                        // TODO: Use AudioBorderAvatar instead
                         <Avatar src={avatarURL} name={name} size="100%" />
                       )}
                     </Center>
