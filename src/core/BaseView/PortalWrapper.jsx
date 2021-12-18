@@ -18,7 +18,7 @@ export default function PortalWrapperView({ portal }) {
             <DesktopProvider>
               <React.Suspense
                 fallback={
-                  // NOTE: While Cover works as a FullScreen substitute, for
+                  // NOTE: While Cover works as a FullScreen substitute for
                   // simple layouts, it doesn't contain all of the view hacks
                   // the regular FullViewport component has.
                   //
