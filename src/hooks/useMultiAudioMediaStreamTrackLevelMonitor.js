@@ -14,7 +14,7 @@ const { EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK } =
  * @param {MediaStreamTrack | MediaStreamTrack[] | null} mediaStreamTrackOrTracks?
  * [default = []] A single track, or an array of tracks.  It is made optional
  * because rendered audio level meters may not already have an associated
- * MediaStreamTrack.
+ * MediaStreamTrack. NOTE: It will automatically filter out non-audio tracks.
  * @param {function} onAudioLevelChange Callback which is executed each time the audio level is changed.
  * @return {void}
  */

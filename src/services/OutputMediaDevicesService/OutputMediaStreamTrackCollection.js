@@ -7,21 +7,23 @@ const { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED } =
 
 export { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
 
-// TODO: Build out; ensuring added children are media device controller factories
-// class OutputMediaDeviceFactoryCollection extends PhantomCollection {
-// TODO: Ensure that added children are of MediaStreamTrackControllerFactory type
-// }
-export default class OutputAudioMediaStreamTrackCollection extends PhantomCollection {
+export default class OutputMediaStreamTrackCollection extends PhantomCollection {
   // TODO: Document
   addChild(mediaStreamTrack) {
-    if (mediaStreamTrack.kind === "audio") {
-      if (!this.getChildWithKey(mediaStreamTrack.id)) {
-        const phantomAudioWrapper = new PhantomMediaStreamTrackWrapper(
-          mediaStreamTrack
-        );
+    if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
+      throw new TypeError(
+        "mediaStreamTrack must be a MediaStreamTrack instance"
+      );
+    }
 
-        super.addChild(phantomAudioWrapper);
-      }
+    const mediaStreamTrackId = mediaStreamTrack.id;
+
+    if (!this.getChildWithKey(mediaStreamTrackId)) {
+      const phantomAudioWrapper = new PhantomMediaStreamTrackWrapper(
+        mediaStreamTrack
+      );
+
+      super.addChild(phantomAudioWrapper, mediaStreamTrackId);
     }
   }
 
@@ -32,12 +34,10 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
 
   // TODO: Document
   async removeChild(mediaStreamTrack) {
-    if (mediaStreamTrack.kind === "audio") {
-      const phantomAudioWrapper = this.getChildWithKey(mediaStreamTrack.id);
+    const phantomAudioWrapper = this.getChildWithKey(mediaStreamTrack.id);
 
-      if (phantomAudioWrapper) {
-        await phantomAudioWrapper.destroy();
-      }
+    if (phantomAudioWrapper) {
+      await phantomAudioWrapper.destroy();
     }
   }
 
@@ -47,12 +47,43 @@ export default class OutputAudioMediaStreamTrackCollection extends PhantomCollec
   }
 
   /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputMediaStreamTracks() {
+    return (
+      this.getChildren()
+        .map(wrapper => wrapper.getMediaStreamTrack())
+        // TODO: This filtering shouldn't be necessary, and should be handled
+        // internally by the collection using ArbitraryPhantomWrapper
+        .filter(mediaStreamTrack => Boolean(mediaStreamTrack))
+    );
+  }
+
+  /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputAudioMediaStreamTracks() {
+    return this.getOutputMediaStreamTracks().filter(
+      ({ kind }) => kind === "audio"
+    );
+  }
+
+  /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputVideoMediaStreamTracks() {
+    return this.getOutputMediaStreamTracks().filter(
+      ({ kind }) => kind === "video"
+    );
+  }
+
+  /**
    * @return {Promise<void>}
    */
   async destroy() {
     await this.destroyAllChildren();
 
-    super.destroy();
+    return super.destroy();
   }
 }
 

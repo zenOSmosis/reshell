@@ -1,8 +1,8 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
-import OutputAudioMediaStreamTrackCollection, {
+import OutputMediaStreamTrackCollection, {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-} from "./OutputAudioMediaStreamTrackCollection";
+} from "./OutputMediaStreamTrackCollection";
 
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
@@ -15,66 +15,37 @@ export default class OutputMediaDevicesService extends UIServiceCore {
 
     this.setTitle("Output Media Devices Service");
 
-    this._outputAudioMediaStreamTrackCollection = this.bindCollectionClass(
-      OutputAudioMediaStreamTrackCollection
+    this._outputMediaStreamTrackCollection = this.bindCollectionClass(
+      OutputMediaStreamTrackCollection
     );
 
     // TODO: Refactor and document
     (() => {
-      const audioMediaStreamTrackCollection = this.getCollectionInstance(
-        OutputAudioMediaStreamTrackCollection
-      );
-
-      function OutputMediaDevicesAudioAudio() {
+      const OutputMediaDevicesAudio = () => {
         const [audioMediaStreamTracks, setAudioMediaStreamTracks] = useState(
           []
         );
 
         // Handle track syncing
         useEffect(() => {
-          audioMediaStreamTrackCollection.on(
+          this._outputMediaStreamTrackCollection.on(
             EVT_CHILD_INSTANCE_ADDED,
-            phantomMediaStreamTrackWrapper => {
-              // TODO: Remove
-              console.log(
-                "added phantom audio wrapper",
-                phantomMediaStreamTrackWrapper
-              );
-
+            () => {
               setAudioMediaStreamTracks(
-                audioMediaStreamTrackCollection
-                  .getChildren()
-                  .map(phantomMediaStreamTrackWrapper =>
-                    phantomMediaStreamTrackWrapper.getMediaStreamTrack()
-                  )
+                this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks()
               );
             }
           );
 
-          audioMediaStreamTrackCollection.on(
+          this._outputMediaStreamTrackCollection.on(
             EVT_CHILD_INSTANCE_REMOVED,
-            phantomMediaStreamTrackWrapper => {
-              // TODO: Remove
-              console.log(
-                "removed phantom audio wrapper",
-                phantomMediaStreamTrackWrapper
-              );
-
+            () => {
               setAudioMediaStreamTracks(
-                audioMediaStreamTrackCollection
-                  .getChildren()
-                  .map(phantomMediaStreamTrackWrapper =>
-                    phantomMediaStreamTrackWrapper.getMediaStreamTrack()
-                  )
+                this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks()
               );
             }
           );
         }, []);
-
-        // TODO: Remove
-        console.log({
-          audioMediaStreamTracks,
-        });
 
         return (
           <React.Fragment>
@@ -83,7 +54,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
             })}
           </React.Fragment>
         );
-      }
+      };
 
       const audioDOMBase = document.createElement("div");
       audioDOMBase.style.display = "hidden";
@@ -93,21 +64,42 @@ export default class OutputMediaDevicesService extends UIServiceCore {
         window.document.body.removeChild(audioDOMBase)
       );
 
-      ReactDOM.render(<OutputMediaDevicesAudioAudio />, audioDOMBase);
+      ReactDOM.render(<OutputMediaDevicesAudio />, audioDOMBase);
     })();
   }
 
   // TODO: Document
   addOutputMediaStreamTrack(mediaStreamTrack) {
-    return this._outputAudioMediaStreamTrackCollection.addOutputMediaStreamTrack(
+    return this._outputMediaStreamTrackCollection.addOutputMediaStreamTrack(
       mediaStreamTrack
     );
   }
 
   // TODO: Document
   removeOutputMediaStreamTrack(mediaStreamTrack) {
-    return this._outputAudioMediaStreamTrackCollection.removeOutputMediaStreamTrack(
+    return this._outputMediaStreamTrackCollection.removeOutputMediaStreamTrack(
       mediaStreamTrack
     );
+  }
+
+  /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputMediaStreamTracks() {
+    return this._outputMediaStreamTrackCollection.getOutputMediaStreamTracks();
+  }
+
+  /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputAudioMediaStreamTracks() {
+    return this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks();
+  }
+
+  /**
+   * @return {MediaStreamTrack[]}
+   */
+  getOutputVideoMediaStreamTracks() {
+    return this._outputMediaStreamTrackCollection.getOutputVideoMediaStreamTracks();
   }
 }

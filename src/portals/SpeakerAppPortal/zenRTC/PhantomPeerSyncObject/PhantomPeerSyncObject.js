@@ -98,4 +98,34 @@ export default class PhantomPeerSyncObject extends SyncObject {
       .map(mediaStream => mediaStream.getTracks())
       .flat();
   }
+
+  /**
+   * Audio MediaStreamTracks which the peer is sending.
+   *
+   * IMPORTANT: If this is a remote peer, this represents the MediaStreamTrack
+   * instances which the remote peer is sending (not streams which the local is
+   * sending to the remote).
+   *
+   * @return {MediaStreamTrack[]}
+   */
+  getOutgoingAudioMediaStreamTracks() {
+    return this.getOutgoingMediaStreamTracks().filter(
+      ({ kind }) => kind === "audio"
+    );
+  }
+
+  /**
+   * Video MediaStreamTracks which the peer is sending.
+   *
+   * IMPORTANT: If this is a remote peer, this represents the MediaStreamTrack
+   * instances which the remote peer is sending (not streams which the local is
+   * sending to the remote).
+   *
+   * @return {MediaStreamTrack[]}
+   */
+  getOutgoingVideoMediaStreamTracks() {
+    return this.getOutgoingMediaStreamTracks().filter(
+      ({ kind }) => kind === "video"
+    );
+  }
 }

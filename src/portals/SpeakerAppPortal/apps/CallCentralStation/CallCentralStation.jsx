@@ -1,4 +1,4 @@
-// import { useCallback } from "react";
+import { useEffect } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Center from "@components/Center";
@@ -25,6 +25,7 @@ import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/service
 import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
 import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
 import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
+import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 
 export const REGISTRATION_ID = "network";
 
@@ -48,6 +49,7 @@ const CallCentralStation = {
     SpeakerAppLocalZenRTCPeerService,
     SpeakerAppClientPhantomSessionService,
     SpeakerAppLocalUserProfileService,
+    OutputMediaDevicesService,
   ],
   titleBarView: function View({ windowController, appServices }) {
     const title = windowController.getTitle();
@@ -78,7 +80,22 @@ const CallCentralStation = {
       </NoWrap>
     );
   },
-  view: function View({ appServices }) {
+  view: function View({ windowController, appServices }) {
+    // Automatically maximize on start
+    // TODO: Implement ability to start auto-maximized without relying on
+    // useEffect
+    useEffect(() => {
+      // NOTE: The following timeout is for visual effect only, as Safari seems
+      // to render the window fully expanded first
+      const to = setTimeout(() => {
+        windowController.maximize();
+      }, 1000);
+
+      return function unmount() {
+        clearTimeout(to);
+      };
+    }, [windowController]);
+
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkDiscoveryService =
       appServices[SpeakerAppNetworkDiscoveryService];
@@ -86,6 +103,7 @@ const CallCentralStation = {
       appServices[SpeakerAppLocalZenRTCPeerService];
     const phantomSessionService =
       appServices[SpeakerAppClientPhantomSessionService];
+    const outputMediaDevicesService = appServices[OutputMediaDevicesService];
 
     const networks = networkDiscoveryService.getNetworks();
     const lenNetworks = networks.length;
@@ -106,6 +124,16 @@ const CallCentralStation = {
 
     const isZenRTCConnecting = localZenRTCPeerService.getIsConnecting();
     const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
+
+    // TODO: Refactor and rename
+    const latestOutputVideoTrack = (() => {
+      const videoTracks =
+        outputMediaDevicesService.getOutputVideoMediaStreamTracks();
+
+      if (videoTracks) {
+        return videoTracks[videoTracks.length - 1];
+      }
+    })();
 
     return (
       <Layout>
@@ -146,6 +174,7 @@ const CallCentralStation = {
             ) : (
               <NetworkConnected
                 remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
+                latestOutputVideoTrack={latestOutputVideoTrack}
               />
             )}
           </Padding>

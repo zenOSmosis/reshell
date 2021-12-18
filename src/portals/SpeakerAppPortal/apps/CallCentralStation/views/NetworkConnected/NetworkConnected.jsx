@@ -7,17 +7,30 @@ import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 
-export default function NetworkConnected({ remotePhantomPeers = [] }) {
+import { Video } from "@components/audioVideoRenderers";
+
+// TODO: Document and add prop-types
+export default function NetworkConnected({
+  remotePhantomPeers = [],
+  latestOutputVideoTrack,
+}) {
   const isInSync = useFakeIsInSync();
 
   if (!remotePhantomPeers.length) {
     return (
       <Center>
-        {!isInSync
-          ? "Awaiting initial peer sync..."
-          : "No remote peers are connected."}
+        <div style={{ fontWeight: "bold" }}>
+          {!isInSync
+            ? "Awaiting initial peer sync..."
+            : "No remote peers are connected. You are the only one here."}
+        </div>
       </Center>
     );
+  }
+
+  // TODO: Refactor; make transitioning more graceful
+  if (latestOutputVideoTrack) {
+    return <Video mediaStreamTrack={latestOutputVideoTrack} />;
   }
 
   return (
@@ -27,8 +40,8 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
         const avatarURL = phantomPeer.getAvatarURL();
         const profileName = phantomPeer.getProfileName();
         const profileDescription = phantomPeer.getProfileDescription();
-        const outgoingMediaStreamTracks =
-          phantomPeer.getOutgoingMediaStreamTracks();
+        const outgoingAudioMediaStreamTracks =
+          phantomPeer.getOutgoingAudioMediaStreamTracks();
 
         return (
           <div
@@ -54,9 +67,7 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
                     <div>
                       <AudioBorderAvatar
                         src={avatarURL}
-                        mediaStreamTracks={outgoingMediaStreamTracks.filter(
-                          ({ kind }) => kind === "audio"
-                        )}
+                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
                       />
                     </div>
                     <div style={{ marginTop: 10, fontWeight: "bold" }}>
@@ -66,17 +77,13 @@ export default function NetworkConnected({ remotePhantomPeers = [] }) {
                 </Content>
                 <Footer style={{ textAlign: "right", height: 60 }}>
                   <Padding>
-                    {outgoingMediaStreamTracks
-                      .filter(
-                        mediaStreamTrack => mediaStreamTrack.kind === "audio"
-                      )
-                      .map(mediaStreamTrack => (
-                        <AudioLevelMeter
-                          key={mediaStreamTrack.id}
-                          mediaStreamTrack={mediaStreamTrack}
-                          style={{ height: "100%" }}
-                        />
-                      ))}
+                    {outgoingAudioMediaStreamTracks.map(mediaStreamTrack => (
+                      <AudioLevelMeter
+                        key={mediaStreamTrack.id}
+                        mediaStreamTrack={mediaStreamTrack}
+                        style={{ height: "100%" }}
+                      />
+                    ))}
                   </Padding>
                 </Footer>
               </Layout>
