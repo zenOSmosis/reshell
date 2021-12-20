@@ -5,6 +5,7 @@ import PhantomCore, {
 } from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
+import { debug } from "media-stream-track-controller";
 
 // TODO: Import utils/getWebRTCSignalStrength
 
@@ -435,11 +436,10 @@ export default class ZenRTCPeer extends PhantomCore {
   /**
    * TODO: Make private; or auto-(re)connect?
    *
-   * @param {MediaStream} outgoingMediaStream?
    * @return {Promise<void>}
    */
-  async connect(outgoingMediaStream = new MediaStream()) {
-    this._reconnectArgs = [outgoingMediaStream];
+  async connect() {
+    this._reconnectArgs = [];
 
     if (this._isDestroyed) {
       // FIXME: This should probably throw, however on Firefox if clicking
@@ -459,20 +459,28 @@ export default class ZenRTCPeer extends PhantomCore {
     } else {
       this._webrtcPeer = null;
 
-      if (outgoingMediaStream) {
-        // Sync WebRTCPeer outgoing tracks to class outgoing tracks, once
-        // connected
-        this.once(EVT_CONNECTED, async () => {
-          const mediaStreamTracks = outgoingMediaStream.getTracks();
-
-          for (const mediaStreamTrack of mediaStreamTracks) {
-            this.addOutgoingMediaStreamTrack(
-              mediaStreamTrack,
-              outgoingMediaStream
-            );
+      // "BootStream" preliminary fixes for iOS 15 call hosting, where streams
+      // don't start playing on remote peers until at least one stream of type
+      // (i.e. audio / video) is added. This only appears to affect networks
+      // which use iOS 15 as the host "proxy" device / virtual server.
+      // @see https://github.com/jzombie/pre-re-shell/issues/67
+      //
+      // TODO: Send bootStream ID as part of ZenRTCSignal so that other peer is
+      // aware of it and ignores it in the normal event cycles
+      //
+      // TODO: Add video track to boot stream, if possible
+      // (canvas.captureStream() isn't supported on iOS; is there another way?)
+      //
+      // TODO: Use silent media stream tracks?
+      const bootStream = debug.createTestAudioMediaStream(1);
+      this.once(EVT_CONNECTED, () => {
+        // Stop the bootStream after a short amount of time
+        setTimeout(async () => {
+          for (const track of bootStream.getTracks()) {
+            await this._webrtcPeer?.removeTrack(track, bootStream);
           }
-        });
-      }
+        }, 500);
+      });
 
       const simplePeerOptions = {
         initiator: this._isInitiator,
@@ -484,7 +492,7 @@ export default class ZenRTCPeer extends PhantomCore {
         // @see https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration/iceTransportPolicy#value
         // iceTransportPolicy: "relay",
 
-        stream: outgoingMediaStream,
+        stream: bootStream,
 
         /**
          * TODO: offerOptions voiceActivityDetection false (better music quality).
