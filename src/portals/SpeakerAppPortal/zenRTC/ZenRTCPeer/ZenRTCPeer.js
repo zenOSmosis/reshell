@@ -496,6 +496,7 @@ export default class ZenRTCPeer extends PhantomCore {
           offerToReceiveAudio: this._offerToReceiveAudio,
           offerToReceiveVideo: this._offerToReceiveVideo,
 
+          // TODO: Make this configurable
           /** Offer better music quality if false */
           voiceActivityDetection: false,
         },
@@ -693,62 +694,6 @@ export default class ZenRTCPeer extends PhantomCore {
    */
   getIncomingMediaStreamTracks() {
     return this._mediaStreamManagerModule.getIncomingMediaStreamTracks();
-  }
-
-  // TODO: Remove
-  /**
-   * Internally registers incoming MediaStreamTrack and associates it with the
-   * given MediaStream.
-   *
-   * @param {MediaStreamTrack} mediaStreamTrack
-   * @param {MediaStream} mediaStream
-   */
-  OLD_addIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    // TODO: Verify mediaStream doesn't have more than one of the given track type, already (if it does, replace it?)
-
-    // If MediaStream is not already added to list of incoming media streams, add it
-    this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
-      mediaStreamTrack,
-      mediaStream
-    );
-
-    // WebRTCPeer should have already added this to the stream
-    // mediaStream.addTrack(mediaStreamTrack);
-
-    // TODO: Refactor; listen to collection itself before emitting this event
-    /*
-    this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, {
-      mediaStreamTrack,
-      mediaStream,
-    });
-    */
-
-    // this.emit(EVT_UPDATED);
-  }
-
-  // TODO: Remove
-  /**
-   * Internally de-registers incoming MediaStreamTrack and disassociates it
-   * from the given MediaStream.
-   *
-   * @param {MediaStreamTrack} mediaStreamTrack
-   * @param {MediaStream} mediaStream
-   */
-  OLD_removeIncomingMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    this._mediaStreamManagerModule.removeIncomingMediaStreamTrack(
-      mediaStreamTrack,
-      mediaStream
-    );
-
-    // TODO: Refactor; listen to collection itself before emitting this event
-    /*
-    this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, {
-      mediaStreamTrack,
-      mediaStream,
-    });
-    */
-
-    // this.emit(EVT_UPDATED);
   }
 
   /**

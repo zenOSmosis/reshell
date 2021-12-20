@@ -35,7 +35,7 @@ export default function NetworkConnected({
 
   return (
     <Center canOverflow={true}>
-      {remotePhantomPeers.map(phantomPeer => {
+      {remotePhantomPeers.map((phantomPeer, idx) => {
         const deviceAddress = phantomPeer.getDeviceAddress();
         const avatarURL = phantomPeer.getAvatarURL();
         const profileName = phantomPeer.getProfileName();
@@ -45,7 +45,7 @@ export default function NetworkConnected({
 
         return (
           <div
-            key={deviceAddress}
+            key={idx}
             style={{
               display: "inline-block",
               width: 200,
