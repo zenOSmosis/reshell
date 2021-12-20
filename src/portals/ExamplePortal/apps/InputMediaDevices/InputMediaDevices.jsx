@@ -29,7 +29,7 @@ const InputMediaDevicesApp = {
           </Content>
           <Footer>
             <button
-              onClick={() => mds.fetchAudioInputDevices(true)}
+              onClick={() => mds.fetchInputMediaDevices(true)}
               style={{ float: "right" }}
             >
               Refetch

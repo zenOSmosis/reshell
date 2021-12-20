@@ -6,10 +6,16 @@ import {
 } from "media-stream-track-controller";
 import { untilAudioContextResumed as libUntilAudioContextResumed } from "media-stream-track-controller/src/utils";
 
+// TODO: Refactor
 class InputMediaDeviceFactoryCollection extends PhantomCollection {
   // TODO: Ensure that added children are of MediaStreamTrackControllerFactory type
 }
 
+/**
+ * Manages capturing of physical input media devices (i.e. microphone or camera).
+ *
+ * It does not manage virtual devices, such as screen captures, canvas, etc.
+ */
 export default class InputMediaDevicesService extends UIServiceCore {
   constructor(...args) {
     super(...args);
@@ -22,33 +28,51 @@ export default class InputMediaDevicesService extends UIServiceCore {
       devices: [],
     });
 
-    // TODO: Re-fetch when devices have been changed
+    // TODO: Re-fetch when devices have been changed (listen to event; backport
+    // from original Speaker.app)
+    //
     // TODO: Capture fetch errors and set them as state / UI notifications
 
-    this.fetchAudioInputDevices();
+    this.fetchInputMediaDevices();
 
     this.bindCollectionClass(InputMediaDeviceFactoryCollection);
   }
 
-  // TODO: Document
-  async fetchAudioInputDevices(isAggressive) {
+  /**
+   * Performs a "system call" against the browser in order to determine
+   * physical input media devices.
+   *
+   * This will internally cache the media device info in the state, and calls
+   * to this.getInputMediaDevices() can retrieve that state for the UI.
+   *
+   * @param {boolean} isAggressive [default = true]  If true, temporarily
+   * turn on devices in order to obtain label information.
+   * @return {MediaDeviceInfo[] || Object[]}
+   */
+  async fetchInputMediaDevices(isAggressive = true) {
     this.setState({ isFetchingMediaDevices: true });
 
     // Fixes issue where sending media stream track to remote peers is muted
-    // until something starts the audio context
+    // until something starts the audio context (TODO: Define which
+    // environments this is happening in; all? Should this fix be moved into
+    // media-stream-track-controller itself?)
     //
     // IMPORTANT: This isn't the ONLY fix related to this, and others are
     // specified in the LocalZenRTCPeer connect sequence (currently part of
     // SpeakerAppPortal)
     await this.untilAudioContextResumed();
 
-    const audioInputDevices = await utils
-      .fetchMediaDevices(isAggressive)
-      .then(utils.fetchMediaDevices.filterAudioInputDevices)
+    const inputMediaDevices = await utils
+      .fetchInputMediaDevices(isAggressive)
       .catch(console.error)
       .finally(() => this.setState({ isFetchingMediaDevices: false }));
 
-    this.setState({ devices: audioInputDevices });
+    // Set the captured device information as state so that calls to
+    // this.getInputMediaDevices() can retrieve cached state, and any UI
+    // listeners can see the state of cached device information.
+    this.setState({ devices: inputMediaDevices });
+
+    return inputMediaDevices;
   }
 
   // TODO: Document
@@ -61,7 +85,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   /**
-   * Retreives whether or not this service is currently fetching media devices.
+   * Retrieves whether or not this service is currently fetching media devices.
    *
    * @return {boolean}
    */
@@ -70,10 +94,26 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
-  getMediaDevices() {
+  //
+  // IMPORTANT: This depends on a prior resolved call to
+  // this.fetchInputMediaDevices() before this will return anything
+  getInputMediaDevices() {
     const { devices } = this.getState();
 
     return devices || [];
+  }
+
+  // TODO: Document
+  //
+  // IMPORTANT: This depends on a prior resolved call to
+  // this.fetchInputMediaDevices() before this will return anything
+  getAudioInputMediaDevices() {
+    const inputMediaDevices = this.getInputMediaDevices();
+
+    // TODO: Use utility function for filtering
+    return inputMediaDevices.filter(predicate =>
+      predicate.kind.includes("audioinput")
+    );
   }
 
   // TODO: Document
@@ -88,6 +128,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
     return Boolean(
       MediaStreamTrackControllerFactory.getFactoriesWithInputMediaDevice(
         mediaDeviceInfo,
+        // TODO: Use constant here
         "audio"
       ).length
     );
@@ -98,6 +139,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
     const factories =
       MediaStreamTrackControllerFactory.getFactoriesWithInputMediaDevice(
         mediaDeviceInfo,
+        // TODO: Use constant here
         "audio"
       );
 

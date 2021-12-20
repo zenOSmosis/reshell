@@ -225,72 +225,19 @@ export default class ZenRTCPeer extends PhantomCore {
       // Media manager module
       (() => {
         this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
-
-        this.proxyOn(
-          this._mediaStreamManagerModule,
-          EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-          data => {
-            this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, data);
-
-            this.emit(EVT_UPDATED);
-          }
-        );
-        this.proxyOn(
-          this._mediaStreamManagerModule,
-          EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-          data => {
-            this.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, data);
-
-            this.emit(EVT_UPDATED);
-          }
-        );
-        this.proxyOn(
-          this._mediaStreamManagerModule,
-          EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-          data => {
-            const { mediaStreamTrack, mediaStream } = data;
-
-            try {
-              this._webrtcPeer.addTrack(mediaStreamTrack, mediaStream);
-            } catch (err) {
-              this.log.error(err);
-            }
-
-            this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, data);
-
-            this.emit(EVT_UPDATED);
-          }
-        );
-        this.proxyOn(
-          this._mediaStreamManagerModule,
-          EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
-          async data => {
-            const { mediaStreamTrack, mediaStream } = data;
-
-            try {
-              await this._webrtcPeer.removeTrack(mediaStreamTrack, mediaStream);
-            } catch (err) {
-              this.log.error(err);
-            }
-
-            // Signal to remote that we've removed the track
-            //
-            // NOTE (jh): This is a workaround since WebRTCPeer does not emit track
-            // removed events directly
-            this.emitSyncEvent(SYNC_EVT_TRACK_REMOVED, {
-              msid: mediaStream.id,
-              kind: mediaStreamTrack.kind,
-            });
-
-            this.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, data);
-
-            this.emit(EVT_UPDATED);
-          }
-        );
       })();
     })();
 
     this._reconnectArgs = [];
+  }
+
+  /**
+   * Retrieves the underlying WebRTCPeer instance for this connection.
+   *
+   * @return {WebRTCPeer | void}
+   */
+  getWebRTCPeer() {
+    return this._webrtcPeer;
   }
 
   /**
@@ -934,6 +881,7 @@ export default class ZenRTCPeer extends PhantomCore {
         this.destroy();
         break;
 
+      // TODO: Move handler into MediaStreamManagerModule
       // Internal event to zenRTCPeer
       case SYNC_EVT_TRACK_REMOVED:
         (() => {

@@ -55,9 +55,9 @@ export default class ZenRTCPeerMediaStreamWrapper extends ArbitraryPhantomWrappe
 
   /**
    * @param {MediaStreamTrack} mediaStreamTrack
-   * @return {void}
+   * @return {Promise<void>}
    */
-  removeMediaStreamTrack(mediaStreamTrack) {
+  async removeMediaStreamTrack(mediaStreamTrack) {
     if (!(mediaStreamTrack instanceof MediaStreamTrack)) {
       throw new TypeError(
         "mediaStreamTrack must be a MediaStreamTrack instance"
@@ -70,6 +70,11 @@ export default class ZenRTCPeerMediaStreamWrapper extends ArbitraryPhantomWrappe
     this._managedMediaStreamTrackIds = this._managedMediaStreamTrackIds.filter(
       pred => pred.id !== mediaStreamTrack.id
     );
+
+    // Destruct if no more tracks
+    if (!this._managedMediaStreamTrackIds.length) {
+      return this.destroy();
+    }
   }
 
   /**

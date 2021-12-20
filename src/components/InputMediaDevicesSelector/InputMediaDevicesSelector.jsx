@@ -21,7 +21,7 @@ export default function InputMediaDevicesSelector({
   // Automatically fetch input media devices when component mounts
   useEffect(() => {
     if (inputMediaDevicesService) {
-      inputMediaDevicesService.fetchAudioInputDevices();
+      inputMediaDevicesService.fetchInputMediaDevices();
     }
   }, [inputMediaDevicesService]);
 
@@ -48,15 +48,16 @@ export default function InputMediaDevicesSelector({
     return null;
   }
 
-  const devices = inputMediaDevicesService.getMediaDevices();
+  const audioInputDevices =
+    inputMediaDevicesService.getAudioInputMediaDevices();
   const isFetching = inputMediaDevicesService.getIsFetchingMediaDevices();
 
-  if (!devices.length) {
+  if (!audioInputDevices.length) {
     return (
       <Center style={{ fontWeight: "bold" }}>
         {isFetching
-          ? "Fetching media devices..."
-          : "No input media devices are currently available."}
+          ? "Fetching audio devices..."
+          : "No audio input devices are currently available."}
       </Center>
     );
   }
@@ -77,13 +78,20 @@ export default function InputMediaDevicesSelector({
               <thead>
                 <tr>
                   <td>Name</td>
+                  {/*
+                    <td>Kind</td>
+                    */}
+
                   <td className="center">f(x)</td>
                   <td className="center">State</td>
                   <td className="center">Level</td>
                 </tr>
               </thead>
               <tbody>
-                {devices.map((device, idx) => {
+                {audioInputDevices.map((device, idx) => {
+                  // TODO: Remove
+                  // console.log({ device });
+
                   const isCapturing =
                     inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured(
                       device
@@ -97,6 +105,10 @@ export default function InputMediaDevicesSelector({
                   return (
                     <tr key={idx}>
                       <td>{device.label || `[Unknown Label]`}</td>
+                      {/*
+                        <td>{device.kind}</td>
+                        */}
+
                       <td>
                         <button
                           onClick={() => toggleSpecificMediaDevice(device)}

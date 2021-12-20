@@ -46,36 +46,20 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
     }
   }
 
-  // TODO: Remove?
-  // TODO: Document
-  /*
-  async removeChild(mediaStream) {
-    if (!(mediaStream instanceof MediaStream)) {
-      throw new TypeError("mediaStream should be a MediaStream instance");
-    }
-
-    const child = this.getChildWithKey(mediaStream.id);
-    if (child) {
-      super.removeChild(child);
-
-      // No longer using the child
-      return child.destroy();
-    }
-  }
-  */
-
   /**
+   * Creates a new MediaStreamWrapper or returns existing one from cache.
+   *
    * @param {MediaStream} mediaStream
    * @return {ZenRTCPeerMediaStreamWrapper}
    */
-  getMediaStreamWrapper(mediaStream) {
+  getOrCreateMediaStreamWrapper(mediaStream) {
     return this.addChild(mediaStream);
   }
 
   // TODO: Document
   // @emits ...
   addMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+    const mediaStreamWrapper = this.getOrCreateMediaStreamWrapper(mediaStream);
 
     if (!mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
       (() => {
@@ -88,7 +72,7 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
         //
         // FIXME: (jh) media-stream-track-controller has some of this handling
         // built in, and it might be better to use it instead.
-        mediaStreamTrack.onended = (...args) => {
+        mediaStreamTrack.onended = async (...args) => {
           if (typeof oEnded === "function") {
             oEnded(...args);
           }
@@ -98,7 +82,7 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
             mediaStreamTrack
           );
 
-          this.removeMediaStreamTrack(mediaStreamTrack, mediaStream);
+          await this.removeMediaStreamTrack(mediaStreamTrack, mediaStream);
         };
       })();
 
@@ -113,12 +97,12 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
 
   // TODO: Document
   // @emits ...
-  removeMediaStreamTrack(mediaStreamTrack, mediaStream) {
-    const mediaStreamWrapper = this.getMediaStreamWrapper(mediaStream);
+  async removeMediaStreamTrack(mediaStreamTrack, mediaStream) {
+    const mediaStreamWrapper = this.getOrCreateMediaStreamWrapper(mediaStream);
 
     // TODO: Check if this track has been "added" to this mediaStreamWrapper
     if (mediaStreamWrapper.getHasMediaStreamTrack(mediaStreamTrack)) {
-      mediaStreamWrapper.removeMediaStreamTrack(mediaStreamTrack);
+      await mediaStreamWrapper.removeMediaStreamTrack(mediaStreamTrack);
 
       // TODO: If the media stream has no more tracks, remove the stream from the collection
 
