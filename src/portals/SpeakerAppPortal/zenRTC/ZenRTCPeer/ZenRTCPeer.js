@@ -41,8 +41,6 @@ export const EVT_RECONNECTING = "reconnecting";
 export const EVT_CONNECTED = "connected";
 export const EVT_DISCONNECTED = "disconnected";
 
-// export const EVT_SIMPLE_PEER_INSTANTIATED = "simple-peer-instantiated";
-
 // TODO: Document
 //
 // Is emit when there is an outgoing ZenRTC signal
@@ -177,6 +175,13 @@ export default class ZenRTCPeer extends PhantomCore {
     this._isInitiator = isInitiator;
     this._shouldAutoReconnect = shouldAutoReconnect;
 
+    this._isVirtualServer = (() => {
+      const VirtualServerZenRTCPeer =
+        require("../ZenRTCVirtualServer/subClasses/VirtualServerZenRTCPeer").default;
+
+      return Boolean(this instanceof VirtualServerZenRTCPeer);
+    })();
+
     this._offerToReceiveAudio = offerToReceiveAudio;
     this._offerToReceiveVideo = offerToReceiveVideo;
 
@@ -309,6 +314,9 @@ export default class ZenRTCPeer extends PhantomCore {
 
   /**
    * The current SDP answer.
+   *
+   * Utilized for logging / monitoring purposes.  Not utilized for base
+   * functionality.
    *
    * @return {string}
    */
@@ -465,22 +473,33 @@ export default class ZenRTCPeer extends PhantomCore {
       // which use iOS 15 as the host "proxy" device / virtual server.
       // @see https://github.com/jzombie/pre-re-shell/issues/67
       //
-      // TODO: Send bootStream ID as part of ZenRTCSignal so that other peer is
-      // aware of it and ignores it in the normal event cycles
-      //
       // TODO: Add video track to boot stream, if possible
       // (canvas.captureStream() isn't supported on iOS; is there another way?)
-      //
-      // TODO: Use silent media stream tracks?
-      const bootStream = debug.createTestAudioMediaStream(1);
-      this.once(EVT_CONNECTED, () => {
-        // Stop the bootStream after a short amount of time
-        setTimeout(async () => {
+      const bootStream = (() => {
+        if (!this._isVirtualServer) {
+          return null;
+        }
+
+        const bootStream = debug.createEmptyAudioMediaStream(10);
+
+        const stopBootStream = async () => {
           for (const track of bootStream.getTracks()) {
             await this._webrtcPeer?.removeTrack(track, bootStream);
           }
-        }, 500);
-      });
+        };
+
+        // Stop sending BootStream once connected
+        this.once(EVT_CONNECTED, () => {
+          // TODO: Don't use setTimeout and instead use bootStream sync event
+          // Stop the bootStream after a short amount of time
+          setTimeout(stopBootStream, 10000);
+        });
+
+        // Explicitly stop bootStream on disconnect
+        this.once(EVT_DISCONNECTED, stopBootStream);
+
+        return bootStream;
+      })();
 
       const simplePeerOptions = {
         initiator: this._isInitiator,
@@ -562,7 +581,9 @@ export default class ZenRTCPeer extends PhantomCore {
 
       // Handle outgoing WebRTC signaling
       // TODO: Use event constant
-      this._webrtcPeer.on("signal", data => this.sendZenRTCSignal(data));
+      this._webrtcPeer.on("signal", signal =>
+        this._sendZenRTCSignal({ signal })
+      );
 
       // Handle WebRTC connect
       // TODO: Use event constant
@@ -595,14 +616,13 @@ export default class ZenRTCPeer extends PhantomCore {
         this.destroy();
       });
 
-      // TODO: Remove; For automated reconnection testing
-      // setTimeout(() => this._webrtcPeer && this._webrtcPeer.destroy(), 5000);
-
       // Handle incoming MediaStreamTrack from remote peer
       // TODO: Use event constant
       this._webrtcPeer.on("track", (mediaStreamTrack, mediaStream) => {
         // NOTE (jh): This timeout seems to improve an issue w/ iOS 14
         // sometimes disconnecting when tracks are added
+        //
+        // FIXME: (jh) Is this still necessary? (use setImmediate?)
         setTimeout(() => {
           this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
             mediaStreamTrack,
@@ -615,8 +635,6 @@ export default class ZenRTCPeer extends PhantomCore {
       this._webrtcPeer.on("data", data => {
         this.emit(EVT_DATA_RECEIVED, data);
       });
-
-      // this.emit(EVT_SIMPLE_PEER_INSTANTIATED);
     }
   }
 
@@ -653,32 +671,44 @@ export default class ZenRTCPeer extends PhantomCore {
     return this._isConnected;
   }
 
+  // TODO: Typedef ZenRTCSignal
   /**
    * Called internally when a WebRTC signal is to be emit to the other peer.
    *
    * @param {Object} data // TODO: Document; connected directly to WebRTCPeer on.signal
    */
-  async sendZenRTCSignal(data) {
-    this.emit(EVT_ZENRTC_SIGNAL, {
-      signal: data,
-    });
+  async _sendZenRTCSignal(data) {
+    this.emit(EVT_ZENRTC_SIGNAL, data);
   }
 
   /**
    * @param {Object} params TODO: Document
    */
-  async receiveZenRTCSignal({ signal }) {
+  async receiveZenRTCSignal(data) {
+    if (typeof data !== "object") {
+      this.log.warn(
+        "Expected Object type for data; cannot do anything with the transmission"
+      );
+      return;
+    }
+
     if (this._webrtcPeer) {
-      signal.sdp = this._handleSdpAnswerTransform(signal.sdp);
+      const { signal } = data;
 
-      try {
-        this._webrtcPeer.signal(signal);
-      } catch (err) {
-        this.log.warn("Caught", err);
+      if (signal) {
+        signal.sdp = this._handleSdpAnswerTransform(signal.sdp);
+
+        try {
+          // Route signal to internal WebRTCPeer
+          this._webrtcPeer.signal(signal);
+        } catch (err) {
+          this.log.warn("Caught", err);
+        }
+
+        // Utilized for logging / monitoring purposes only
+        this._sdpAnswer = signal.sdp;
+        this.emit(EVT_SDP_ANSWERED, signal.sdp);
       }
-
-      this._sdpAnswer = signal.sdp;
-      this.emit(EVT_SDP_ANSWERED, signal.sdp);
     } else {
       throw new Error(
         `No WebRTCPeer in ${this.constructor.name} with zenRTCSignalBrokerId "${this._zenRTCSignalBrokerId}"`
