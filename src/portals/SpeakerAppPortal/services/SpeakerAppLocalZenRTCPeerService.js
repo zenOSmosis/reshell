@@ -49,8 +49,19 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     return this.getState().isConnected;
   }
 
+  /**
+   * @return {boolean}
+   */
+  getIsWebRTCSupported() {
+    return LocalZenRTCPeer.getIsWebRTCSupported();
+  }
+
   // TODO: Document
   async connect(network) {
+    if (!this.getIsWebRTCSupported()) {
+      throw new Error("WebRTC is not supported in this browser");
+    }
+
     const { realmId, channelId } = network;
 
     // Destruct previous zenRTCPeer for this network, if exists

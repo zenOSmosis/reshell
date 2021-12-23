@@ -4,7 +4,8 @@ import {
   MediaStreamTrackControllerFactory,
   utils,
 } from "media-stream-track-controller";
-import { untilAudioContextResumed as libUntilAudioContextResumed } from "media-stream-track-controller/src/utils";
+
+import MediaDeviceCachingService from "./MediaDeviceCachingService";
 
 // TODO: Refactor
 class InputMediaDeviceFactoryCollection extends PhantomCollection {
@@ -27,6 +28,10 @@ export default class InputMediaDevicesService extends UIServiceCore {
       isAudioContextStarted: false,
       devices: [],
     });
+
+    this._mediaDeviceCachingService = this.useServiceClass(
+      MediaDeviceCachingService
+    );
 
     // TODO: Re-fetch when devices have been changed (listen to event; backport
     // from original Speaker.app)
@@ -62,7 +67,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
     // SpeakerAppPortal)
     await this.untilAudioContextResumed();
 
-    const inputMediaDevices = await utils
+    const inputMediaDevices = await utils.mediaDevice
       .fetchInputMediaDevices(isAggressive)
       .catch(console.error)
       .finally(() => this.setState({ isFetchingMediaDevices: false }));
@@ -77,7 +82,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   async untilAudioContextResumed() {
-    await libUntilAudioContextResumed();
+    await utils.audioContext.untilAudioContextResumed();
 
     this.setState({
       isAudioContextStarted: true,
@@ -149,8 +154,22 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
-  async captureDefaultAudioInputDevice(constraints = {}, factoryOptions = {}) {
-    const factory = await utils.captureMediaDevice(constraints, factoryOptions);
+  //
+  // IMPORTANT: For most use cases, use this.captureSpecificAudioInputDevice
+  // instead
+  /*
+  async captureDefaultAudioInputDevice(
+    userConstraints = {},
+    factoryOptions = {}
+  ) {
+    // TODO: Implement ability to apply preset quality settings to default
+    // audio device (potentially obtain default audio device from list, apply
+    // the settings there, then call this.captureSpecificAudioInputDevice())
+
+    const factory = await utils.mediaDevice.captureMediaDevice(
+      userConstraints,
+      factoryOptions
+    );
 
     this.getCollectionInstance(InputMediaDeviceFactoryCollection).addChild(
       factory
@@ -158,16 +177,17 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
     return factory;
   }
+  */
 
   // TODO: Document
   async captureSpecificAudioInputDevice(
     mediaDeviceInfo,
-    constraints = {},
+    userConstraints = {},
     factoryOptions = {}
   ) {
-    const factory = await utils.captureMediaDevice.captureSpecificMediaDevice(
+    const factory = await utils.mediaDevice.captureSpecificMediaDevice(
       mediaDeviceInfo,
-      constraints,
+      userConstraints,
       factoryOptions
     );
 
@@ -180,8 +200,6 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   async uncaptureSpecificAudioInputDevice(mediaDeviceInfo) {
-    return utils.captureMediaDevice.uncaptureSpecificMediaDevice(
-      mediaDeviceInfo
-    );
+    return utils.mediaDevice.uncaptureSpecificMediaDevice(mediaDeviceInfo);
   }
 }

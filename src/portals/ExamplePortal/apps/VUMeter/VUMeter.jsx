@@ -24,7 +24,10 @@ const VUMeter = {
     const mds = appServices[InputMediaDevicesService];
 
     const captureFactories = mds.getCaptureFactories();
-    const isCapturing = Boolean(captureFactories.length);
+    // const isCapturing = Boolean(captureFactories.length);
+
+    // TODO: Add labels / controls (or adapt this program to be something else
+    // entirely)
 
     const mediaStreamTracks = captureFactories
       .map(factory =>
@@ -45,18 +48,20 @@ const VUMeter = {
                 mediaStreamTracks={mediaStreamTracks}
               />
             </div>
-            <div>
-              <button
-                onClick={() => {
-                  !isCapturing
-                    ? mds.captureDefaultAudioInputDevice()
-                    : captureFactories.forEach(factory => factory.destroy());
-                }}
-                style={{ backgroundColor: isCapturing ? "red" : null }}
-              >
-                {!isCapturing ? "Start Microphone" : "Stop Capturing"}
-              </button>
-            </div>
+            {/*
+              <div>
+                <button
+                  onClick={() => {
+                    !isCapturing
+                      ? mds.captureDefaultAudioInputDevice()
+                      : captureFactories.forEach(factory => factory.destroy());
+                  }}
+                  style={{ backgroundColor: isCapturing ? "red" : null }}
+                >
+                  {!isCapturing ? "Start Microphone" : "Stop Capturing"}
+                </button>
+              </div>
+              */}
           </Center>
         </Content>
         <Footer>

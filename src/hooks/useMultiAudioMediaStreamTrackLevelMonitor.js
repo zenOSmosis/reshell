@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  MultiAudioMediaStreamTrackLevelMonitor,
-  MultiAudioMediaStreamTrackLevelMonitorEvents,
-} from "media-stream-track-controller";
+import { MultiAudioMediaStreamTrackLevelMonitor } from "media-stream-track-controller";
 import useArrayDiff from "./useArrayDiff";
 
 const { EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK } =
-  MultiAudioMediaStreamTrackLevelMonitorEvents;
+  MultiAudioMediaStreamTrackLevelMonitor;
 
 /**
  * Utilizes a MultiAudioMediaStreamTrackLevelMonitor as a React hook.

@@ -1,7 +1,7 @@
 import sdpTransform from "sdp-transform";
 
+// TODO: Rename
 export default class SDPAdapter {
-  // TODO: Rename
   /**
    * Returns a modified SDP with the preferred audio codecs.
    *
@@ -27,6 +27,9 @@ export default class SDPAdapter {
    *
    * MDN: Codecs used by WebRTC
    * @see https://developer.mozilla.org/en-US/docs/Web/Media/Formats/WebRTC_codecs
+   *
+   * Chrome stereo audio bug:
+   * @see https://bugs.chromium.org/p/webrtc/issues/detail?id=8133
    *
    * @param {string} sdp
    * @param {string[]} preferredAudioCodecs? [default=["opus"]]

@@ -176,13 +176,15 @@ select {
   background-position: 99% 50%;
   background-size: 14px 8px;
 
+  /* Prevent background-image from overlapping option labels */
+  padding-right: 16px;
+
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
 }
 
 input:not([type="checkbox"]):not([type="submit"]),
-select,
 textarea {
   width: 100%;
 }

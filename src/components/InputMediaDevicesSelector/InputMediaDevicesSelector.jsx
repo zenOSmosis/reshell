@@ -1,15 +1,23 @@
 import { useCallback, useEffect } from "react";
 import Full from "../Full";
-import Layout, { Header, Content } from "../Layout";
+import Layout, { Header, Content, Footer } from "../Layout";
 import Padding from "../Padding";
 import Center from "../Center";
-import LED from "../LED";
-import AudioLevelMeter from "../audioMeters/AudioLevelMeter";
+import Cover from "../Cover";
+
+import RCACableIcon from "@icons/RCACableIcon";
+
+import AudioInputDeviceTableRow from "./subComponents/AudioInputDeviceTableRow";
 
 import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 
+// TODO: Move into InputMediaDevicesService(?)
+import { utils } from "media-stream-track-controller";
+const { audioQualityPresets } = utils.constraints;
+
 // TODO: Document and add prop-types
+// TODO: Refactor for all input device types
 export default function InputMediaDevicesSelector({
   onDeviceCapture = device => null,
   onDeviceUncapture = device => null,
@@ -50,6 +58,9 @@ export default function InputMediaDevicesSelector({
 
   const audioInputDevices =
     inputMediaDevicesService.getAudioInputMediaDevices();
+
+  const lenAudioInputDevices = audioInputDevices.length;
+
   const isFetching = inputMediaDevicesService.getIsFetchingMediaDevices();
 
   if (!audioInputDevices.length) {
@@ -61,6 +72,12 @@ export default function InputMediaDevicesSelector({
       </Center>
     );
   }
+
+  const capturedAudioInputDevices = audioInputDevices.filter(
+    inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured
+  );
+
+  const lenCapturedAudioInputDevices = capturedAudioInputDevices.length;
 
   return (
     <Layout>
@@ -83,7 +100,6 @@ export default function InputMediaDevicesSelector({
                     */}
 
                   <td className="center">f(x)</td>
-                  <td className="center">State</td>
                   <td className="center">Level</td>
                 </tr>
               </thead>
@@ -93,50 +109,91 @@ export default function InputMediaDevicesSelector({
                   // console.log({ device });
 
                   const isCapturing =
-                    inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured(
-                      device
-                    );
+                    capturedAudioInputDevices.includes(device);
 
                   const deviceCaptureFactory =
                     inputMediaDevicesService.getMediaDeviceCaptureFactory(
                       device
                     );
 
-                  return (
-                    <tr key={idx}>
-                      <td>{device.label || `[Unknown Label]`}</td>
-                      {/*
-                        <td>{device.kind}</td>
-                        */}
+                  const mediaStreamTrack =
+                    isCapturing &&
+                    deviceCaptureFactory
+                      ?.getOutputMediaStream()
+                      ?.getTracks()[0];
 
-                      <td>
-                        <button
-                          onClick={() => toggleSpecificMediaDevice(device)}
-                          style={{
-                            backgroundColor: isCapturing ? "red" : "green",
-                            width: "100%",
-                          }}
-                        >
-                          {isCapturing ? "Stop" : "Start"}
-                        </button>
-                      </td>
-                      <td className="center">
-                        <LED color={isCapturing ? "green" : "gray"} />{" "}
-                        {isCapturing ? "on" : "off"}
-                      </td>
-                      <td className="center">
-                        {device.kind === "audioinput" && (
-                          <AudioLevelMeter
-                            style={{ height: 50 }}
-                            mediaStreamTrack={
-                              deviceCaptureFactory
-                                ?.getOutputMediaStream()
-                                ?.getTracks()[0]
-                            }
-                          />
-                        )}
-                      </td>
-                    </tr>
+                  const audioTrackController =
+                    isCapturing &&
+                    deviceCaptureFactory?.getAudioTrackControllers()[0];
+
+                  // TODO: Remove
+                  if (audioTrackController) {
+                    console.log({
+                      settings: audioTrackController.getSettings(),
+                    });
+                  }
+
+                  /*
+                  const audioQualityPresetName =
+                    audioTrackController &&
+                    audioTrackController.getMatchedAudioQualityPreset()?.name;
+
+                  /*
+                  const isNoiseSuppressionEnabled =
+                    audioTrackController &&
+                    audioTrackController.getIsNoiseSuppressionEnabled();
+                  const isEchoCancellationEnabled =
+                    audioTrackController &&
+                    audioTrackController.getIsEchoCancellationEnabled();
+                  const isAutoGainControlEnabled =
+                    audioTrackController &&
+                    audioTrackController.getIsAutoGainControlEnabled();
+                    */
+
+                  // TODO: Remove
+                  /*
+                  console.log({
+                    audioTrackController,
+                    isNoiseSuppressionEnabled,
+                    isEchoCancellationEnabled,
+                    isAutoGainControlEnabled,
+                  });
+                  */
+
+                  return (
+                    <AudioInputDeviceTableRow
+                      key={idx}
+                      device={device}
+                      mediaStreamTrack={mediaStreamTrack}
+                      isCapturing={isCapturing}
+                      onToggleCapture={() => toggleSpecificMediaDevice(device)}
+                      audioQualityPresets={audioQualityPresets}
+                      // audioQualityPresetName={audioQualityPresetName}
+                      // onChangeAudioQualityPresetName={}
+                      /*
+                      isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}
+                      onToggleNoiseSuppression={isEnabled =>
+                        audioTrackController &&
+                        audioTrackController.setIsNoiseSuppressionEnabled(
+                          isEnabled
+                        )
+                      }
+                      isEchoCancellationEnabled={isEchoCancellationEnabled}
+                      onToggleEchoCancellation={isEnabled =>
+                        audioTrackController &&
+                        audioTrackController.setIsEchoCancellationEnabled(
+                          isEnabled
+                        )
+                      }
+                      isAutoGainControlEnabled={isAutoGainControlEnabled}
+                      onToggleAutoGainControl={isEnabled =>
+                        audioTrackController &&
+                        audioTrackController.setIsAutoGainControlEnabled(
+                          isEnabled
+                        )
+                      }
+                      */
+                    />
                   );
                 })}
               </tbody>
@@ -144,16 +201,31 @@ export default function InputMediaDevicesSelector({
           </Full>
         </Padding>
       </Content>
-      {/*
-        <Footer style={{ height: 50 }}>
-          <Layout>
-            <Header>Settings for the selected device...</Header>
-            <Content>
-              <input type="range" min="0" max="10" value="5" />
-            </Content>
-          </Layout>
-        </Footer>
-        */}
+
+      <Footer style={{ minHeight: 50 }}>
+        <Padding>
+          <RCACableIcon
+            style={{
+              fontSize: 38,
+              marginLeft: 20,
+              color: "rgba(255,255,255,.2)",
+            }}
+          />
+          <Cover>
+            <Center>
+              <div>
+                {lenAudioInputDevices} audio input device
+                {lenAudioInputDevices !== 1 && "s"} available.
+              </div>
+              <div>
+                {lenCapturedAudioInputDevices} audio input device
+                {lenCapturedAudioInputDevices !== 1 && "s"} currently being
+                captured.
+              </div>
+            </Center>
+          </Cover>
+        </Padding>
+      </Footer>
     </Layout>
   );
 }

@@ -17,7 +17,10 @@ export default class ScreenCapturerService extends UIServiceCore {
 
   // TODO: Document
   async startScreenCapture(constraints = {}, factoryOptions = {}) {
-    const factory = await utils.captureScreen(constraints, factoryOptions);
+    const factory = await utils.screen.captureScreen(
+      constraints,
+      factoryOptions
+    );
 
     this.getCollectionInstance(ScreenCaptureFactoryCollection).addChild(
       factory

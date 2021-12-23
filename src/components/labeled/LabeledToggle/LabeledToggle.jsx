@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import Switch from "@components/Switch";
+import Toggle from "@components/Toggle";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import styles from "./LabeledSwitch.module.css";
+import styles from "./LabeledToggle.module.css";
 
-LabeledSwitch.propTypes = {
+LabeledToggle.propTypes = {
   labelOff: PropTypes.string,
   labelOn: PropTypes.string,
 
@@ -12,7 +12,7 @@ LabeledSwitch.propTypes = {
 };
 
 // TODO: Implement ability to disable
-export default function LabeledSwitch({
+export default function LabeledToggle({
   className,
   labelOff = "",
   labelOn = "",
@@ -42,7 +42,7 @@ export default function LabeledSwitch({
   return (
     <div
       className={classNames(
-        styles["labeled-switch"],
+        styles["labeled-toggle"],
         disabled && styles["disabled"],
         className
       )}
@@ -63,7 +63,7 @@ export default function LabeledSwitch({
           {labelOff}
         </div>
         <div className={styles["cell"]}>
-          <Switch isOn={isOn} disabled={disabled} style={style} {...rest} />
+          <Toggle isOn={isOn} disabled={disabled} style={style} {...rest} />
         </div>
         <div
           className={classNames(

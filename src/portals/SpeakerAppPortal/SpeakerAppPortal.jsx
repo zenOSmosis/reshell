@@ -3,7 +3,7 @@ import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShell from "../ExamplePortal/apps/AboutReShell";
 import BeepPrototype from "../ExamplePortal/apps/BeepPrototype";
-import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
+// import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
 import KeyVault from "../ExamplePortal/apps/KeyVault";
 import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
 import VUMeter from "../ExamplePortal/apps/VUMeter";
@@ -33,7 +33,7 @@ export default function SpeakerAppPortal() {
       appDescriptors={[
         Applications,
         BeepPrototype,
-        BackgroundSelector,
+        // BackgroundSelector,
         AboutReShell,
         KeyVault,
         InputMediaDevices,

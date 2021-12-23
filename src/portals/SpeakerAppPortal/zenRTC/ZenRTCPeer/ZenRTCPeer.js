@@ -5,7 +5,7 @@ import PhantomCore, {
 } from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
-import { debug } from "media-stream-track-controller";
+import { utils } from "media-stream-track-controller";
 
 // TODO: Import utils/getWebRTCSignalStrength
 
@@ -461,7 +461,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
     if (this._webrtcPeer) {
       this.log.warn(
-        `${this.getClassName()} is already connected or connecting`
+        `${this.getClassName()} is already connected or connecting. Ignoring duplicate attempt to connect.`
       );
       return;
     } else {
@@ -475,16 +475,25 @@ export default class ZenRTCPeer extends PhantomCore {
       //
       // TODO: Add video track to boot stream, if possible
       // (canvas.captureStream() isn't supported on iOS; is there another way?)
+      // Can MediaSource be the key to the "other way"?
+      // https://developer.mozilla.org/en-US/docs/Web/API/MediaSource?
+      // https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-73622026
+      // [Demo of video over WebRTC data channel] https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-292074470
       const bootStream = (() => {
         if (!this._isVirtualServer) {
           return null;
         }
 
-        const bootStream = debug.createEmptyAudioMediaStream(10);
+        const bootStream =
+          utils.mediaStream.generators.createEmptyAudioMediaStream(10);
 
         const stopBootStream = async () => {
           for (const track of bootStream.getTracks()) {
-            await this._webrtcPeer?.removeTrack(track, bootStream);
+            try {
+              await this._webrtcPeer?.removeTrack(track, bootStream);
+            } catch (err) {
+              console.error(err);
+            }
           }
         };
 
@@ -675,13 +684,22 @@ export default class ZenRTCPeer extends PhantomCore {
   /**
    * Called internally when a WebRTC signal is to be emit to the other peer.
    *
+   * NOTE: This provides the ability to not only send SDP signals to the
+   * underlying WebRTCPeer library, but to send messages directly from
+   * ZenRTCPeer to ZenRTCPeer through the signaling layer.
+   *
    * @param {Object} data // TODO: Document; connected directly to WebRTCPeer on.signal
    */
   async _sendZenRTCSignal(data) {
     this.emit(EVT_ZENRTC_SIGNAL, data);
   }
 
+  // TODO: Typedef ZenRTCSignal
   /**
+   * NOTE: This provides the ability to not only send SDP signals to the
+   * underlying WebRTCPeer library, but to send messages directly from
+   * ZenRTCPeer to ZenRTCPeer through the signaling layer.
+   *
    * @param {Object} params TODO: Document
    */
   async receiveZenRTCSignal(data) {

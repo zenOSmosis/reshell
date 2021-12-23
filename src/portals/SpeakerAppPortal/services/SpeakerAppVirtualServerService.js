@@ -43,6 +43,16 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     };
   }
 
+  // TODO: Add
+  /**
+   * @return {boolean}
+   */
+  /*
+  getIsWebRTCSupported() {
+    return VirtualServerZenRTCPeer.getIsWebRTCSupported();
+  }
+  */
+
   // TODO: Document
   async createVirtualServer({
     realmId,
@@ -55,6 +65,13 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     buildHash,
     userAgent,
   }) {
+    // TODO: Determine if WebRTC support is available before continuing
+    /*
+    if (!this.getIsWebRTCSupported()) {
+      throw new Error("WebRTC is not supported in this browser");
+    }
+    */
+
     if (this._virtualServer) {
       throw new Error(
         "Virtual Server is currently in session. You may wish to call stopVirtualServer() instead."

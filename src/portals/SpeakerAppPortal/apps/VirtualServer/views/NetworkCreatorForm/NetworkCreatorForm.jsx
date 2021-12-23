@@ -34,6 +34,8 @@ import RocketIcon from "@icons/RocketIcon";
 
 // TODO: Implement auto-connect-to-network toggle (perhaps in advanced; default to true)
 
+// TODO: Implement optional setting for stereo / mono stream negotiations
+
 // TODO: Document and use prop-types
 export default function CreateNetwork({
   deviceAddress,

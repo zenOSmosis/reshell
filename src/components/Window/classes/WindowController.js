@@ -67,7 +67,6 @@ export default class WindowController extends PhantomState {
       await this._appRuntime.destroy();
     }
 
-    this._state = {};
     this._appRuntime = null;
     this._windowEl = null;
     this._windowManagerEl = null;
@@ -330,7 +329,7 @@ export default class WindowController extends PhantomState {
    * @returns {boolean}
    */
   getIsMaximized() {
-    return this._state.isMaximized;
+    return this.getState().isMaximized;
   }
 
   /**
@@ -354,7 +353,7 @@ export default class WindowController extends PhantomState {
    * @return {boolean}
    */
   getIsMinimized() {
-    return this._state.isMinimized;
+    return this.getState().isMinimized;
   }
 
   // TODO: Document
