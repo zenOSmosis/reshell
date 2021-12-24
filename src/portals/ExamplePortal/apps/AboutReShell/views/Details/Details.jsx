@@ -5,16 +5,16 @@ import ExternalLinkButton from "@components/ExternalLinkButton";
 import VirtualLinkButton from "@components/VirtualLinkButton";
 
 const LINKS = {
-  "Phantom Core": "https://github.com/zenOSmosis/phantom-core",
-  "Phantom Collection":
+  PhantomCore: "https://github.com/zenOSmosis/phantom-core",
+  PhantomCollection:
     "https://github.com/zenOSmosis/phantom-core/tree/main/src/PhantomCollection",
 
-  "ReShell Core": "https://github.com/zenOSmosis/reshell.org-static",
+  ReShellCore: "https://github.com/zenOSmosis/reshell.org-static",
 
-  "Sync Object": "https://github.com/zenOSmosis/sync-object",
-  "MediaStream Controller":
+  SyncObject: "https://github.com/zenOSmosis/sync-object",
+  MediaStreamController:
     "https://github.com/zenOSmosis/media-stream-track-controller",
-  "webrtc-peer": "https://github.com/zenOSmosis/webrtc-peer",
+  WebRTCPeer: "https://github.com/zenOSmosis/webrtc-peer",
 };
 
 // TODO: Refactor

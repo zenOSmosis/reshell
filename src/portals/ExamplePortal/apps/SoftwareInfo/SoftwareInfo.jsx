@@ -47,7 +47,7 @@ const SoftwareInfo = {
                   >
                     ReShell version: {ReShellCore.getReShellVersion()}
                     <br />
-                    Phantom Core version: {PhantomCore.getPhantomCoreVersion()}
+                    PhantomCore version: {PhantomCore.getPhantomCoreVersion()}
                     <br />
                     Portal: {ReShellCore.getPortalName()}
                   </div>

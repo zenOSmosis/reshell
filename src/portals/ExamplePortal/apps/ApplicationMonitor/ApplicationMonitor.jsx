@@ -36,8 +36,7 @@ const ApplicationMonitor = {
         </Content>
         <Footer style={{ fontSize: ".8rem" }}>
           <Padding>
-            Phantom Core uptime:{" "}
-            <Timer onTick={() => PhantomCore.getUptime()} />
+            PhantomCore uptime: <Timer onTick={() => PhantomCore.getUptime()} />
           </Padding>
         </Footer>
       </Layout>
