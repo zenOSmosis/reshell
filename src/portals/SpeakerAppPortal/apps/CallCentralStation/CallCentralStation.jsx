@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Center from "@components/Center";
@@ -84,6 +84,7 @@ const CallCentralStation = {
     // Automatically maximize on start
     // TODO: Implement ability to start auto-maximized without relying on
     // useEffect
+    /*
     useEffect(() => {
       // NOTE: The following timeout is for visual effect only, as Safari seems
       // to render the window fully expanded first
@@ -95,6 +96,7 @@ const CallCentralStation = {
         clearTimeout(to);
       };
     }, [windowController]);
+    */
 
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkDiscoveryService =
