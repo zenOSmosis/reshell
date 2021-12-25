@@ -1,5 +1,5 @@
 import React from "react";
-import AutoScaler from "@components/AutoScaler";
+import Background from "@components/Background";
 import Preload from "@components/Preload";
 
 import speakerAppLogo from "../../assets/speaker.app.logo.svg";
@@ -19,22 +19,22 @@ import speakerAppLogo from "../../assets/speaker.app.logo.svg";
 ,#db469f,#2188ff);
  */
 
-export default function SpeakerAppLogoBackground() {
-  // {
-  // className,
-  // disableAnimation = false,
-  // ...rest
-  // }
+export default function SpeakerAppLogoBackground({ children, ...rest }) {
   return (
     <Preload preloadResources={[speakerAppLogo]}>
-      <AutoScaler>
-        <div style={{ padding: 20 }}>
-          <img src={speakerAppLogo} alt="Speaker.app" />
-          <div style={{ opacity: ".8", fontWeight: "bold" }}>
-            <span style={{ color: "orange" }}>speaker</span>.app
+      <Background
+        {...rest}
+        src={() => (
+          <div style={{ padding: 20 }}>
+            <img src={speakerAppLogo} alt="Speaker.app" />
+            <div style={{ opacity: ".8", fontWeight: "bold" }}>
+              <span style={{ color: "orange" }}>speaker</span>.app
+            </div>
           </div>
-        </div>
-      </AutoScaler>
+        )}
+      >
+        {children}
+      </Background>
     </Preload>
   );
 }

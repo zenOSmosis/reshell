@@ -1,16 +1,18 @@
 import React from "react";
+import AutoScaler from "../AutoScaler";
 import Cover from "../Cover";
 import Full from "../Full";
 import Image from "../Image";
 import classNames from "classnames";
 import styles from "./Background.module.css";
 
+// TODO: Document and add prop-types
 export default function Background({
   children,
   src,
   className,
   style,
-  onLoad = (ref) => null,
+  onLoad = ref => null,
   ...propsRest
 }) {
   return (
@@ -19,6 +21,10 @@ export default function Background({
       className={classNames(styles["background"], className)}
     >
       <Cover className={styles["cover"]}>
+        {
+          // TODO: Refactor the following conditional logic into a separate
+          // utility
+        }
         {typeof src === "string" && (
           <Image className={styles["image"]} src={src} onLoad={onLoad} />
         )}
@@ -26,7 +32,11 @@ export default function Background({
           (() => {
             const DisplayComponent = src;
 
-            return <DisplayComponent />;
+            return (
+              <AutoScaler>
+                <DisplayComponent />
+              </AutoScaler>
+            );
           })()}
       </Cover>
 
