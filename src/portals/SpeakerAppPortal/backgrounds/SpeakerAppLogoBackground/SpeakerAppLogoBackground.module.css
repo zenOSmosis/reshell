@@ -1,0 +1,29 @@
+.logo {
+  padding: 20px;
+}
+
+.logo img {
+  opacity: 0.4;
+}
+
+/*
+.logo .text {
+  background: linear-gradient(60deg, red, yellow, red, yellow, red);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+*/
+
+.logo .text {
+  font-weight: bold;
+}
+
+.logo .text .speaker {
+  color: rgba(255, 155, 0, 0.5);
+  /* filter: drop-shadow(0 0 0.75rem orange); */
+}
+
+.logo .text .app {
+  color: rgba(255, 255, 255, 0.5);
+  /* filter: drop-shadow(0 0 0.75rem white); */
+}
