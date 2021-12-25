@@ -45,6 +45,11 @@ export default class OutputMediaDevicesService extends UIServiceCore {
               );
             }
           );
+
+          // Perform initial sync
+          setAudioMediaStreamTracks(
+            this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks()
+          );
         }, []);
 
         return (
@@ -64,7 +69,21 @@ export default class OutputMediaDevicesService extends UIServiceCore {
         window.document.body.removeChild(audioDOMBase)
       );
 
-      ReactDOM.render(<OutputMediaDevicesAudio />, audioDOMBase);
+      // FIXME: (jh) The following bug fix is likely due to the handling of
+      // WindowManager itself.  Might need to circle back to the following
+      // information later on for future improvements.
+      //
+      // IMPORTANT: The setImmediate wrap fixes an issue where starting this
+      // service from a serviceClasses array in an app registration would
+      // produce the following warning:
+      //
+      // "Render methods should be a pure function of props and state;
+      // triggering nested component updates from render is not allowed. If
+      // necessary, trigger nested updates in componentDidUpdate."
+      //
+      setImmediate(() =>
+        ReactDOM.render(<OutputMediaDevicesAudio />, audioDOMBase)
+      );
     })();
   }
 
