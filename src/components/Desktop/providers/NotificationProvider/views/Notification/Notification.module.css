@@ -41,13 +41,7 @@
   border: 2px rgba(255, 255, 255, 0.2) solid;
   border-radius: 4px;
 
-  /* Prototype Gaussian Blur
-   
-    FIXME: (jh) A consideration would be to make this configurable and tie it
-    into future power management servicing / system events.
-  */
-  backdrop-filter: blur(10px);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.7);
 
   position: relative;
   padding: 4px;

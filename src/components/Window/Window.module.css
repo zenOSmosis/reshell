@@ -1,4 +1,6 @@
-/* TODO: Borrow some window styles from this article (double-layer translucency and [potentially] wider borders) */
+/* TODO: Borrow some window styles from this article (double-layer translucency
+  and [potentially] wider borders)
+*/
 
 .window-outer-border.hidden {
   visibility: hidden;
@@ -7,12 +9,16 @@
 .window-outer-border {
   position: absolute;
 
-  /* Prototype Gaussian Blur
+  /* Prototype Gaussian blur
    
-    FIXME: (jh) A consideration would be to make this configurable and tie it
-    into future power management servicing / system events.
-  */
+    FIXME: (jh) Refactor into separate Panel (or equiv.) component which is
+    further tied into system settings for controlling Gaussian blur, among other things.
+
+    IMPORTANT: CPU usage appears to be higher when doing screenshares when this
+    effect is enabled.
   backdrop-filter: blur(10px);
+  */
+  /* backdrop-filter: blur(10px); */
 
   /*
   Minimum width / height calculations (may need additional consideration)
@@ -58,7 +64,8 @@ of the drag zone outside of the windows. */
 
 /* Prevent window from being able to be larger than the available space */
 /* TODO: Only enforce this change if the user has not resized the window? */
-/* TODO: If window is slid off edge, move it, dynamically (i.e. call the appropriate moveTo method in the JS) */
+/* TODO: If window is slid off edge, move it, dynamically (i.e. call the
+  appropriate moveTo method in the JS) */
 .window,
 .window-outer-border {
   max-width: 100%;
@@ -69,20 +76,12 @@ of the drag zone outside of the windows. */
   border: 1px rgba(255, 255, 255, 0.1) solid;
   border-radius: 8px;
   overflow: hidden;
+
+  background-color: #1f2022;
 }
 
 .window.active {
   border: 1px rgba(255, 255, 255, 0.3) solid;
-
-  /* Main background color */
-  background-color: rgba(0, 0, 0, 0.25);
-}
-
-.window:not(.active) {
-  opacity: 0.8;
-
-  /* Non-active background color */
-  background-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Inactive window shading */
