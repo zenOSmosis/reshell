@@ -10,7 +10,7 @@ import PhantomCore from "phantom-core";
  * To ensure maximum compatibility, extension classes should use the async API
  * as well.
  */
-export default class StorageEngine extends PhantomCore {
+export default class BaseStorageEngine extends PhantomCore {
   constructor(options = {}) {
     const DEFAULT_OPTIONS = { encryptionType: null };
 
@@ -23,6 +23,10 @@ export default class StorageEngine extends PhantomCore {
         }),
       })
     );
+
+    // TODO: Implement startup checking for CRUD operations, using objects as
+    // types (which must be serialized most browser native storage engines),
+    // using ephemeral data
 
     // IMPORTANT: The encryption type is left up to the storage engine itself
     // to implement; this only contains its type

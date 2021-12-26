@@ -1,8 +1,8 @@
 import PhantomCore from "phantom-core";
-import StorageEngine from "./StorageEngine";
+import BaseStorageEngine from "./_BaseStorageEngine";
 import SecureLS from "secure-ls";
 
-export default class SecureLocalStorageEngine extends StorageEngine {
+export default class SecureLocalStorageEngine extends BaseStorageEngine {
   constructor(options) {
     const DEFAULT_OPTIONS = {
       encryptionType: "aes",

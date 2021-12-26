@@ -1,7 +1,7 @@
 import { PhantomCollection, EVT_UPDATED } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 
-import StorageEngine from "./engines/StorageEngine";
+import BaseStorageEngine from "./engines/_BaseStorageEngine";
 import SessionStorageEngine from "./engines/SessionStorageEngine";
 import SecureLocalStorageEngine from "./engines/SecureLocalStorageEngine";
 
@@ -130,7 +130,7 @@ class StorageEngineCollection extends PhantomCollection {
 
     // FIXME: (jh) Even better would be to check this before instantiation, but
     // I'm not quite sure how to yet
-    if (!(storageEngine instanceof StorageEngine)) {
+    if (!(storageEngine instanceof BaseStorageEngine)) {
       throw new TypeError("storageEngine is not of StorageEngine type");
     }
 

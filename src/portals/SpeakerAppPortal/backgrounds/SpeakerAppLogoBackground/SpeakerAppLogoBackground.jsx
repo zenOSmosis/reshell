@@ -18,6 +18,10 @@ export default function SpeakerAppLogoBackground({
         {...rest}
         src={() => (
           <div className={classNames(styles["logo"], className)}>
+            {
+              // TODO: Experiment with changing background colors of speakers
+              // within the logo itself (make it dynamic)
+            }
             <img src={speakerAppLogo} alt="Speaker.app" />
             <div className={styles["text"]}>
               <span className={styles["speaker"]}>speaker</span>

@@ -1,9 +1,18 @@
+/* TODO: Borrow some window styles from this article (double-layer translucency and [potentially] wider borders) */
+
 .window-outer-border.hidden {
   visibility: hidden;
 }
 
 .window-outer-border {
   position: absolute;
+
+  /* Prototype Gaussian Blur
+   
+    FIXME: (jh) A consideration would be to make this configurable and tie it
+    into future power management servicing / system events.
+  */
+  backdrop-filter: blur(10px);
 
   /*
   Minimum width / height calculations (may need additional consideration)
@@ -60,12 +69,20 @@ of the drag zone outside of the windows. */
   border: 1px rgba(255, 255, 255, 0.1) solid;
   border-radius: 8px;
   overflow: hidden;
-
-  background-color: #1f2022;
 }
 
 .window.active {
   border: 1px rgba(255, 255, 255, 0.3) solid;
+
+  /* Main background color */
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.window:not(.active) {
+  opacity: 0.8;
+
+  /* Non-active background color */
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Inactive window shading */

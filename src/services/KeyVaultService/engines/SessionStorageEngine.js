@@ -1,10 +1,14 @@
-import StorageEngine from "./StorageEngine";
+import BaseStorageEngine from "./_BaseStorageEngine";
 
-export default class SessionStorageEngine extends StorageEngine {
+export default class SessionStorageEngine extends BaseStorageEngine {
   constructor(...args) {
     super(...args);
 
     this.setTitle("SessionStorageEngine");
+
+    // TODO: Implement ability to accept object data or other data types and
+    // perform serialization/ unserialization here directly (look at secure-ls
+    // handling for clues for some potential approaches )
   }
 
   // TODO: Document

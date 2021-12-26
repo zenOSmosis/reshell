@@ -1,10 +1,26 @@
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 import VirtualLinkButton from "../VirtualLinkButton";
 
+import PropTypes from "prop-types";
+
 // TODO: Apply "active" class to button whenever registration is active?
 
+AppLinkButton.propTypes = {
+  id: PropTypes.string.isRequired,
+
+  // TODO: Filter to any React component
+  icon: PropTypes.func,
+
+  title: PropTypes.string,
+};
+
 // TODO: Document
-export default function AppLinkButton({ id, title = null, ...rest }) {
+export default function AppLinkButton({
+  id,
+  icon = null,
+  title = null,
+  ...rest
+}) {
   const { title: registrationTitle, link } = useAppRegistrationLink(id);
 
   if (!link) {
@@ -18,7 +34,7 @@ export default function AppLinkButton({ id, title = null, ...rest }) {
       {...rest}
       onClick={link}
     >
-      {title || registrationTitle}
+      {icon || title || registrationTitle}
     </VirtualLinkButton>
   );
 }
