@@ -1,4 +1,5 @@
 import React from "react";
+import AutoScaler from "../AutoScaler";
 import StaggeredWaveLoading from "../StaggeredWaveLoading";
 import PropTypes from "prop-types";
 
@@ -23,9 +24,9 @@ export default function Preload({
 
   if (!isPreloaded) {
     return (
-      <div {...rest}>
+      <AutoScaler {...rest}>
         <StaggeredWaveLoading />
-      </div>
+      </AutoScaler>
     );
   } else {
     return <React.Fragment>{children}</React.Fragment>;
