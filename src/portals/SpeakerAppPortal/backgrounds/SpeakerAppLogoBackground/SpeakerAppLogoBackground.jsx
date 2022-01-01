@@ -13,7 +13,7 @@ export default function SpeakerAppLogoBackground({
   ...rest
 }) {
   return (
-    <Preload preloadResources={[speakerAppLogo]}>
+    <Preload preloadResources={[speakerAppLogo]} disabledLoadingIndicator>
       <Background
         {...rest}
         src={() => (
