@@ -29,6 +29,7 @@ const KeyVault = {
 
     const [keyStorageEngineMaps, setKeyStorageEngineMaps] = useState([]);
 
+    // TODO: Refactor so this automatically updates if other applications set state
     const handleFetchKeyStorageEngineMaps = useCallback(async () => {
       const keyMaps =
         await localDataPersistenceService.fetchKeyStorageEngineMaps();

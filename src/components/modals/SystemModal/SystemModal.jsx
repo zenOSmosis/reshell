@@ -46,6 +46,7 @@ export default function SystemModal({
 
   // Automatically configure layout based on viewport size
   useViewportSize(({ width, height }) => {
+    // TODO: Use range constants
     if (width < 500 || height < 600) {
       _setIsSmallViewport(true);
     } else {

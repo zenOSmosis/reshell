@@ -1,4 +1,3 @@
-import { useCallback, useEffect } from "react";
 import Full from "../Full";
 import Layout, { Header, Content, Footer } from "../Layout";
 import Padding from "../Padding";
@@ -9,12 +8,7 @@ import RCACableIcon from "@icons/RCACableIcon";
 
 import AudioInputDeviceTableRow from "./subComponents/AudioInputDeviceTableRow";
 
-import useServiceClass from "@hooks/useServiceClass";
-import InputMediaDevicesService from "@services/InputMediaDevicesService";
-
-// TODO: Move into InputMediaDevicesService(?)
-import { utils } from "media-stream-track-controller";
-const { audioQualityPresets } = utils.constraints;
+import useInputMediaDevicesSelectorState from "./subHooks/useInputMediaDevicesSelectorState";
 
 // TODO: Document and add prop-types
 // TODO: Refactor for all input device types
@@ -22,42 +16,23 @@ export default function InputMediaDevicesSelector({
   onDeviceCapture = device => null,
   onDeviceUncapture = device => null,
 }) {
-  const { serviceInstance: inputMediaDevicesService } = useServiceClass(
-    InputMediaDevicesService
-  );
+  const {
+    inputMediaDevicesService,
+    mediaDevicesCachingService,
+    audioInputDevices,
+    capturedAudioInputDevices,
+    audioQualityPresets,
+    toggleSpecificMediaDevice,
+    setDevicePreferredAudioQualityPresetName,
+    getDevicePreferredAudioQualityPresetName,
+  } = useInputMediaDevicesSelectorState({
+    onDeviceCapture,
+    onDeviceUncapture,
+  });
 
-  // Automatically fetch input media devices when component mounts
-  useEffect(() => {
-    if (inputMediaDevicesService) {
-      inputMediaDevicesService.fetchInputMediaDevices();
-    }
-  }, [inputMediaDevicesService]);
-
-  // TODO: Document
-  const toggleSpecificMediaDevice = useCallback(
-    async device => {
-      const isCapturing =
-        inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured(device);
-
-      if (!isCapturing) {
-        await inputMediaDevicesService.captureSpecificAudioInputDevice(device);
-
-        onDeviceCapture(device);
-      } else {
-        inputMediaDevicesService.uncaptureSpecificAudioInputDevice(device);
-
-        onDeviceUncapture(device);
-      }
-    },
-    [inputMediaDevicesService, onDeviceCapture, onDeviceUncapture]
-  );
-
-  if (!inputMediaDevicesService) {
+  if (!inputMediaDevicesService || !mediaDevicesCachingService) {
     return null;
   }
-
-  const audioInputDevices =
-    inputMediaDevicesService.getAudioInputMediaDevices();
 
   const lenAudioInputDevices = audioInputDevices.length;
 
@@ -72,10 +47,6 @@ export default function InputMediaDevicesSelector({
       </Center>
     );
   }
-
-  const capturedAudioInputDevices = audioInputDevices.filter(
-    inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured
-  );
 
   const lenCapturedAudioInputDevices = capturedAudioInputDevices.length;
 
@@ -95,10 +66,6 @@ export default function InputMediaDevicesSelector({
               <thead>
                 <tr>
                   <td>Name</td>
-                  {/*
-                    <td>Kind</td>
-                    */}
-
                   <td className="center">f(x)</td>
                   <td className="center">Level</td>
                 </tr>
@@ -116,83 +83,37 @@ export default function InputMediaDevicesSelector({
                       device
                     );
 
-                  const mediaStreamTrack =
+                  const mediaStreamTracks =
                     isCapturing &&
-                    deviceCaptureFactory
-                      ?.getOutputMediaStream()
-                      ?.getTracks()[0];
+                    deviceCaptureFactory?.getOutputMediaStream()?.getTracks();
 
+                  // TODO: Remove
                   const audioTrackController =
                     isCapturing &&
                     deviceCaptureFactory?.getAudioTrackControllers()[0];
-
-                  // TODO: Remove
                   if (audioTrackController) {
                     console.log({
                       settings: audioTrackController.getSettings(),
                     });
                   }
 
-                  /*
-                  const audioQualityPresetName =
-                    audioTrackController &&
-                    audioTrackController.getMatchedAudioQualityPreset()?.name;
-
-                  /*
-                  const isNoiseSuppressionEnabled =
-                    audioTrackController &&
-                    audioTrackController.getIsNoiseSuppressionEnabled();
-                  const isEchoCancellationEnabled =
-                    audioTrackController &&
-                    audioTrackController.getIsEchoCancellationEnabled();
-                  const isAutoGainControlEnabled =
-                    audioTrackController &&
-                    audioTrackController.getIsAutoGainControlEnabled();
-                    */
-
-                  // TODO: Remove
-                  /*
-                  console.log({
-                    audioTrackController,
-                    isNoiseSuppressionEnabled,
-                    isEchoCancellationEnabled,
-                    isAutoGainControlEnabled,
-                  });
-                  */
-
                   return (
                     <AudioInputDeviceTableRow
                       key={idx}
                       device={device}
-                      mediaStreamTrack={mediaStreamTrack}
+                      mediaStreamTracks={mediaStreamTracks}
                       isCapturing={isCapturing}
                       onToggleCapture={() => toggleSpecificMediaDevice(device)}
                       audioQualityPresets={audioQualityPresets}
-                      // audioQualityPresetName={audioQualityPresetName}
-                      // onChangeAudioQualityPresetName={}
-                      /*
-                      isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}
-                      onToggleNoiseSuppression={isEnabled =>
-                        audioTrackController &&
-                        audioTrackController.setIsNoiseSuppressionEnabled(
-                          isEnabled
+                      audioQualityPresetName={getDevicePreferredAudioQualityPresetName(
+                        device
+                      )}
+                      onChangeAudioQualityPresetName={audioQualityPresetName =>
+                        setDevicePreferredAudioQualityPresetName(
+                          device,
+                          audioQualityPresetName
                         )
                       }
-                      isEchoCancellationEnabled={isEchoCancellationEnabled}
-                      onToggleEchoCancellation={isEnabled =>
-                        audioTrackController &&
-                        audioTrackController.setIsEchoCancellationEnabled(
-                          isEnabled
-                        )
-                      }
-                      isAutoGainControlEnabled={isAutoGainControlEnabled}
-                      onToggleAutoGainControl={isEnabled =>
-                        audioTrackController &&
-                        audioTrackController.setIsAutoGainControlEnabled(
-                          isEnabled
-                        )
-                      }
-                      */
                     />
                   );
                 })}

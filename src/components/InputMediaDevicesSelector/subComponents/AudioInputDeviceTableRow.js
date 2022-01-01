@@ -7,20 +7,12 @@ import Center from "@components/Center";
 // TODO: Document and add prop-types
 export default function AudioInputDeviceTableRow({
   device,
-  mediaStreamTrack,
+  mediaStreamTracks,
   isCapturing,
   onToggleCapture,
   audioQualityPresets,
   audioQualityPresetName,
   onChangeAudioQualityPresetName,
-  /*
-  isNoiseSuppressionEnabled,
-  onToggleNoiseSuppression,
-  isEchoCancellationEnabled,
-  onToggleEchoCancellation,
-  isAutoGainControlEnabled,
-  onToggleAutoGainControl,
-  */
 }) {
   // TODO: Use constant for check type
   if (device.kind !== "audioinput") {
@@ -39,21 +31,29 @@ export default function AudioInputDeviceTableRow({
             Quality:{" "}
             <select
               value={audioQualityPresetName}
-              onChange={onChangeAudioQualityPresetName}
-              disabled={!isCapturing}
+              onChange={evt => onChangeAudioQualityPresetName(evt.target.value)}
+              // FIXME: (jh) Due to issues with dynamically changing
+              // constraints while a media device is capturing in Chromium-
+              // based browsers, along with issues with WebRTCPeer / ZenRTCPeer
+              // not seeming to handle rapid track unpublishing / republishing,
+              // it seems better to force the user to have to stop the media
+              // device capturing before changing the preferred audio quality
+              // settings
+              disabled={isCapturing}
             >
-              {audioQualityPresets.map((preset, idx) => (
-                <option key={idx} value={preset.name}>
-                  {preset.name}
-                </option>
-              ))}
+              {audioQualityPresets.map((preset, idx) => {
+                const presetName = preset.name;
+
+                return (
+                  <option key={idx} value={presetName}>
+                    {presetName}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </Padding>
       </td>
-      {/*
-      <td>{device.kind}</td>
-      */}
 
       <td>
         <Padding>
@@ -87,7 +87,7 @@ export default function AudioInputDeviceTableRow({
         <Padding>
           {isCapturing ? (
             device.kind === "audioinput" && (
-              <AudioLevelMeter mediaStreamTrack={mediaStreamTrack} />
+              <AudioLevelMeter mediaStreamTracks={mediaStreamTracks} />
             )
           ) : (
             <Center style={{ color: "gray" }}>N/A</Center>

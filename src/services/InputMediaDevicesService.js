@@ -72,6 +72,9 @@ export default class InputMediaDevicesService extends UIServiceCore {
       .catch(console.error)
       .finally(() => this.setState({ isFetchingMediaDevices: false }));
 
+    // TODO: Remove
+    console.log({ inputMediaDevices });
+
     // Set the captured device information as state so that calls to
     // this.getInputMediaDevices() can retrieve cached state, and any UI
     // listeners can see the state of cached device information.
@@ -155,7 +158,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   //
-  // IMPORTANT: For most use cases, use this.captureSpecificAudioInputDevice
+  // IMPORTANT: For most use cases, use this.captureSpecificMediaDevice
   // instead
   /*
   async captureDefaultAudioInputDevice(
@@ -164,7 +167,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
   ) {
     // TODO: Implement ability to apply preset quality settings to default
     // audio device (potentially obtain default audio device from list, apply
-    // the settings there, then call this.captureSpecificAudioInputDevice())
+    // the settings there, then call this.captureSpecificMediaDevice())
 
     const factory = await utils.mediaDevice.captureMediaDevice(
       userConstraints,
@@ -180,7 +183,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
   */
 
   // TODO: Document
-  async captureSpecificAudioInputDevice(
+  async captureSpecificMediaDevice(
     mediaDeviceInfo,
     userConstraints = {},
     factoryOptions = {}
@@ -199,7 +202,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
   }
 
   // TODO: Document
-  async uncaptureSpecificAudioInputDevice(mediaDeviceInfo) {
+  async uncaptureSpecificMediaDevice(mediaDeviceInfo) {
     return utils.mediaDevice.uncaptureSpecificMediaDevice(mediaDeviceInfo);
   }
 }
