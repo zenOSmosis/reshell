@@ -36,25 +36,6 @@
   background-repeat: no-repeat;
   background-image: linear-gradient(to top, green 0%, yellow 80%, red 100%);
   background-size: 100% 100%;
-  /** Note: Clip-path is in reverse of actual path */
-  /* clip-path: inset(80% 0 0 0);*/ /* switch off leds via clipping */
-  /* -webkit-clip-path: inset(80% 0 0 0);*/ /* Chrome / Safari */
-  /* animation: level-animation 500ms alternate infinite; */
-}
-
-@keyframes level-animation {
-  0% {
-    clip-path: inset(0% 0 0 0);
-    -webkit-clip-path: inset(0% 0 0 0);
-  }
-  50% {
-    clip-path: inset(40% 0 0 0);
-    -webkit-clip-path: inset(40% 0 0 0);
-  }
-  100% {
-    clip-path: inset(20% 0 0 0);
-    -webkit-clip-path: inset(20% 0 0 0);
-  }
 }
 
 /* paint gap lines of LEDs */
