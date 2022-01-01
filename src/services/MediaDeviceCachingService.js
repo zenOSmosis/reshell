@@ -81,9 +81,6 @@ export default class MediaDeviceCachingService extends UIServiceCore {
     // This is what will be written back to the local storage cache
     const next = [...filteredCache, update];
 
-    // TODO: Remove
-    console.log({ next, filteredCache });
-
     await this._storageEngine.setItem(KEY_STORAGE_ENGINE_MEDIA_DEVICES, next);
 
     this.setState({ devicesWithUserMetadata: next });
