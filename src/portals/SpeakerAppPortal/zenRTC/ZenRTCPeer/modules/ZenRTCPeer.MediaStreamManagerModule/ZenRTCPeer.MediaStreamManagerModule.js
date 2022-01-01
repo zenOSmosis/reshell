@@ -141,9 +141,18 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           try {
             // IMPORTANT: This track clone fixes an issue in Safari. Read the
             // "WHY" section above for more information.
+            const clonedTrack = getTrackClone(mediaStreamTrack);
+
+            // The cloned track must be stopped before removing from other
+            // peer. This fixes an issue where stopping a screenshare from
+            // ReShell UI would not automatically stop the browser's controls,
+            // since an ongoing track was still in progress (resulting in a
+            // black local feed).
+            clonedTrack.stop();
+
             await zenRTCPeer
               .getWebRTCPeer()
-              ?.removeTrack(getTrackClone(mediaStreamTrack), mediaStream);
+              ?.removeTrack(clonedTrack, mediaStream);
           } catch (err) {
             this.log.error(err);
           }
