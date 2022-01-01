@@ -8,6 +8,7 @@ import KeyVaultService from "@services/KeyVaultService";
 import UINotificationService from "@services/UINotificationService";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/LocalUserProfile";
+import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { debounce } from "debounce";
@@ -134,11 +135,13 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
       body: (
         <div>
           {description}
-          <AppLinkButton
-            id={LOCAL_USER_PROFILE_REGISTRATION_ID}
-            title="Update Your Profile"
-            style={{ float: "right" }}
-          />
+          <Padding>
+            <AppLinkButton
+              id={LOCAL_USER_PROFILE_REGISTRATION_ID}
+              title="Update Your Profile"
+              style={{ float: "right" }}
+            />
+          </Padding>
         </div>
       ),
     });
