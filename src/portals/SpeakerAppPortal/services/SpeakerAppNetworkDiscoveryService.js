@@ -5,6 +5,7 @@ import SpeakerAppSocketAuthenticationService, {
 
 import {
   SOCKET_API_ROUTE_FETCH_NETWORKS,
+  SOCKET_API_ROUTE_FETCH_NETWORK_EXISTS,
   SOCKET_API_ROUTE_FETCH_ICE_SERVERS,
 } from "../shared/socketAPIRoutes";
 import { SOCKET_EVT_NETWORKS_UPDATED } from "../shared/socketEvents";
@@ -64,6 +65,17 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
     console.log({ networks });
 
     return networks;
+  }
+
+  /**
+   * @param {Object} network
+   * @return {Promise<boolean>}
+   */
+  async fetchIsNetworkOnline({ realmId, channelId }) {
+    return this._socketService.fetchSocketAPICall(
+      SOCKET_API_ROUTE_FETCH_NETWORK_EXISTS,
+      { realmId, channelId }
+    );
   }
 
   // TODO: Document

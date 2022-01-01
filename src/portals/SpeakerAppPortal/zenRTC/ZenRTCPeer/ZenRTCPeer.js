@@ -606,13 +606,20 @@ export default class ZenRTCPeer extends PhantomCore {
       // Handle WebRTC disconnect
       // TODO: Use event constant
       this._webrtcPeer.on("close", async () => {
-        this._isConnected = false;
-
         // Fix issue where reconnecting streams causes tracks to build up
         // this._outgoingMediaStreamCollection.destroyAllChildren();
         // this._incomingMediaStreamCollection.destroyAllChildren();
 
-        this.emit(EVT_DISCONNECTED);
+        const wasConnected = this._isConnected;
+
+        this._isConnected = false;
+
+        // The underlying WebRTCPeer library may emit the "close" event when
+        // the connection has not been fully established.
+        if (wasConnected) {
+          // Note that that is emit after _isConnected is set to false.
+          this.emit(EVT_DISCONNECTED);
+        }
 
         // Provide automated re-connect mechanism, if this is the initiator and
         // we've closed before we expected

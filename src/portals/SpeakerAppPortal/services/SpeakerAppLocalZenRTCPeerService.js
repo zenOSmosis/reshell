@@ -39,17 +39,27 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     this.registerShutdownHandler(() => this.disconnect());
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the currently connecting state.
+   *
+   * @return {boolean}
+   */
   getIsConnecting() {
     return this.getState().isConnecting;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the currently connected state.
+   *
+   * @return {boolean}
+   */
   getIsConnected() {
     return this.getState().isConnected;
   }
 
   /**
+   * Retrieves whether or not the browser supports WebRTC.
+   *
    * @return {boolean}
    */
   getIsWebRTCSupported() {
@@ -101,7 +111,6 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     const socketService = this.useServiceClass(
       SpeakerAppSocketAuthenticationService
     );
-
     const screenCapturerService = this.useServiceClass(ScreenCapturerService);
     const networkService = this.useServiceClass(
       SpeakerAppNetworkDiscoveryService
@@ -146,39 +155,65 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         OutputMediaDevicesService
       );
 
-      // TODO: Use proxy on?
-      localZenRTCPeer.on(EVT_CONNECTING, () => {
+      const _handleSetIsConnectingState = () => {
         this.setState({
           isConnecting: true,
           isConnected: false,
         });
+      };
+
+      this.proxyOn(localZenRTCPeer, EVT_CONNECTING, async () => {
+        if (!socketService.getIsConnected()) {
+          // Show UI notification
+          this.useServiceClass(UINotificationService).showNotification({
+            title: "Lost network connectivity",
+            body: `Lost connection to realm "${realmId}" / channel "${channelId}"`,
+          });
+
+          _handleSetIsConnectingState();
+        } else {
+          const isSpeakerAppNetworkOnline =
+            await networkService.fetchIsNetworkOnline({ realmId, channelId });
+
+          if (!isSpeakerAppNetworkOnline) {
+            // Show UI notification
+            this.useServiceClass(UINotificationService).showNotification({
+              title: "Speaker.app Network Offline",
+              body: `Lost connection to realm "${realmId}" / channel "${channelId}"`,
+            });
+
+            localZenRTCPeer.destroy();
+          } else {
+            _handleSetIsConnectingState();
+          }
+        }
       });
 
-      // TODO: Use proxy on?
-      localZenRTCPeer.on(EVT_CONNECTED, () => {
+      this.proxyOn(localZenRTCPeer, EVT_CONNECTED, () => {
         this.setState({ isConnecting: false, isConnected: true });
 
+        // Show UI notification
         this.useServiceClass(UINotificationService).showNotification({
           title: "Connected to Network",
           body: `Connected to realm "${realmId}" / channel "${channelId}"`,
         });
       });
 
-      // TODO: Use proxy on?
-      localZenRTCPeer.on(EVT_DISCONNECTED, () => {
+      this.proxyOn(localZenRTCPeer, EVT_DISCONNECTED, () => {
         this.setState({
           isConnecting: false,
           isConnected: false,
         });
 
+        // Show UI notification
         this.useServiceClass(UINotificationService).showNotification({
           title: "Disconnected from Network",
           body: `Disconnected from realm "${realmId}" / channel "${channelId}"`,
         });
       });
 
-      // TODO: Use proxy on?
-      localZenRTCPeer.on(
+      this.proxyOn(
+        localZenRTCPeer,
         EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
@@ -191,8 +226,8 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         }
       );
 
-      // TODO: Use proxy on?
-      localZenRTCPeer.on(
+      this.proxyOn(
+        localZenRTCPeer,
         EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
@@ -219,8 +254,12 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
     return this._localZenRTCPeer?.getConnectionUptime() || 0;
   }
 
-  // TODO: Document
+  /**
+   * Disconnects from the ZenRTC session.
+   *
+   * @return {Promise<void>}
+   */
   async disconnect() {
-    this._localZenRTCPeer?.destroy();
+    return this._localZenRTCPeer?.destroy();
   }
 }
