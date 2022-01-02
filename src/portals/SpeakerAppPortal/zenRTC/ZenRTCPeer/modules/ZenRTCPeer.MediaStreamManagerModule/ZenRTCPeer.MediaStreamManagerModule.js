@@ -1,6 +1,6 @@
 import { EVT_DISCONNECTED, EVT_UPDATED } from "../../ZenRTCPeer";
 
-import { SYNC_EVT_TRACK_REMOVED } from "@portals/SpeakerAppPortal/shared/syncEvents";
+import { SYNC_EVT_TRACK_REMOVED } from "../../syncEvents";
 
 import BaseModule from "../ZenRTCPeer.BaseModule";
 import ZenRTCPeerMediaStreamCollection, {

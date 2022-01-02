@@ -6,8 +6,6 @@ const SYNC_EVENTS_DATA_CHANNEL_NAME = "sync-events";
 
 /**
  * Sync events are intended for simple, RPC-like calls.
- *
- * Constants for sync events are located in shared/syncEvents.js.
  */
 export default class SyncEventDataChannelModule extends BaseModule {
   constructor(zenRTCPeer) {
