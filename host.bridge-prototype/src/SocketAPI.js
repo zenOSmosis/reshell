@@ -4,6 +4,8 @@ export { EVT_DESTROYED };
 
 // TODO: Implement support for SocketChannel: https://github.com/zenOSmosis/js-shell/blob/master/backend/src/utils/socketAPI/SocketChannel.js
 
+// TODO: Rename to SocketAPIServer
+// IMPORTANT: This should be treated as a singleton (@link https://github.com/zenOSmosis/phantom-core/issues/72)
 // TODO: Document
 export default class SocketAPI extends PhantomCore {
   constructor(io, socket) {
@@ -25,6 +27,7 @@ export default class SocketAPI extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
+    // TODO: Should we really disconnect here, or just unbind the bound routes?
     this._socket.disconnect();
 
     return super.destroy();
@@ -104,4 +107,6 @@ export default class SocketAPI extends PhantomCore {
       }
     });
   }
+
+  // TODO: Implement removeRoute?
 }
