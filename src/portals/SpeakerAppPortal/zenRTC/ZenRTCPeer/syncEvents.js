@@ -14,18 +14,34 @@
  * Ping is emit to the other peer, and pong is emit back to the original peer
  * immediately after receipt.
  **/
+
+/**
+ * @event ping
+ * @type {void}
+ */
 export const SYNC_EVT_PING = "ping";
+
+/**
+ * @event pong
+ * @type {void}
+ */
 export const SYNC_EVT_PONG = "pong";
 
 /**
  * Emits before intentional disconnect so the other peer can be aware of a
  * graceful disconnection and immediately make preparations to handle the
  * shutdown.
+ *
+ * @event bye
+ * @type {void}
  */
 export const SYNC_EVT_BYE = "bye";
 
 /**
  * Emits when one peer wishes to kick the other peer off of a connection.
+ *
+ * @event kick
+ * @type {void}
  */
 export const SYNC_EVT_KICK = "kick";
 
@@ -33,8 +49,9 @@ export const SYNC_EVT_KICK = "kick";
  * This was added because WebRTCPeer / SimplePeer doesn't notify of track
  * removal on its own.
  *
- * @property {Object} data Contains msid (media stream id) and kind (track
- * kind) properties.
+ * @event mst-
+ * @type {Object} Contains msid (media stream id) and kind (track kind)
+ * properties.
  */
 export const SYNC_EVT_TRACK_REMOVED = "mst-";
 
@@ -42,8 +59,8 @@ export const SYNC_EVT_TRACK_REMOVED = "mst-";
  * Emits, with any data, when a client wishes a remote peer to debug data in
  * the console (for development purposes only).
  *
- * @property {any} data Any serializable data which can be sent to the remote
- * peer.
+ * @event debug
+ * @type {any} Any serializable data which can be sent to the remote peer.
  */
 export const SYNC_EVT_DEBUG = "debug";
 
@@ -52,7 +69,8 @@ export const SYNC_EVT_DEBUG = "debug";
  *
  * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
  *
- * @property {Object} partialState
+ * @event s0 Partial sync object sync
+ * @type {Object} Partial state
  */
 export const SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC = "s0";
 
@@ -61,7 +79,8 @@ export const SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC = "s0";
  *
  * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
  *
- * @property {Object} fullState
+ * @event s1 Full sync object sync
+ * @type {Object} Full state
  */
 export const SYNC_EVT_SYNC_OBJECT_FULL_SYNC = "s1";
 
@@ -71,7 +90,8 @@ export const SYNC_EVT_SYNC_OBJECT_FULL_SYNC = "s1";
  *
  * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
  *
- * @property {string} hash
+ * @event s2 Update hash
+ * @type {string} The hash which represents full state
  */
 export const SYNC_EVT_SYNC_OBJECT_UPDATE_HASH = "s2";
 
