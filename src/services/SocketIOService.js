@@ -123,18 +123,15 @@ export default class SocketIOService extends UIServiceCore {
 
   /**
    * @param {string} apiName
-   * @param {Object} requestData [optional]
+   * @param {Object} requestData? [default = {}]
    * @return {Promise<Object>} requestResponse; TODO: Document
    */
   async fetchSocketAPICall(apiName, requestData = {}) {
+    // FIXME: (jh) This shouldn't be needed because Socket.io should buffer the
+    // request until the connection has been made
     await this.onceConnected();
 
     return new Promise((resolve, reject) => {
-      // TODO: Replace this w/ a shorter hash
-      //
-      // const debounceId = JSON.stringify(apiName, requestData)
-      // const cachedFetch = _fetchMap.get(debounceId)
-
       const socket = this._socket;
 
       if (!socket) {

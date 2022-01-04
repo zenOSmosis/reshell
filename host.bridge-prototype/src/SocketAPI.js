@@ -25,6 +25,7 @@ export default class SocketAPI extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
+    // TODO: Should we really disconnect here, or just unbind the bound routes?
     this._socket.disconnect();
 
     return super.destroy();
@@ -104,4 +105,6 @@ export default class SocketAPI extends PhantomCore {
       }
     });
   }
+
+  // TODO: Implement removeRoute?
 }

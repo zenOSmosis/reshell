@@ -10,7 +10,7 @@ import Timer from "@components/Timer";
 import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import HostingView from "./views/HostingView";
 
-import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
+import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallPlayer";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";

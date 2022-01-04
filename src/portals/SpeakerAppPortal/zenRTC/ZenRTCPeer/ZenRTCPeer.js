@@ -18,7 +18,7 @@ import {
   SYNC_EVT_KICK,
   SYNC_EVT_TRACK_REMOVED,
   SYNC_EVT_DEBUG,
-} from "@portals/SpeakerAppPortal/shared/syncEvents";
+} from "./syncEvents";
 
 import HeartbeatModule from "./modules/ZenRTCPeer.HeartbeatModule";
 import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule";
@@ -856,7 +856,7 @@ export default class ZenRTCPeer extends PhantomCore {
   /**
    * Sends sync event data to other peer.
    *
-   * NOTE: Sync event constants are defined in shared/syncEvents.js.
+   * @see syncEvents.js for predefined event constants.
    *
    * @param {string} eventName
    * @param {any} eventData? [default = null]
