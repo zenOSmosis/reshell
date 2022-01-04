@@ -33,9 +33,9 @@ export const REGISTRATION_ID = "network";
 // request is similar to:
 // network/0x678308810e1087A3aED280d0feB957C9fcEd1C8B/48k-lounge
 
-const CallCentralStation = {
+const CallPlayer = {
   id: REGISTRATION_ID,
-  title: "Call Central Station",
+  title: "Call Player",
   style: {
     width: 640 * 1.5,
     height: 480 * 1.5,
@@ -220,4 +220,4 @@ const CallCentralStation = {
   },
 };
 
-export default CallCentralStation;
+export default CallPlayer;

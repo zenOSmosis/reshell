@@ -18,7 +18,7 @@ import MemoryInfo from "../ExamplePortal/apps/MemoryInfo";
 import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
 //
 import Applications from "./apps/Applications";
-import CallCentralStation from "./apps/CallCentralStation";
+import CallPlayer from "./apps/CallPlayer";
 import VirtualServer from "./apps/VirtualServer";
 import LocalUserProfile from "./apps/LocalUserProfile";
 
@@ -49,7 +49,7 @@ export default function SpeakerAppPortal() {
         MemoryInfo,
         SoftwareInfo,
 
-        CallCentralStation,
+        CallPlayer,
         VirtualServer,
 
         // TODO: Remove

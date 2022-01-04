@@ -14,7 +14,7 @@ import SpeakerAppLocalUserProfileService, {
   STATE_KEY_DESCRIPTION,
 } from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
-import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallCentralStation";
+import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallPlayer";
 
 export const REGISTRATION_ID = "local-user-profile";
 
