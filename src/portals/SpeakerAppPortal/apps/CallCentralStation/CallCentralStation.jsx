@@ -37,8 +37,8 @@ const CallCentralStation = {
   id: REGISTRATION_ID,
   title: "Call Central Station",
   style: {
-    width: 640,
-    height: 480,
+    width: 640 * 1.5,
+    height: 480 * 1.5,
   },
   isAutoStart: true,
   isPinned: true,
