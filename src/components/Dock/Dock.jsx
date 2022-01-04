@@ -72,14 +72,15 @@ export default function Dock() {
       >
         {dockRegistrations.map(registration => (
           <button
-            style={
+            style={Object.assign(
               registration === activeRegistration
                 ? {
                     backgroundColor: "rgba(38, 157, 255, .8)",
                     color: "#000",
                   }
-                : { backgroundColor: "#000" }
-            }
+                : { backgroundColor: "#000" },
+              { minWidth: 120 }
+            )}
             key={registration.getUUID()}
             onClick={() => bringToFrontOrStartAppRuntime(registration)}
           >
