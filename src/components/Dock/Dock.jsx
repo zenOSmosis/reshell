@@ -49,6 +49,7 @@ export default function Dock() {
         isolation: "isolate",
         // TODO: Handle different?
         zIndex: 99999999,
+        overflowX: "auto",
       }}
     >
       {
@@ -66,7 +67,6 @@ export default function Dock() {
           color: "black",
           whiteSpace: "nowrap",
           maxWidth: "100%",
-          overflowX: "auto",
         }}
         className="button-group"
       >
