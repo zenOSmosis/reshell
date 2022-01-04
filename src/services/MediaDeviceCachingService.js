@@ -89,13 +89,18 @@ export default class MediaDeviceCachingService extends UIServiceCore {
   /**
    * Fetches stored device information from local storage.
    *
-   * @return {Promise<Object>} TODO: Document structure
+   * @return {Promise<Object[]>} TODO: Document structure
    */
   async _fetchCachedMediaDeviceUserMetadata() {
-    return (
-      (await this._storageEngine.fetchItem(KEY_STORAGE_ENGINE_MEDIA_DEVICES)) ||
-      []
+    const cache = await this._storageEngine.fetchItem(
+      KEY_STORAGE_ENGINE_MEDIA_DEVICES
     );
+
+    if (Array.isArray(cache)) {
+      return cache;
+    } else {
+      return [];
+    }
   }
 
   /**
