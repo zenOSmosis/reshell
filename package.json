@@ -25,7 +25,7 @@
     "eth-crypto": "^2.1.0",
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v2.1.3",
     "object-hash": "^2.2.0",
-    "phantom-core": "github:zenosmosis/phantom-core#v2.2.1",
+    "phantom-core": "github:zenosmosis/phantom-core#v2.2.2",
     "preload-it": "^1.4.0",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
