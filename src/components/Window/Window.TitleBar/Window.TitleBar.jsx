@@ -28,15 +28,7 @@ export default function WindowTitleBar({
       {TitleBarView ? (
         <Full>{TitleBarView}</Full>
       ) : (
-        <>
-          <NoWrap
-            style={{
-              // Offset width of window-controls in order to make the title centered
-              width: 80,
-            }}
-          />
-          <NoWrap className={styles["title"]}>{title}</NoWrap>
-        </>
+        <NoWrap className={styles["title"]}>{title}</NoWrap>
       )}
 
       <NoWrap className={styles["window-controls"]}>
