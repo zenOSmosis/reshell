@@ -57,7 +57,7 @@ export default function InputMediaDevicesSelector({
         <Padding>
           <Full
             style={{
-              overflowY: "auto",
+              overflow: "auto",
               border: "4px #22668F solid",
               borderRadius: 4,
             }}
