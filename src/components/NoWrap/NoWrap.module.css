@@ -1,7 +1,5 @@
 .no-wrap {
   white-space: nowrap;
 
-  /* Vertically center elements */
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
 }
