@@ -4,9 +4,13 @@ import useServiceClass from "@hooks/useServiceClass";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import MediaDeviceCachingService from "@services/MediaDeviceCachingService";
 
-// TODO: Move into InputMediaDevicesService(?)
+// FIXME: (jh) Move to service class?
 import { utils } from "media-stream-track-controller";
 const { audioQualityPresets } = utils.constraints;
+
+// FIXME: (jh) Move to service class?
+const DEFAULT_AUDIO_QUALITY_PRESET =
+  audioQualityPresets.AUDIO_QUALITY_PRESET_TALK_RADIO;
 
 // TODO: Document
 export default function useInputMediaDevicesSelectorState({
@@ -74,7 +78,7 @@ export default function useInputMediaDevicesSelectorState({
       if (!preferredConstraints && device.kind === "audioinput") {
         preferredConstraints =
           audioQualityPresets.getAudioQualityPresetConstraints(
-            audioQualityPresets.AUDIO_QUALITY_PRESET_TALK_RADIO
+            DEFAULT_AUDIO_QUALITY_PRESET
           );
       }
 
@@ -98,6 +102,8 @@ export default function useInputMediaDevicesSelectorState({
 
       if (deviceUserMetadata) {
         return deviceUserMetadata.audioQualityPreset?.name;
+      } else {
+        return DEFAULT_AUDIO_QUALITY_PRESET.name;
       }
     },
     [mediaDevicesCachingService]
