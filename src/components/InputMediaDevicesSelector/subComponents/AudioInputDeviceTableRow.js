@@ -4,6 +4,8 @@ import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
 import NoWrap from "@components/NoWrap";
 import Center from "@components/Center";
 
+import CloseIcon from "@icons/CloseIcon";
+
 // TODO: Document and add prop-types
 export default function AudioInputDeviceTableRow({
   device,
@@ -29,28 +31,40 @@ export default function AudioInputDeviceTableRow({
 
           <div style={{ marginTop: 4 }}>
             Quality:{" "}
-            <select
-              value={audioQualityPresetName}
-              onChange={evt => onChangeAudioQualityPresetName(evt.target.value)}
-              // FIXME: (jh) Due to issues with dynamically changing
-              // constraints while a media device is capturing in Chromium-
-              // based browsers, along with issues with WebRTCPeer / ZenRTCPeer
-              // not seeming to handle rapid track unpublishing / republishing,
-              // it seems better to force the user to have to stop the media
-              // device capturing before changing the preferred audio quality
-              // settings
-              disabled={isCapturing}
-            >
-              {audioQualityPresets.map((preset, idx) => {
-                const presetName = preset.name;
+            {!isCapturing ? (
+              <select
+                value={audioQualityPresetName}
+                onChange={evt =>
+                  onChangeAudioQualityPresetName(evt.target.value)
+                }
+                // FIXME: (jh) Due to issues with dynamically changing
+                // constraints while a media device is capturing in Chromium-
+                // based browsers, along with issues with WebRTCPeer / ZenRTCPeer
+                // not seeming to handle rapid track unpublishing / republishing,
+                // it seems better to force the user to have to stop the media
+                // device capturing before changing the preferred audio quality
+                // settings
+                disabled={isCapturing}
+              >
+                {audioQualityPresets.map((preset, idx) => {
+                  const presetName = preset.name;
 
-                return (
-                  <option key={idx} value={presetName}>
-                    {presetName}
-                  </option>
-                );
-              })}
-            </select>
+                  return (
+                    <option key={idx} value={presetName}>
+                      {presetName}
+                    </option>
+                  );
+                })}
+              </select>
+            ) : (
+              <button
+                onClick={onToggleCapture}
+                style={{ minWidth: 145, textAlign: "left" }}
+              >
+                {audioQualityPresetName}{" "}
+                <CloseIcon style={{ color: "red", float: "right" }} />
+              </button>
+            )}
           </div>
         </Padding>
       </td>
