@@ -20,9 +20,16 @@ export default function NetworkConnected({
     return (
       <Center>
         <div style={{ fontWeight: "bold" }}>
-          {!isInSync
-            ? "Awaiting initial peer sync..."
-            : "No remote peers are connected. You are the only one here."}
+          {!isInSync ? (
+            <div>
+              <div>Performing initial sync...</div>
+              <div style={{ marginTop: 20 }}>
+                <StaggeredWaveLoading />
+              </div>
+            </div>
+          ) : (
+            "No remote peers are connected. You are the only one here."
+          )}
         </div>
       </Center>
     );
