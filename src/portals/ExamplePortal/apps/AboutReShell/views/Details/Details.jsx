@@ -2,7 +2,6 @@ import Full from "@components/Full";
 import Padding from "@components/Padding";
 import ExternalLink from "@components/ExternalLink";
 import ExternalLinkButton from "@components/ExternalLinkButton";
-import VirtualLinkButton from "@components/VirtualLinkButton";
 
 const LINKS = {
   PhantomCore: "https://github.com/zenOSmosis/phantom-core",
@@ -73,12 +72,9 @@ export default function Details() {
                     {title}
                   </ExternalLinkButton>
                 ) : (
-                  <VirtualLinkButton
-                    onClick={urlOrAction}
-                    style={LINK_BUTTON_STYLE}
-                  >
+                  <button onClick={urlOrAction} style={LINK_BUTTON_STYLE}>
                     {title}
-                  </VirtualLinkButton>
+                  </button>
                 )}
               </Padding>
             );

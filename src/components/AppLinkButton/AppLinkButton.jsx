@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
-import VirtualLinkButton from "../VirtualLinkButton";
+import ButtonTransparent from "../ButtonTransparent";
 
 import PropTypes from "prop-types";
 
@@ -8,33 +9,38 @@ import PropTypes from "prop-types";
 AppLinkButton.propTypes = {
   id: PropTypes.string.isRequired,
 
-  // TODO: Filter to any React component
-  icon: PropTypes.func,
-
   title: PropTypes.string,
 };
 
 // TODO: Document
 export default function AppLinkButton({
   id,
-  icon = null,
+  children = null,
   title = null,
   ...rest
 }) {
   const { title: registrationTitle, link } = useAppRegistrationLink(id);
+
+  // If there are children, show a non-styled button, otherwise, show a
+  // standard button
+  const ButtonView = useMemo(
+    () => props =>
+      children ? <ButtonTransparent {...props} /> : <button {...props} />,
+    [children]
+  );
 
   if (!link) {
     return null;
   }
 
   return (
-    <VirtualLinkButton
+    <ButtonView
       // IMPORTANT: ...rest is moved before onClick handler so the internal
       // onClick handler will not be overridden
       {...rest}
       onClick={link}
     >
-      {icon || title || registrationTitle}
-    </VirtualLinkButton>
+      {children || title || registrationTitle}
+    </ButtonView>
   );
 }
