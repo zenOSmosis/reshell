@@ -18,8 +18,6 @@ export default function WindowTitleBar({
   titleBarView: TitleBarView,
   ...rest
 }) {
-  // onDoubleClick={handleToggleRestoreOrMaximize})
-
   return (
     <div
       {...rest}
