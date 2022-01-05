@@ -9,6 +9,8 @@ import useDesktopContext from "@hooks/useDesktopContext";
 // "The user can also click an app’s Dock icon to bring all of that app’s windows forward; the most recently accessed app window becomes the key window."
 // (Ref. "Activating Windows": https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/)
 
+// TODO: Scroll dock when scrolling mouse wheel
+
 // TODO: Document
 export default function Dock() {
   const { activeWindowController } = useDesktopContext();
