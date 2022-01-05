@@ -8,7 +8,7 @@ const DynamicIcon = ({ className, ...propsRest }) => {
   return (
     <i
       {...propsRest}
-      className={`i75eaa7ac5f16480b8b9a1eed5132cbeb-icon${className ? ` ${className}` : ''}`}
+      className={`ie8e4f3089b614c28aa33b6aaeff7d8b0-icon${className ? ` ${className}` : ''}`}
     />
   );
 };

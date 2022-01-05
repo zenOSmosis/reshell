@@ -1,5 +1,7 @@
-.button-transparent {
+.button-transparent,
+.button-transparent:active {
   all: unset;
+  cursor: pointer;
 }
 
 .button-transparent:disabled {

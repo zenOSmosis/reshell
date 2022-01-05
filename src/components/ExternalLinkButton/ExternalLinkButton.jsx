@@ -1,5 +1,3 @@
-import VirtualLinkButton from "../VirtualLinkButton";
-
 // TODO: Document w/ prop-types
 export default function ExternalLinkButton({
   href,
@@ -7,7 +5,7 @@ export default function ExternalLinkButton({
   ...rest
 }) {
   return (
-    <VirtualLinkButton
+    <button
       {...rest}
       // TODO: Refactor to useCallback
       onClick={() => window.open(href, target)}

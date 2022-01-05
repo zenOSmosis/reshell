@@ -107,6 +107,10 @@ of the drag zone outside of the windows. */
   padding: 4px;
 }
 
+.window .title-bar * {
+  vertical-align: middle;
+}
+
 /*
   Fixes issue where pointercancel would sometimes be fired on certain Android
   devices.
