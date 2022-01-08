@@ -22,7 +22,7 @@ export default function InputMediaDevicesSelector({
     audioInputDevices,
     capturedAudioInputDevices,
     audioQualityPresets,
-    toggleSpecificMediaDevice,
+    toggleSpecificAudioInputDevice,
     setDevicePreferredAudioQualityPresetName,
     getDevicePreferredAudioQualityPresetName,
   } = useInputMediaDevicesSelectorState({
@@ -67,6 +67,7 @@ export default function InputMediaDevicesSelector({
                 <tr>
                   <td>Name</td>
                   <td className="center">f(x)</td>
+                  <td className="center">Muted</td>
                   <td className="center">Level</td>
                 </tr>
               </thead>
@@ -103,7 +104,11 @@ export default function InputMediaDevicesSelector({
                       device={device}
                       mediaStreamTracks={mediaStreamTracks}
                       isCapturing={isCapturing}
-                      onToggleCapture={() => toggleSpecificMediaDevice(device)}
+                      onToggleCapture={() =>
+                        toggleSpecificAudioInputDevice(device)
+                      }
+                      isMuted={deviceCaptureFactory?.getIsMuted()}
+                      onToggleMute={() => deviceCaptureFactory?.toggleMute()}
                       audioQualityPresets={audioQualityPresets}
                       audioQualityPresetName={getDevicePreferredAudioQualityPresetName(
                         device

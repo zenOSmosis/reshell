@@ -97,7 +97,11 @@ export default class SocketIOService extends UIServiceCore {
     }
   }
 
-  // TODO: Document
+  /**
+   * Disconnects the Socket.io connection, if present.
+   *
+   * @return {void}
+   */
   disconnect() {
     this._socket?.disconnect();
   }
@@ -115,6 +119,8 @@ export default class SocketIOService extends UIServiceCore {
   }
 
   /**
+   * Retrieves the Socket.io id, if present.
+   *
    * @return {string | void}
    */
   getSocketId() {
@@ -183,6 +189,8 @@ export default class SocketIOService extends UIServiceCore {
   }
 
   /**
+   * Disconnects, then destructs the class instance.
+   *
    * @return {Promise<void>}
    */
   async destroy() {

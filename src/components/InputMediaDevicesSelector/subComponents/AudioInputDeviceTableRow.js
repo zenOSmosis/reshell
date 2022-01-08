@@ -1,9 +1,9 @@
 import Padding from "@components/Padding";
-import LED from "@components/LED";
-import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
-import NoWrap from "@components/NoWrap";
+import ButtonTransparent from "@components/ButtonTransparent";
 import Center from "@components/Center";
+import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
 
+import MicrophoneIcon from "@icons/MicrophoneIcon";
 import CloseIcon from "@icons/CloseIcon";
 
 // TODO: Document and add prop-types
@@ -12,6 +12,8 @@ export default function AudioInputDeviceTableRow({
   mediaStreamTracks,
   isCapturing,
   onToggleCapture,
+  isMuted,
+  onToggleMute,
   audioQualityPresets,
   audioQualityPresetName,
   onChangeAudioQualityPresetName,
@@ -25,12 +27,12 @@ export default function AudioInputDeviceTableRow({
     <tr style={isCapturing ? { backgroundColor: "rgba(0,174,255,.2)" } : null}>
       <td>
         <Padding>
-          <NoWrap style={{ fontWeight: "bold" }}>
+          <div style={{ fontWeight: "bold" }}>
             {device.label || `[Unknown Label]`}
-          </NoWrap>
+          </div>
 
           <div style={{ marginTop: 4 }}>
-            Quality:{" "}
+            <span style={{ fontSize: ".7em" }}>Quality:</span>{" "}
             {!isCapturing ? (
               <select
                 value={audioQualityPresetName}
@@ -62,30 +64,41 @@ export default function AudioInputDeviceTableRow({
                 style={{ minWidth: 145, textAlign: "left" }}
               >
                 {audioQualityPresetName}{" "}
-                <CloseIcon style={{ color: "red", float: "right" }} />
+                <CloseIcon style={{ color: "orange", float: "right" }} />
               </button>
             )}
           </div>
         </Padding>
       </td>
 
-      <td>
+      <td className="center">
         <Padding>
-          <div className="center">
-            <button
-              onClick={onToggleCapture}
-              style={{
-                backgroundColor: isCapturing ? "red" : "green",
-                width: "100%",
-              }}
-            >
-              {isCapturing ? "Stop" : "Start"}
-            </button>
-          </div>
-          <div style={{ textAlign: "center", marginTop: 4 }}>
-            <LED color={isCapturing ? "green" : "gray"} />{" "}
-            {isCapturing ? "on" : "off"}
-          </div>
+          <button
+            onClick={onToggleCapture}
+            style={{
+              backgroundColor: isCapturing ? "red" : "#347FE8",
+              width: "100%",
+            }}
+          >
+            {isCapturing ? "Stop" : "Start"}
+          </button>
+        </Padding>
+      </td>
+      <td className="center">
+        <Padding>
+          <ButtonTransparent
+            disabled={!isCapturing}
+            onClick={onToggleMute}
+            style={{
+              color: !isCapturing ? "inherit" : isMuted ? "white" : "orange",
+            }}
+          >
+            <div style={{ textAlign: "center" }}></div>
+            <MicrophoneIcon style={{ fontSize: "1.5em" }} />
+            <div style={{ fontSize: ".7em", marginTop: 4 }}>
+              {!isCapturing ? "N/A" : isMuted ? "Yes" : "No"}
+            </div>
+          </ButtonTransparent>
         </Padding>
       </td>
       <td
@@ -104,7 +117,7 @@ export default function AudioInputDeviceTableRow({
               <AudioLevelMeter mediaStreamTracks={mediaStreamTracks} />
             )
           ) : (
-            <Center style={{ color: "gray" }}>N/A</Center>
+            <Center style={{ color: "gray", fontSize: ".7em" }}>Off</Center>
           )}
         </Padding>
       </td>

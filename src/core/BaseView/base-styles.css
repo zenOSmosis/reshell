@@ -142,6 +142,7 @@ textarea {
   padding: 5px;
   vertical-align: middle;
   position: relative;
+  outline: 1px solid transparent;
 
   resize: none;
 }
@@ -168,6 +169,66 @@ textarea:disabled {
   cursor: not-allowed;
 
   filter: grayscale(100%);
+}
+
+/** Fix buttons w/o valid children (i.e. span / div children) */
+button:disabled * {
+  cursor: not-allowed;
+}
+
+/*
+* Normalize CSS buttons
+*/
+button,
+input[type="submit"] {
+  outline: none;
+  font-weight: bold;
+  border: 1px rgba(255, 255, 255, 0.2) solid;
+  cursor: pointer;
+
+  border-radius: 8px;
+}
+
+.button-group button {
+  border-radius: 0px;
+  margin: 0px;
+}
+
+.button-group button:first-of-type {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.button-group button:last-of-type {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.button-group button:only-of-type {
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: rgba(66, 66, 66, 0.8);
+  color: #fff;
+}
+
+button:disabled {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(153, 153, 153, 0.644);
+  cursor: inherit;
+}
+
+/* TODO: Use :active CSS property as well? */
+button.active {
+  color: orange;
+  border-color: rgba(255, 130, 0, 0.5);
+}
+
+a,
+a:visited,
+button.link {
+  color: orange;
 }
 
 select {
@@ -206,63 +267,6 @@ ul li {
   margin: 4px 0px;
   margin: 0px;
   padding: 8px;
-}
-
-/*
-* Normalize CSS buttons
-*/
-button,
-input[type="submit"] {
-  outline: none;
-  background-color: rgba(66, 66, 66, 0.4);
-  color: #c4c4c4;
-  font-weight: bold;
-  border: 1px rgba(255, 255, 255, 0.2) solid;
-  cursor: pointer;
-
-  border-radius: 8px;
-}
-
-.button-group button {
-  border-radius: 0px;
-  margin: 0px;
-}
-
-.button-group button:first-of-type {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.button-group button:last-of-type {
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-.button-group button:only-of-type {
-  border-radius: 8px;
-}
-
-button:hover {
-  background-color: rgba(66, 66, 66, 0.8);
-  color: #fff;
-}
-
-button:disabled {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: rgba(153, 153, 153, 0.644);
-  cursor: inherit;
-}
-
-a,
-a:visited,
-button.link {
-  color: orange;
-}
-
-/* TODO: Use :active CSS property as well? */
-button.active {
-  color: orange;
-  border-color: rgba(255, 130, 0, 0.5);
 }
 
 code {

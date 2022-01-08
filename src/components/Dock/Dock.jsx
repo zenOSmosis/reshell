@@ -52,6 +52,7 @@ export default function Dock() {
         // TODO: Handle different?
         zIndex: 99999999,
         overflowX: "auto",
+        pointerEvents: "none",
       }}
     >
       {
@@ -69,6 +70,7 @@ export default function Dock() {
           color: "black",
           whiteSpace: "nowrap",
           maxWidth: "100%",
+          pointerEvents: "all",
         }}
         className="button-group"
       >
@@ -77,7 +79,8 @@ export default function Dock() {
             style={Object.assign(
               registration === activeRegistration
                 ? {
-                    backgroundColor: "rgba(38, 157, 255, .8)",
+                    // TODO: Make this color a variable for highlighted elements
+                    backgroundColor: "#347FE8",
                     color: "#000",
                   }
                 : { backgroundColor: "#000" },

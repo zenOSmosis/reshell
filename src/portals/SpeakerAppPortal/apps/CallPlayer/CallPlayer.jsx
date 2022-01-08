@@ -9,6 +9,8 @@ import NoWrap from "@components/NoWrap";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
 import Timer from "@components/Timer";
 
+import MicrophoneIcon from "@icons/MicrophoneIcon";
+
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
 import NetworkConnected from "./views/NetworkConnected";
@@ -25,6 +27,7 @@ import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/service
 import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
 import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
 import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 
 export const REGISTRATION_ID = "network";
@@ -52,34 +55,65 @@ const CallPlayer = {
     SpeakerAppLocalZenRTCPeerService,
     SpeakerAppClientPhantomSessionService,
     SpeakerAppLocalUserProfileService,
+    InputMediaDevicesService,
     OutputMediaDevicesService,
   ],
   titleBarView: function View({ windowController, appServices }) {
     const title = windowController.getTitle();
     const localZenRTCPeerService =
       appServices[SpeakerAppLocalZenRTCPeerService];
+    const inputMediaDevicesService = appServices[InputMediaDevicesService];
 
     const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
 
-    return !isZenRTCConnected ? (
-      <div
-        style={{ fontWeight: "bold", textAlign: "center", marginLeft: "10%" }}
-      >
-        {title}
-      </div>
-    ) : (
+    const isCapturingAnyAudio =
+      inputMediaDevicesService.getIsCapturingAnyAudio();
+    const isAllAudioMuted = inputMediaDevicesService.getIsAllAudioMuted();
+
+    return (
       <NoWrap>
         <button
-          style={{ backgroundColor: "red" }}
+          style={{ backgroundColor: "red", float: "left", width: "8em" }}
           onClick={localZenRTCPeerService.disconnect}
+          disabled={!isZenRTCConnected}
+          title="Disconnect"
         >
-          Disconnect
+          <div style={{ fontWeight: "bold", fontSize: "1.1em" }}>
+            {!isZenRTCConnected ? "Call Time" : "Disconnect"}
+          </div>
+          <div>
+            <Timer onTick={localZenRTCPeerService.getConnectionUptime} />
+          </div>
         </button>
-        <Timer
-          onTick={localZenRTCPeerService.getConnectionUptime}
-          style={{ marginLeft: 10 }}
-        />
+
         <span style={{ fontWeight: "bold", marginLeft: 10 }}>{title}</span>
+
+        <div
+          style={{
+            display: "inline-block",
+            textAlign: "center",
+            marginLeft: 10,
+          }}
+        >
+          <AppLinkButton
+            id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
+            style={{
+              color:
+                !isCapturingAnyAudio || isAllAudioMuted ? "inherit" : "orange",
+            }}
+          >
+            <div>
+              <MicrophoneIcon
+                style={{
+                  fontSize: "1.7em",
+                }}
+              />
+            </div>
+            <div style={{ fontSize: ".7em", marginTop: 2 }}>
+              {!isCapturingAnyAudio || isAllAudioMuted ? "Off" : "On"}
+            </div>
+          </AppLinkButton>
+        </div>
       </NoWrap>
     );
   },
@@ -143,7 +177,7 @@ const CallPlayer = {
     return (
       <Layout>
         <Header>
-          <Padding>
+          <Padding style={{ textAlign: "right" }}>
             <NoWrap className="button-group">
               <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
               <AppLinkButton

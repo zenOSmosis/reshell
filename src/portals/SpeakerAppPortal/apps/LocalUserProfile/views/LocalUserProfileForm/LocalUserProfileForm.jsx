@@ -163,6 +163,7 @@ export default function LocalUserProfileForm({
                       type="button"
                       onClick={submit}
                       style={{
+                        // TODO: Make this color a variable
                         backgroundColor: "#347FE8",
                         marginLeft: 10,
                         paddingRight: 20,

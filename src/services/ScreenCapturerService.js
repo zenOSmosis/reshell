@@ -1,9 +1,11 @@
-import { PhantomCollection } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
-import { utils } from "media-stream-track-controller";
+import {
+  MediaStreamTrackControllerFactoryCollection,
+  utils,
+} from "media-stream-track-controller";
 
 // TODO: Build out; ensuring added children are media device controller factories
-class ScreenCaptureFactoryCollection extends PhantomCollection {}
+class ScreenCaptureFactoryCollection extends MediaStreamTrackControllerFactoryCollection {}
 
 // TODO: Document
 export default class ScreenCapturerService extends UIServiceCore {
@@ -22,9 +24,9 @@ export default class ScreenCapturerService extends UIServiceCore {
       factoryOptions
     );
 
-    this.getCollectionInstance(ScreenCaptureFactoryCollection).addChild(
-      factory
-    );
+    this.getCollectionInstance(
+      ScreenCaptureFactoryCollection
+    ).addTrackControllerFactory(factory);
 
     return factory;
   }

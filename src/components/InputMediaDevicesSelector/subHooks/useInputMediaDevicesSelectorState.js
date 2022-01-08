@@ -110,7 +110,7 @@ export default function useInputMediaDevicesSelectorState({
   );
 
   // TODO: Document
-  const toggleSpecificMediaDevice = useCallback(
+  const toggleSpecificAudioInputDevice = useCallback(
     async device => {
       const isCapturing =
         inputMediaDevicesService.getIsAudioMediaDeviceBeingCaptured(device);
@@ -151,7 +151,7 @@ export default function useInputMediaDevicesSelectorState({
     audioInputDevices,
     capturedAudioInputDevices,
     audioQualityPresets,
-    toggleSpecificMediaDevice,
+    toggleSpecificAudioInputDevice,
     setDevicePreferredAudioQualityPresetName,
     getDevicePreferredAudioQualityPresetName,
   };

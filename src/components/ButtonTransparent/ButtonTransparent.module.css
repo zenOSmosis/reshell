@@ -1,9 +1,19 @@
 .button-transparent,
-.button-transparent:active {
+.button-transparent:active,
+.button-transparent:disabled {
   all: unset;
+  background-color: transparent !important;
+  border: 0px !important;
+  outline: none !important;
+}
+
+.button-transparent {
   cursor: pointer;
 }
 
-.button-transparent:disabled {
+.button-transparent:disabled,
+/** Fix buttons w/o valid children (i.e. span / div children) */
+.button-transparent:disabled * {
   color: gray !important;
+  cursor: not-allowed;
 }

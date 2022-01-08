@@ -1,16 +1,13 @@
-import { PhantomCollection } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 import {
   MediaStreamTrackControllerFactory,
+  MediaStreamTrackControllerFactoryCollection,
   utils,
 } from "media-stream-track-controller";
 
 import MediaDeviceCachingService from "./MediaDeviceCachingService";
 
-// TODO: Refactor
-class InputMediaDeviceFactoryCollection extends PhantomCollection {
-  // TODO: Ensure that added children are of MediaStreamTrackControllerFactory type
-}
+class InputMediaDeviceFactoryCollection extends MediaStreamTrackControllerFactoryCollection {}
 
 /**
  * Manages capturing of physical input media devices (i.e. microphone or camera).
@@ -33,14 +30,16 @@ export default class InputMediaDevicesService extends UIServiceCore {
       MediaDeviceCachingService
     );
 
+    this._inputMediaDeviceFactoryCollection = this.bindCollectionClass(
+      InputMediaDeviceFactoryCollection
+    );
+
     // TODO: Re-fetch when devices have been changed (listen to event; backport
     // from original Speaker.app)
     //
     // TODO: Capture fetch errors and set them as state / UI notifications
 
     this.fetchInputMediaDevices();
-
-    this.bindCollectionClass(InputMediaDeviceFactoryCollection);
   }
 
   /**
@@ -126,9 +125,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
 
   // TODO: Document
   getCaptureFactories() {
-    return this.getCollectionInstance(
-      InputMediaDeviceFactoryCollection
-    ).getChildren();
+    return this._inputMediaDeviceFactoryCollection.getTrackControllerFactories();
   }
 
   // TODO: Document
@@ -137,6 +134,8 @@ export default class InputMediaDevicesService extends UIServiceCore {
       MediaStreamTrackControllerFactory.getFactoriesWithInputMediaDevice(
         mediaDeviceInfo,
         // TODO: Use constant here
+        // TODO: Auto-detect this input value from the device (within
+        // media-stream-track-controller)
         "audio"
       ).length
     );
@@ -174,7 +173,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
       factoryOptions
     );
 
-    this.getCollectionInstance(InputMediaDeviceFactoryCollection).addChild(
+    this._inputMediaDeviceFactoryCollection.addTrackControllerFactory(
       factory
     );
 
@@ -194,9 +193,7 @@ export default class InputMediaDevicesService extends UIServiceCore {
       factoryOptions
     );
 
-    this.getCollectionInstance(InputMediaDeviceFactoryCollection).addChild(
-      factory
-    );
+    this._inputMediaDeviceFactoryCollection.addTrackControllerFactory(factory);
 
     return factory;
   }
@@ -204,5 +201,56 @@ export default class InputMediaDevicesService extends UIServiceCore {
   // TODO: Document
   async uncaptureSpecificMediaDevice(mediaDeviceInfo) {
     return utils.mediaDevice.uncaptureSpecificMediaDevice(mediaDeviceInfo);
+  }
+
+  /**
+   * Determines whether or not any audio input devices are currently capturing.
+   *
+   * @return {boolean}
+   */
+  getIsCapturingAnyAudio() {
+    return this._inputMediaDeviceFactoryCollection.getAudioTrackControllers()
+      .length;
+  }
+
+  /**
+   * Determines whether or not all audio input devices are muted.
+   *
+   * @return {boolean}
+   */
+  getIsAllAudioMuted() {
+    return this._inputMediaDeviceFactoryCollection.getIsAudioMuted();
+  }
+
+  /**
+   * Sets whether or not all audio input devices are muted.
+   *
+   * @param {boolean} isAllAudioMuted
+   * @return {void}
+   */
+  setIsAllAudioMuted(isAllAudioMuted) {
+    return this._inputMediaDeviceFactoryCollection.setIsAudioMuted(
+      isAllAudioMuted
+    );
+  }
+
+  /**
+   * Mutes all audio input devices.
+   *
+   * NOTE: Subsequently added input devices will not be muted by default.
+   *
+   * @return {void}
+   */
+  muteAllAudio() {
+    return this._inputMediaDeviceFactoryCollection.muteAudio();
+  }
+
+  /**
+   * Unmutes all audio input devices.
+   *
+   * @return {void}
+   */
+  unmuteAllAudio() {
+    return this._inputMediaDeviceFactoryCollection.unmuteAudio();
   }
 }
