@@ -21,6 +21,7 @@ import Applications from "./apps/Applications";
 import CallPlayer from "./apps/CallPlayer";
 import VirtualServer from "./apps/VirtualServer";
 import LocalUserProfile from "./apps/LocalUserProfile";
+import Chat from "./apps/Chat";
 
 // TODO: Remove
 import NotificationsPrototype from "../ExamplePortal/apps/NotificationsPrototype";
@@ -51,6 +52,7 @@ export default function SpeakerAppPortal() {
 
         CallPlayer,
         VirtualServer,
+        Chat,
 
         // TODO: Remove
         NotificationsPrototype,

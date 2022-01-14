@@ -16,8 +16,16 @@ export default class UIModalService extends UIServiceCore {
   }
 
   // TODO: Document
-  showModal(view) {
+  showModal(view, options = {}) {
     const uuid = uuidv4();
+
+    let timeout = null;
+
+    const _handleClose = () => {
+      clearTimeout(timeout);
+
+      this.closeModalWithUUID(uuid);
+    };
 
     this.setState({
       // Add new modals to end of stack
@@ -26,10 +34,17 @@ export default class UIModalService extends UIServiceCore {
         {
           view,
           uuid,
-          onClose: () => this.closeModalWithUUID(uuid),
+          onClose: _handleClose,
         },
       ],
     });
+
+    // TODO: Refactor
+    if (options.duration) {
+      timeout = setTimeout(() => {
+        this.closeModalWithUUID(uuid);
+      }, options.duration);
+    }
   }
 
   // TODO: Document

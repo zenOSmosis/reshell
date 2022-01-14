@@ -19,8 +19,20 @@ import LocalPhantomPeerSyncObject, {
   STATE_KEY_AVATAR_URL as PHANTOM_PEER_STATE_KEY_AVATAR_URL,
   STATE_KEY_NAME as PHANTOM_PEER_STATE_KEY_NAME,
   STATE_KEY_DESCRIPTION as PHANTOM_PEER_STATE_KEY_DESCRIPTION,
+  STATE_KEY_IS_TYPING_CHAT_MESSAGE as PHANTOM_PEER_STATE_KEY_IS_TYPING_CHAT_MESSAGE,
+  STATE_KEY_LAST_CHAT_MESSAGE as PHANTOM_PEER_STATE_KEY_LAST_CHAT_MESSAGE,
 } from "./LocalPhantomPeerSyncObject";
 import SyncObject from "sync-object";
+
+// TODO: Refactor this Easter egg
+import UIModalService from "@services/UIModalService";
+import Center from "@components/Center";
+import SystemModal from "@components/modals/SystemModal";
+
+// TODO: Refactor
+import UINotificationService from "@services/UINotificationService";
+import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/Chat/Chat";
+import AppLinkButton from "@components/AppLinkButton";
 
 import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 
@@ -42,10 +54,14 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       channelId: null,
       localZenRTCPeer: null,
       localSignalBrokerId: null,
+      //
+      chatMessages: [],
+      chatMessagesHash: null,
     });
 
     this.setState(this._initialState);
 
+    // NOTE: This will be dereferenced accordingly when the session ends
     this._zenRTCPeerSyncObjects = {};
 
     this._remotePhantomPeerCollection = this.bindCollectionClass(
@@ -70,11 +86,35 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
   }
 
   /**
-   * TODO: Import type and document further
+   * Alias for this.getWritableSyncObject().
+   *
+   * @return {LocalPhantomPeerSyncObject | void}
+   */
+  getLocalPhantomPeer() {
+    return this.getWritableSyncObject();
+  }
+
+  /**
+   * TODO: Document
+   *
+   * IMPORTANT: // NOTE: RemotePhantomPeers can contain the same device address
+   * as the local user if the user is connected to the network with multiple
+   * browser tabs.
+   *
+   * TODO: Import type
    * @return {RemotePhantomPeerSyncObject[]}
    */
   getRemotePhantomPeers() {
     return this._remotePhantomPeerCollection.getChildren();
+  }
+
+  /**
+   * Retrieves all local and remote phantom peers.
+   *
+   * @return {PhantomPeerSyncObject[]}
+   */
+  getAllPhantomPeers() {
+    return [this.getLocalPhantomPeer(), ...this.getRemotePhantomPeers()];
   }
 
   /**
@@ -99,7 +139,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       [PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS]: localDeviceAddress,
     });
 
-    // Map SpeakerAppLocalUserProfileService updates to LocalPhantomPeerSyncObject
+    // Sync SpeakerAppLocalUserProfileService updates to PhantomPeerSyncObject
     (() => {
       const profileService = this.useServiceClass(
         SpeakerAppLocalUserProfileService
@@ -133,15 +173,15 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       this._remotePhantomPeerCollection.destroyAllChildren()
     );
 
-    // Set active state on next event tick
-    setImmediate(() => {
-      this.setState({ isSessionActive: true, realmId, channelId });
-    });
-
     this._zenRTCPeerSyncObjects = {
       writableSyncObject,
       readOnlySyncObject,
     };
+
+    // Set active state on next event tick
+    setImmediate(() => {
+      this.setState({ isSessionActive: true, realmId, channelId });
+    });
 
     return this._zenRTCPeerSyncObjects;
   }
@@ -176,41 +216,154 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
             return;
           }
 
-          const { peers } = readOnlySyncObject.getState();
+          // TODO: Use constant values for destructed properties (use a common
+          // constants file for this and the virtual server)
+          const {
+            peers,
+            chatMessages = {},
+            chatMessagesHash,
+          } = readOnlySyncObject.getState();
 
-          if (!peers) {
-            return;
-          }
+          if (peers) {
+            for (const signalBrokerId of Object.keys(peers)) {
+              const peerState = peers[signalBrokerId];
 
-          for (const signalBrokerId of Object.keys(peers)) {
-            const peerState = peers[signalBrokerId];
+              const isLocal = signalBrokerId === localSignalBrokerId;
 
-            const isLocal = signalBrokerId === localSignalBrokerId;
-
-            if (!isLocal) {
-              await this._remotePhantomPeerCollection.syncRemotePeerState(
-                peerState,
-                signalBrokerId,
-                localZenRTCPeer
-              );
-
-              const remotePhantomPeer =
-                this._remotePhantomPeerCollection.getRemotePhantomPeerWithSignalBrokerId(
-                  signalBrokerId
+              if (!isLocal) {
+                await this._remotePhantomPeerCollection.syncRemotePeerState(
+                  peerState,
+                  signalBrokerId,
+                  localZenRTCPeer
                 );
 
-              if (remotePhantomPeer) {
-                // Emit EVT_UPDATED on remotePhantomPeer so that any track
-                // listeners can know to update
-                //
-                // NOTE: This also emits when localZenRTCPeer has updates (i.e.
-                // changed tracks, etc)
-                remotePhantomPeer.emit(EVT_UPDATED);
+                const remotePhantomPeer =
+                  this._remotePhantomPeerCollection.getRemotePhantomPeerWithSignalBrokerId(
+                    signalBrokerId
+                  );
+
+                if (remotePhantomPeer) {
+                  // Emit EVT_UPDATED on remotePhantomPeer so that any track
+                  // listeners can know to update
+                  //
+                  // NOTE: This also emits when localZenRTCPeer has updates (i.e.
+                  // changed tracks, etc)
+                  remotePhantomPeer.emit(EVT_UPDATED);
+                }
+              } else {
+                // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
+                // TODO: Emit EVT_UPDATED on localPhantomPeer
               }
-            } else {
-              // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
-              // TODO: Emit EVT_UPDATED on localPhantomPeer
             }
+          }
+
+          // Handle chat messages
+          //
+          // Only update chat state if chatMessagesHash has changed
+          if (chatMessagesHash !== this.getState().chatMessagesHash) {
+            // Cast to array [reversed] before setting as state
+            const reversedChatMessages = Object.values(chatMessages)
+              .map(chatMessage => {
+                try {
+                  return {
+                    ...JSON.parse(chatMessage.json),
+                    ...chatMessage,
+                    json: undefined,
+                  };
+                } catch (err) {
+                  console.error(err);
+
+                  return null;
+                }
+              })
+              // Reverse because the UI will render them in reverse order, plus
+              // it makes it easier to retrieve the most recent message sent,
+              // as it is the first in the array
+              .reverse()
+              // Filter out (and / or handle) messages which we don't want to
+              // render in the chat thread
+              .filter((message, idx) => {
+                if (!message) {
+                  return false;
+                }
+
+                // TODO: Refactor this Easter egg!!!
+                if (message.body?.startsWith("/alert ")) {
+                  if (idx === 0) {
+                    const uiModalService = this.useServiceClass(UIModalService);
+                    uiModalService.showModal(
+                      ({ ...args }) => (
+                        <SystemModal {...args}>
+                          <Center>
+                            <span style={{ fontSize: "2em" }}>
+                              {message.body.replace("/alert ", "")}
+                            </span>
+                          </Center>
+                        </SystemModal>
+                      ),
+                      { duration: 5000 }
+                    );
+                  }
+
+                  // Don't render the easter egg in the chat message
+                  return false;
+                } else {
+                  // Handle UI notification for remote users
+                  //
+                  // TODO: Don't show if the chat program is the active one
+                  // (will likely require https://github.com/jzombie/pre-re-shell/issues/109
+                  // to be implemented)
+                  if (idx === 0) {
+                    const localPhantomPeer = this.getLocalPhantomPeer();
+                    const localDeviceAddress =
+                      localPhantomPeer.getDeviceAddress();
+
+                    const remotePhantomPeer = this.getRemotePhantomPeers().find(
+                      pred => {
+                        const theirDeviceAddress = pred.getDeviceAddress();
+
+                        if (theirDeviceAddress === localDeviceAddress) {
+                          // Don't show notification if local user has multiple
+                          // browser tabs open
+                          return false;
+                        } else {
+                          // Remote peer device address matches message sender
+                          // address
+                          return theirDeviceAddress === message.senderAddress;
+                        }
+                      }
+                    );
+
+                    if (remotePhantomPeer) {
+                      this.useServiceClass(
+                        UINotificationService
+                      ).showNotification({
+                        image: remotePhantomPeer.getAvatarURL(),
+                        title: remotePhantomPeer.getProfileName(),
+                        body: (
+                          <>
+                            {message.body}
+                            <div style={{ textAlign: "right", marginTop: 4 }}>
+                              <AppLinkButton
+                                id={CHAT_REGISTRATION_ID}
+                                title="Open Chat"
+                              />
+                            </div>
+                          </>
+                        ) /* onClick, onClose = () => null*/,
+                      });
+                    }
+                  }
+
+                  // Show the regular chat message
+                  return true;
+                }
+              });
+
+            this.setState({
+              chatMessages: reversedChatMessages,
+              chatMessagesHash,
+            });
           }
         },
         100,
@@ -221,6 +374,48 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       this.proxyOn(readOnlySyncObject, EVT_UPDATED, handleUpdate);
       this.proxyOn(localZenRTCPeer, EVT_UPDATED, handleUpdate);
     })();
+  }
+
+  // TODO: Document
+  setIsTypingChatMessage(isTyping) {
+    this.getWritableSyncObject().setState({
+      [PHANTOM_PEER_STATE_KEY_IS_TYPING_CHAT_MESSAGE]: isTyping,
+    });
+  }
+
+  // TODO: Document
+  async sendChatMessage(chatMessageState) {
+    this.getWritableSyncObject().setState({
+      [PHANTOM_PEER_STATE_KEY_IS_TYPING_CHAT_MESSAGE]: false,
+      [PHANTOM_PEER_STATE_KEY_LAST_CHAT_MESSAGE]: {
+        // NOTE: Back-to-back messages with the same body content get filtered
+        // out by diff algo in SyncObject, so they need to be encapsulated in
+        // JSON
+        // FIXME: (jh) Using the writable sync object for setting last chat
+        // message isn't ideal because of this peculiarity but one of the pros
+        // of using this method is that a message will be automatically chunked
+        // if its size is greater than a single frame of a data channel can
+        // handle
+        json: JSON.stringify(chatMessageState),
+      },
+    });
+
+    // TODO: Await confirmation of message received before resolving
+  }
+
+  // TODO: Document
+  /**
+   * @return {Object[]}
+   */
+  getChatMessages() {
+    return this.getState().chatMessages;
+  }
+
+  /**
+   * @return {SyncObject | void}
+   */
+  getWritableSyncObject() {
+    return this._zenRTCPeerSyncObjects.writableSyncObject;
   }
 
   // TODO: Document

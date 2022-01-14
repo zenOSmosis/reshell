@@ -22,8 +22,8 @@ export default class AppRuntimeOrchestrationService extends UIServiceCore {
   }
 
   // TODO: Document
-  startAppRuntime(appDescriptor) {
-    const appRuntime = new AppRuntime(appDescriptor);
+  startAppRuntime(appRegistration) {
+    const appRuntime = new AppRuntime(appRegistration);
 
     this.getCollectionInstance(AppRuntimeCollection).addAppRuntime(appRuntime);
 

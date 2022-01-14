@@ -14,7 +14,7 @@ import SpeakerAppLocalUserProfileService, {
   STATE_KEY_DESCRIPTION,
 } from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 
-import { REGISTRATION_ID as CALL_CENTRAL_STATION_REGISTRATION_ID } from "../CallPlayer";
+import { REGISTRATION_ID as CALL_PLAYER_REGISTRATION_ID } from "../CallPlayer";
 
 export const REGISTRATION_ID = "local-user-profile";
 
@@ -90,10 +90,7 @@ const LocalUserProfile = {
       <Layout>
         <Header>
           <Padding>
-            <AppLinkButton
-              id={CALL_CENTRAL_STATION_REGISTRATION_ID}
-              title="Network"
-            />
+            <AppLinkButton id={CALL_PLAYER_REGISTRATION_ID} title="Network" />
           </Padding>
         </Header>
         <Content>

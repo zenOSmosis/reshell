@@ -19,18 +19,21 @@ import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalU
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevices";
 import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualServer";
 import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ScreenCapture";
+import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "../Chat";
 
 // import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
-import SpeakerAppLocalZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalZenRTCPeerService";
+import SpeakerAppClientZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppClientZenRTCPeerService";
 import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
 import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/services/SpeakerAppLocalUserProfileService";
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 
 export const REGISTRATION_ID = "network";
+
+// TODO: Show current network detail
 
 // TODO: Listen for GET requests and automatically connect to network if
 // request is similar to:
@@ -52,7 +55,7 @@ const CallPlayer = {
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,
     SpeakerAppNetworkDiscoveryService,
-    SpeakerAppLocalZenRTCPeerService,
+    SpeakerAppClientZenRTCPeerService,
     SpeakerAppClientPhantomSessionService,
     SpeakerAppLocalUserProfileService,
     InputMediaDevicesService,
@@ -61,7 +64,7 @@ const CallPlayer = {
   titleBarView: function View({ windowController, appServices }) {
     const title = windowController.getTitle();
     const localZenRTCPeerService =
-      appServices[SpeakerAppLocalZenRTCPeerService];
+      appServices[SpeakerAppClientZenRTCPeerService];
     const inputMediaDevicesService = appServices[InputMediaDevicesService];
 
     const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
@@ -139,7 +142,7 @@ const CallPlayer = {
     const networkDiscoveryService =
       appServices[SpeakerAppNetworkDiscoveryService];
     const localZenRTCPeerService =
-      appServices[SpeakerAppLocalZenRTCPeerService];
+      appServices[SpeakerAppClientZenRTCPeerService];
     const phantomSessionService =
       appServices[SpeakerAppClientPhantomSessionService];
     const outputMediaDevicesService = appServices[OutputMediaDevicesService];
@@ -177,14 +180,20 @@ const CallPlayer = {
     return (
       <Layout>
         <Header>
-          <Padding style={{ textAlign: "right" }}>
-            <NoWrap className="button-group">
-              <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-              <AppLinkButton
-                id={VIRTUAL_SERVER_REGISTRATION_ID}
-                title="Create Network"
-              />
-            </NoWrap>
+          <Padding>
+            <AppLinkButton
+              id={CHAT_REGISTRATION_ID}
+              disabled={!isZenRTCConnected}
+            />
+            <div style={{ float: "right" }}>
+              <NoWrap className="button-group">
+                <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
+                <AppLinkButton
+                  id={VIRTUAL_SERVER_REGISTRATION_ID}
+                  title="Create Network"
+                />
+              </NoWrap>
+            </div>
             {
               // [networks]  [private network]
               /*

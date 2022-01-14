@@ -24,11 +24,11 @@ import beep from "@utils/beep";
 export { EVT_UPDATED };
 
 // TODO: Consider renaming to non-speaker-app for more dynamic usage
-export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
+export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Speaker.app Local ZenRTC Peer Service");
+    this.setTitle("Speaker.app Client ZenRTC Peer Service");
 
     this.setState({
       isConnecting: false,
@@ -97,7 +97,7 @@ export default class SpeakerAppLocalZenRTCPeerService extends UIServiceCore {
         await new Promise((resolve, reject) => {
           const uiModalService = this.useServiceClass(UIModalService);
 
-          uiModalService.showModal(({ onCancel, ...rest }) => (
+          uiModalService.showModal(({ ...rest }) => (
             <InputDeviceSelectorModal
               onDeviceCapture={resolve}
               onClose={reject}

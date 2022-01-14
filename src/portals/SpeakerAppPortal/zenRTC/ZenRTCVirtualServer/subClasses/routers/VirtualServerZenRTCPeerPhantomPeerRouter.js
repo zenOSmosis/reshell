@@ -1,5 +1,10 @@
 import { PhantomCollection } from "phantom-core";
 import VirtualServerZenRTCPeer from "../VirtualServerZenRTCPeer";
+import hash from "object-hash";
+
+import { STATE_KEY_LAST_CHAT_MESSAGE } from "../../../PhantomPeerSyncObject";
+
+import SyncObject from "sync-object";
 
 // TODO: Send remote remove event when peer has disconnected?
 
@@ -7,6 +12,29 @@ import VirtualServerZenRTCPeer from "../VirtualServerZenRTCPeer";
  * Performs state routing for all of the peers.
  */
 export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCollection {
+  /**
+   * @param {SyncObject} sharedWritableSyncObject
+   */
+  constructor(sharedWritableSyncObject) {
+    if (!(sharedWritableSyncObject instanceof SyncObject)) {
+      throw new TypeError(
+        "sharedWritableSyncObject is not a SyncObject instance"
+      );
+    }
+
+    super();
+
+    this._sharedWritableSyncObject = sharedWritableSyncObject;
+    this.registerShutdownHandler(() => (this._sharedWritableSyncObject = null));
+
+    // Chat messages for the entire session
+    //
+    // NOTE: These are in object form since they will be synced over SyncObject
+    // which does not support arrays at this time (as of Jan. 13 2022)
+    this._chatMessages = {};
+    this._chatMessagesHash = null;
+  }
+
   /**
    * Adds a VirtualServerZenRTCPeer instance to the router collection and sets
    * up an initial full state sync.
@@ -42,7 +70,8 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
    * @return {void}
    */
   sync() {
-    // Batch remote updates so that we update ours in a single run
+    // Contains all of the remote peer states, which will be written to the
+    // shared writable sync object and synced to all of the clients
     const batchPeersUpdate = {};
 
     for (const zenRTCPeer of this.getChildren()) {
@@ -51,9 +80,17 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
 
       const isPeerConnected = zenRTCPeer.getIsConnected();
 
-      // FIXME: (jh) Perform any state structure updating here, unless we
-      // want every peer to be aware of every other peer's shared state
-      const readOnlyState = isPeerConnected && readOnlySyncObject.getState();
+      // Obtains a shallow-copy of the readOnly state so that the base keys can
+      // be manipulated without affecting the state store
+      const readOnlyState = isPeerConnected && {
+        ...readOnlySyncObject.getState(),
+      };
+
+      // Don't sync last chat message directly with other peers
+      //
+      // FIXME: (jh) This coincides with the chat functionality in this.handlePeerSharedStateUpdated().
+      // It should probably be cleaned up.
+      delete readOnlyState[STATE_KEY_LAST_CHAT_MESSAGE];
 
       // TODO: Remove
       console.log(
@@ -72,33 +109,70 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       } else {
         // Delete the shared client state
         //
-        // TODO: Fix issue where setting undefined does not sync the hash across the wire
+        // TODO: Fix issue where setting undefined does not sync the hash
+        // across the wire
         // @see https://github.com/zenOSmosis/sync-object/issues/40
         batchPeersUpdate[clientSignalBrokerId] = null;
       }
     }
 
-    // FIXME: (jh) If moving to shared writable, only write the shared
-    for (const zenRTCPeer of this.getChildren()) {
-      const writeableSyncObject = zenRTCPeer.getWritableSyncObject();
-
-      writeableSyncObject.setState({
-        peers: batchPeersUpdate,
-      });
-    }
+    this._sharedWritableSyncObject.setState({
+      peers: batchPeersUpdate,
+      chatMessages: this._chatMessages,
+      chatMessagesHash: this._chatMessagesHash,
+    });
   }
 
-  // TODO: Document
+  /**
+   * Called by the virtual server when there are updated incoming media
+   * streams.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   * @return {void}
+   */
   handlePeerIncomingMediaStreamsUpdated(virtualServerZenRTCPeer) {
     this.sync(virtualServerZenRTCPeer);
   }
 
-  // TODO: Document
-  handlePeerSharedStateUpdated(virtualServerZenRTCPeer) {
+  /**
+   * Called by the virtual server when a client updates their shared state.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   * @param {Object} readOnlyUpdatedState
+   * @return {void}
+   */
+  handlePeerSharedStateUpdated(virtualServerZenRTCPeer, readOnlyUpdatedState) {
+    // Remove last chat message from peer state and add to session chat messages
+    // TODO: Clean up and document (also coincides with some functionality in
+    // this.sync())
+    if (
+      readOnlyUpdatedState &&
+      readOnlyUpdatedState[STATE_KEY_LAST_CHAT_MESSAGE] &&
+      Object.values(readOnlyUpdatedState[STATE_KEY_LAST_CHAT_MESSAGE]).length
+    ) {
+      Object.assign(this._chatMessages, {
+        [Object.values(this._chatMessages).length]: {
+          ...readOnlyUpdatedState[STATE_KEY_LAST_CHAT_MESSAGE],
+          // FIXME: (jh) Implement a more elaborate way of obtaining remote
+          // device address
+          senderAddress: virtualServerZenRTCPeer
+            .getReadOnlySyncObject()
+            .getState().deviceAddress,
+        },
+      });
+
+      this._chatMessagesHash = hash(this._chatMessages);
+    }
+
     this.sync(virtualServerZenRTCPeer);
   }
 
-  // TODO: Document
+  /**
+   * Called by the virtual server when a client disconnects.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   * @return {void}
+   */
   handlePeerDisconnect(virtualServerZenRTCPeer) {
     this.sync(virtualServerZenRTCPeer);
   }

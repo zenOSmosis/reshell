@@ -5,6 +5,8 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import VirtualLink from "@components/VirtualLink";
 
+import useKeyboardEvents from "@hooks/useKeyboardEvents";
+
 import ApplicationSelector from "./views/ApplicationSelector";
 import PortalSwitcher from "./views/PortalSelector";
 
@@ -52,6 +54,13 @@ const Applications = {
   }
   */
   titleBarView: function TitleBarView({ sharedState, setSharedState }) {
+    const [elSearch, setElSearch] = useState(null);
+
+    // Clear search query on escape
+    useKeyboardEvents(elSearch, {
+      onEscape: () => setSharedState({ searchQuery: "" }),
+    });
+
     const handleSetSearchQuery = useCallback(
       evt => setSharedState({ searchQuery: evt.target.value }),
       [setSharedState]
@@ -74,9 +83,13 @@ const Applications = {
         {
           // TODO: Automatically focus when window is activated (unless on mobile)
           // TODO: Switch to Applications view on change
-          // TODO: Clear input on escape
+          // FIXME: (jh) I tried to use type="search", which gives you an X in
+          // the input field, however I wasn't able to make it clear itself. If
+          // this were an uncontrolled component, it might work. Needs some
+          // refactoring.
         }
         <input
+          ref={setElSearch}
           placeholder="Search Applications"
           onChange={handleSetSearchQuery}
           value={sharedState.searchQuery}

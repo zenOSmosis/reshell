@@ -9,6 +9,10 @@
   margin: 0px;
 }
 
+.row.disable-vertical-fill {
+  height: auto;
+}
+
 .row .column {
   display: flex;
   flex-direction: column;

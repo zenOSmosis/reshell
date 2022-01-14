@@ -9,6 +9,7 @@ import ReactDOM from "react-dom";
 import { Audio } from "@components/audioVideoRenderers";
 
 // TODO: Document
+// NOTE: Most services should not utilize React directly, but this one does
 export default class OutputMediaDevicesService extends UIServiceCore {
   constructor(...args) {
     super(...args);

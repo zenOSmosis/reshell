@@ -7,8 +7,10 @@ export const STATE_KEY_NAME = "name";
 export const STATE_KEY_DESCRIPTION = "description";
 export const STATE_KEY_DETECTED_DEVICE = "detectedDevice";
 export const STATE_KEY_DEVICE_ADDRESS = "deviceAddress";
-export const STATE_KEY_IS_MUTED = "isMuted";
+export const STATE_KEY_IS_AUDIO_MUTED = "isAudioMuted";
 export const STATE_KEY_MEDIA = "media";
+export const STATE_KEY_IS_TYPING_CHAT_MESSAGE = "isTypingChatMessage";
+export const STATE_KEY_LAST_CHAT_MESSAGE = "lastChatMessage";
 
 export default class PhantomPeerSyncObject extends SyncObject {
   /**
@@ -23,8 +25,10 @@ export default class PhantomPeerSyncObject extends SyncObject {
       [STATE_KEY_DESCRIPTION]: null,
       [STATE_KEY_DETECTED_DEVICE]: {},
       [STATE_KEY_DEVICE_ADDRESS]: null,
-      [STATE_KEY_IS_MUTED]: true,
+      [STATE_KEY_IS_AUDIO_MUTED]: false,
       [STATE_KEY_MEDIA]: "",
+      [STATE_KEY_IS_TYPING_CHAT_MESSAGE]: false,
+      [STATE_KEY_LAST_CHAT_MESSAGE]: {},
       ...initialState,
     });
   }
@@ -55,6 +59,13 @@ export default class PhantomPeerSyncObject extends SyncObject {
    */
   getProfileDescription() {
     return this.getState()[STATE_KEY_DESCRIPTION];
+  }
+
+  /**
+   * @return {boolean}
+   */
+  getIsTypingChatMessage() {
+    return this.getState()[STATE_KEY_IS_TYPING_CHAT_MESSAGE];
   }
 
   /**

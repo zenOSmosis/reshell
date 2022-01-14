@@ -1,0 +1,15 @@
+.chat-thread {
+  width: 100%;
+  height: 100%;
+
+  overflow-y: auto;
+
+  /* Bottom-up styling */
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-thread .message-spacer {
+  height: 25px;
+  min-height: 25px;
+}

@@ -1,5 +1,5 @@
 /**
- * Keys for client-side local storage usage.
+ * Keys for client-side local storage usage, specific to Speaker.app.
  */
 
 /**
@@ -42,8 +42,8 @@ export const KEY_VIRTUAL_SERVER_LOCAL_STORAGE_CREDS = "t0a";
 /**
  * Is set to true if the virtualServer manually logged out.
  *
- * If the value is set to true, it should prevent the virtualServer auto-reconnect
- * mechanism from reconnecting, as part of the design.
+ * If the value is set to true, it should prevent the virtualServer auto-
+ * reconnect mechanism from reconnecting, as part of the design.
  *
  * @type {boolean}
  */

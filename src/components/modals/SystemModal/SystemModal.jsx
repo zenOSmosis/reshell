@@ -9,6 +9,7 @@ import classNames from "classnames";
 import styles from "./SystemModal.module.css";
 
 import useViewportSize from "@hooks/useViewportSize";
+import useKeyboardEvents from "@hooks/useKeyboardEvents";
 
 let _prevIsSmallViewport = false;
 
@@ -28,7 +29,7 @@ export default function SystemModal({
   footerView = ({ onClose }) => (
     <div style={{ textAlign: "center" }}>
       <Padding>
-        <button onClick={onClose}>
+        <button onClick={onClose} style={{ backgroundColor: "red" }}>
           <CloseIcon /> Cancel
         </button>
       </Padding>
@@ -52,6 +53,11 @@ export default function SystemModal({
     } else {
       _setIsSmallViewport(false);
     }
+  });
+
+  // Close modal when escape button is pressed
+  useKeyboardEvents(window, {
+    onEscape: onClose,
   });
 
   return (

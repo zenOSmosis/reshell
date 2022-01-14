@@ -30,6 +30,12 @@ export default function Avatar({
     [name, description]
   );
 
+  if (!src) {
+    // TODO: Show default img src (i.e. a question mark) if no source is
+    // available
+    return null;
+  }
+
   return (
     <img
       ref={onEl}

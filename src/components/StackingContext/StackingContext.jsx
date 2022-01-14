@@ -2,16 +2,51 @@ import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import styles from "./StackingContext.module.css";
 
-// TODO: Document
-// Also see: https://tiffanybbrown.com/2015/09/css-stacking-contexts-wtf/index.html
-const StackingContext = ({
+import PropTypes from "prop-types";
+
+StackingContext.propTypes = {
+  /**
+   * Whether or not the stacking context should be GPU accelerated
+   *
+   * [default = false]
+   **/
+  isAccelerated: PropTypes.bool,
+
+  /**
+   * Called, with the DOM element of the stacking context after it renders to
+   * the DOM.
+   **/
+  onMount: PropTypes.func,
+
+  /**
+   * Called, with the DOM Matrix, after acquisition from the stacking context.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
+   */
+  onDOMMatrix: PropTypes.func,
+};
+
+/**
+ * Description from MDN Web Docs: The stacking context is a three-dimensional
+ * conceptualization of HTML elements along an imaginary z-axis relative to the
+ * user, who is assumed to be facing the viewport or the webpage. HTML elements
+ * occupy this space in priority order based on element attributes.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+ *
+ * NOTE: This component contains some small trickery to try to GPU accelerate
+ * the component and its children.  By default, this functionality is not
+ * utilized and it is recommended to only use it for various components of the
+ * web app, instead of the entire thing.
+ */
+export default function StackingContext({
   className,
   children,
   isAccelerated = false,
   onMount = () => null,
   onDOMMatrix = () => null,
   ...rest
-}) => {
+}) {
   const refOnMount = useRef(onMount);
   const refOnDOMMatrix = useRef(onDOMMatrix);
   const refIsAccelerated = useRef(isAccelerated);
@@ -80,6 +115,4 @@ const StackingContext = ({
       {children}
     </div>
   );
-};
-
-export default StackingContext;
+}

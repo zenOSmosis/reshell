@@ -55,20 +55,21 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     this._userAgent = userAgent;
     this._iceServers = iceServers;
 
-    // TODO: Move to virtual server
-    // TODO: Use local storage sync object, or web worker based
     // Shared between all peers
     this._sharedWritableSyncObject = new SyncObject({
       // backgroundImage: null,
-      phantomPeers: {},
+      peers: {},
       // networkData: {},
-      // chatMessages: {},
+      chatMessages: {},
+      chatMessagesHash: null,
     });
 
     this._socketService = socketService;
     this._socket = socketService.getSocket();
 
-    this._phantomPeerRouter = new VirtualServerZenRTCPeerPhantomPeerRouter();
+    this._phantomPeerRouter = new VirtualServerZenRTCPeerPhantomPeerRouter(
+      this._sharedWritableSyncObject
+    );
     this.registerShutdownHandler(() => this._phantomPeerRouter.destroy());
 
     this._mediaStreamRouter = new VirtualServerZenRTCPeerMediaStreamRouter();

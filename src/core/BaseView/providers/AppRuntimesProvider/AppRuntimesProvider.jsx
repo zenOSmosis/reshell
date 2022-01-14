@@ -25,11 +25,24 @@ export default function AppRuntimesProvider({ children }) {
     [startService]
   );
 
-  // TODO: Document
+  /**
+   * Currently running app runtimes.
+   *
+   * An app runtime is created from an app registration.
+   *
+   * TODO: Import type definition
+   * @type {AppRuntime[]}
+   **/
   const appRuntimes = appOrchestrationService.getAppRuntimes();
 
-  // TODO: Import type definition
-  /** @type {AppRegistration[]} */
+  /**
+   * Currently running app registrations.
+   *
+   * An app registration powers one or multiple app runtimes.
+   *
+   * TODO: Import type definition
+   * @type {AppRegistration[]}
+   **/
   const runningRegistrations = useMemo(
     () => appRuntimes.map(runtime => runtime.getRegistration()),
     [appRuntimes]
@@ -52,6 +65,8 @@ export default function AppRuntimesProvider({ children }) {
     [appOrchestrationService]
   );
 
+  // TODO: Refactor base handling into AppRuntimeOrchestrationService
+  // (related issue: https://github.com/jzombie/pre-re-shell/issues/109)
   // TODO: Merge with startAppRuntime after descriptors can specify multiple
   // window support
   //
@@ -74,7 +89,11 @@ export default function AppRuntimesProvider({ children }) {
     [runningRegistrations, appRuntimes, startAppRuntime]
   );
 
+  // TODO: Refactor base handling into AppRuntimeOrchestrationService
+  // (related issue: https://github.com/jzombie/pre-re-shell/issues/109)
   // TODO: Document (for linking to other windows)
+  // NOTE: This can be utilized for keeping a list of previously opened window
+  // IDs and reopening them upon portal restart
   const switchToAppRegistrationID = useCallback(
     appRegistrationID => {
       const appRegistration = appRegistrations.find(
@@ -98,6 +117,8 @@ export default function AppRuntimesProvider({ children }) {
     [appOrchestrationService]
   );
 
+  // TODO: Refactor base handling into AppRuntimeOrchestrationService
+  // (related issue: https://github.com/jzombie/pre-re-shell/issues/109)
   // TODO: Document
   const getAppRuntimesWithRegistrationID = useCallback(
     registrationID =>
