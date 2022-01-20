@@ -7,7 +7,7 @@ import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticat
 import KeyVaultService from "@services/KeyVaultService";
 import UINotificationService from "@services/UINotificationService";
 
-import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/LocalUserProfile";
+import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/LocalUserProfileApp";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
 

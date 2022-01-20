@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import getElCenterPoint from "@utils/getElCenterPoint";
 import getElSize from "@utils/getElSize";
 
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 
 // TODO: Document
 export default function useWindowAutoPositioner(
@@ -48,7 +48,7 @@ export default function useWindowAutoPositioner(
   }, [elWindowManager, elWindow, windowController]);
 
   // TODO: Refactor; Determine current app runtimes so we can determine if we're going to center or scatter new windows
-  const { appRuntimes } = useAppRuntimesContext();
+  const { appRuntimes } = useAppOrchestrationContext();
   const refInitialAppRuntimes = useRef(appRuntimes);
 
   // Apply initial auto-position

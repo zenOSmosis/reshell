@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 // import LED from "@components/LED";
 
-import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 
 // TODO: Incorporate this logic
@@ -14,9 +13,8 @@ import useDesktopContext from "@hooks/useDesktopContext";
 // TODO: Document
 export default function Dock() {
   const { activeWindowController } = useDesktopContext();
-  const { runningRegistrations, bringToFrontOrStartAppRuntime } =
-    useAppRuntimesContext();
-  const { appRegistrations } = useAppRegistrationsContext();
+  const { appRegistrations, activeAppRegistrations, activateAppRegistration } =
+    useAppOrchestrationContext();
 
   // TODO: Import type definition
   /** @type {AppRegistration[]} */
@@ -26,10 +24,10 @@ export default function Dock() {
         ...appRegistrations.filter(registration =>
           registration.getIsPinnedToDock()
         ),
-        ...runningRegistrations,
+        ...activeAppRegistrations,
       ]),
     ],
-    [appRegistrations, runningRegistrations]
+    [appRegistrations, activeAppRegistrations]
   );
 
   // TODO: Import type definition
@@ -87,7 +85,7 @@ export default function Dock() {
               { minWidth: 120 }
             )}
             key={registration.getUUID()}
-            onClick={() => bringToFrontOrStartAppRuntime(registration)}
+            onClick={() => activateAppRegistration(registration)}
           >
             {registration.getTitle()} {/* <LED color="gray" /> */}
           </button>

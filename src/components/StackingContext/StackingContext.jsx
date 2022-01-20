@@ -4,6 +4,10 @@ import styles from "./StackingContext.module.css";
 
 import PropTypes from "prop-types";
 
+// Amount of time, in milliseconds, to wait before trying to determine if a 2D
+// or 3D matrix
+const MATRIX_DETECTION_DELAY = 100;
+
 StackingContext.propTypes = {
   /**
    * Whether or not the stacking context should be GPU accelerated
@@ -65,9 +69,10 @@ export default function StackingContext({
       if (isAccelerated) {
         // Handle 3D space detection and onDOMMatrix callback
         //
-        // IMPORTANT: Use of setTimeout is to ensure we run this detection on
-        // the next event loop cycle.  Usage of requestAnimationFrame does not
-        // accurately detect 3D matrix.
+        // FIXME: (jh) Use of setTimeout fixes an issue where is2D didn't seem
+        // to be accurate on the first render, and possibly some subsequent
+        // render attempts.  I'm not positive this has fixed it for good and it
+        // might need to be investigated some more.
         setTimeout(() => {
           const computedStyle = window.getComputedStyle(el);
 
@@ -95,7 +100,7 @@ export default function StackingContext({
           }
 
           onDOMMatrix(matrix);
-        });
+        }, MATRIX_DETECTION_DELAY);
       }
 
       onMount(el);

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
-import useAppRegistrationsContext from "./useAppRegistrationsContext";
-import useAppRuntimesContext from "./useAppRuntimesContext";
+// TODO: Refactor
+import useAppOrchestrationContext from "./useAppOrchestrationContext";
 
 // TODO: Move to @core/hooks
 
@@ -9,16 +9,16 @@ import useAppRuntimesContext from "./useAppRuntimesContext";
 
 // TODO: Document
 export default function useAppRegistrationLink(appDescriptorID) {
-  const { getAppRegistrationTitle } = useAppRegistrationsContext();
-  const { switchToAppRegistrationID } = useAppRuntimesContext();
+  const { getAppRegistrationTitleWithDescriptorID, activateAppRegistrationID } =
+    useAppOrchestrationContext();
 
   const title = useMemo(
-    () => getAppRegistrationTitle(appDescriptorID),
-    [getAppRegistrationTitle, appDescriptorID]
+    () => getAppRegistrationTitleWithDescriptorID(appDescriptorID),
+    [getAppRegistrationTitleWithDescriptorID, appDescriptorID]
   );
   const link = useCallback(
-    () => switchToAppRegistrationID(appDescriptorID),
-    [switchToAppRegistrationID, appDescriptorID]
+    () => activateAppRegistrationID(appDescriptorID),
+    [activateAppRegistrationID, appDescriptorID]
   );
 
   return {

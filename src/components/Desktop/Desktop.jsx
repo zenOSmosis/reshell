@@ -22,11 +22,10 @@ import Menu, {
 
 import useDesktopContext from "@hooks/useDesktopContext";
 import useServicesContext from "@hooks/useServicesContext";
-import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
-import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitor";
+import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitorApp";
 
 import NotificationProvider from "./providers/NotificationProvider";
 import ModalProvider from "./providers/ModalProvider";
@@ -49,6 +48,8 @@ export default function Desktop({
   backgroundView = <div style={{ backgroundColor: "#ccc" }} />,
   appDescriptors,
 }) {
+  // FIXME: (jh) This currently triggers a "Could ot locate appRegistration
+  // with id: service-monitor" warning on first render; it should be refactored
   const { link: openServiceMonitor } = useAppRegistrationLink(
     SERVICE_MONITOR_REGISTRATION_ID
   );
@@ -56,9 +57,8 @@ export default function Desktop({
   const { services } = useServicesContext();
   const { activeWindowController /* addBackgroundAsset */ } =
     useDesktopContext();
-  const { appRegistrations } = useAppRegistrationsContext();
-  const { bringToFrontOrStartAppRuntime, appRuntimes } =
-    useAppRuntimesContext();
+  const { appRegistrations, activateAppRegistration, appRuntimes } =
+    useAppOrchestrationContext();
 
   // TODO: Implement after PhantomWrapper (or equiv.; assets need to be wrapped in
   // PhantomCore instances in order to be added to background collection)
@@ -133,9 +133,7 @@ export default function Desktop({
                               .map(app => (
                                 <MenuItem
                                   key={app.getUUID()}
-                                  onClick={() =>
-                                    bringToFrontOrStartAppRuntime(app)
-                                  }
+                                  onClick={() => activateAppRegistration(app)}
                                 >
                                   {app.getTitle()}
                                 </MenuItem>
@@ -149,9 +147,7 @@ export default function Desktop({
                             .map(app => (
                               <MenuItem
                                 key={app.getUUID()}
-                                onClick={() =>
-                                  bringToFrontOrStartAppRuntime(app)
-                                }
+                                onClick={() => activateAppRegistration(app)}
                               >
                                 {app.getTitle()}
                               </MenuItem>

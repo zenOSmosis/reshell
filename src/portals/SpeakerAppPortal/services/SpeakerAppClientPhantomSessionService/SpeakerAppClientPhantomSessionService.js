@@ -31,7 +31,7 @@ import SystemModal from "@components/modals/SystemModal";
 
 // TODO: Refactor
 import UINotificationService from "@services/UINotificationService";
-import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/Chat/Chat";
+import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/ChatApp";
 import AppLinkButton from "@components/AppLinkButton";
 
 import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";

@@ -7,6 +7,7 @@ import {
 
 import MediaDeviceCachingService from "./MediaDeviceCachingService";
 
+// TODO: Refactor
 class InputMediaDeviceFactoryCollection extends MediaStreamTrackControllerFactoryCollection {}
 
 /**

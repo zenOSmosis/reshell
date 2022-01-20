@@ -15,6 +15,10 @@ Linkify.propTypes = {
  */
 export default function Linkify({ string, ...rest }) {
   // NOTE: Alternative sanitizer: https://gomakethings.com/how-to-sanitize-html-strings-with-vanilla-js-to-reduce-your-risk-of-xss-attacks/
+  //
+  // IMPORTANT: While normal usage of React might not require HTML
+  // sanitization, this particular component uses "dangerouslySetInnerHTML"
+  // in order to render its strings due to the embedded HTML in the component
   string = useMemo(
     () =>
       sanitizeHtml(string, {

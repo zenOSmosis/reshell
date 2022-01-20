@@ -187,6 +187,7 @@ const WindowView = ({
         )}
         // Enable hardware acceleration of window stacking context
         isAccelerated={true}
+        data-reshell-window-title={windowController.getTitle()}
       >
         <WindowView.Border
           isDisabled={isWindowBorderDisabled}

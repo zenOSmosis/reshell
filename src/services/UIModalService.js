@@ -39,6 +39,11 @@ export default class UIModalService extends UIServiceCore {
       ],
     });
 
+    // TODO: [To fix issue where typing can still occur on below elements] If
+    // an element was focused before modal is displayed, remove the focus, and
+    // [potentially] reapply to the element once the modal is gone.  Can
+    // underlying elements still be selected and can tabindex somehow fix that?
+
     // TODO: Refactor
     if (options.duration) {
       timeout = setTimeout(() => {

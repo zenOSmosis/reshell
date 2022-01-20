@@ -1,18 +1,18 @@
 import Desktop from "@components/Desktop";
 
-import Applications from "./apps/Applications";
-import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
-import AboutReShell from "./apps/AboutReShell";
-import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates";
-import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
-import Environment from "../ExamplePortal/apps/Environment";
-import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
-import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
-import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
-import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
-import VUMeter from "../ExamplePortal/apps/VUMeter";
-import MemoryInfo from "../ExamplePortal/apps/MemoryInfo/MemoryInfo";
-import KeyVault from "../ExamplePortal/apps/KeyVault";
+import ApplicationsApp from "./apps/ApplicationsApp";
+import ApplicationMonitorApp from "../ExamplePortal/apps/ApplicationMonitorApp";
+import AboutReShellApp from "./apps/AboutReShellApp";
+import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
+import ColorAdjusterApp from "../ExamplePortal/apps/ColorAdjusterApp";
+import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
+import ServiceMonitorApp from "../ExamplePortal/apps/ServiceMonitorApp";
+import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
+import InputMediaDevicesApp from "../ExamplePortal/apps/InputMediaDevicesApp";
+import ScreenCaptureApp from "../ExamplePortal/apps/ScreenCaptureApp";
+import VUMeterApp from "../ExamplePortal/apps/VUMeterApp";
+import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
+import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 
 // import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
 
@@ -22,19 +22,19 @@ export default function ReShellOrgPortal() {
   return (
     <Desktop
       appDescriptors={[
-        Applications,
-        ApplicationMonitor,
-        AboutReShell,
-        CheckForUpdates,
-        ColorAdjuster,
-        Environment,
-        InputMediaDevices,
-        MemoryInfo,
-        ScreenCapture,
-        ServiceMonitor,
-        SoftwareInfo,
-        VUMeter,
-        KeyVault,
+        ApplicationsApp,
+        ApplicationMonitorApp,
+        AboutReShellApp,
+        CheckForUpdatesApp,
+        ColorAdjusterApp,
+        EnvironmentApp,
+        InputMediaDevicesApp,
+        MemoryInfoApp,
+        ScreenCaptureApp,
+        ServiceMonitorApp,
+        SoftwareInfoApp,
+        VUMeterApp,
+        KeyVaultApp,
       ]}
     />
   );

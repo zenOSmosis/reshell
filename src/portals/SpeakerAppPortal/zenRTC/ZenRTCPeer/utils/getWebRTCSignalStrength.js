@@ -1,5 +1,3 @@
-// TODO: Move to ZenRTCPeer
-
 const MAX_THRESHOLD = 500;
 const TARGET_THRESHOLD = 100;
 

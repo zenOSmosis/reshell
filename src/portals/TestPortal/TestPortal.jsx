@@ -1,24 +1,24 @@
 import Desktop from "@components/Desktop";
 
-import Applications from "../ExamplePortal/apps/Applications";
-import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
-import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
-import AdditionWindow from "./apps/AdditionWindow";
-import MultiplicationWindow from "./apps/MultiplicationWindow";
-import TotalsWindow from "./apps/TotalsWindow";
-import ArbitraryValuesWindow from "./apps/ArbitraryValuesWindow";
+import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
+import ApplicationMonitorApp from "../ExamplePortal/apps/ApplicationMonitorApp";
+import ServiceMonitorApp from "../ExamplePortal/apps/ServiceMonitorApp";
+import AdditionApp from "./apps/AdditionApp";
+import MultiplicationApp from "./apps/MultiplicationApp";
+import TotalsApp from "./apps/TotalsApp";
+import ArbitraryValuesApp from "./apps/ArbitraryValuesApp";
 
 export default function WizardPortal() {
   return (
     <Desktop
       appDescriptors={[
-        Applications,
-        ApplicationMonitor,
-        ServiceMonitor,
-        AdditionWindow,
-        MultiplicationWindow,
-        TotalsWindow,
-        ArbitraryValuesWindow,
+        ApplicationsApp,
+        ApplicationMonitorApp,
+        ServiceMonitorApp,
+        AdditionApp,
+        MultiplicationApp,
+        TotalsApp,
+        ArbitraryValuesApp,
       ]}
     />
   );

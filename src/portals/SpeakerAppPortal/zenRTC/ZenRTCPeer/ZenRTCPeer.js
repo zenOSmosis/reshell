@@ -2,6 +2,7 @@ import PhantomCore, {
   EVT_UPDATED,
   EVT_DESTROYED,
   getUnixTime,
+  sleep,
 } from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
@@ -9,7 +10,7 @@ import { utils } from "media-stream-track-controller";
 
 // TODO: Import utils/getWebRTCSignalStrength
 
-import sleep from "@portals/SpeakerAppPortal/shared/sleep";
+// TODO: Look into Speedometer: https://www.npmjs.com/package/speedometer
 
 import {
   SYNC_EVT_PING,
@@ -54,14 +55,14 @@ export {
 };
 
 // Emits, with the received data, once data has been received
-// TODO: Rename to EVT_DATA
+// FIXME: (jh) Rename to EVT_DATA?
 export const EVT_DATA_RECEIVED = "data";
 
 export const EVT_SDP_OFFERED = "sdp-offered";
 export const EVT_SDP_ANSWERED = "sdp-answered";
 
 // TODO: Document type {eventName, eventData}
-// TODO: Rename to EVT_SYNC
+// FIXME: (jh) Rename to EVT_SYNC?
 export const EVT_SYNC_EVT_RECEIVED = "sync-event";
 
 // Internal event for pinging (in conjunction w/ SYNC_EVT_PONG)
@@ -91,7 +92,7 @@ const EVT_PONG = "pong";
  */
 export default class ZenRTCPeer extends PhantomCore {
   /**
-   * Retrieves whether or not WebRTC is supported.
+   * Retrieves whether or not WebRTC is supported in this browser.
    *
    * @return {boolean}
    */
@@ -111,16 +112,22 @@ export default class ZenRTCPeer extends PhantomCore {
     return Object.values(_instances);
   }
 
-  // TODO: Sync these comments with the actual properties
   /**
-   * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction // TODO: Rename
-   * @param {boolean} isInitiator? [default=false] Whether or not this peer is
+   * @param {string} zenRTCSignalBrokerId Used primarily for peer distinction
+   * @param {string} realmId The network realm ID
+   * @param {string} channelId The network channel ID
+   * @param {Object[]} iceServers // TODO: Document type
+   * @param {boolean} isInitiator? [default = false] Whether or not this peer is
    * the origination peer in the connection signaling.
-   * @param {boolean} shouldAutoReconnect? [default=true] Has no effect if is
+   * @param {boolean} shouldAutoReconnect? [default = true] Has no effect if is
    * not initiator.
-   * @param {boolean} offerToReceiveAudio? [default=true]
-   * @param {boolean} offerToReceiveVideo? [default=true]
-   * @param {string} preferredAudioCodecs? [default=["opus"]]
+   * @param {boolean} offerToReceiveAudio? [default = true]
+   * @param {boolean} offerToReceiveVideo? [default = true]
+   * @param {SyncObject} writableSyncObject? [default = null] Utilized for
+   * sending shared state to remote peer
+   * @param {SyncObject} readOnlySyncObject? [default = null] Utilized for
+   * receiving shared state from remote peer
+   * @param {string} preferredAudioCodecs? [default = ["opus"]]
    */
   constructor({
     zenRTCSignalBrokerId,
@@ -348,7 +355,7 @@ export default class ZenRTCPeer extends PhantomCore {
     this.emitSyncEvent(SYNC_EVT_KICK);
 
     // Pause for message to be delivered
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await sleep(100);
 
     this.destroy();
   }
@@ -991,7 +998,7 @@ export default class ZenRTCPeer extends PhantomCore {
         this.emitSyncEvent(SYNC_EVT_BYE);
 
         // Give message some time to get delivered
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await sleep(100);
 
         // Check again because the peer may have been destroyed during the async period
         if (this._webrtcPeer) {

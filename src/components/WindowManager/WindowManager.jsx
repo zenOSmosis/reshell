@@ -1,5 +1,3 @@
-// TODO: Move into core, named WindowManagerProvider
-
 import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import WindowManagerRouteProvider from "./WindowManager.RouteProvider"; // WindowManagerRouteContext,
@@ -11,8 +9,7 @@ import useWindowContext from "../Window/hooks/useWindowContext";
 
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
-import useAppRegistrationsContext from "@hooks/useAppRegistrationsContext";
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useForceUpdate from "@hooks/useForceUpdate";
 
 import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
@@ -29,22 +26,7 @@ let stackingIndex = 0;
 // TODO: Document
 // TODO: Use prop-types
 export default function WindowManager({ appDescriptors = [], children }) {
-  return (
-    <WindowManagerRouteProvider>
-      <WindowManagerView appDescriptors={appDescriptors}>
-        {children}
-      </WindowManagerView>
-    </WindowManagerRouteProvider>
-  );
-}
-
-function WindowManagerView({ appDescriptors = [], children }) {
-  // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
-
-  const { addOrUpdateAppRegistration } = useAppRegistrationsContext();
-  const { appRuntimes } = useAppRuntimesContext();
-
-  const [elBase, setElBase] = useState(null);
+  const { addOrUpdateAppRegistration } = useAppOrchestrationContext();
 
   // TODO: Refactor outside of window manager?
   useEffect(() => {
@@ -54,6 +36,20 @@ function WindowManagerView({ appDescriptors = [], children }) {
 
     // TODO: Add or update these descriptors in the appropriate provider
   }, [appDescriptors, addOrUpdateAppRegistration]);
+
+  return (
+    <WindowManagerRouteProvider>
+      <WindowManagerView>{children}</WindowManagerView>
+    </WindowManagerRouteProvider>
+  );
+}
+
+function WindowManagerView({ children }) {
+  const { appRuntimes } = useAppOrchestrationContext();
+
+  // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
+
+  const [elBase, setElBase] = useState(null);
 
   const {
     activeWindowController: desktopContextActiveWindowController,
@@ -149,7 +145,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
   }, [locationAppRuntimes, handleSetActiveWindow]);
   */
 
-  const { startService } = useServicesContext();
+  const { startServiceClass } = useServicesContext();
 
   // Handle when window manager is clicked on directly (no window interacted with directly)
   const refHandleSetActiveWindow = useRef(handleSetActiveWindow);
@@ -266,7 +262,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
       // TODO: Rename to appServices?
       const appServices = {};
       for (const serviceClass of serviceClasses) {
-        const service = startService(serviceClass);
+        const service = startServiceClass(serviceClass);
 
         appServices[serviceClass] = service;
       }
@@ -310,7 +306,7 @@ function WindowManagerView({ appDescriptors = [], children }) {
                 // Link app runtime to window controller (so that when the window
                 // controller is destructed it will take down the app runtime)
                 windowController.setAppRuntime(appRuntime);
-                appRuntime.setWindowController(windowController);
+                appRuntime.__INTERNAL__setWindowController(windowController);
 
                 // Attach the view controller to the window
                 ref.attachWindowController(windowController);

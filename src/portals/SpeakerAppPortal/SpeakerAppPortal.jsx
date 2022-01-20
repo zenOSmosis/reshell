@@ -1,30 +1,29 @@
 import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
-import AboutReShell from "../ExamplePortal/apps/AboutReShell";
-import BeepPrototype from "../ExamplePortal/apps/BeepPrototype";
-// import BackgroundSelector from "../ExamplePortal/apps/BackgroundSelector";
-import KeyVault from "../ExamplePortal/apps/KeyVault";
-import InputMediaDevices from "../ExamplePortal/apps/InputMediaDevices";
-import VUMeter from "../ExamplePortal/apps/VUMeter";
-import ScreenCapture from "../ExamplePortal/apps/ScreenCapture";
-// import ScreenShot from "../ExamplePortal/apps/ScreenShot";
-import ApplicationMonitor from "../ExamplePortal/apps/ApplicationMonitor";
-import ServiceMonitor from "../ExamplePortal/apps/ServiceMonitor";
-import ColorAdjuster from "../ExamplePortal/apps/ColorAdjuster";
-import Environment from "../ExamplePortal/apps/Environment";
-import CheckForUpdates from "../ExamplePortal/apps/CheckForUpdates/CheckForUpdates";
-import MemoryInfo from "../ExamplePortal/apps/MemoryInfo";
-import SoftwareInfo from "../ExamplePortal/apps/SoftwareInfo";
+import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
+import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
+// import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
+import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
+import InputMediaDevicesApp from "../ExamplePortal/apps/InputMediaDevicesApp";
+import VUMeterApp from "../ExamplePortal/apps/VUMeterApp";
+import ScreenCaptureApp from "../ExamplePortal/apps/ScreenCaptureApp";
+import ApplicationMonitorApp from "../ExamplePortal/apps/ApplicationMonitorApp";
+import ServiceMonitorApp from "../ExamplePortal/apps/ServiceMonitorApp";
+import ColorAdjusterApp from "../ExamplePortal/apps/ColorAdjusterApp";
+import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
+import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
+import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
+import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 //
-import Applications from "./apps/Applications";
-import CallPlayer from "./apps/CallPlayer";
-import VirtualServer from "./apps/VirtualServer";
-import LocalUserProfile from "./apps/LocalUserProfile";
-import Chat from "./apps/Chat";
+import ApplicationsApp from "./apps/ApplicationsApp";
+import CallPlayerApp from "./apps/CallPlayerApp";
+import VirtualServerApp from "./apps/VirtualServerApp";
+import LocalUserProfileApp from "./apps/LocalUserProfileApp";
+import ChatApp from "./apps/ChatApp";
 
 // TODO: Remove
-import NotificationsPrototype from "../ExamplePortal/apps/NotificationsPrototype";
+import NotificationsPrototypeApp from "../ExamplePortal/apps/NotificationsPrototypeApp";
 
 export default function SpeakerAppPortal() {
   return (
@@ -32,30 +31,29 @@ export default function SpeakerAppPortal() {
       // TODO: Refactor
       backgroundView={<SpeakerAppLogoBackground />}
       appDescriptors={[
-        Applications,
-        BeepPrototype,
-        // BackgroundSelector,
-        AboutReShell,
-        KeyVault,
-        InputMediaDevices,
-        VUMeter,
-        ScreenCapture,
-        // ScreenShot,
-        ApplicationMonitor,
-        ServiceMonitor,
-        ColorAdjuster,
-        LocalUserProfile,
-        Environment,
-        CheckForUpdates,
-        MemoryInfo,
-        SoftwareInfo,
+        ApplicationsApp,
+        BeepPrototypeApp,
+        // BackgroundSelectorApp,
+        AboutReShellApp,
+        KeyVaultApp,
+        InputMediaDevicesApp,
+        VUMeterApp,
+        ScreenCaptureApp,
+        ApplicationMonitorApp,
+        ServiceMonitorApp,
+        ColorAdjusterApp,
+        LocalUserProfileApp,
+        EnvironmentApp,
+        CheckForUpdatesApp,
+        MemoryInfoApp,
+        SoftwareInfoApp,
 
-        CallPlayer,
-        VirtualServer,
-        Chat,
+        CallPlayerApp,
+        VirtualServerApp,
+        ChatApp,
 
         // TODO: Remove
-        NotificationsPrototype,
+        NotificationsPrototypeApp,
       ]}
     />
   );
