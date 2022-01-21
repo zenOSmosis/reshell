@@ -1,5 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import getIsElOverflown from "@utils/getIsElOverflown";
+import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -37,6 +40,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
   refPrevIsOverflown.current = isOverflown;
 
+  const uuid = useMemo(uuidv4, []);
+
   useEffect(() => {
     if (isDetecting && element) {
       let _isUnmounting = false;
@@ -65,8 +70,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
       const ro = new ResizeObserver((/* entries */) => {
         /**
-         * IMPORTANT: requestAnimationFrame is used here to prevent possible
-         * "resize-observer loop limit exceeded error."
+         * IMPORTANT: requestSkippableAnimationFrame is used here to prevent
+         * possible "resize-observer loop limit exceeded error."
          *
          * "This error means that ResizeObserver was not able to deliver all
          * observations within a single animation frame. It is benign (your site
@@ -74,7 +79,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
          *
          * @see https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
          */
-        window.requestAnimationFrame(checkIsOverflown);
+        requestSkippableAnimationFrame(checkIsOverflown, uuid);
       });
 
       ro.observe(element);
@@ -82,7 +87,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
       /*
       const mo = new MutationObserver(() => {
-        window.requestAnimationFrame(checkIsOverflown);
+        requestSkippableAnimationFrame(checkIsOverflown, uuid);
       });
       */
 
@@ -102,7 +107,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
         // mo.disconnect();
       };
     }
-  }, [isDetecting, element, getIsOverflown]);
+  }, [isDetecting, element, getIsOverflown, uuid]);
 
   return isOverflown;
 }

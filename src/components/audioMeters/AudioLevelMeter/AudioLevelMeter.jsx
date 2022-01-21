@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import styles from "./AudioLevelMeter.module.css";
+
+import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import { v4 as uuidv4 } from "uuid";
 
 import PropTypes from "prop-types";
 
@@ -31,6 +34,8 @@ export default function AudioLevelMeter({
 }) {
   const [elAudioLevel, setElAudioLevel] = useState(null);
 
+  const uuid = useMemo(uuidv4, []);
+
   /**
    * @param {number} audioLevel A float value from 0 - 100, where 100
    * represents maximum strength.
@@ -39,16 +44,16 @@ export default function AudioLevelMeter({
   const handleAudioLevelChange = useCallback(
     audioLevel => {
       if (elAudioLevel) {
-        window.requestAnimationFrame(() => {
+        requestSkippableAnimationFrame(() => {
           // Inset is inverse of the audio level
           const inset = 100 - audioLevel;
 
           elAudioLevel.style.clipPath = `inset(${inset}% 0 0 0)`;
           elAudioLevel.style.WebkitClipPath = `inset(${inset}% 0 0 0)`;
-        });
+        }, uuid);
       }
     },
-    [elAudioLevel]
+    [elAudioLevel, uuid]
   );
 
   // Set initial level (otherwise they will default to appearing fully

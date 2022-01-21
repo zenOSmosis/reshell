@@ -1,10 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Avatar from "../Avatar";
 
 import PropTypes from "prop-types";
 
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 import getPercentColor from "@utils/getPercentColor";
+
+import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import { v4 as uuidv4 } from "uuid";
 
 AudioBorderAvatar.propTypes = {
   /** When multiple audio tracks may be used together */
@@ -25,6 +28,8 @@ export default function AudioBorderAvatar({
 }) {
   const [elAvatar, setElAvatar] = useState(null);
 
+  const uuid = useMemo(uuidv4, []);
+
   /**
    * @param {number} audioLevel A float value from 0 - 100, where 100
    * represents maximum strength.
@@ -33,13 +38,13 @@ export default function AudioBorderAvatar({
   const handleAudioLevelChange = useCallback(
     audioLevel => {
       if (elAvatar) {
-        window.requestAnimationFrame(() => {
+        requestSkippableAnimationFrame(() => {
           // TODO: Add percent calculation into getPercentColor itself
           elAvatar.style.borderColor = getPercentColor(audioLevel / 100);
-        });
+        }, uuid);
       }
     },
-    [elAvatar]
+    [elAvatar, uuid]
   );
 
   useMultiAudioMediaStreamTrackLevelMonitor(

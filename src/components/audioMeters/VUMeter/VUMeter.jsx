@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Preload from "@components/Preload";
 
 import classNames from "classnames";
@@ -7,6 +7,9 @@ import styles from "./VUMeter.module.css";
 import PropTypes from "prop-types";
 
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
+
+import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import { v4 as uuidv4 } from "uuid";
 
 import vuBackground from "./images/vu.png";
 import vuNeedle from "./images/needle.png";
@@ -36,6 +39,8 @@ export default function VUMeter({
   const [elVU, setElVU] = useState(null);
   const [elNeedle, setElNeedle] = useState(null);
 
+  const uuid = useMemo(uuidv4, []);
+
   useEffect(() => {
     if (elVU && elNeedle) {
       elVU.style.backgroundImage = `url(${vuBackground})`;
@@ -56,14 +61,14 @@ export default function VUMeter({
   const handleAudioLevelChange = useCallback(
     audioLevel => {
       if (elNeedle) {
-        window.requestAnimationFrame(() => {
+        requestSkippableAnimationFrame(() => {
           elNeedle.style.transform = `rotateZ(${Math.min(
             87 * (audioLevel / 100)
           )}deg)`;
-        });
+        }, uuid);
       }
     },
-    [elNeedle]
+    [elNeedle, uuid]
   );
 
   // Set initial level

@@ -9,7 +9,6 @@ import SDPAdapter from "./utils/sdp-adapter";
 import { utils } from "media-stream-track-controller";
 
 // TODO: Import utils/getWebRTCSignalStrength
-
 // TODO: Look into Speedometer: https://www.npmjs.com/package/speedometer
 
 import {

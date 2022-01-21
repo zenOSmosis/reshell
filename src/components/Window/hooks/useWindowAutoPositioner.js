@@ -70,7 +70,9 @@ export default function useWindowAutoPositioner(
         }
 
         // IMPORTANT: This must be called in a subsequent asynchronous call or
-        // it may execute before the previous
+        // it may execute before the previous callback (i.e. handleCenter / handleScatter)
+        //
+        // FIXME: (jh) Use setImmediate instead?
         requestAnimationFrame(() => {
           refOnInitialAutoPosition.current();
         });
