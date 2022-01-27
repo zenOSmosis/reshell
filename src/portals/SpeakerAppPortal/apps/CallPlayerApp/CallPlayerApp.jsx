@@ -39,6 +39,8 @@ export const REGISTRATION_ID = "network";
 // request is similar to:
 // network/0x678308810e1087A3aED280d0feB957C9fcEd1C8B/48k-lounge
 
+// TODO: Implement footer with icons to change things (i.e. mute / unmute, show particpants [as overlay over screenshare], etc.)
+
 const CallPlayerApp = {
   id: REGISTRATION_ID,
   title: "Call Player",

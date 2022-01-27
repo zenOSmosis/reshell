@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 
-import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import { v4 as uuidv4 } from "uuid";
 
 import vuBackground from "./images/vu.png";

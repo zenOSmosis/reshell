@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import getIsElOverflown from "@utils/getIsElOverflown";
-import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 
 import { v4 as uuidv4 } from "uuid";
 

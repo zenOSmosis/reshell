@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import styles from "./AudioLevelMeter.module.css";
 
-import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import { v4 as uuidv4 } from "uuid";
 
 import PropTypes from "prop-types";

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import styles from "./AutoScaler.module.css";
-import requestSkippableAnimationFrame from "@utils/requestSkippableAnimationFrame";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import { v4 as uuidv4 } from "uuid";
 
 /**

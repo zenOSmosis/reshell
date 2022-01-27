@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MultiAudioMediaStreamTrackLevelMonitor } from "media-stream-track-controller";
 import useArrayDiff from "./useArrayDiff";
 
-const { EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK } =
-  MultiAudioMediaStreamTrackLevelMonitor;
+const { EVT_AUDIO_LEVEL_UPDATED } = MultiAudioMediaStreamTrackLevelMonitor;
 
 /**
  * Utilizes a MultiAudioMediaStreamTrackLevelMonitor as a React hook.
@@ -40,23 +39,15 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
   const refOnAudioLevelChange = useRef(onAudioLevelChange);
   refOnAudioLevelChange.current = onAudioLevelChange;
 
+  // Instantiate and bind MultiAudioMediaStreamTrackLevelMonitor audio level
+  // state to hook state
   useEffect(() => {
     const mediaStreamMonitor = new MultiAudioMediaStreamTrackLevelMonitor();
 
     // NOTE: This event handler will automatically be unbound once the class
     // destructs
-    mediaStreamMonitor.on(EVT_DEBOUNCED_PEAK_AUDIO_LEVEL_TICK, ({ rms }) => {
-      // FIXME: This is probably not supposed to be RMS (nor even is RMS value
-      // itself very accurate), but it's close enough for prototyping
-      //
-      // TODO: Move calculation into track level monitor library so it is not
-      // redundant
-      let calcAudioLevelValue = rms * 0.8;
-      if (calcAudioLevelValue > 100) {
-        calcAudioLevelValue = 100;
-      }
-
-      refOnAudioLevelChange.current(calcAudioLevelValue);
+    mediaStreamMonitor.on(EVT_AUDIO_LEVEL_UPDATED, audioLevel => {
+      refOnAudioLevelChange.current(audioLevel);
     });
 
     _setMediaStreamMonitor(mediaStreamMonitor);

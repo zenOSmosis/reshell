@@ -1,6 +1,8 @@
 import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import { debounce } from "debounce";
 
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
+
 export { EVT_UPDATED, EVT_DESTROYED };
 
 // @see https://reactjs.org/docs/profiler.html
@@ -173,7 +175,7 @@ export default class WindowController extends PhantomState {
       // FIXME: (jh) Can these be applied as a single reflow?
       // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
 
-      window.requestAnimationFrame(() => {
+      requestSkippableAnimationFrame(() => {
         if (width !== undefined) {
           windowEl.style.width = `${width}px`;
         }
@@ -183,7 +185,7 @@ export default class WindowController extends PhantomState {
 
         // Emit debounced EVT_RESIZED event
         this._emitDebouncedResized();
-      });
+      }, `${this._uuid}-size`);
     }
   }
 
@@ -242,7 +244,7 @@ export default class WindowController extends PhantomState {
        *    - [animating the box model]: https://whistlr.info/2021/box-model-animation
        */
 
-      window.requestAnimationFrame(() => {
+      requestSkippableAnimationFrame(() => {
         if (x !== undefined) {
           windowEl.style.left = `${x}px`;
 
@@ -259,7 +261,7 @@ export default class WindowController extends PhantomState {
         // IMPORTANT!: Do not update state on each iteration (if at all)
         // because that would cause excessive re-rendering
         this._emitDebouncedMoved();
-      });
+      }, `${this._uuid}-position`);
     }
   }
 

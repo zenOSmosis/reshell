@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Center from "@components/Center";
 import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
-import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
+import CanvasMicAudioMeter from "@components/audioMeters/CanvasMicAudioMeter";
 import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
@@ -50,6 +50,9 @@ export default function NetworkConnected({
         const outgoingAudioMediaStreamTracks =
           phantomPeer.getOutgoingAudioMediaStreamTracks();
 
+        const lenOutgoingAudioMediaStreamTracks =
+          outgoingAudioMediaStreamTracks.length;
+
         return (
           <div
             key={idx}
@@ -82,15 +85,22 @@ export default function NetworkConnected({
                     </div>
                   </Center>
                 </Content>
-                <Footer style={{ textAlign: "right", height: 60 }}>
+                <Footer style={{ textAlign: "right" }}>
                   <Padding>
-                    {outgoingAudioMediaStreamTracks.map(mediaStreamTrack => (
-                      <AudioLevelMeter
-                        key={mediaStreamTrack.id}
-                        mediaStreamTrack={mediaStreamTrack}
-                        style={{ height: "100%" }}
+                    {
+                      // FIXME: Provide ability to show independent audio
+                      // streams vs single (uses more CPU)
+                    }
+                    <div
+                      title={`${lenOutgoingAudioMediaStreamTracks} audio stream${
+                        lenOutgoingAudioMediaStreamTracks !== 1 ? "s" : ""
+                      } received from ${profileName}`}
+                    >
+                      <CanvasMicAudioMeter
+                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
+                        size={48}
                       />
-                    ))}
+                    </div>
                   </Padding>
                 </Footer>
               </Layout>
@@ -111,10 +121,10 @@ export default function NetworkConnected({
 function useFakeIsInSync() {
   const [isInSync, setIsInSync] = useState(false);
   useEffect(() => {
-    const to = setTimeout(() => setIsInSync(true), 1500);
+    const to = window.setTimeout(() => setIsInSync(true), 1500);
 
     return function unmount() {
-      clearTimeout(to);
+      window.clearTimeout(to);
     };
   }, []);
 
