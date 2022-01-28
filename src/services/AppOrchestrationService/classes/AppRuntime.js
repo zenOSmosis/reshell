@@ -29,8 +29,8 @@ export default class AppRuntime extends PhantomCore {
     });
 
     // Emit EVT_UPDATED out runtime when the registration updates
-    this.proxyOn(this._appRegistration, EVT_UPDATED, () => {
-      this.emit(EVT_UPDATED);
+    this.proxyOn(this._appRegistration, EVT_UPDATED, data => {
+      this.emit(EVT_UPDATED, data);
     });
 
     // Destruct runtime when registration destructs
