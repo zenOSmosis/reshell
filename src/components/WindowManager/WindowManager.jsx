@@ -200,6 +200,17 @@ function WindowManagerView({ children }) {
       // TODO: Ensure key is unique across the map
       const key = appRuntime.getUUID();
 
+      // FIXME: (jh) Figure out why this try / catch is suddenly needed;
+      // it wasn't needed before bumping PhantomCore to v2.3.3
+      let appDescriptor;
+      try {
+        appDescriptor = appRuntime.getAppDescriptor();
+      } catch (err) {
+        console.error(err);
+
+        return null;
+      }
+
       // NOTE: The variables absorbed by this decompositor (except for
       // windowProps) are NOT passed down to the underlying DOM element of the
       // window
@@ -222,7 +233,7 @@ function WindowManagerView({ children }) {
         isPinnedToDock,
         isAutoStart,
         ...windowProps
-      } = appRuntime.getAppDescriptor();
+      } = appDescriptor;
 
       if (!ViewComponent) {
         return null;
