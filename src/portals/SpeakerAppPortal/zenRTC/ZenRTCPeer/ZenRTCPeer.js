@@ -645,12 +645,14 @@ export default class ZenRTCPeer extends PhantomCore {
         // sometimes disconnecting when tracks are added
         //
         // FIXME: (jh) Is this still necessary? (use setImmediate?)
-        setTimeout(() => {
-          this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
-            mediaStreamTrack,
-            mediaStream
-          );
-        }, 500);
+        // TODO: Remove surrounding comments if this timeout is no longer
+        // needed
+        // setTimeout(() => {
+        this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
+          mediaStreamTrack,
+          mediaStream
+        );
+        // }, 500);
       });
 
       // TODO: Use event constant
