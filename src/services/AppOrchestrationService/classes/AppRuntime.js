@@ -22,7 +22,12 @@ export default class AppRuntime extends PhantomCore {
 
     this._appRegistration = appRegistration;
 
-    this.registerShutdownHandler(() => {
+    // FIXME: (jh) Using registerShutdownHandler here may cause windows to
+    // error when they are closed due to other properties methods in this class
+    // depending on appRegistration. PhantomCore may need some adjustments so
+    // that there is no differentiation in handling regardless of the handler
+    // chosen.
+    this.once(EVT_DESTROYED, () => {
       // IMPORTANT: We only want to remove the registration, but don't want to
       // destruct the registration itself, as it should be reused
       delete this._appRegistration;
