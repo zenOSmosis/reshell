@@ -22,17 +22,6 @@ export default class AppRuntime extends PhantomCore {
 
     this._appRegistration = appRegistration;
 
-    // FIXME: (jh) Using registerShutdownHandler here may cause windows to
-    // error when they are closed due to other properties methods in this class
-    // depending on appRegistration. PhantomCore may need some adjustments so
-    // that there is no differentiation in handling regardless of the handler
-    // chosen.
-    this.once(EVT_DESTROYED, () => {
-      // IMPORTANT: We only want to remove the registration, but don't want to
-      // destruct the registration itself, as it should be reused
-      delete this._appRegistration;
-    });
-
     // Emit EVT_UPDATED out runtime when the registration updates
     this.proxyOn(this._appRegistration, EVT_UPDATED, data => {
       this.emit(EVT_UPDATED, data);
@@ -46,7 +35,13 @@ export default class AppRuntime extends PhantomCore {
     this._windowController = null;
 
     this.registerShutdownHandler(async () => {
-      await this._windowController.destroy();
+      this._windowController.destroy();
+
+      this._windowController = null;
+
+      // IMPORTANT: We only want to remove the registration, but don't want to
+      // destruct the registration itself, as it should be reused
+      delete this._appRegistration;
     });
   }
 
@@ -84,7 +79,7 @@ export default class AppRuntime extends PhantomCore {
   // getAppRegistration; standardize on either name, but keep it consistent.
   // TODO: Document
   getAppDescriptor() {
-    return this._appRegistration.getAppDescriptor();
+    return this._appRegistration?.getAppDescriptor();
   }
 
   // TODO: Implement setEnvironment
