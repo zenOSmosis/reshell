@@ -641,18 +641,10 @@ export default class ZenRTCPeer extends PhantomCore {
       // Handle incoming MediaStreamTrack from remote peer
       // TODO: Use event constant
       this._webrtcPeer.on("track", (mediaStreamTrack, mediaStream) => {
-        // NOTE (jh): This timeout seems to improve an issue w/ iOS 14
-        // sometimes disconnecting when tracks are added
-        //
-        // FIXME: (jh) Is this still necessary? (use setImmediate?)
-        // TODO: Remove surrounding comments if this timeout is no longer
-        // needed
-        // setTimeout(() => {
         this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
           mediaStreamTrack,
           mediaStream
         );
-        // }, 500);
       });
 
       // TODO: Use event constant
@@ -908,8 +900,8 @@ export default class ZenRTCPeer extends PhantomCore {
           // kind = "audio" | "video"
           const { msid, kind } = eventData;
 
-          // TODO: Remove
-          console.log("SYNC_EVT_TRACK_REMOVED", { msid, kind });
+          // TODO: Remove or use phantom logger
+          console.debug("SYNC_EVT_TRACK_REMOVED", { msid, kind });
 
           const mediaStream = this.getIncomingMediaStreams().find(
             ({ id }) => id === msid
