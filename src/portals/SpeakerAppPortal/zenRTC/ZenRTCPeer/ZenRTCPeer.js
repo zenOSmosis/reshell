@@ -985,15 +985,10 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
-    // IMPORTANT: This should be set before any event emitters are emitted, so
-    // that counts are updated properly
-    delete _instances[this._zenRTCSignalBrokerId];
-
-    // Disconnect handler
-    await (async () => {
-      if (this._isDestroyed) {
-        return;
-      }
+    return super.destroy(async () => {
+      // IMPORTANT: This should be set before any event emitters are emitted, so
+      // that counts are updated properly
+      delete _instances[this._zenRTCSignalBrokerId];
 
       if (this._webrtcPeer) {
         this.emitSyncEvent(SYNC_EVT_BYE);
@@ -1009,8 +1004,6 @@ export default class ZenRTCPeer extends PhantomCore {
           this._webrtcPeer = null;
         }
       }
-    })();
-
-    return super.destroy();
+    });
   }
 }
