@@ -104,8 +104,6 @@ export default class SpeakerAppVirtualServerService extends UIServiceCore {
     });
 
     this._virtualServer.registerShutdownHandler(async () => {
-      await this.stopVirtualServer();
-
       // TODO: Use reset method once available
       // @see https://github.com/zenOSmosis/phantom-core/issues/112
       this.setState(this._initialState);
