@@ -203,8 +203,8 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
    * @return {Promise<void>}
    */
   async destroy() {
-    this.destroyAllChildren();
-
-    return super.destroy();
+    return super.destroy(async () => {
+      await this.destroyAllChildren();
+    });
   }
 }
