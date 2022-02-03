@@ -210,9 +210,6 @@ export default class DataChannelManagerModule extends BaseModule {
 
       // If matches internal chunk structure, await batch
       if (DataChannelChunkBatchReceiver.getIsChunked(data)) {
-        // TODO: Remove
-        console.warn("CHUNKED", data);
-
         const batch = DataChannelChunkBatchReceiver.importMetaChunk(data);
 
         // TODO: Remove
