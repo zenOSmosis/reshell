@@ -356,7 +356,9 @@ export default class ZenRTCPeer extends PhantomCore {
     // Pause for message to be delivered
     await sleep(100);
 
-    this.destroy();
+    if (!this.getIsDestroying()) {
+      this.destroy();
+    }
   }
 
   /**
@@ -635,7 +637,9 @@ export default class ZenRTCPeer extends PhantomCore {
 
         this.log.debug("webrtc-peer disconnected");
 
-        this.destroy();
+        if (!this.getIsDestroying()) {
+          this.destroy();
+        }
       });
 
       // Handle incoming MediaStreamTrack from remote peer
@@ -886,7 +890,9 @@ export default class ZenRTCPeer extends PhantomCore {
         break;
 
       case SYNC_EVT_BYE:
-        this.destroy();
+        if (!this.getIsDestroying) {
+          this.destroy();
+        }
         break;
 
       // TODO: Move handler into MediaStreamManagerModule
@@ -953,7 +959,9 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    return this.destroy();
+    if (!this.getIsDestroying()) {
+      return this.destroy();
+    }
   }
 
   /**

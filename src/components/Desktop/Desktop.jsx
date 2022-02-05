@@ -221,7 +221,13 @@ export default function Desktop({
                               }
                             >
                               <MenuItem
-                                onClick={() => activeWindowController.destroy()}
+                                onClick={() => {
+                                  if (
+                                    !activeWindowController.getIsDestroying()
+                                  ) {
+                                    activeWindowController.destroy();
+                                  }
+                                }}
                               >
                                 Close
                               </MenuItem>

@@ -66,8 +66,8 @@ export default class WindowController extends PhantomState {
       // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
       // ) {
 
-      if (this._appRuntime) {
-        this._appRuntime.destroy();
+      if (this._appRuntime && !this._appRuntime.getIsDestroying()) {
+        await this._appRuntime.destroy();
       }
 
       this._appRuntime = null;

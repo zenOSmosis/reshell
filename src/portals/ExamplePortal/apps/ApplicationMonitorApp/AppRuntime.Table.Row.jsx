@@ -131,7 +131,11 @@ export default function AppRuntimeTableRow({ appRuntime }) {
           </button>
           <span> | </span>
           <button
-            onClick={() => appRuntime.destroy()}
+            onClick={() => {
+              if (!appRuntime.getIsDestroying()) {
+                appRuntime.destroy();
+              }
+            }}
             style={{ backgroundColor: "red" }}
           >
             Close

@@ -62,7 +62,9 @@ const ScreenCaptureApp = {
     useEffect(() => {
       if (screenCaptureFactory) {
         return () => {
-          screenCaptureFactory.destroy();
+          if (!screenCaptureFactory.getIsDestroying()) {
+            screenCaptureFactory.destroy();
+          }
         };
       }
     }, [screenCaptureFactory]);
@@ -145,7 +147,10 @@ const ScreenCaptureApp = {
                       whiteSpace: "nowrap",
                     }}
                     onClick={() => {
-                      if (screenCaptureFactory) {
+                      if (
+                        screenCaptureFactory &&
+                        !screenCaptureFactory.getIsDestroying()
+                      ) {
                         screenCaptureFactory.destroy();
                       } else {
                         handleStartScreenCapture();
