@@ -64,6 +64,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       chatMessagesHash: null,
     });
 
+    // FIXME: (jh) Currently as of Feb. 5, 2022 am unable to set socketService
+    // to null after destruct due to it causing errors with related scripting.
+    // This should be looked into.
     this._socketService = socketService;
     this._socket = socketService.getSocket();
 

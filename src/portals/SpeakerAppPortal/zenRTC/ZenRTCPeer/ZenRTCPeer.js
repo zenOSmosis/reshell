@@ -234,10 +234,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
 
-      // Media manager module
-      (() => {
-        this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
-      })();
+      this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
     })();
 
     this._reconnectArgs = [];
@@ -498,7 +495,9 @@ export default class ZenRTCPeer extends PhantomCore {
         const stopBootStream = async () => {
           for (const track of bootStream.getTracks()) {
             try {
-              await this._webrtcPeer?.removeTrack(track, bootStream);
+              if (this._webRTCPeer && !this._webrtcPeer.destroyed) {
+                this._webrtcPeer.removeTrack(track, bootStream);
+              }
             } catch (err) {
               console.error(err);
             }
