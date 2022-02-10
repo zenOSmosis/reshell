@@ -1007,7 +1007,9 @@ export default class ZenRTCPeer extends PhantomCore {
       if (this._webrtcPeer) {
         this.emitSyncEvent(SYNC_EVT_BYE);
 
-        // Give message some time to get delivered
+        // Give message some time to get delivered. It isn't imperative that
+        // this message is delivered, as the other peer will become aware of
+        // the non-presence of this peer within a few seconds otherwise.
         await sleep(100);
 
         // Check again because the peer may have been destroyed during the async period
