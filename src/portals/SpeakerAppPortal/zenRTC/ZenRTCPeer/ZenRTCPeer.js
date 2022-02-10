@@ -231,10 +231,25 @@ export default class ZenRTCPeer extends PhantomCore {
       );
 
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
+      this.registerShutdownHandler(async () => {
+        if (!this._dataChannelManagerModule.getIsDestroying()) {
+          await this._dataChannelManagerModule.destroy();
+        }
+      });
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
+      this.registerShutdownHandler(async () => {
+        if (!this._syncEventDataChannelModule.getIsDestroying()) {
+          await this._syncEventDataChannelModule.destroy();
+        }
+      });
 
       this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
+      this.registerShutdownHandler(async () => {
+        if (!this._mediaStreamManagerModule.getIsDestroying()) {
+          await this._mediaStreamManagerModule.destroy();
+        }
+      });
     })();
 
     this._reconnectArgs = [];

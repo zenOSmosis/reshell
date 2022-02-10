@@ -21,9 +21,9 @@ export default class SyncEventDataChannelModule extends BaseModule {
       this.receiveSyncEvent(eventName, eventData);
     });
 
-    this.registerShutdownHandler(() => {
+    this.registerShutdownHandler(async () => {
       if (!this._dataChannel.getIsDestroying()) {
-        this._dataChannel.destroy();
+        await this._dataChannel.destroy();
       }
     });
   }
