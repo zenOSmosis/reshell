@@ -65,6 +65,12 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     });
 
     this._socketService = socketService;
+    this.registerShutdownHandler(
+      () =>
+        // IMPORTANT: Don't destruct here, just remove the reference
+        (this._socketService = null)
+    );
+
     this._socket = socketService.getSocket();
 
     this._phantomPeerRouter = new VirtualServerZenRTCPeerPhantomPeerRouter(
@@ -99,12 +105,6 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
     // When destructed, tell the real server we're stopping the session
     this.registerShutdownHandler(() => this._emitSessionEnd());
-
-    this.registerShutdownHandler(
-      () =>
-        // IMPORTANT: Don't destruct here, just remove the reference
-        (this._socketService = null)
-    );
 
     return super._init();
   }
