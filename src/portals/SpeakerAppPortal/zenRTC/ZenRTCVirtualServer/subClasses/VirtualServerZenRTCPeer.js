@@ -109,7 +109,7 @@ export default class VirtualServerZenRTCPeer extends ZenRTCPeer {
     })();
 
     this._zenRTCSignalBroker = zenRTCSignalBroker;
-    this.registerShutdownHandler(() => this._zenRTCSignalBroker.destroy());
+    this.registerCleanupHandler(() => this._zenRTCSignalBroker.destroy());
 
     this.on(EVT_ZENRTC_SIGNAL, signal => {
       this._zenRTCSignalBroker.signal(signal);

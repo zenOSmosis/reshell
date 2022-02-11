@@ -17,7 +17,7 @@ export default class DataChannel extends PhantomCore {
     super();
 
     this._dataChannelManagerModule = dataChannelManagerModule;
-    this.registerShutdownHandler(() => {
+    this.registerCleanupHandler(() => {
       // IMPORTANT: Don't destruct it, just remove the reference
       this._dataChannelManagerModule = null;
     });

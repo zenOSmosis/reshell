@@ -105,7 +105,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
 
     this._zenRTCSignalBroker = zenRTCSignalBroker;
 
-    this.registerShutdownHandler(() =>
+    this.registerCleanupHandler(() =>
       Promise.all([
         this._zenRTCSignalBroker &&
           this._zenRTCSignalBroker.getIsDestroying() &&

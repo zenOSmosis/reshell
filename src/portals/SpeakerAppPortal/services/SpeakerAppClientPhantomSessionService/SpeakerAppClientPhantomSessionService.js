@@ -68,7 +68,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       RemotePhantomPeerCollection
     );
 
-    this.registerShutdownHandler(() => this.endZenRTCPeerSession());
+    this.registerCleanupHandler(() => this.endZenRTCPeerSession());
   }
 
   /**
@@ -169,7 +169,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
     const readOnlySyncObject = new SyncObject();
 
     // Remove all PhantomPeers once read-only state is destructed
-    readOnlySyncObject.registerShutdownHandler(() =>
+    readOnlySyncObject.registerCleanupHandler(() =>
       this._remotePhantomPeerCollection.destroyAllChildren()
     );
 

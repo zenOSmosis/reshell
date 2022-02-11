@@ -136,7 +136,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
       };
 
       this._zenRTCPeer.on(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
-      this.registerShutdownHandler(() => {
+      this.registerCleanupHandler(() => {
         // FIXME (jh): This check fixes issue where _zenRTCPeer may be null
         // after stopping a virtual server with connected clients, but it
         // should be wired so this check is not necessary.  It could have

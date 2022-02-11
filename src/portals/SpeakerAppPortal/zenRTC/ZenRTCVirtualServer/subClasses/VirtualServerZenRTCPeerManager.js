@@ -113,7 +113,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       });
 
       // Destruct read-only sync object when peer is destructed
-      virtualServerZenRTCPeer.registerShutdownHandler(() => {
+      virtualServerZenRTCPeer.registerCleanupHandler(() => {
         readOnlySyncObject.destroy();
       });
 

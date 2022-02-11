@@ -36,7 +36,7 @@ export default class AppRuntime extends PhantomCore {
 
     this._windowController = null;
 
-    this.registerShutdownHandler(async () => {
+    this.registerCleanupHandler(async () => {
       if (!this.getIsDestroying()) {
         this._windowController.destroy();
       }

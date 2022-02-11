@@ -34,7 +34,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
 
       socket.on(SOCKET_EVT_NETWORKS_UPDATED, handleNetworksUpdated);
 
-      this.registerShutdownHandler(() => {
+      this.registerCleanupHandler(() => {
         socket.off(SOCKET_EVT_NETWORKS_UPDATED, handleNetworksUpdated);
       });
     });
