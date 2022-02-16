@@ -1,5 +1,5 @@
 import Layout, { Header, Content, Footer, Row, Column } from "../Layout";
-import { useDrag } from "react-use-gesture";
+import { useDrag } from "@use-gesture/react";
 
 // TODO: Height and width are synonymous
 
@@ -14,6 +14,23 @@ export const DIR_BORDER_S = "S";
 export const DIR_BORDER_SW = "SW";
 export const DIR_BORDER_W = "W";
 
+// @see https://use-gesture.netlify.app/docs/#simple-example
+const useDirectionalDragger = function (direction, onBorderDrag) {
+  return useDrag(
+    ({ down: isDragging, movement: [mx, my] }) => {
+      onBorderDrag(direction, { mx, my, isDragging });
+    },
+    {
+      pointer: {
+        // IMPORTANT: This makes use-gesture utilize touch events instead of
+        // pointer events and fixes an issue where pointercancel would
+        // sometimes be fired on certain Android devices
+        touch: true,
+      },
+    }
+  );
+};
+
 // TODO: Use prop-types
 // TODO: Document
 export default function WindowBorder({
@@ -23,89 +40,71 @@ export default function WindowBorder({
   isDisabled = false,
   ...rest
 }) {
-  // @see https://use-gesture.netlify.app/docs/#simple-example
-  const bindNW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_NW, { mx, my, isDragging });
-  });
-
-  const bindN = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_N, { mx, my, isDragging });
-  });
-
-  const bindNE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_NE, { mx, my, isDragging });
-  });
-
-  const bindE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_E, { mx, my, isDragging });
-  });
-
-  const bindSE = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_SE, { mx, my, isDragging });
-  });
-
-  const bindS = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_S, { mx, my, isDragging });
-  });
-
-  const bindSW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_SW, { mx, my, isDragging });
-  });
-
-  const bindW = useDrag(({ down: isDragging, movement: [mx, my] }) => {
-    onBorderDrag(DIR_BORDER_W, { mx, my, isDragging });
-  });
-
-  if (isDisabled) {
-    return children;
-  }
+  const bindNW = useDirectionalDragger(DIR_BORDER_NW, onBorderDrag);
+  const bindN = useDirectionalDragger(DIR_BORDER_N, onBorderDrag);
+  const bindNE = useDirectionalDragger(DIR_BORDER_NE, onBorderDrag);
+  const bindE = useDirectionalDragger(DIR_BORDER_E, onBorderDrag);
+  const bindSE = useDirectionalDragger(DIR_BORDER_SE, onBorderDrag);
+  const bindS = useDirectionalDragger(DIR_BORDER_S, onBorderDrag);
+  const bindSW = useDirectionalDragger(DIR_BORDER_SW, onBorderDrag);
+  const bindW = useDirectionalDragger(DIR_BORDER_W, onBorderDrag);
 
   return (
     // TODO: Enable merge-able styles / classNames
+    // TODO: Extract classes to module.css
     <Layout {...rest}>
       <Header>
-        <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
-          <Column
-            {...bindNW()}
-            style={{ maxWidth: borderWidth, cursor: "nw-resize" }}
-          ></Column>
-          <Column {...bindN()} style={{ cursor: "n-resize" }}></Column>
-          <Column
-            {...bindNE()}
-            style={{ maxWidth: borderWidth, cursor: "ne-resize" }}
-          ></Column>
-        </Row>
+        {!isDisabled && (
+          <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
+            <Column
+              {...bindNW()}
+              style={{ maxWidth: borderWidth, cursor: "nwse-resize" }}
+            ></Column>
+            <Column {...bindN()} style={{ cursor: "ns-resize" }}></Column>
+            <Column
+              {...bindNE()}
+              style={{ maxWidth: borderWidth, cursor: "nesw-resize" }}
+            ></Column>
+          </Row>
+        )}
       </Header>
       <Content>
         <Row>
-          <Column
-            {...bindW()}
-            style={{ maxWidth: borderWidth, cursor: "w-resize" }}
-          ></Column>
+          {!isDisabled && (
+            <Column
+              {...bindW()}
+              style={{ maxWidth: borderWidth, cursor: "ew-resize" }}
+            ></Column>
+          )}
+
           <Column>
             {
               // TODO: Use layout to wrap the child in a frame, w/ diagonal positions included
             }
             {children}
           </Column>
-          <Column
-            {...bindE()}
-            style={{ maxWidth: borderWidth, cursor: "e-resize" }}
-          ></Column>
+          {!isDisabled && (
+            <Column
+              {...bindE()}
+              style={{ maxWidth: borderWidth, cursor: "ew-resize" }}
+            ></Column>
+          )}
         </Row>
       </Content>
       <Footer>
-        <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
-          <Column
-            {...bindSW()}
-            style={{ maxWidth: borderWidth, cursor: "sw-resize" }}
-          ></Column>
-          <Column {...bindS()} style={{ cursor: "s-resize" }}></Column>
-          <Column
-            {...bindSE()}
-            style={{ maxWidth: borderWidth, cursor: "se-resize" }}
-          ></Column>
-        </Row>
+        {!isDisabled && (
+          <Row style={{ maxHeight: borderWidth, height: borderWidth }}>
+            <Column
+              {...bindSW()}
+              style={{ maxWidth: borderWidth, cursor: "nesw-resize" }}
+            ></Column>
+            <Column {...bindS()} style={{ cursor: "ns-resize" }}></Column>
+            <Column
+              {...bindSE()}
+              style={{ maxWidth: borderWidth, cursor: "nwse-resize" }}
+            ></Column>
+          </Row>
+        )}
       </Footer>
     </Layout>
   );

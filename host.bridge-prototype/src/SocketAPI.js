@@ -17,7 +17,9 @@ export default class SocketAPI extends PhantomCore {
     this._socket.on("disconnect", () => {
       this.log(`Shutting down SocketAPI for socket: ${this._socket.id}`);
 
-      this.destroy();
+      if (!this.getIsDestroying()) {
+        this.destroy();
+      }
     });
   }
 
@@ -25,9 +27,10 @@ export default class SocketAPI extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
-    this._socket.disconnect();
-
-    return super.destroy();
+    return super.destroy(() => {
+      // TODO: Should we really disconnect here, or just unbind the bound routes?
+      this._socket.disconnect();
+    });
   }
 
   // TODO: Document
@@ -104,4 +107,6 @@ export default class SocketAPI extends PhantomCore {
       }
     });
   }
+
+  // TODO: Implement removeRoute?
 }

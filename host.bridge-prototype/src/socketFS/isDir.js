@@ -1,14 +1,14 @@
-import stat from './stat';
+import stat from "./stat";
 
 /**
  * Determines if the path is a directory.
- * 
+ *
  * @see https://nodejs.org/api/fs.html#fs_stats_isdirectory
- * 
+ *
  * @param {string} path
- * @return {Promise<boolean>} 
+ * @return {Promise<boolean>}
  */
-const isDir = async (path) => {
+const isDir = async path => {
   try {
     const stats = await stat(path);
 

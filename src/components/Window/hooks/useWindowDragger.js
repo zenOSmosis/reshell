@@ -1,22 +1,23 @@
-import { useRef } from "react";
-import { useDrag } from "react-use-gesture";
+import { useRef, useState } from "react";
+import { useDrag } from "@use-gesture/react";
 
-const TOP_THRESHOLD = 0;
-const BOTTOM_THRESHOLD = 40;
-const LEFT_THRESHOLD = 0;
-const RIGHT_THRESHOLD = 0;
+export const TOP_THRESHOLD = 0;
+export const BOTTOM_THRESHOLD = 58;
+export const LEFT_THRESHOLD = 0;
+export const RIGHT_THRESHOLD = 0;
 
 // TODO: Document
-// TODO: Implement ability to turn off dragging
-export default function useWindowDragger({ windowController, elTitlebar }) {
+export default function useWindowDragger({ windowController, isDisabled }) {
   const refInitialDragPosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
+
+  const [isUserDragging, setIsUserDragging] = useState(false);
 
   // @see https://use-gesture.netlify.app/docs/#simple-example
   const bind = useDrag(
     ({ down: isDragging, movement: [mx, my], xy, event }) => {
-      if (!elTitlebar.contains(event.target)) {
-        return;
+      if (isDragging !== isUserDragging) {
+        setIsUserDragging(isDragging);
       }
 
       if (isDragging) {
@@ -69,5 +70,5 @@ export default function useWindowDragger({ windowController, elTitlebar }) {
     }
   );
 
-  return bind;
+  return [bind, isUserDragging];
 }

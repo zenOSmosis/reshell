@@ -1,4 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import getIsElOverflown from "@utils/getIsElOverflown";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
+
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -9,7 +13,12 @@ if (!window.ResizeObserver) {
 }
 
 /**
+ * Determines if the given element is overflowing its container.
+ *
+ * Note: Some ideas were taken from these links, however the final solution
+ * was not found within.
  * @see https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
+ * @see https://github.com/wojtekmaj/detect-element-overflow/blob/main/src/index.js
  *
  * @param {HTMLElement} element
  * @param {Object} isDetecting? [optional; default = true] Whether or not the
@@ -17,52 +26,52 @@ if (!window.ResizeObserver) {
  * @return {boolean}
  */
 export default function useOverflowDetection(element, isDetecting = true) {
+  const refPrevIsOverflown = useRef(null);
+
+  /**
+   * @return {boolean} Whether or not the element is overflowing its parent.
+   */
   const getIsOverflown = useCallback(
-    () =>
-      (element && element.scrollHeight > element.clientHeight) ||
-      (element && element.scrollWidth > element.clientWidth),
+    () => getIsElOverflown(element),
     [element]
   );
 
-  const [isOverflown, setIsOverflown] = useState(getIsOverflown());
+  const [isOverflown, setIsOverflown] = useState(() => getIsOverflown());
 
-  const refPrevIsOverflown = useRef(isOverflown);
   refPrevIsOverflown.current = isOverflown;
+
+  const uuid = useMemo(uuidv4, []);
 
   useEffect(() => {
     if (isDetecting && element) {
+      let _isUnmounting = false;
+
       /**
        * Handles checking of overflown, comparing it with previous state, and
        * determining if the hook state should be updated.
+       *
+       * Sets hook state once detection has been performed.
+       *
+       * @return {void}
        */
       const checkIsOverflown = () => {
+        if (_isUnmounting) {
+          return;
+        }
+
         const prevIsOverflown = refPrevIsOverflown.current;
 
-        const newIsOverflown = getIsOverflown();
+        const nextIsOverflown = getIsOverflown();
 
-        const focusedTagName =
-          document.activeElement && document.activeElement.tagName;
-
-        // Ignore overflow adjustments if there is a focused input which can
-        // drive the software keyboard on mobile devices.
-        //
-        // This fixes an issue where it is not possible to type on Android in
-        // an input / textarea which is a child of an overflow-able <Center />
-        // component.
-        if (
-          focusedTagName.toLowerCase() !== "input" &&
-          focusedTagName.toLowerCase() !== "textarea"
-        ) {
-          if (prevIsOverflown !== newIsOverflown) {
-            setIsOverflown(newIsOverflown);
-          }
+        if (prevIsOverflown !== nextIsOverflown) {
+          setIsOverflown(nextIsOverflown);
         }
       };
 
-      const ro = new ResizeObserver((entries) => {
+      const ro = new ResizeObserver((/* entries */) => {
         /**
-         * IMPORTANT: requestAnimationFrame is used here to prevent possible
-         * "resize-observer loop limit exceeeded error."
+         * IMPORTANT: requestSkippableAnimationFrame is used here to prevent
+         * possible "resize-observer loop limit exceeded error."
          *
          * "This error means that ResizeObserver was not able to deliver all
          * observations within a single animation frame. It is benign (your site
@@ -70,16 +79,35 @@ export default function useOverflowDetection(element, isDetecting = true) {
          *
          * @see https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
          */
-        window.requestAnimationFrame(checkIsOverflown);
+        requestSkippableAnimationFrame(checkIsOverflown, uuid);
       });
 
       ro.observe(element);
+      ro.observe(element.parentNode);
+
+      /*
+      const mo = new MutationObserver(() => {
+        requestSkippableAnimationFrame(checkIsOverflown, uuid);
+      });
+      */
+
+      // FIXME: (jh) Re-enable?
+      /*
+      mo.observe(element, {
+        childList: true,
+        subtree: true,
+      });
+      */
 
       return function unmount() {
-        ro.unobserve(element);
+        _isUnmounting = true;
+
+        ro.observe(element);
+        ro.unobserve(element.parentNode);
+        // mo.disconnect();
       };
     }
-  }, [isDetecting, element, getIsOverflown]);
+  }, [isDetecting, element, getIsOverflown, uuid]);
 
   return isOverflown;
 }

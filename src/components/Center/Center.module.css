@@ -9,14 +9,20 @@
   overflow: hidden;
 }
 
-.center .inner-wrap {
+.center:not(.overflown) .inner-wrap {
   width: 100%;
   text-align: center;
 }
 
+.center.overflown .inner-wrap {
+  width: 100%;
+  display: inline-block;
+}
+
 /** Text-align-based center */
-.overflown {
+.center.overflown {
   text-align: center;
+  display: block;
   width: 100%;
   height: 100%;
   overflow-y: auto;

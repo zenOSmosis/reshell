@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Fixes issue where npm install cannot run if ReShell is included as a git
+# submodule
+.git

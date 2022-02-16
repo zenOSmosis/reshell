@@ -1,0 +1,66 @@
+.notification {
+  z-index: 99999;
+  width: 310px;
+  max-height: 400px;
+  display: inline-block;
+  cursor: default;
+
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.notification button.action {
+  width: 100%;
+  height: 100%;
+}
+
+.notification .main-image-wrap {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.notification .main-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.notification .title {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.notification .body-outer-wrap {
+  width: 100%;
+  height: 100%;
+  border: 2px rgba(255, 255, 255, 0.2) solid;
+  border-radius: 4px;
+
+  background-color: rgba(0, 0, 0, 0.7);
+
+  position: relative;
+  padding: 4px;
+}
+
+.notification .body {
+  font-size: 0.9rem;
+
+  /** Fix issue where floated elements in Notification body could render outside of body */
+  overflow: auto;
+
+  /* Break long words with auto hyphenation */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.notification button.close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-weight: bold;
+}

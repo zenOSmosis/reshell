@@ -1,20 +1,28 @@
 import { EVT_UPDATED } from "./classes/WindowController";
-import React, { useEffect, useMemo, useState } from "react";
-// import { useSpring, animated } from "@react-spring/web";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
 
 import WindowBorder from "./Window.Border";
+import WindowTitleBar from "./Window.TitleBar";
 
 import styles from "./Window.module.css";
 import classNames from "classnames";
 
-// import useAnimation from "@hooks/useAnimation";
-
+import useWindowStyles from "./hooks/useWindowStyles";
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
+import useWindowOpenAnimation from "./hooks/useWindowOpenAnimation";
+import useWindowControls from "./hooks/useWindowControls";
+
+// TODO: Apply considerations from Apple's Human Interface Guidelines:
+// https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/
+
+// TODO: Consider adjusting tabindex for non-active windows dynamically so that
+// tabbing will stay within constraints of the active window
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
 
 // TODO: Add prop-types
 // TODO: Document
@@ -31,39 +39,44 @@ const WindowView = ({
   // TODO: Obtain via windowController
   isProfiling = true,
 
-  onRequestMinimize,
-  onRequestMaximize,
-  onRequestRestore,
-  onRequestClose,
+  titleBarView = null,
+
   style = {},
   ...rest
 }) => {
   /** @type {DOMElement} */
   const [el, _setEl] = useState(null);
 
-  /*
-  useAnimation({
-    domElement: el,
-    animationName: "slideInUp",
-    shouldRun: hasInitialAutoPosition,
-  });
-  */
+  // TODO: Document
+  const { isOpenAnimationEnded } = useWindowOpenAnimation(el);
 
-  // TODO: Incorporate
+  // TODO: Document
   useWindowAutoPositioner(elWindowManager, el, windowController);
 
-  const [elTitlebar, _setElTitlebar] = useState(null);
-
-  const [zIndex, setZIndex] = useState(0);
-  const [title, setTitle] = useState(null);
+  const [zIndex, _setZIndex] = useState(0);
+  const [title, _setTitle] = useState(null);
+  const refTitle = useRef(null);
+  refTitle.current = title;
 
   // Associate window element with window controller
+  // TODO: Refactor into useWindowController hook
   useEffect(() => {
     if (windowController && el) {
       windowController.attachWindowElement(el);
     }
   }, [windowController, el]);
 
+  /** @type {boolean} */
+  const [isWindowBorderDisabled, _setIsWindowBorderDisabled] = useState(false);
+  const refIsWindowBorderDisabled = useRef(null);
+  refIsWindowBorderDisabled.current = isWindowBorderDisabled;
+
+  const [isMaximized, _setIsMaximized] = useState(false);
+  const [isMinimized, _setIsMinimized] = useState(false);
+
+  // TODO: Document
+  // TODO: Refactor into useWindowController hook
+  // TODO: Move into container view?
   useEffect(() => {
     if (windowController) {
       const _handleWindowControllerUpdate = updatedState => {
@@ -71,20 +84,35 @@ const WindowView = ({
           updatedState = windowController.getState() || {};
         }
 
-        if (
-          updatedState.title !== undefined &&
-          // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
-          updatedState.title !== title
-        ) {
-          setTitle(updatedState.title);
+        // Only apply view state change when necessary
+        const windowTitle = windowController.getTitle();
+        if (windowTitle !== refTitle.current) {
+          _setTitle(windowTitle);
         }
 
+        // Only apply view state change when necessary
         if (
           updatedState.stackingIndex !== undefined &&
           // TODO: Rather than checking dep value here, create conditionally-setting useState wrapper
           updatedState.stackingIndex !== zIndex
         ) {
-          setZIndex(updatedState.stackingIndex);
+          _setZIndex(updatedState.stackingIndex);
+        }
+
+        if (updatedState.isMaximized !== undefined) {
+          _setIsMaximized(updatedState.isMaximized);
+        }
+
+        if (updatedState.isMinimized !== undefined) {
+          _setIsMinimized(updatedState.isMinimized);
+        }
+
+        const shouldWindowBorderBeDisabled =
+          windowController.getIsBorderDisabled();
+        if (
+          refIsWindowBorderDisabled.current !== shouldWindowBorderBeDisabled
+        ) {
+          _setIsWindowBorderDisabled(shouldWindowBorderBeDisabled);
         }
       };
 
@@ -99,14 +127,19 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
+  const { onRestoreOrMaximize, onMinimize, onClose } =
+    useWindowControls(windowController);
+
   // Binds window dragging functionality
-  const dragBind = useWindowDragger({ windowController, elTitlebar });
+  const [dragBind, isUserDragging] = useWindowDragger({
+    windowController,
+    isDisabled: isWindowBorderDisabled,
+  });
 
-  // Binds border dragging functionality
-  const handleBorderDrag = useWindowDragResizer({ windowController });
-
-  /** @type {boolean} */
-  const isWindowBorderDisabled = windowController.getIsBorderDisabled();
+  // Binds border resizing functionality
+  const [handleBorderDrag, isUserResizing] = useWindowDragResizer({
+    windowController,
+  });
 
   // TODO: Document
   const DynamicProfilingWrapper = useMemo(
@@ -127,47 +160,63 @@ const WindowView = ({
     [isProfiling, windowController]
   );
 
+  // Delegate style properties to their respective sub-components
+  const { outerBorderStyle, windowStyle, bodyStyle } = useWindowStyles({
+    style,
+    isMaximized,
+    isMinimized,
+  });
+
   return (
+    // TODO: Wrap with ErrorBoundary and React.Suspense
     <DynamicProfilingWrapper>
       <StackingContext
         onMount={_setEl}
-        style={{ ...style, zIndex }}
+        {...rest}
+        style={{ ...outerBorderStyle, zIndex }}
         className={classNames(
           styles["window-outer-border"],
-          isActive && styles["active"]
-          // isMinimized && styles["minimized"]
+
+          // Prevents "popping" of window before open animation ends
+          !isOpenAnimationEnded && styles["hidden"],
+
+          isActive && styles["active"],
+          isMaximized && styles["maximized"],
+          isMinimized && styles["minimized"],
+          (isUserDragging || isUserResizing) && styles["dragging"]
         )}
-        {...rest}
+        // Enable hardware acceleration of window stacking context
+        isAccelerated={true}
+        data-reshell-window-title={windowController.getTitle()}
       >
         <WindowView.Border
           isDisabled={isWindowBorderDisabled}
           onBorderDrag={handleBorderDrag}
         >
           <Full
-            {...dragBind()}
             className={classNames(
               styles["window"],
-              isActive && styles["active"]
-              // isMinimized && styles["minimized"]
+              isActive && styles["active"],
+              // NOTE: This check intentionally is not taking resizing into
+              // consideration
+              isUserDragging && styles["dragging"]
             )}
+            style={windowStyle}
           >
             <Layout>
-              <Header
-
-              // onDoubleClick={handleToggleRestoreOrMaximize}
-              >
-                <div ref={_setElTitlebar} className={styles["titlebar"]}>
-                  <div className={styles["title"]}>{title}</div>
-                  <div className={styles["window-controls"]}>
-                    <button onClick={onRequestMinimize}>_</button>
-                    <button /* onClick={handleToggleRestoreOrMaximize} */>
-                      -
-                    </button>
-                    <button onClick={onRequestClose}>X</button>
-                  </div>
-                </div>
+              <Header>
+                <WindowTitleBar
+                  {...dragBind()}
+                  title={title}
+                  onRestoreOrMaximize={onRestoreOrMaximize}
+                  onMinimize={onMinimize}
+                  onClose={onClose}
+                  titleBarView={titleBarView}
+                />
               </Header>
-              <Content>{children}</Content>
+              <Content className={styles["body"]} style={bodyStyle}>
+                {children}
+              </Content>
             </Layout>
           </Full>
         </WindowView.Border>

@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState, useRef } from "react";
 export default function AVBase({
   mediaStreamTrack,
   mediaType = "video",
-  onEl = (el) => null,
+  onEl = el => null,
   ...rest
 }) {
   const [el, setEl] = useState(null);
@@ -18,22 +18,34 @@ export default function AVBase({
     [mediaStreamTrack]
   );
 
+  // TODO: Document
+  // Contains internal fixes which help Firefox and iOS start playing media
+  // tracks
   useEffect(() => {
-    if (!el || !mediaStream) {
+    if (!el) {
+      return;
+    }
+
+    // Fixes issue in Firefox where setting mediaStream to undefined would keep
+    // video on last frame
+    if (!mediaStream) {
+      el.srcObject = null;
       return;
     }
 
     el.srcObject = mediaStream;
 
-    // TODO: Emit events when playing in order to perform "read receipts" for remote participants
+    // TODO: Emit events when playing in order to perform "read receipts" for
+    // remote participants
 
     el.play()
       .then(() => (el.muted = false))
-      .catch((err) => console.warn("Caught", err));
+      .catch(err => console.warn("Caught", err));
   }, [el, mediaStream]);
 
   const refOnEl = useRef(onEl);
 
+  // TODO: Document
   useEffect(() => {
     const onEl = refOnEl.current;
 

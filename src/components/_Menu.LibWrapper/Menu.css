@@ -13,6 +13,10 @@
   border-radius: 8px;
 }
 
+.szh-menu-container li[aria-disabled="true"] {
+  color: #999;
+}
+
 /** Menu button; closed state */
 button.szh-menu-button {
   background-color: transparent;
@@ -34,9 +38,21 @@ button.szh-menu-button.szh-menu-button--open {
   color: inherit;
 }
 
-.szh-menu-container li:hover,
+.szh-menu-container li:not([role="presentation"]):hover,
 .szh-menu-container li div[role="menuitem"]:hover,
 .szh-menu-container li div[aria-expanded="true"] {
   background-color: #3c8aff;
   color: #000;
+}
+
+.szh-menu__divider[role="separator"] {
+  margin: 2px 8px 0px 8px;
+  padding: 1px 0px;
+  background-color: rgba(255, 255, 255, 0.2);
+  height: 1px;
+  max-height: 1px;
+}
+
+.szh-menu__header[role="presentation"] {
+  color: rgba(255, 255, 255, 0.4);
 }

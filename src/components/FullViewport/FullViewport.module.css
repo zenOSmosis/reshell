@@ -1,0 +1,35 @@
+.html-full-viewport {
+  padding: 0px;
+  margin: 0px;
+
+  overflow: hidden;
+}
+
+.body-full-viewport {
+  padding: 0px;
+  margin: 0px;
+
+  overflow: hidden;
+  position: absolute;
+
+  top: 0px;
+  left: 0px;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.full-viewport {
+  /* IMPORTANT: Bottom fixed seems to fix iOS Safari issues when switching
+     between landscape and portrait orientations, including an issue where
+     the opening the software keyboard in landscape mode, then closing it,
+     and the app would not take up the full amount of screen space.
+  */
+  position: fixed;
+  bottom: 0px;
+
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}

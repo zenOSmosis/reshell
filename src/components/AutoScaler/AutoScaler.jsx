@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import styles from "./AutoScaler.module.css";
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -21,6 +23,8 @@ export default function AutoScaler({ children, className, ...rest }) {
   const [elOuterWrap, setElOuterWrap] = useState(null);
   const [elInnerWrap, setElInnerWrap] = useState(null);
 
+  const uuid = useMemo(uuidv4, []);
+
   // Handle scaling
   useEffect(() => {
     if (elOuterWrap && elInnerWrap) {
@@ -37,9 +41,8 @@ export default function AutoScaler({ children, className, ...rest }) {
       // when first rendering
       elInnerWrap.style.visibility = "hidden";
 
-      // TODO: Fix iOS 13 error (ReferenceError: Can't find variable: ResizeObserver)
-      const ro = new ResizeObserver((entries) => {
-        requestAnimationFrame(() => {
+      const ro = new ResizeObserver(entries => {
+        requestSkippableAnimationFrame(() => {
           for (const entry of entries) {
             const size = {
               width: entry.target.offsetWidth,
@@ -66,7 +69,7 @@ export default function AutoScaler({ children, className, ...rest }) {
               elInnerWrap.style.visibility = "visible";
             }, 4);
           }
-        });
+        }, uuid);
       });
 
       ro.observe(elOuterWrap);
@@ -77,7 +80,7 @@ export default function AutoScaler({ children, className, ...rest }) {
         ro.unobserve(elInnerWrap);
       };
     }
-  }, [elOuterWrap, elInnerWrap]);
+  }, [elOuterWrap, elInnerWrap, uuid]);
 
   return (
     <div

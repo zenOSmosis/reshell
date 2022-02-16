@@ -14,7 +14,7 @@ export default function useForceUpdate() {
   const [, setAlt] = useState(false);
 
   const forceUpdate = useCallback(() => {
-    !refIsUnmount.current && setAlt((alt) => !alt);
+    !refIsUnmount.current && setAlt(alt => !alt);
   }, []);
 
   return forceUpdate;

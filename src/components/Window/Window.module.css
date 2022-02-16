@@ -1,35 +1,102 @@
+/* TODO: Borrow some window styles from this article (double-layer translucency
+  and [potentially] wider borders)
+*/
+
+.window-outer-border.hidden {
+  visibility: hidden;
+}
+
 .window-outer-border {
   position: absolute;
 
-  border-radius: 8px;
+  /* Prototype Gaussian blur
+   
+    FIXME: (jh) Refactor into separate Panel (or equiv.) component which is
+    further tied into system settings for controlling Gaussian blur, among other things.
+
+    IMPORTANT: CPU usage appears to be higher when doing screenshares when this
+    effect is enabled.
+  backdrop-filter: blur(10px);
+  */
+  /* backdrop-filter: blur(10px); */
+
+  /*
+  Minimum width / height calculations (may need additional consideration)
+  */
+  min-width: 300px;
+  min-height: 50px;
 }
 
-/** Prevent window from being able to be larger than the available space */
+/* TODO: Add adjustable padding to outer-border cells (will probably need a
+class set on the individual elements).  This padding will determine the width
+of the drag zone outside of the windows. */
+
+/* TODO: Rename window-outer-border to window-drag-resize-border (or equiv.) */
+
+/*
+.window-outer-border:not(.maximized) {
+  border: 4px transparent solid;
+}
+*/
+
+.window-outer-border.maximized {
+  top: 0px !important;
+  left: 0px !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  /* Ensure maximized windows clear the Dock
+    TODO: Refactor as necessary to handle dynamic Dock layouts
+   */
+  padding-bottom: 30px !important;
+}
+
+.window-outer-border.minimized {
+  top: 120% !important;
+  width: 10% !important;
+  left: 50% !important;
+}
+
+/* Enable slower transitions when user is not dragging or resizing the window */
+.window-outer-border:not(.dragging) {
+  transition: 0.1s linear;
+}
+
+/* Prevent window from being able to be larger than the available space */
 /* TODO: Only enforce this change if the user has not resized the window? */
-/* TODO: If window is slid off edge, move it, dynamically (i.e. call the appropriate moveTo method in the JS) */
+/* TODO: If window is slid off edge, move it, dynamically (i.e. call the
+  appropriate moveTo method in the JS) */
 .window,
 .window-outer-border {
   max-width: 100%;
   max-height: 100%;
 }
 
-.window-outer-border:not(.active) {
-  filter: drop-shadow(0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.8));
-  background-color: rgba(0, 0, 0, 0.4);
+.window {
+  border: 1px rgba(255, 255, 255, 0.1) solid;
+  border-radius: 8px;
+  overflow: hidden;
+
+  background-color: #1f2022;
 }
 
+.window.active {
+  border: 1px rgba(255, 255, 255, 0.3) solid;
+}
+
+/* Inactive window shading */
+.window-outer-border:not(.active) {
+  filter: drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.8));
+}
+
+/* Active window shading window shading */
 .window-outer-border.active {
   filter: drop-shadow(0.25rem 0.25rem 1rem #000);
-  background-color: rgba(0, 0, 0, 1);
 }
 
-.window.minimized {
-  display: none;
-}
-
-.window .titlebar {
-  background-color: rgb(54, 54, 54);
-  color: #fff;
+.window .title-bar {
+  background-color: #333335;
+  color: #999;
   border-bottom: 1px rgba(0, 0, 0, 0.4) solid;
   width: 100%;
   height: 100%;
@@ -37,24 +104,90 @@
   display: flex;
   justify-content: left;
   align-items: center;
+  padding: 4px;
 }
 
-.window.active .titlebar {
-  background-color: rgb(26, 26, 26);
+.window .title-bar * {
+  vertical-align: middle;
 }
 
-.window .titlebar .title {
-  float: left;
-  margin-left: 10px;
-  font-weight: bold;
+/*
+  Fixes issue where pointercancel would sometimes be fired on certain Android
+  devices.
+
+  Also enables all child elements of title bar to act as actionable drag
+  elements (i.e. able to drag a when event target is a button, etc.
+*/
+.window .title-bar,
+.window .title-bar * {
+  touch-action: none !important;
+}
+
+/* @see https://developer.mozilla.org/en-US/docs/Web/CSS/cursor */
+.window.dragging .title-bar {
+  cursor: grabbing;
+}
+
+.window.active .title-bar {
+  background-color: #3e3f41;
+  color: #fff;
+}
+
+.window .title-bar .title {
+  /** Offset the window controls to help make things centered */
+  padding-left: 40px;
+
+  text-align: center;
+
+  font-weight: 600;
+  width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Don't change cursor on hover; i.e. cursor-passthru */
+  pointer-events: none;
 }
 
 /* @see https://stackoverflow.com/a/36182782 */
-.window .titlebar .window-controls {
+.window .title-bar .window-controls {
   margin-left: auto;
   order: 2;
 }
 
-.window .titlebar .window-controls button {
-  font-weight: bold;
+/* TODO: Use rounded triangles instead of round buttons? */
+.window .title-bar .window-controls button {
+  outline: 0px;
+  padding: 0px;
+  margin: 4px;
+  border-radius: 12px;
+  width: 12px;
+  height: 12px;
+  background-color: #504e52;
+}
+
+.window.active .title-bar .window-controls button.maximize,
+.window .title-bar .window-controls:hover button.maximize {
+  background-color: #00cd1e;
+  filter: grayscale(0);
+}
+
+.window.active .title-bar .window-controls button.minimize,
+.window .title-bar .window-controls:hover button.minimize {
+  background-color: #ffbc00;
+  filter: grayscale(0);
+}
+
+.window.active .title-bar .window-controls button.close,
+.window .title-bar .window-controls:hover button.close {
+  background-color: #ff5250;
+  filter: grayscale(0);
+}
+
+/* Apply partial grayscale to some inactive window elements */
+.window:not(.active) button,
+.window:not(.active) input,
+.window:not(.active) textarea,
+.window:not(.active) a {
+  filter: grayscale(0.5);
 }

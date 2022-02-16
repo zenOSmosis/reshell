@@ -4,6 +4,9 @@ import styles from "./Video.module.css";
 
 import AVBase from "./AVBase";
 
+// NOTE: (jh) There is also an aspect-ratio CSS property:
+// @see https://css-tricks.com/almanac/properties/a/aspect-ratio/
+
 /**
  * Plays a single video MediaStreamTrack out the monitor.
  */

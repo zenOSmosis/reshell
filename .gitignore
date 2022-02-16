@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# dynamically generated ReShell portal registration
+src/__registerPortals__.js
+
 # dependencies
 **/node_modules
 /.pnp
@@ -10,6 +13,8 @@
 
 # production
 /build
+
+src/portals/SpeakerAppPortal/tmp.shared
 
 # misc
 .DS_Store

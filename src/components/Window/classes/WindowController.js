@@ -1,5 +1,7 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import { debounce } from "debounce";
+
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
@@ -7,24 +9,21 @@ export { EVT_UPDATED, EVT_DESTROYED };
 export const EVT_RENDER_PROFILED = "render-profile";
 
 export const EVT_RESIZED = "resized";
+export const EVT_MOVED = "moved";
 
 // TODO: Implement ability to take snapshot (i.e. save to png, etc) for window previewing
 
 // TODO: Move into core directory?
 // TODO: Document
-export default class WindowController extends PhantomCore {
+export default class WindowController extends PhantomState {
+  // TODO: Document
   constructor(initialState = {}, { onBringToTop }) {
-    super();
-
     const DEFAULT_STATE = {
       isMaximized: false,
       isMinimized: false,
-      title: this.getTitle(),
     };
 
-    this._state = Object.seal(
-      WindowController.mergeOptions(DEFAULT_STATE, initialState)
-    );
+    super(PhantomState.mergeOptions({ ...DEFAULT_STATE, ...initialState }));
 
     this._appRuntime = null;
 
@@ -35,51 +34,90 @@ export default class WindowController extends PhantomCore {
 
     this._emitDebouncedResized = debounce(
       this._emitDebouncedResized.bind(this),
+      500,
+      // Ensure runs on trailing edge
+      false
+    );
+
+    this._emitDebouncedMoved = debounce(
+      this._emitDebouncedMoved.bind(this),
       500
     );
 
+    // TODO: Retain last size / moved and enable reverting back to previous settings
+    // TODO: Enable percentage calculation and adjust when resizing viewport (this should prevent windows from being able to leave the viewport)
+
+    // TODO: Ensure these are unbound when controller is destructed (related issue: https://github.com/zenOSmosis/phantom-core/issues/68)
+    // (For manually triggering Chrome's built-in Garbage Collector, see: https://github.com/facebook/react/issues/22471)
     this._centerHandler = null;
+    this._scatterHandler = null;
   }
 
   /**
    * @return {Promise<void>}
    */
   async destroy() {
-    // Clear any currently scheduled resize executions
-    this._emitDebouncedResized.clear();
+    return super.destroy(async () => {
+      // Clear any currently scheduled resize executions
+      this._emitDebouncedResized.clear();
 
-    // TODO: Determine if in dirty state, prior to closing
-    // if (
-    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
-    // ) {
+      // TODO: Determine if in dirty state, prior to closing
+      // if (
+      // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+      // ) {
 
-    if (this._appRuntime) {
-      await this._appRuntime.destroy();
-    }
+      if (this._appRuntime && !this._appRuntime.getIsDestroying()) {
+        await this._appRuntime.destroy();
+      }
 
-    this._state = {};
-    this._appRuntime = null;
-    this._windowEl = null;
-    this._windowManagerEl = null;
+      this._appRuntime = null;
+      this._windowEl = null;
+      this._windowManagerEl = null;
+    });
 
-    return super.destroy();
     //}
   }
 
   // TODO: Document
-  __INTERNAL__setCenterHandler(_centerHandler) {
-    this._centerHandler = _centerHandler;
+  __INTERNAL__setCenterHandler(centerHandler) {
+    this._centerHandler = centerHandler;
   }
 
   // TODO: Document
   center() {
-    this._centerHandler();
+    return this._centerHandler();
+  }
+
+  // TODO: Document
+  __INTERNAL__setScatterHandler(scatterHandler) {
+    this._scatterHandler = scatterHandler;
+  }
+
+  // TODO: Document
+  scatter() {
+    return this._scatterHandler();
   }
 
   // TODO: Document
   bringToTop() {
     this._handleBringToTop(this);
   }
+
+  // TODO: Document
+  /*
+  __INTERNAL__setIsActive(isActive) {
+    if (isActive !== this.getIsActive()) {
+      this.setState({ isActive });
+    }
+  }
+  */
+
+  // TODO: Document
+  /*
+  getIsActive() {
+    return this.getState().isActive;
+  }
+  */
 
   // TODO: Document
   // @see https://reactjs.org/docs/profiler.html
@@ -130,22 +168,26 @@ export default class WindowController extends PhantomCore {
     }
   }
 
-  // TODO: Implement
   // TODO: Document
   setSize({ width, height }) {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const windowEl = this._windowEl;
     if (windowEl) {
-      if (width !== undefined) {
-        windowEl.style.width = `${width}px`;
-      }
-      if (height !== undefined) {
-        windowEl.style.height = `${height}px`;
-      }
-    }
+      // FIXME: (jh) Can these be applied as a single reflow?
+      // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
 
-    // Emit debounced EVT_RESIZED event
-    this._emitDebouncedResized();
+      requestSkippableAnimationFrame(() => {
+        if (width !== undefined) {
+          windowEl.style.width = `${width}px`;
+        }
+        if (height !== undefined) {
+          windowEl.style.height = `${height}px`;
+        }
+
+        // Emit debounced EVT_RESIZED event
+        this._emitDebouncedResized();
+      }, `${this._uuid}-size`);
+    }
   }
 
   // TODO: Document
@@ -155,15 +197,11 @@ export default class WindowController extends PhantomCore {
 
   // TODO: Document
   getSize() {
-    // TODO: If unable to acquire style size for any dimension, return the calculated value
-
-    // issues
     const windowEl = this._windowEl;
     if (windowEl) {
-      // IMPORTANT: Not always using calculated size due to potential performance
       return {
-        width: parseInt(windowEl.style.width, 10),
-        height: parseInt(windowEl.style.height, 10),
+        width: windowEl.offsetWidth,
+        height: windowEl.offsetHeight,
       };
     } else {
       console.warn("Unable to acquire windowEl");
@@ -183,21 +221,54 @@ export default class WindowController extends PhantomCore {
     }
   }
 
-  // TODO: Implement
   // TODO: Document
   setPosition({ x, y }) {
-    // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
+    // Fixes issue where restoring using widow title bar (i.e. double-click or
+    // using window control button) would make window go to upper-left of
+    // screen
+    if (this.getIsMaximized()) {
+      return;
+    }
+
     const windowEl = this._windowEl;
     if (windowEl) {
-      if (x !== undefined) {
-        windowEl.style.left = `${x}px`;
-        delete windowEl.style.right;
-      }
-      if (y !== undefined) {
-        windowEl.style.top = `${y}px`;
-        delete windowEl.style.bottom;
-      }
+      /**
+       * FIXME: (jh) While using translate would be better here, it is buggier
+       * to use with some of the window animations (open / minimize / restore)
+       *
+       * However, if able to tie directly into matrix operations provided by
+       * accelerated StackingContext, it might improve acceleration even
+       * further
+       *
+       * Additional reading:
+       *    - [will-change] https://developer.mozilla.org/en-US/docs/Web/CSS/will-change
+       *    - [animating the box model]: https://whistlr.info/2021/box-model-animation
+       */
+
+      requestSkippableAnimationFrame(() => {
+        if (x !== undefined) {
+          windowEl.style.left = `${x}px`;
+
+          // Delete opposing right style
+          delete windowEl.style.right;
+        }
+        if (y !== undefined) {
+          windowEl.style.top = `${y}px`;
+
+          // Delete opposing bottom style
+          delete windowEl.style.bottom;
+        }
+
+        // IMPORTANT!: Do not update state on each iteration (if at all)
+        // because that would cause excessive re-rendering
+        this._emitDebouncedMoved();
+      }, `${this._uuid}-position`);
     }
+  }
+
+  // TODO: Document
+  _emitDebouncedMoved() {
+    this.emit(EVT_MOVED);
   }
 
   // TODO: Document
@@ -232,40 +303,14 @@ export default class WindowController extends PhantomCore {
       throw new TypeError("partialNextState is not an object");
     }
 
-    // TODO: Refactor title to app runtime passing (ensure it can work both ways)
-    if (partialNextState.title !== undefined && this._appRuntime) {
-      this._appRuntime.setTitle(partialNextState.title);
-    }
-
     // Potentially reset polar-opposite states
     if (partialNextState.isMaximized) {
-      this._state.isMinimized = false;
+      partialNextState.isMinimized = false;
     } else if (partialNextState.isMinimized) {
-      this._state.isMaximized = false;
+      partialNextState.isMaximized = false;
     }
 
-    // TODO: This is buggy with certain types of state objects; should we just do a shallow-merge instead?
-    this._state = PhantomCore.mergeOptions(this._state, partialNextState);
-
-    this.emit(EVT_UPDATED, partialNextState);
-  }
-
-  /**
-   * @param {string} title
-   * @return {void}
-   */
-  setTitle(title) {
-    // Fixes issue where title does not render in window
-    this.setState({ title });
-
-    super.setTitle(title);
-  }
-
-  /**
-   * @return {Object}
-   */
-  getState() {
-    return this._state;
+    return super.setState(partialNextState);
   }
 
   /**
@@ -276,13 +321,18 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMaximized });
   }
 
+  // TODO: Document
+  maximize() {
+    return this.setIsMaximized(true);
+  }
+
   /**
    * Retrieves whether or not the window is maximized.
    *
    * @returns {boolean}
    */
   getIsMaximized() {
-    return this._state.isMaximized;
+    return this.getState().isMaximized;
   }
 
   /**
@@ -295,12 +345,27 @@ export default class WindowController extends PhantomCore {
     return this.setState({ isMinimized });
   }
 
+  // TODO: Document
+  minimize() {
+    return this.setIsMinimized(true);
+  }
+
   /**
    * Retrieves whether or not the window is minimized.
    *
    * @return {boolean}
    */
   getIsMinimized() {
-    return this._state.isMinimized;
+    return this.getState().isMinimized;
+  }
+
+  // TODO: Document
+  restore() {
+    // IMPORTANT: The maximized / minimized states need to be set at the same
+    // time here; don't call the individual methods directly
+    this.setState({
+      isMaximized: false,
+      isMinimized: false,
+    });
   }
 }

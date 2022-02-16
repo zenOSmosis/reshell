@@ -1,0 +1,45 @@
+import { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import { useEffect, useMemo, useState } from "react";
+import useServicesContext from "./useServicesContext";
+
+/**
+ * @typedef {Object} UseServiceClassReturn
+ * @property {PhantomServiceCore} serviceInstance Instantiated
+ * PhantomServiceCore extension.
+ * @property {Object} serviceState Current state of the instantiated service
+ * class.
+ *
+ * @param {PhantomServiceCore} ServiceClass Non-instantiated
+ * PhantomServiceCore extension.
+ */
+export default function useServiceClass(ServiceClass) {
+  const { startServiceClass } = useServicesContext();
+
+  // Automatically start the service
+  const serviceInstance = useMemo(
+    () => startServiceClass(ServiceClass),
+    [ServiceClass, startServiceClass]
+  );
+
+  const [serviceState, setServiceState] = useState({});
+
+  // Bind service EVT_UPDATE events to hook state
+  useEffect(() => {
+    const _handleServiceUpdate = () => {
+      // IMPORTANT: Must set shallow clone of state or attached components may
+      // not update
+      setServiceState({ ...serviceInstance.getState() });
+    };
+
+    serviceInstance.on(EVT_UPDATED, _handleServiceUpdate);
+
+    return function unmount() {
+      serviceInstance.off(EVT_UPDATED, _handleServiceUpdate);
+    };
+  }, [serviceInstance]);
+
+  return {
+    serviceInstance,
+    serviceState,
+  };
+}

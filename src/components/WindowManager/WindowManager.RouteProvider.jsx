@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import useDesktopContext from "@hooks/useDesktopContext";
 
-import useAppRuntimesContext from "@hooks/useAppRuntimesContext";
+import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import { useHistory, useLocation } from "react-router-dom";
 
 export const WindowManagerRouteContext = React.createContext({});
 
 export default function WindowManagerRouteProvider({ children }) {
   const location = useLocation();
-  const { getAppRuntimesWithRegistrationID } = useAppRuntimesContext();
+  const { getAppRuntimesWithRegistrationID } = useAppOrchestrationContext();
 
   const [locationAppRuntimes, setLocationAppRuntimes] = useState([]);
 

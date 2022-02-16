@@ -1,52 +1,98 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Preload from "@components/Preload";
 
 import classNames from "classnames";
 import styles from "./VUMeter.module.css";
 
+import PropTypes from "prop-types";
+
+import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
+
+import requestSkippableAnimationFrame from "request-skippable-animation-frame";
+import { v4 as uuidv4 } from "uuid";
+
 import vuBackground from "./images/vu.png";
 import vuNeedle from "./images/needle.png";
 
+VUMeter.propTypes = {
+  label: PropTypes.string,
+
+  className: PropTypes.string,
+
+  /** When multiple audio tracks may be used together */
+  mediaStreamTracks: PropTypes.arrayOf(PropTypes.instanceOf(MediaStreamTrack)),
+
+  /** When only a single track is used */
+  mediaStreamTrack: PropTypes.instanceOf(MediaStreamTrack),
+};
+
+/**
+ * A needle-based audio meter.
+ */
 export default function VUMeter({
   label = "Mono",
-  percent = 0,
   className,
+  mediaStreamTrack,
+  mediaStreamTracks,
   ...rest
 }) {
-  if (percent < 0) percent = 0;
-  if (percent > 100) percent = 100;
+  const [elVU, setElVU] = useState(null);
+  const [elNeedle, setElNeedle] = useState(null);
 
-  const [vu, setVu] = useState(null);
-  const [needle, setNeedle] = useState(null);
-
-  useEffect(() => {
-    if (vu && needle) {
-      vu.style.backgroundImage = `url(${vuBackground})`;
-      vu.style.backgroundPosition = "top left";
-      vu.style.backgroundRepeat = "no-repeat";
-
-      needle.style.backgroundImage = `url(${vuNeedle})`;
-      needle.style.backgroundPosition = "top left";
-      needle.style.backgroundRepeat = "no-repeat";
-    }
-  }, [vu, needle]);
+  const uuid = useMemo(uuidv4, []);
 
   useEffect(() => {
-    if (needle) {
-      needle.style.transform = `rotateZ(${Math.min(87 * (percent / 100))}deg)`;
+    if (elVU && elNeedle) {
+      elVU.style.backgroundImage = `url(${vuBackground})`;
+      elVU.style.backgroundPosition = "top left";
+      elVU.style.backgroundRepeat = "no-repeat";
+
+      elNeedle.style.backgroundImage = `url(${vuNeedle})`;
+      elNeedle.style.backgroundPosition = "top left";
+      elNeedle.style.backgroundRepeat = "no-repeat";
     }
-  }, [needle, percent]);
+  }, [elVU, elNeedle]);
+
+  /**
+   * @param {number} audioLevel A float value from 0 - 100, where 100
+   * represents maximum strength.
+   * @return {void}
+   */
+  const handleAudioLevelChange = useCallback(
+    audioLevel => {
+      if (elNeedle) {
+        requestSkippableAnimationFrame(() => {
+          elNeedle.style.transform = `rotateZ(${Math.min(
+            87 * (audioLevel / 100)
+          )}deg)`;
+        }, uuid);
+      }
+    },
+    [elNeedle, uuid]
+  );
+
+  // Set initial level
+  useEffect(() => {
+    if (elNeedle) {
+      handleAudioLevelChange(0);
+    }
+  }, [handleAudioLevelChange, elNeedle]);
+
+  useMultiAudioMediaStreamTrackLevelMonitor(
+    mediaStreamTrack || mediaStreamTracks,
+    handleAudioLevelChange
+  );
 
   return (
     <Preload preloadResources={[vuBackground, vuNeedle]}>
       <div
-        ref={setVu}
+        ref={setElVU}
         className={classNames(styles["vu"], className)}
         {...rest}
       >
         <div className={styles["mask"]}>
           <div
-            ref={setNeedle}
+            ref={setElNeedle}
             className={styles["needle"]}
             style={{ transform: "rotateZ(0deg)" }}
           ></div>

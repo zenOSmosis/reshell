@@ -1,12 +1,12 @@
-import fs from 'fs';
+import fs from "fs";
 
 // TODO: Set max upper limit for read size
 
 /**
  * Reads the contents of a file.
- * 
+ *
  * @see https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
- * 
+ *
  * @param {string} path
  * @param {Object} options?
  * @return {Promise<string | Buffer>}

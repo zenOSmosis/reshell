@@ -1,31 +1,35 @@
 import React from "react";
+import AutoScaler from "../AutoScaler";
 import StaggeredWaveLoading from "../StaggeredWaveLoading";
 import PropTypes from "prop-types";
 
 import usePreload from "@hooks/usePreload";
 
 Preload.propTypes = {
-  /**
-   * @type {string[]} A list of URLs to preload.
-   */
+  /** An array of URLs to preload */
   preloadResources: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 
+  /** Called when there is a loading error  */
   onError: PropTypes.func,
+
+  /** If true, disables loading indicator */
+  disabledLoadingIndicator: PropTypes.bool,
 };
 
 export default function Preload({
   children,
   preloadResources,
-  onError = (err) => console.warn("Caught", err),
+  disabledLoadingIndicator = false,
+  onError = err => console.warn("Caught", err),
   ...rest
 }) {
   const { isPreloaded /* progress */ } = usePreload(preloadResources);
 
-  if (!isPreloaded) {
+  if (!isPreloaded && !disabledLoadingIndicator) {
     return (
-      <div {...rest}>
+      <AutoScaler {...rest}>
         <StaggeredWaveLoading />
-      </div>
+      </AutoScaler>
     );
   } else {
     return <React.Fragment>{children}</React.Fragment>;

@@ -1,63 +1,60 @@
 import Desktop from "@components/Desktop";
 
-import Applications from "./apps/Applications";
-import AboutReShell from "./apps/AboutReShell";
-import BackgroundSelector from "./apps/BackgroundSelector";
-import LocalStorageVault from "./apps/LocalStorageVault";
-import InputMediaDevices from "./apps/InputMediaDevices";
-import TestVUMeterWindow from "./apps/TestVUMeterWindow";
-import ScreenCapture from "./apps/ScreenCapture";
-import ScreenShot from "./apps/ScreenShot";
-import ApplicationMonitor from "./apps/ApplicationMonitor";
-import ServiceMonitor from "./apps/ServiceMonitor";
-import PresentationExpress from "./apps/PresentationExpress";
-import SpeakerAppWindow from "./apps/SpeakerAppWindow";
-import ZenOSmosisWindow from "./apps/zenOSmosisWindow";
-import MenubarPrototype from "./apps/MenubarPrototype";
-import Box3DPrototype from "./apps/Box3DPrototype";
-import ColorAdjuster from "./apps/ColorAdjuster";
-import NotesPrototype from "./apps/NotesPrototype";
-import MemoryInfo from "./apps/MemoryInfo";
-import HostBridge from "./apps/HostBridge";
-import Files from "./apps/Files";
-import Terminal from "./apps/Terminal";
-import AppRegistrationMonitor from "./apps/AppRegistrationMonitor";
-import Environment from "./apps/Environment";
-import NotificationsPrototype from "./apps/NotificationsPrototype";
-// import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
+import ApplicationsApp from "./apps/ApplicationsApp";
+import AboutReShellApp from "./apps/AboutReShellApp";
+import BackgroundSelectorApp from "./apps/BackgroundSelectorApp";
+import BeepPrototypeApp from "./apps/BeepPrototypeApp";
+import KeyVaultApp from "./apps/KeyVaultApp";
+import InputMediaDevicesApp from "./apps/InputMediaDevicesApp";
+import VUMeterApp from "./apps/VUMeterApp";
+import ScreenCaptureApp from "./apps/ScreenCaptureApp";
+import ApplicationMonitorApp from "./apps/ApplicationMonitorApp";
+import ServiceMonitorApp from "./apps/ServiceMonitorApp";
+import PresentationExpressApp from "./apps/PresentationExpressApp";
+import MenubarPrototypeApp from "./apps/MenubarPrototypeApp";
+import Box3DPrototypeApp from "./apps/Box3DPrototypeApp";
+import ColorAdjusterApp from "./apps/ColorAdjusterApp";
+import NotesPrototypeApp from "./apps/NotesPrototypeApp";
+import MemoryInfoApp from "./apps/MemoryInfoApp";
+import HostBridgeApp from "./apps/HostBridgeApp";
+import FilesApp from "./apps/FilesApp";
+import TerminalApp from "./apps/TerminalApp";
+import AppRegistrationMonitorApp from "./apps/AppRegistrationMonitorApp";
+import EnvironmentApp from "./apps/EnvironmentApp";
+import NotificationsPrototypeApp from "./apps/NotificationsPrototypeApp";
+import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
+import SystemInformationApp from "./apps/SystemInformationApp";
 
-// import InputMediaDeviceSelectorView from "./views/InputMediaDeviceSelectorView";
+// import InputMediaDevicesSelectorView from "./views/InputMediaDevicesSelectorView";
 
 export default function ExamplePortal() {
   return (
     <Desktop
       appDescriptors={[
-        Applications,
-        AboutReShell,
-        BackgroundSelector,
-        LocalStorageVault,
-        InputMediaDevices,
-        TestVUMeterWindow,
-        ScreenCapture,
-        ScreenShot,
-        ApplicationMonitor,
-        ServiceMonitor,
-        PresentationExpress,
-        SpeakerAppWindow,
-        ZenOSmosisWindow,
-        MenubarPrototype,
-        Box3DPrototype,
-        ColorAdjuster,
-        NotesPrototype,
-        MemoryInfo,
-        HostBridge,
-        Files,
-        Terminal,
-        AppRegistrationMonitor,
-        Environment,
-        NotificationsPrototype,
-        // WindowAPIDiscovererWindow,
-        //
+        ApplicationsApp,
+        AboutReShellApp,
+        BackgroundSelectorApp,
+        BeepPrototypeApp,
+        KeyVaultApp,
+        InputMediaDevicesApp,
+        VUMeterApp,
+        ScreenCaptureApp,
+        ApplicationMonitorApp,
+        ServiceMonitorApp,
+        PresentationExpressApp,
+        MenubarPrototypeApp,
+        Box3DPrototypeApp,
+        ColorAdjusterApp,
+        NotesPrototypeApp,
+        MemoryInfoApp,
+        HostBridgeApp,
+        FilesApp,
+        TerminalApp,
+        AppRegistrationMonitorApp,
+        EnvironmentApp,
+        NotificationsPrototypeApp,
+        ModalsPrototypeApp,
+        SystemInformationApp,
       ]}
     />
   );

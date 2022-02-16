@@ -1,0 +1,28 @@
+.labeled-toggle {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0px 4px;
+}
+
+.labeled-toggle.disabled {
+  color: gray;
+  cursor: not-allowed;
+}
+
+.labeled-toggle .cell {
+  display: inline-block;
+
+  margin: 0px 4px;
+  font-weight: bold;
+}
+
+.labeled-toggle .cell.right:not(.active),
+.labeled-toggle .cell.left:not(.active) {
+  opacity: 0.7;
+}
+
+.labeled-toggle .title-row {
+  font-size: 0.8rem;
+}

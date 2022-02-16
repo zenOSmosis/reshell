@@ -3,7 +3,6 @@ import React, { useImperativeHandle, useState } from "react";
 import WindowView from "./Window.View";
 
 // TODO: Implement CodeSandbox support for development / debugging:  https://codesandbox.io/docs/embedding#embed-options
-
 // TODO: See https://csslayout.io/patterns
 
 // TODO: Add prop-types
@@ -18,10 +17,8 @@ const Window = React.forwardRef(
       // TODO: Obtain via windowController instead?
       isActive,
 
-      onRequestMinimize,
-      onRequestMaximize,
-      onRequestRestore,
-      onRequestClose,
+      titleBarView,
+
       style = {},
       ...rest
     },
@@ -38,27 +35,17 @@ const Window = React.forwardRef(
     // The windowController should already be supplied by WindowManager before
     // rendering is even attempted
     if (!windowController) {
-      console.warn(
-        "No window controller available; blocking window render attempt"
-      );
-
       return null;
     }
-
-    // TODO: Implement error boundary here
 
     return (
       <WindowView
         {...rest}
-        // TODO: If wrapping w/ optional profiler, use a key here so that internal view state is not lost?
         style={style}
         elWindowManager={elWindowManager}
         windowController={windowController}
-        onRequestMinimize={onRequestMinimize}
-        onRequestMaximize={onRequestMaximize}
-        onRequestRestore={onRequestRestore}
-        onRequestClose={onRequestClose}
         isActive={isActive}
+        titleBarView={titleBarView}
       >
         {children}
       </WindowView>

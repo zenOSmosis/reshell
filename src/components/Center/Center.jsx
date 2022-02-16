@@ -19,34 +19,23 @@ export default function Center({
   children,
   className,
   canOverflow = false,
-  ...propsRest
+  ...rest
 }) {
-  const [centerEl, _setCenterEl] = useState(null);
+  const [innerEl, setInnerEl] = useState(null);
 
-  const isOverflown = useOverflowDetection(centerEl, canOverflow);
-
-  if (canOverflow && isOverflown) {
-    // Display without flex centering
-    return (
-      <div
-        ref={_setCenterEl}
-        className={classNames(styles["overflown"], className)}
-      >
-        {children}
-      </div>
-    );
-  }
+  const isOverflown = useOverflowDetection(innerEl, canOverflow);
 
   return (
     <div
-      ref={_setCenterEl}
-      {...propsRest}
-      className={classNames(styles["center"], className)}
+      className={classNames(
+        styles["center"],
+        canOverflow && isOverflown && styles["overflown"],
+        className
+      )}
     >
-      {
-        // TODO: Once overflowed container, don't keep stretching
-      }
-      <div className={styles["inner-wrap"]}>{children}</div>
+      <div ref={setInnerEl} {...rest} className={styles["inner-wrap"]}>
+        {children}
+      </div>
     </div>
   );
 }

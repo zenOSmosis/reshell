@@ -5,8 +5,9 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
     />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
@@ -27,6 +28,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <!-- TODO: Make this title dynamic -->
     <title>ReShell</title>
     <style>
       html,
@@ -34,16 +36,34 @@
         background-color: #000;
         color: #fff;
       }
+      a,
+      a:visited {
+        color: #fff;
+      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- TODO: Make this body dynamic -->
     <div style="text-align: center">
-      <div>SEO SEO SEO</div>
-      <div>
-        <button onclick="window.__ReShell.initDOM()">Start ReShell</button>
-      </div>
+      <p>
+        ReShell is a browser-based layout framework and UI services engine
+        composed of various
+        <a href="https://github.com/zenosmosis">open-source components</a>.
+      </p>
+      <p>
+        It is currently in an alpha phase, and other builds may have other
+        built-in applications.
+      </p>
+      <p>
+        Leveraged off of the core code for
+        <a href="https://speaker.app">Speaker.app</a> and other
+        <a href="https://zenosmosis.com">zenOSmosis</a>
+        projects based on
+        <a href="https://github.com/zenOSmosis/phantom-core">PhantomCore</a>, a
+        library for managing the JavaScript application lifecycle.
+      </p>
     </div>
     <!--
       This HTML file is a template.
@@ -56,4 +76,10 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+
+  <script>
+    // Automatically start ReShell's UI (this is left optional in case you want
+    // to start it manually)
+    window.ReShell.init();
+  </script>
 </html>

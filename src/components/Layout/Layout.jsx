@@ -7,6 +7,8 @@ import { Row, Column } from "./RowColumn";
 import styles from "./Layout.module.css";
 import classNames from "classnames";
 
+// TODO: Add prop-types
+// TODO: Consider renaming; there are unrelated components that deal with Layout as well
 export default function Layout({ className, children, ...rest }) {
   return (
     <Full {...rest} className={classNames(styles["layout"], className)}>

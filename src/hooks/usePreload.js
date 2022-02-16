@@ -6,7 +6,7 @@ import Preload from "preload-it";
  *
  * @param {string[]} resources An array of URLs to preload. Note that these are
  * cached and the list cannot be changed without re-instantiating the hook.
- * @return {Object}
+ * @return {Object} // TODO: Document return type
  */
 export default function usePreload(resources) {
   const [isPreloaded, _setIsPreloaded] = useState(false);
@@ -19,21 +19,24 @@ export default function usePreload(resources) {
   const refResources = useRef(resources);
 
   useEffect(() => {
-    const resources = refResources;
+    const resources = refResources.current;
 
     if (resources.length) {
       const preload = new Preload();
 
-      preload.onprogress = (evt) => {
+      preload.onprogress = evt => {
         _setProgress(evt.progress);
       };
 
-      preload.oncomplete = (items) => {
+      preload.oncomplete = (/* items */) => {
         _setIsPreloaded(true);
       };
 
       preload.fetch(resources);
+
+      // FIXME: (jh) Retry fetch if browser is offline, then comes online again
     } else {
+      // No resources to load; proceed
       _setIsPreloaded(true);
       _setProgress(100);
     }
