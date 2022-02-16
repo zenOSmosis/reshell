@@ -14,7 +14,11 @@ export default class ZenRTCPeerBaseModule extends PhantomCore {
     this._zenRTCPeer = zenRTCPeer;
 
     // Destroy this module once peer is destroyed
-    this._zenRTCPeer.registerShutdownHandler(() => this.destroy());
+    this._zenRTCPeer.registerCleanupHandler(async () => {
+      if (!this.getIsDestroying()) {
+        await this.destroy();
+      }
+    });
   }
 
   /**
@@ -22,5 +26,18 @@ export default class ZenRTCPeerBaseModule extends PhantomCore {
    */
   getZenRTCPeer() {
     return this._zenRTCPeer;
+  }
+
+  /**
+   * @param {Function} destroyHandler? [optional] If defined, will execute
+   * prior to normal destruct operations for this class.
+   * @return {Promise<void>}
+   */
+  async destroy(destroyHandler = () => null) {
+    return super.destroy(async () => {
+      await destroyHandler();
+
+      this._zenRTCPeer = null;
+    });
   }
 }

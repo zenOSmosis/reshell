@@ -1,9 +1,5 @@
 import BaseModule from "./ZenRTCPeer.BaseModule";
-import {
-  EVT_CONNECTED,
-  EVT_SYNC_EVT_RECEIVED,
-  EVT_DESTROYED,
-} from "../ZenRTCPeer";
+import { EVT_CONNECTED, EVT_SYNC_EVT_RECEIVED } from "../ZenRTCPeer";
 import {
   SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC,
   SYNC_EVT_SYNC_OBJECT_FULL_SYNC,
@@ -140,10 +136,16 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
       };
 
       this._zenRTCPeer.on(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
-
-      // TODO: Swap out for this.registerShutdownHandler()
-      this.once(EVT_DESTROYED, () => {
-        this._zenRTCPeer.off(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
+      this.registerCleanupHandler(() => {
+        // FIXME (jh): This check fixes issue where _zenRTCPeer may be null
+        // after stopping a virtual server with connected clients, but it
+        // should be wired so this check is not necessary.  It could have
+        // something to do with the value being set to null in the base module,
+        // but I am not entirely sure why it is being set to null before this
+        // has a chance to run.
+        if (this._zenRTCPeer) {
+          this._zenRTCPeer.off(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
+        }
       });
     })();
   }
@@ -152,9 +154,11 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
    * @return {Promise<void>}
    */
   async destroy() {
-    this._bidirectionalSyncObject.destroy();
-
-    super.destroy();
+    return super.destroy(async () => {
+      if (!this._bidirectionalSyncObject.getIsDestroying()) {
+        await this._bidirectionalSyncObject.destroy();
+      }
+    });
   }
 
   /**

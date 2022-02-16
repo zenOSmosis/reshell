@@ -21,7 +21,9 @@ export default function useWindowControls(windowController) {
   // TODO: Document
   // TODO: Implement
   const handleClose = useCallback(() => {
-    windowController.destroy();
+    if (!windowController.getIsDestroying()) {
+      windowController.destroy();
+    }
   }, [windowController]);
 
   return {

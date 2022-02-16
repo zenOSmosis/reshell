@@ -197,6 +197,11 @@ function WindowManagerView({ children }) {
   // (maybe this? https://www.npmjs.com/package/react-reverse-portal)
   const windows = appRuntimes
     .map(appRuntime => {
+      const appDescriptor = appRuntime.getAppDescriptor();
+      if (!appDescriptor) {
+        return null;
+      }
+
       // TODO: Ensure key is unique across the map
       const key = appRuntime.getUUID();
 
@@ -222,7 +227,7 @@ function WindowManagerView({ children }) {
         isPinnedToDock,
         isAutoStart,
         ...windowProps
-      } = appRuntime.getAppDescriptor();
+      } = appDescriptor;
 
       if (!ViewComponent) {
         return null;

@@ -57,23 +57,24 @@ export default class WindowController extends PhantomState {
    * @return {Promise<void>}
    */
   async destroy() {
-    // Clear any currently scheduled resize executions
-    this._emitDebouncedResized.clear();
+    return super.destroy(async () => {
+      // Clear any currently scheduled resize executions
+      this._emitDebouncedResized.clear();
 
-    // TODO: Determine if in dirty state, prior to closing
-    // if (
-    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
-    // ) {
+      // TODO: Determine if in dirty state, prior to closing
+      // if (
+      // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+      // ) {
 
-    if (this._appRuntime) {
-      await this._appRuntime.destroy();
-    }
+      if (this._appRuntime && !this._appRuntime.getIsDestroying()) {
+        await this._appRuntime.destroy();
+      }
 
-    this._appRuntime = null;
-    this._windowEl = null;
-    this._windowManagerEl = null;
+      this._appRuntime = null;
+      this._windowEl = null;
+      this._windowManagerEl = null;
+    });
 
-    return super.destroy();
     //}
   }
 

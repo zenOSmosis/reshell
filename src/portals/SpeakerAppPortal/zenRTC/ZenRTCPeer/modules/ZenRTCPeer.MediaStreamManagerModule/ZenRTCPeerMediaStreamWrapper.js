@@ -73,7 +73,9 @@ export default class ZenRTCPeerMediaStreamWrapper extends ArbitraryPhantomWrappe
 
     // Destruct if no more tracks
     if (!this._managedMediaStreamTrackIds.length) {
-      return this.destroy();
+      if (!this.getIsDestroying()) {
+        return this.destroy();
+      }
     }
   }
 

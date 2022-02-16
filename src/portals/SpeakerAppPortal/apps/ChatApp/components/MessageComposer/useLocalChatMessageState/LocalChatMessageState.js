@@ -26,7 +26,7 @@ export default class LocalChatMessageState extends SyncObject {
     super({ ...DEFAULT_STATE, ...initialState });
 
     this._typingTimeout = null;
-    this.registerShutdownHandler(() => {
+    this.registerCleanupHandler(() => {
       clearTimeout(this._typingTimeout);
     });
 

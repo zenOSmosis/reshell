@@ -33,7 +33,7 @@ export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {
 
       socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
 
-      this.registerShutdownHandler(() => {
+      this.registerCleanupHandler(() => {
         socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
       });
     })();

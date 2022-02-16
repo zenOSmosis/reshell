@@ -210,9 +210,6 @@ export default class DataChannelManagerModule extends BaseModule {
 
       // If matches internal chunk structure, await batch
       if (DataChannelChunkBatchReceiver.getIsChunked(data)) {
-        // TODO: Remove
-        console.warn("CHUNKED", data);
-
         const batch = DataChannelChunkBatchReceiver.importMetaChunk(data);
 
         // TODO: Remove
@@ -334,7 +331,9 @@ export default class DataChannelManagerModule extends BaseModule {
       });
 
       this.once(EVT_DESTROYED, () => {
-        dataChannel.destroy();
+        if (!dataChannel.getIsDestroying()) {
+          dataChannel.destroy();
+        }
       });
 
       this.emit(EVT_DATA_CHANNEL_OPENED, dataChannel);

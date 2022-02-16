@@ -231,13 +231,25 @@ export default class ZenRTCPeer extends PhantomCore {
       );
 
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
+      this.registerCleanupHandler(async () => {
+        if (!this._dataChannelManagerModule.getIsDestroying()) {
+          await this._dataChannelManagerModule.destroy();
+        }
+      });
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
+      this.registerCleanupHandler(async () => {
+        if (!this._syncEventDataChannelModule.getIsDestroying()) {
+          await this._syncEventDataChannelModule.destroy();
+        }
+      });
 
-      // Media manager module
-      (() => {
-        this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
-      })();
+      this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
+      this.registerCleanupHandler(async () => {
+        if (!this._mediaStreamManagerModule.getIsDestroying()) {
+          await this._mediaStreamManagerModule.destroy();
+        }
+      });
     })();
 
     this._reconnectArgs = [];
@@ -356,7 +368,9 @@ export default class ZenRTCPeer extends PhantomCore {
     // Pause for message to be delivered
     await sleep(100);
 
-    this.destroy();
+    if (!this.getIsDestroying()) {
+      this.destroy();
+    }
   }
 
   /**
@@ -496,7 +510,9 @@ export default class ZenRTCPeer extends PhantomCore {
         const stopBootStream = async () => {
           for (const track of bootStream.getTracks()) {
             try {
-              await this._webrtcPeer?.removeTrack(track, bootStream);
+              if (this._webRTCPeer && !this._webrtcPeer.destroyed) {
+                this._webrtcPeer.removeTrack(track, bootStream);
+              }
             } catch (err) {
               console.error(err);
             }
@@ -635,22 +651,18 @@ export default class ZenRTCPeer extends PhantomCore {
 
         this.log.debug("webrtc-peer disconnected");
 
-        this.destroy();
+        if (!this.getIsDestroying()) {
+          this.destroy();
+        }
       });
 
       // Handle incoming MediaStreamTrack from remote peer
       // TODO: Use event constant
       this._webrtcPeer.on("track", (mediaStreamTrack, mediaStream) => {
-        // NOTE (jh): This timeout seems to improve an issue w/ iOS 14
-        // sometimes disconnecting when tracks are added
-        //
-        // FIXME: (jh) Is this still necessary? (use setImmediate?)
-        setTimeout(() => {
-          this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
-            mediaStreamTrack,
-            mediaStream
-          );
-        }, 500);
+        this._mediaStreamManagerModule.addIncomingMediaStreamTrack(
+          mediaStreamTrack,
+          mediaStream
+        );
       });
 
       // TODO: Use event constant
@@ -892,7 +904,9 @@ export default class ZenRTCPeer extends PhantomCore {
         break;
 
       case SYNC_EVT_BYE:
-        this.destroy();
+        if (!this.getIsDestroying) {
+          this.destroy();
+        }
         break;
 
       // TODO: Move handler into MediaStreamManagerModule
@@ -906,8 +920,8 @@ export default class ZenRTCPeer extends PhantomCore {
           // kind = "audio" | "video"
           const { msid, kind } = eventData;
 
-          // TODO: Remove
-          console.log("SYNC_EVT_TRACK_REMOVED", { msid, kind });
+          // TODO: Remove or use phantom logger
+          console.debug("SYNC_EVT_TRACK_REMOVED", { msid, kind });
 
           const mediaStream = this.getIncomingMediaStreams().find(
             ({ id }) => id === msid
@@ -959,7 +973,9 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    return this.destroy();
+    if (!this.getIsDestroying()) {
+      return this.destroy();
+    }
   }
 
   /**
@@ -983,20 +999,17 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
-    // IMPORTANT: This should be set before any event emitters are emitted, so
-    // that counts are updated properly
-    delete _instances[this._zenRTCSignalBrokerId];
-
-    // Disconnect handler
-    await (async () => {
-      if (this._isDestroyed) {
-        return;
-      }
+    return super.destroy(async () => {
+      // IMPORTANT: This should be set before any event emitters are emitted, so
+      // that counts are updated properly
+      delete _instances[this._zenRTCSignalBrokerId];
 
       if (this._webrtcPeer) {
         this.emitSyncEvent(SYNC_EVT_BYE);
 
-        // Give message some time to get delivered
+        // Give message some time to get delivered. It isn't imperative that
+        // this message is delivered, as the other peer will become aware of
+        // the non-presence of this peer within a few seconds otherwise.
         await sleep(100);
 
         // Check again because the peer may have been destroyed during the async period
@@ -1007,8 +1020,6 @@ export default class ZenRTCPeer extends PhantomCore {
           this._webrtcPeer = null;
         }
       }
-    })();
-
-    return super.destroy();
+    });
   }
 }

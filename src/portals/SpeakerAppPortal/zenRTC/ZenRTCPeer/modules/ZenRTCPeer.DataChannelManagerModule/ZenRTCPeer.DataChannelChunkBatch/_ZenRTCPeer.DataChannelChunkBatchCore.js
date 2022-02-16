@@ -226,11 +226,11 @@ export default class DataChannelChunkBatchCore extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
-    // Remove from the registered instances
-    delete _instances[this._batchCode];
+    return super.destroy(() => {
+      // Remove from the registered instances
+      delete _instances[this._batchCode];
 
-    this.empty();
-
-    return super.destroy();
+      this.empty();
+    });
   }
 }

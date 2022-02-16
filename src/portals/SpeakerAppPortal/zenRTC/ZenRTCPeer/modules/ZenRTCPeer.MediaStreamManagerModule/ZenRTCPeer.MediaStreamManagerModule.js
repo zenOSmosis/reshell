@@ -34,7 +34,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
     this._outgoingMediaStreamCollection = new ZenRTCPeerMediaStreamCollection();
 
     // Destruct stream collections once stream manager is destructed
-    this.registerShutdownHandler(() =>
+    this.registerCleanupHandler(() =>
       Promise.all([
         this._incomingMediaStreamCollection.destroy(),
         this._outgoingMediaStreamCollection.destroy(),

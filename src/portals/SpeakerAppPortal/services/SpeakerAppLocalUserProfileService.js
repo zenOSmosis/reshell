@@ -58,7 +58,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
         const to = setTimeout(() => {
           this.showProfileUINotification();
         }, 1000);
-        this.registerShutdownHandler(() => clearTimeout(to));
+        this.registerCleanupHandler(() => clearTimeout(to));
       })();
 
       const handleUpdate = debounce(

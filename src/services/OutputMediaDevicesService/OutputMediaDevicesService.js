@@ -66,7 +66,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
       audioDOMBase.style.display = "hidden";
 
       window.document.body.appendChild(audioDOMBase);
-      this.registerShutdownHandler(() =>
+      this.registerCleanupHandler(() =>
         window.document.body.removeChild(audioDOMBase)
       );
 

@@ -25,7 +25,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
     super();
 
     this._sharedWritableSyncObject = sharedWritableSyncObject;
-    this.registerShutdownHandler(() => (this._sharedWritableSyncObject = null));
+    this.registerCleanupHandler(() => (this._sharedWritableSyncObject = null));
 
     // Chat messages for the entire session
     //

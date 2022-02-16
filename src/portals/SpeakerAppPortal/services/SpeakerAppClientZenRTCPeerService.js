@@ -36,7 +36,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
     });
 
     this._localZenRTCPeer = null;
-    this.registerShutdownHandler(() => this.disconnect());
+    this.registerCleanupHandler(() => this.disconnect());
   }
 
   /**
@@ -143,7 +143,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
     // Register the localZenRTCPeer with the phantomPeerService
     phantomPeerService.setLocalZenRTCPeer(localZenRTCPeer);
 
-    localZenRTCPeer.registerShutdownHandler(() =>
+    localZenRTCPeer.registerCleanupHandler(() =>
       phantomPeerService.endZenRTCPeerSession()
     );
 

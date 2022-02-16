@@ -72,7 +72,9 @@ export default class SocketChannel extends PhantomCore {
     // Handle channel auto-destruct when socket disconnects
     (() => {
       const _handleSocketDisconnected = () => {
-        this.destroy();
+        if (!this.getIsDestroying()) {
+          this.destroy();
+        }
       };
 
       this._socket.once(EVT_DISCONNECTED, _handleSocketDisconnected);
@@ -109,22 +111,22 @@ export default class SocketChannel extends PhantomCore {
    * @return {Promise<void>}
    */
   async destroy() {
-    this.log(`Destructing data channel with id: ${this._channelId}`);
+    return super.destroy(() => {
+      this.log(`Destructing data channel with id: ${this._channelId}`);
 
-    // IMPORTANT: Emits remotely (let the other peer know we're shutting down)
-    this.emit(EVT_BEFORE_REMOTE_DISCONNECT);
+      // IMPORTANT: Emits remotely (let the other peer know we're shutting down)
+      this.emit(EVT_BEFORE_REMOTE_DISCONNECT);
 
-    this._deinitSocketHandler();
-    // Rebind this emit on super so that shutdown events can be captured
-    // locally
-    // IMPORTANT: Events emit after this statement will emit locally instead of
-    // the other peer
-    this.emit = super.emit;
+      this._deinitSocketHandler();
+      // Rebind this emit on super so that shutdown events can be captured
+      // locally
+      // IMPORTANT: Events emit after this statement will emit locally instead of
+      // the other peer
+      this.emit = super.emit;
 
-    // Emits locally
-    this.emit(EVT_DISCONNECTED);
-
-    return super.destroy();
+      // Emits locally
+      this.emit(EVT_DISCONNECTED);
+    });
   }
 
   /**
@@ -133,7 +135,9 @@ export default class SocketChannel extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    return this.destroy();
+    if (!this.getIsDestroying()) {
+      return this.destroy();
+    }
   }
 
   /**

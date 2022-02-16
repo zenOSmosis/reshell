@@ -22,26 +22,30 @@ export default class AppRuntime extends PhantomCore {
 
     this._appRegistration = appRegistration;
 
-    this.registerShutdownHandler(() => {
-      // IMPORTANT: We only want to remove the registration, but don't want to
-      // destruct the registration itself, as it should be reused
-      delete this._appRegistration;
-    });
-
     // Emit EVT_UPDATED out runtime when the registration updates
-    this.proxyOn(this._appRegistration, EVT_UPDATED, () => {
-      this.emit(EVT_UPDATED);
+    this.proxyOn(this._appRegistration, EVT_UPDATED, data => {
+      this.emit(EVT_UPDATED, data);
     });
 
     // Destruct runtime when registration destructs
-    this.proxyOn(this._appRegistration, EVT_DESTROYED, () => {
-      this.destroy();
+    this.proxyOnce(this._appRegistration, EVT_DESTROYED, () => {
+      if (!this.getIsDestroying()) {
+        this.destroy();
+      }
     });
 
     this._windowController = null;
 
-    this.registerShutdownHandler(async () => {
-      await this._windowController.destroy();
+    this.registerCleanupHandler(async () => {
+      if (!this.getIsDestroying()) {
+        this._windowController.destroy();
+      }
+
+      this._windowController = null;
+
+      // IMPORTANT: We only want to remove the registration, but don't want to
+      // destruct the registration itself, as it should be reused
+      delete this._appRegistration;
     });
   }
 
@@ -79,7 +83,7 @@ export default class AppRuntime extends PhantomCore {
   // getAppRegistration; standardize on either name, but keep it consistent.
   // TODO: Document
   getAppDescriptor() {
-    return this._appRegistration.getAppDescriptor();
+    return this._appRegistration?.getAppDescriptor();
   }
 
   // TODO: Implement setEnvironment

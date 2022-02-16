@@ -1,4 +1,4 @@
-import BaseModule, { EVT_DESTROYED } from "./ZenRTCPeer.BaseModule";
+import BaseModule from "./ZenRTCPeer.BaseModule";
 import { EVT_DATA_RECEIVED } from "./ZenRTCPeer.DataChannelManagerModule";
 
 // For synced events over WebRTC data channel
@@ -21,9 +21,10 @@ export default class SyncEventDataChannelModule extends BaseModule {
       this.receiveSyncEvent(eventName, eventData);
     });
 
-    // TODO: Swap out for this.registerShutdownHandler()
-    this.once(EVT_DESTROYED, () => {
-      this._dataChannel.destroy();
+    this.registerCleanupHandler(async () => {
+      if (!this._dataChannel.getIsDestroying()) {
+        await this._dataChannel.destroy();
+      }
     });
   }
 

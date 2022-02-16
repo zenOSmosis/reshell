@@ -26,10 +26,10 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
    * @return {Promise<void>}
    */
   async destroy() {
-    // Stop the ping polling
-    clearInterval(this._heartbeatInterval);
-
-    await super.destroy();
+    return super.destroy(() => {
+      // Stop the ping polling
+      clearInterval(this._heartbeatInterval);
+    });
   }
 
   /**
@@ -51,7 +51,9 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
     return this._zenRTCPeer.ping().catch(err => {
       console.error("Heartbeat failed", err);
 
-      this._zenRTCPeer.destroy();
+      if (this._zenRTCPeer && !this._zenRTCPeer.getIsDestroying()) {
+        this._zenRTCPeer.destroy();
+      }
     });
   }
 }

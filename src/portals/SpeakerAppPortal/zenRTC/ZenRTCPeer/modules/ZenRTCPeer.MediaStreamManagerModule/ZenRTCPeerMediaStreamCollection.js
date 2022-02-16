@@ -160,8 +160,8 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
    * @return {Promise<void>}
    */
   async destroy() {
-    await this.destroyAllChildren();
-
-    return super.destroy();
+    return super.destroy(async () => {
+      await this.destroyAllChildren();
+    });
   }
 }

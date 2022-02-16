@@ -65,15 +65,21 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     });
 
     this._socketService = socketService;
+    this.registerCleanupHandler(
+      () =>
+        // IMPORTANT: Don't destruct here, just remove the reference
+        (this._socketService = null)
+    );
+
     this._socket = socketService.getSocket();
 
     this._phantomPeerRouter = new VirtualServerZenRTCPeerPhantomPeerRouter(
       this._sharedWritableSyncObject
     );
-    this.registerShutdownHandler(() => this._phantomPeerRouter.destroy());
+    this.registerCleanupHandler(() => this._phantomPeerRouter.destroy());
 
     this._mediaStreamRouter = new VirtualServerZenRTCPeerMediaStreamRouter();
-    this.registerShutdownHandler(() => this._mediaStreamRouter.destroy());
+    this.registerCleanupHandler(() => this._mediaStreamRouter.destroy());
 
     // Will be defined during _init sequence
     this._peerManager = null;
@@ -98,7 +104,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     await this._emitSessionStart();
 
     // When destructed, tell the real server we're stopping the session
-    this.registerShutdownHandler(() => this._emitSessionEnd());
+    this.registerCleanupHandler(() => this._emitSessionEnd());
 
     return super._init();
   }
@@ -115,7 +121,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     });
 
     // Auto-destruct peerManager once class is destructed
-    this.registerShutdownHandler(() => this._peerManager.destroy());
+    this.registerCleanupHandler(() => this._peerManager.destroy());
 
     // Set up event routing
     (() => {
@@ -286,7 +292,7 @@ export default class ZenRTCVirtualServer extends PhantomCore {
     socket.on(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal);
 
     // Unbind from socket when destructed
-    this.registerShutdownHandler(() =>
+    this.registerCleanupHandler(() =>
       socket.off(SOCKET_EVT_ZENRTC_SIGNAL, _handleFilterSocketZenRTCSignal)
     );
   }

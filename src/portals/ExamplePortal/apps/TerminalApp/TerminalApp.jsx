@@ -53,7 +53,9 @@ const TerminalApp = {
     useEffect(() => {
       if (socketChannel) {
         return () => {
-          socketChannel.destroy();
+          if (!socketChannel.getIsDestroying()) {
+            socketChannel.destroy();
+          }
         };
       }
     }, [socketChannel]);
