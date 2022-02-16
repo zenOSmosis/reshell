@@ -2,6 +2,7 @@
 
 import fs from "fs";
 import path from "path";
+import symlinkDir from "symlink-dir";
 
 const PORTALS_BASE_PATH = path.join(__dirname, "src", "portals");
 
@@ -9,6 +10,7 @@ const cmd = process.argv[3];
 const portalName = process.argv[4];
 const scriptName = process.argv[5];
 
+// Initial setup work
 if (portalName) {
   // Validate portal name
   if (!getAvailablePortalNames().includes(portalName)) {
@@ -20,6 +22,21 @@ if (portalName) {
     path.join(__dirname, "src", "__registerPortals__.js"),
     generateRegisterPortalsScript(portalName)
   );
+
+  // Symlink portal public directory to package root public
+  await (async () => {
+    // If portal doesn't contain a public folder, use the one from ReShell.org
+    const publicPortalName = fs.existsSync(
+      path.join(PORTALS_BASE_PATH, portalName, "public")
+    )
+      ? portalName
+      : "ReShell.org";
+
+    await symlinkDir(
+      path.join(PORTALS_BASE_PATH, publicPortalName, "public"),
+      path.join(__dirname, "public")
+    );
+  })();
 }
 
 const commands = {

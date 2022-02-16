@@ -15,7 +15,7 @@ const PROJECT_ROOT_PATH = path.resolve(__dirname, "..", "..", "..", "..");
 const GH_PAGES_REPO = "git@github.com:zenOSmosis/reshell.org-static.git";
 const TMP_REPO_PATH = "/tmp/reshell.org-static.git";
 
-await $`npm run build`;
+await $`npm run build ReShell.org`;
 const BUILD_PATH = path.resolve(PROJECT_ROOT_PATH, "build");
 
 try {

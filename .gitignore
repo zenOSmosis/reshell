@@ -3,6 +3,9 @@
 # dynamically generated ReShell portal registration
 src/__registerPortals__.js
 
+# ReShell public folders are dynamically linked from their respective portal
+/public
+
 # dependencies
 **/node_modules
 /.pnp
