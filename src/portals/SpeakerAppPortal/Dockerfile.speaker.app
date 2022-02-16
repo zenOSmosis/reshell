@@ -38,6 +38,11 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   && chown -R node /app/frontend.web/node_modules/.cache \
   ; fi
 
+# Create dynamic __registerPortals__.js file and make it writable by the "node" user
+RUN if [ "${BUILD_ENV}" = "production" ] ; then \
+  touch src/__registerPortals__.js && chown node src/__registerPortals__.js \
+  ; fi
+
 USER node
 
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
