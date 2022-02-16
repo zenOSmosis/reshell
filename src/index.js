@@ -1,6 +1,7 @@
 import reportWebVitals from "./reportWebVitals";
 
-import "./registerPortals";
+// Load dynamically linked ReShell portal(s)
+import "./__registerPortals__";
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

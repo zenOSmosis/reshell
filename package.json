@@ -50,17 +50,22 @@
     "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
-    "start": "HTTPS=true craco start",
-    "start:no-ssl": "craco start",
-    "start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
-    "stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
-    "build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
-    "start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start\"",
-    "start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
-    "build": "craco build --profile",
-    "build:no-profiling": "craco build",
-    "test": "craco test",
-    "eject": "craco eject",
+    "help": "npm run list-commands",
+    "list-commands": "zx reshell-scripts.mjs list-commands",
+    "list-portals": "zx reshell-scripts.mjs list-portals",
+    "list-portal-scripts": "zx reshell-scripts.mjs list-portal-scripts",
+    "start": "zx reshell-scripts.mjs start",
+    "start:no-ssl": "zx reshell-scripts.mjs start:no-ssl",
+    "exec": "zx reshell-scripts.mjs exec",
+    "// start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
+    "// stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
+    "// build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
+    "// start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start\"",
+    "// start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
+    "build": "zx reshell-scripts.mjs build",
+    "// build:no-profiling": "craco build",
+    "test": "zx reshell-scripts.mjs test",
+    "// eject": "craco eject",
     "lint": "prettier --write '(**/)*.js'"
   },
   "eslintConfig": {
@@ -82,6 +87,7 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "zx": "^5.0.0"
   }
 }

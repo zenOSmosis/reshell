@@ -41,7 +41,7 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
 USER node
 
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  npm run build \
+  npm run build SpeakerAppPortal \
   ; fi
 
 EXPOSE 3000
