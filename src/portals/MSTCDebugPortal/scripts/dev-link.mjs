@@ -1,15 +1,15 @@
 #!/usr/bin/env zx
 
-// import fs from "fs";
-// import path from "path";
+// This script adds media-stream-track-controller as npm linked module for this
+// ReShell portal to use
 
-// TODO: Ensure we're running in context of media-stream-track-controller app
+// Ensure we're running in context of media-stream-track-controller
 const mstcPackageJSON = require("../../../../../package.json");
-
 if (mstcPackageJSON.name !== "media-stream-track-controller") {
   throw new Error(
     "media-stream-track-controller parent package does not exist"
   );
 }
 
-await $`cd ../ && npm link && cd dev.frontend && npm link media-stream-track-controller`;
+// Add media-stream-track-controller as npm link for ReShell
+await $`cd ${__dirname}/../../../../../ && npm link && cd dev.frontend && npm link media-stream-track-controller`;
