@@ -16,8 +16,6 @@ import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
 
 import WindowController from "../Window/classes/WindowController";
 
-// TODO: Incorporate react-router for window routes?
-
 // TODO: Add hotkey listener service and map to active window
 
 // TODO: Refactor (shared across all windows to determine relevant zIndexes)
@@ -46,8 +44,6 @@ export default function WindowManager({ appDescriptors = [], children }) {
 
 function WindowManagerView({ children }) {
   const { appRuntimes } = useAppOrchestrationContext();
-
-  // const { locationAppRuntimes } = React.useContext(WindowManagerRouteContext);
 
   const [elBase, setElBase] = useState(null);
 
@@ -114,36 +110,6 @@ function WindowManagerView({ children }) {
       Object.is(desktopContextActiveWindowController, windowController),
     [desktopContextActiveWindowController]
   );
-
-  // Handle setting of active window based on locationAppRuntimes
-  // TODO: Fix; currently buggy w/ Safari
-  // TODO: Implement deep linking (implement DeepLinkService [URLService, or equiv]?)
-  /*
-  useEffect(() => {
-    const to = setTimeout(() => {
-      const windowControllers = locationAppRuntimes.map((appRuntime) =>
-        appRuntime.getWindowController()
-      );
-
-      if (
-        !windowControllers.includes(
-          refDesktopContextActiveWindowController.current
-        )
-      ) {
-        for (const windowController of windowControllers) {
-          if (windowController) {
-            // Iterate through all locationAppRuntimes and set active window
-            handleSetActiveWindow(windowController);
-          }
-        }
-      }
-    });
-
-    return function unmount() {
-      clearTimeout(to);
-    };
-  }, [locationAppRuntimes, handleSetActiveWindow]);
-  */
 
   const { startServiceClass } = useServicesContext();
 

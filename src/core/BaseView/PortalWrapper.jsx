@@ -5,33 +5,36 @@ import UIServicesProvider from "../providers/UIServicesProvider";
 import AppOrchestrationProvider from "../providers/AppOrchestrationProvider";
 import DesktopProvider from "../providers/DesktopProvider";
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
 // TODO: Document and add prop-types
 export default function PortalWrapperView({ portal }) {
   return (
-    <UIServicesProvider>
-      <AppOrchestrationProvider>
-        <DesktopProvider>
-          <React.Suspense
-            fallback={
-              // NOTE: While Cover works as a FullScreen substitute for
-              // simple layouts, it doesn't contain all of the view hacks
-              // the regular FullViewport component has.
-              //
-              // However, it seems that the usage of FullViewport is better
-              // left up to the portal view itself rather than the wrapper.
-              <Cover>
-                <Center style={{ fontWeight: "bold" }}>
-                  Loading portal...
-                </Center>
-              </Cover>
-            }
-          >
-            <PortalWrapperTransitionView portal={portal} />
-          </React.Suspense>
-        </DesktopProvider>
-      </AppOrchestrationProvider>
-    </UIServicesProvider>
+    <Router>
+      <UIServicesProvider>
+        <AppOrchestrationProvider>
+          <DesktopProvider>
+            <React.Suspense
+              fallback={
+                // NOTE: While Cover works as a FullScreen substitute for
+                // simple layouts, it doesn't contain all of the view hacks
+                // the regular FullViewport component has.
+                //
+                // However, it seems that the usage of FullViewport is better
+                // left up to the portal view itself rather than the wrapper.
+                <Cover>
+                  <Center style={{ fontWeight: "bold" }}>
+                    Loading portal...
+                  </Center>
+                </Cover>
+              }
+            >
+              <PortalWrapperTransitionView portal={portal} />
+            </React.Suspense>
+          </DesktopProvider>
+        </AppOrchestrationProvider>
+      </UIServicesProvider>
+    </Router>
   );
 }
 

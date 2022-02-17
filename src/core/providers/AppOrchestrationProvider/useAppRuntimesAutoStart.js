@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import useLocationAppRegistrationID from "@hooks/useLocationAppRegistrationID";
 
 /**
  * Handles auto-start of apps which are set to automatically launch.
@@ -12,6 +13,8 @@ export default function useAppRuntimesAutoStart(
   activateAppRegistration
 ) {
   const refHasBegunAutoStart = useRef(false);
+
+  const locationAppRegistrationID = useLocationAppRegistrationID();
 
   // Automatically start registrations with isAutoStart set to true
   useEffect(() => {
@@ -28,6 +31,20 @@ export default function useAppRuntimesAutoStart(
         .reverse()) {
         activateAppRegistration(registration);
       }
+
+      // IMPORTANT: The setImmediate call fixes an issue where deep-linked apps
+      // would not focus
+      setImmediate(() => {
+        if (locationAppRegistrationID) {
+          const locationAppRegistration = appRegistrations.find(
+            registration => registration.getID() === locationAppRegistrationID
+          );
+
+          if (locationAppRegistration) {
+            activateAppRegistration(locationAppRegistration);
+          }
+        }
+      });
     }
-  }, [appRegistrations, activateAppRegistration]);
+  }, [locationAppRegistrationID, appRegistrations, activateAppRegistration]);
 }

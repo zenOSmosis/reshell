@@ -91,7 +91,7 @@ export default class AppOrchestrationService extends UIServiceCore {
    */
   activateAppRegistration(appRegistration) {
     if (!this.getActiveAppRegistrations().includes(appRegistration)) {
-      // TODO: Open app w/ registration
+      // Open app w/ registration
       this._launchAppRegistration(appRegistration);
     } else {
       // Move grouped windows to top
@@ -143,6 +143,18 @@ export default class AppOrchestrationService extends UIServiceCore {
    */
   getAppRegistrations() {
     return this._appRegistrationCollection.getAppRegistrations();
+  }
+
+  /**
+   * Retrieves the currently registered app with the given ID.
+   *
+   * @param {string} appRegistrationID
+   * @return {AppRegistration | void}
+   */
+  getAppRegistrationWithID(appRegistrationID) {
+    return this.getAppRegistrations().find(
+      registration => registration.getID() === appRegistrationID
+    );
   }
 
   /**

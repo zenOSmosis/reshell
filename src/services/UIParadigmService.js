@@ -13,7 +13,7 @@ export const MOBILE_PARADIGM = "mobile";
 /**
  * UI service class for desktop paradigm detection.
  */
-export default class UIParadigmSwitchingService extends UIServiceCore {
+export default class UIParadigmService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 

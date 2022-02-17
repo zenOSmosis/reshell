@@ -3,10 +3,10 @@ import getElCenterPoint from "@utils/getElCenterPoint";
 import getElSize from "@utils/getElSize";
 
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
-import useDesktopParadigm, {
+import useUIParadigm, {
   DESKTOP_PARADIGM,
   MOBILE_PARADIGM,
-} from "@hooks/useDesktopParadigm";
+} from "@hooks/useUIParadigm";
 
 // TODO: Apply auto-position to window if viewport is resized and window is
 // out-of-bounds
@@ -18,7 +18,7 @@ export default function useWindowAutoPositioner(
   windowController,
   onInitialAutoPosition = () => null
 ) {
-  const desktopParadigm = useDesktopParadigm();
+  const desktopParadigm = useUIParadigm();
 
   // Apply auto-maximize / restore depending on paradigm
   useEffect(() => {
