@@ -31,6 +31,9 @@ export default function useServiceClass(ServiceClass) {
       setServiceState({ ...serviceInstance.getState() });
     };
 
+    // Capture initial state
+    _handleServiceUpdate();
+
     serviceInstance.on(EVT_UPDATED, _handleServiceUpdate);
 
     return function unmount() {

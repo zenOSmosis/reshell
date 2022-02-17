@@ -66,6 +66,8 @@ export default function StackingContext({
       const onDOMMatrix = refOnDOMMatrix.current;
       const isAccelerated = refIsAccelerated.current;
 
+      let detectionTimeout = null;
+
       if (isAccelerated) {
         // Handle 3D space detection and onDOMMatrix callback
         //
@@ -73,7 +75,7 @@ export default function StackingContext({
         // to be accurate on the first render, and possibly some subsequent
         // render attempts.  I'm not positive this has fixed it for good and it
         // might need to be investigated some more.
-        setTimeout(() => {
+        detectionTimeout = setTimeout(() => {
           const computedStyle = window.getComputedStyle(el);
 
           /** @see https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix */
@@ -104,6 +106,10 @@ export default function StackingContext({
       }
 
       onMount(el);
+
+      return function unmount() {
+        clearTimeout(detectionTimeout);
+      };
     }
   }, []);
 

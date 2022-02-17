@@ -18,7 +18,7 @@ export default function FullViewport({ className, children, ...rest }) {
         // NOTE: The setImmediate wrap seems to help fix layout issues on iOS
         // 14 after screen rotation
         //
-        // TODO: Potentially don't run this if the user is typing
+        // FIXME: (jh) Potentially don't run this if the user is typing
         setImmediate(() => {
           elContainer.style.height = window.innerHeight + "px";
 
