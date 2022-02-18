@@ -104,7 +104,12 @@ function WindowManagerView({ children }) {
     [setDesktopContextActiveWindowController]
   );
 
-  // TODO: Document
+  /**
+   * Retrieves whether or not the given window controller is attached to the
+   * active window.
+   *
+   * @return {boolean}
+   */
   const handleGetIsActiveWindow = useCallback(
     windowController =>
       Object.is(desktopContextActiveWindowController, windowController),
@@ -354,8 +359,9 @@ const WrappedTitleBarView = function ({ titleBarView, ...rest }) {
   return <WrappedView {...rest} view={titleBarView} />;
 };
 
-// TODO: Implement Svelte lifecycle methods, to avoid users having to deal with
-// hooks (keep hooks as more of a low-level thing instead, if possible)
+// FIXME: (jh) [As a consideration] Implement Svelte lifecycle methods, to
+// avoid users having to deal with hooks (keep hooks as more of a low-level
+// thing instead, if possible)
 // - https://svelte.dev/tutorial/onmount
 // - https://svelte.dev/tutorial/ondestroy
 // - https://svelte.dev/tutorial/update

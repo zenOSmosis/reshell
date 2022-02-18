@@ -21,6 +21,7 @@ export default class ScreenService extends UIServiceCore {
       // FIXME: (jh) Debounce?
       const _handleViewportResize = () => this._detectScreenResolution();
 
+      // TODO: Use common handler instead
       window.addEventListener("resize", _handleViewportResize);
 
       this.registerCleanupHandler(() => {

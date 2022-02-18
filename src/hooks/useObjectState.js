@@ -1,6 +1,8 @@
 import { useCallback, useRef, useState } from "react";
+import { diff } from "deep-object-diff";
 
-// TODO: See other implementation here (might be more performant): https://thoughtspile.github.io/2021/10/11/usestate-object-vs-multiple/?utm_campaign=thisweekinreact&utm_medium=email&utm_source=Revue%20newsletter
+// FIXME: (jh) See other implementation here (might be more performant; search
+// for useObjectState): https://thoughtspile.github.io/2021/10/11/usestate-object-vs-multiple/?utm_campaign=thisweekinreact&utm_medium=email&utm_source=Revue%20newsletter
 
 /**
  * Applies a shallow-merge strategy to object updates so that setState() calls
@@ -10,8 +12,12 @@ import { useCallback, useRef, useState } from "react";
  * migrated to hook versions, without having to write a bunch of useState
  * references for every state property.
  *
+ * NOTE: This will perform a deep-equality, non-referential check after pre-
+ * merging state updates and only update the state if there is a difference in
+ * the deep-equality comparison.
+ *
  * @param {Object} initialState
- * @return {[state: Object, setState: function, changeIdx: number]} Merged state
+ * @return {[state: Object, setState: Function]} Merged state
  */
 export default function useObjectState(initialState = {}) {
   const [state, _setMergedState] = useState(initialState);
@@ -20,8 +26,9 @@ export default function useObjectState(initialState = {}) {
   refState.current = state;
 
   /**
-   * @param {Object | string} updatedState If passed as a string, it will try
+   * @param {Object | string | Function} updatedState If passed as a string, it will try
    * to JSON parse into an object.
+   * @return {void}
    */
   const setState = useCallback(updatedState => {
     // Check type validity / apply type coercion, etc.
@@ -39,6 +46,7 @@ export default function useObjectState(initialState = {}) {
         break;
 
       case "function":
+        // i.e. setState(prevState => nextState)
         updatedState = updatedState(refState.current);
         break;
 
@@ -52,7 +60,21 @@ export default function useObjectState(initialState = {}) {
         );
     }
 
-    return _setMergedState(prevState => ({ ...prevState, ...updatedState }));
+    _setMergedState(prevState => {
+      const nextState = { ...prevState, ...updatedState };
+
+      if (Object.keys(diff(prevState, nextState)).length) {
+        // There is a difference in values; update the next state
+        return nextState;
+      } else {
+        // Skip rendering if there is no difference in values. This relies on
+        // the React principle that "if your update function returns the exact
+        // same value as the current state, the subsequent rerender will be
+        // skipped completely."
+        // @see https://reactjs.org/docs/hooks-reference.html#usestate
+        return prevState;
+      }
+    });
   }, []);
 
   return [state, setState];

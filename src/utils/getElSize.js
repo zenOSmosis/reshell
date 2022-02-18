@@ -1,8 +1,8 @@
 /**
- * TODO: Document
+ * Retrieves the given element's size in pixels.
  *
  * @param {DOMElement} el
- * @return {Object} // TODO: Document more thoroughly
+ * @return {{width: number, height: number}}
  */
 export default function getElSize(el) {
   const width = el.offsetWidth;

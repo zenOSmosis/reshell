@@ -12,6 +12,7 @@ import classNames from "classnames";
 
 import useWindowStyles from "./hooks/useWindowStyles";
 import useWindowAutoPositioner from "./hooks/useWindowAutoPositioner";
+import useWindowAutoSizer from "./hooks/useWindowAutoSizer";
 import useWindowDragger from "./hooks/useWindowDragger";
 import useWindowDragResizer from "./hooks/useWindowDragResizer";
 import useWindowOpenAnimation from "./hooks/useWindowOpenAnimation";
@@ -45,13 +46,16 @@ const WindowView = ({
   ...rest
 }) => {
   /** @type {DOMElement} */
-  const [el, _setEl] = useState(null);
+  const [elWindow, _setElWindow] = useState(null);
 
   // TODO: Document
-  const { isOpenAnimationEnded } = useWindowOpenAnimation(el);
+  const { isOpenAnimationEnded } = useWindowOpenAnimation(elWindow);
 
   // TODO: Document
-  useWindowAutoPositioner(elWindowManager, el, windowController);
+  useWindowAutoPositioner({ elWindow, elWindowManager, windowController });
+
+  // TODO: Document
+  useWindowAutoSizer({ windowController });
 
   const [zIndex, _setZIndex] = useState(0);
   const [title, _setTitle] = useState(null);
@@ -61,10 +65,10 @@ const WindowView = ({
   // Associate window element with window controller
   // TODO: Refactor into useWindowController hook
   useEffect(() => {
-    if (windowController && el) {
-      windowController.attachWindowElement(el);
+    if (windowController && elWindow) {
+      windowController.attachWindowElement(elWindow);
     }
-  }, [windowController, el]);
+  }, [windowController, elWindow]);
 
   /** @type {boolean} */
   const [isWindowBorderDisabled, _setIsWindowBorderDisabled] = useState(false);
@@ -127,8 +131,9 @@ const WindowView = ({
     }
   }, [windowController, title, zIndex]);
 
-  const { onRestoreOrMaximize, onMinimize, onClose } =
-    useWindowControls(windowController);
+  const { onRestoreOrMaximize, onMinimize, onClose } = useWindowControls({
+    windowController,
+  });
 
   // Binds window dragging functionality
   const [dragBind, isUserDragging] = useWindowDragger({
@@ -171,7 +176,7 @@ const WindowView = ({
     // TODO: Wrap with ErrorBoundary and React.Suspense
     <DynamicProfilingWrapper>
       <StackingContext
-        onMount={_setEl}
+        onMount={_setElWindow}
         {...rest}
         style={{ ...outerBorderStyle, zIndex }}
         className={classNames(

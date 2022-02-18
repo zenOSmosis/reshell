@@ -54,6 +54,7 @@ export default function useViewportSize(
       // Perform initial sync
       _handleViewportSize();
 
+      // TODO: Use common handler instead
       window.addEventListener("resize", _handleViewportSize);
 
       return function unmount() {

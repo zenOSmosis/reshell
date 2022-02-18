@@ -1,12 +1,21 @@
 import { useRef, useState } from "react";
 import { useDrag } from "@use-gesture/react";
 
-export const TOP_THRESHOLD = 0;
-export const BOTTOM_THRESHOLD = 58;
-export const LEFT_THRESHOLD = 0;
-export const RIGHT_THRESHOLD = 0;
+import {
+  WINDOW_POINTER_DRAG_TOP_THRESHOLD,
+  WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD,
+  WINDOW_POINTER_DRAG_LEFT_THRESHOLD,
+  WINDOW_POINTER_DRAG_RIGHT_THRESHOLD,
+} from "./__window_hook_constants__";
 
-// TODO: Document
+/**
+ * Handles window drag binding for the given window.
+ *
+ * @typedef { import('../classesWindowController').default} WindowController
+ *
+ * @param {{ windowController: WindowController, isDisabled: boolean }} options
+ * @return {[bind: Function, isUserDragging: boolean]}
+ */
 export default function useWindowDragger({ windowController, isDisabled }) {
   const refInitialDragPosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
@@ -16,6 +25,13 @@ export default function useWindowDragger({ windowController, isDisabled }) {
   // @see https://use-gesture.netlify.app/docs/#simple-example
   const bind = useDrag(
     ({ down: isDragging, movement: [mx, my], xy, event }) => {
+      if (isDisabled) {
+        if (isUserDragging) {
+          setIsUserDragging(false);
+        }
+        return;
+      }
+
       if (isDragging !== isUserDragging) {
         setIsUserDragging(isDragging);
       }
@@ -39,22 +55,28 @@ export default function useWindowDragger({ windowController, isDisabled }) {
           refInitialWindowManagerSize.current.height;
 
         // Prevent window from being dragged above top threshold
-        if (y < TOP_THRESHOLD) {
-          y = TOP_THRESHOLD;
+        if (y < WINDOW_POINTER_DRAG_TOP_THRESHOLD) {
+          y = WINDOW_POINTER_DRAG_TOP_THRESHOLD;
         }
 
         // Prevent window from being dragged below bottom threshold
-        if (y > initialWindowManagerHeight - BOTTOM_THRESHOLD) {
-          y = initialWindowManagerHeight - BOTTOM_THRESHOLD;
+        if (
+          y >
+          initialWindowManagerHeight - WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD
+        ) {
+          y = initialWindowManagerHeight - WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD;
         }
 
         // Prevent window from being dragged left of left threshold
-        if (xy[0] < LEFT_THRESHOLD) {
+        if (xy[0] < WINDOW_POINTER_DRAG_LEFT_THRESHOLD) {
           x = null;
         }
 
         // Prevent window from being dragged right of right threshold
-        if (xy[0] > initialWindowManagerWidth - RIGHT_THRESHOLD) {
+        if (
+          xy[0] >
+          initialWindowManagerWidth - WINDOW_POINTER_DRAG_RIGHT_THRESHOLD
+        ) {
           x = null;
         }
 

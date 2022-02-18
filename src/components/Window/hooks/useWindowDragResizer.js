@@ -11,10 +11,17 @@ import {
   DIR_BORDER_W,
 } from "../Window.Border";
 
-import { BOTTOM_THRESHOLD } from "./useWindowDragger";
+import { WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD } from "./__window_hook_constants__";
 
-// TODO: Document
-// TODO: Implement ability to turn off dragging
+// FIXME: (jh) Implement ability to disable drag resizing
+/**
+ * Handles window border drag resize binding for the given window.
+ *
+ * @typedef { import('../classesWindowController').default} WindowController
+ *
+ * @param {{ windowController: WindowController }} options
+ * @return {[handleBorderDrag: Function, isUserResizing: boolean]}
+ */
 export default function useWindowDragResizer({ windowController }) {
   const refInitialDragSizePosition = useRef(null);
   const refInitialWindowManagerSize = useRef(null);
@@ -40,10 +47,7 @@ export default function useWindowDragResizer({ windowController }) {
             windowController.getWindowManagerSize();
         }
 
-        let width = refInitialDragSizePosition.current.width;
-        let height = refInitialDragSizePosition.current.height;
-        let x = refInitialDragSizePosition.current.x;
-        let y = refInitialDragSizePosition.current.y;
+        let { width, height, x, y } = refInitialDragSizePosition.current;
 
         let windowManagerWidth = refInitialWindowManagerSize.current.width;
         let windowManagerHeight = refInitialWindowManagerSize.current.height;
@@ -141,7 +145,7 @@ export default function useWindowDragResizer({ windowController }) {
         }
 
         // Prevent drags from the top to be able to drag below bottom threshold
-        if (windowManagerHeight - y < BOTTOM_THRESHOLD) {
+        if (windowManagerHeight - y < WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD) {
           return;
         }
 

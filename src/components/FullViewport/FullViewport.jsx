@@ -31,6 +31,7 @@ export default function FullViewport({ className, children, ...rest }) {
       handleResize();
 
       // Bind resize handler
+      // TODO: Use common handler instead
       window.addEventListener("resize", handleResize);
 
       // Poll the resize handler every second to help fix layout issues with iOS

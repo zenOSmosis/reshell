@@ -1,6 +1,9 @@
 import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import { debounce } from "debounce";
 
+import getElPosition from "@utils/getElPosition";
+import getElSize from "@utils/getElSize";
+
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 
 export { EVT_UPDATED, EVT_DESTROYED };
@@ -27,8 +30,8 @@ export default class WindowController extends PhantomState {
 
     this._appRuntime = null;
 
-    this._windowEl = null;
-    this._windowManagerEl = null;
+    this._elWindow = null;
+    this._elWindowManager = null;
 
     this._handleBringToTop = onBringToTop;
 
@@ -41,7 +44,9 @@ export default class WindowController extends PhantomState {
 
     this._emitDebouncedMoved = debounce(
       this._emitDebouncedMoved.bind(this),
-      500
+      500,
+      // Ensure runs on trailing edge
+      false
     );
 
     // TODO: Retain last size / moved and enable reverting back to previous settings
@@ -71,8 +76,8 @@ export default class WindowController extends PhantomState {
       }
 
       this._appRuntime = null;
-      this._windowEl = null;
-      this._windowManagerEl = null;
+      this._elWindow = null;
+      this._elWindowManager = null;
     });
 
     //}
@@ -127,12 +132,12 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   attachWindowElement(el) {
-    this._windowEl = el;
+    this._elWindow = el;
   }
 
   // TODO: Document
   attachWindowManagerElement(el) {
-    this._windowManagerEl = el;
+    this._elWindowManager = el;
   }
 
   /**
@@ -171,17 +176,17 @@ export default class WindowController extends PhantomState {
   // TODO: Document
   setSize({ width, height }) {
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
-    const windowEl = this._windowEl;
-    if (windowEl) {
+    const elWindow = this._elWindow;
+    if (elWindow) {
       // FIXME: (jh) Can these be applied as a single reflow?
       // @see https://www.sitepoint.com/10-ways-minimize-reflows-improve-performance/
 
       requestSkippableAnimationFrame(() => {
         if (width !== undefined) {
-          windowEl.style.width = `${width}px`;
+          elWindow.style.width = `${width}px`;
         }
         if (height !== undefined) {
-          windowEl.style.height = `${height}px`;
+          elWindow.style.height = `${height}px`;
         }
 
         // Emit debounced EVT_RESIZED event
@@ -195,29 +200,33 @@ export default class WindowController extends PhantomState {
     this.emit(EVT_RESIZED);
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the window's size in pixels.
+   *
+   * @param {DOMElement} el
+   * @return {{width: number, height: number}}
+   */
   getSize() {
-    const windowEl = this._windowEl;
-    if (windowEl) {
-      return {
-        width: windowEl.offsetWidth,
-        height: windowEl.offsetHeight,
-      };
+    const elWindow = this._elWindow;
+    if (elWindow) {
+      return getElSize(elWindow);
     } else {
-      console.warn("Unable to acquire windowEl");
+      this.log.warn("Unable to acquire elWindow");
     }
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the window manager's size in pixels.
+   *
+   * @param {DOMElement} el
+   * @return {{width: number, height: number}}
+   */
   getWindowManagerSize() {
-    const windowManagerEl = this._windowManagerEl;
-    if (windowManagerEl) {
-      return {
-        width: parseInt(windowManagerEl.offsetWidth, 10),
-        height: parseInt(windowManagerEl.offsetHeight, 10),
-      };
+    const elWindowManager = this._elWindowManager;
+    if (elWindowManager) {
+      return getElSize(elWindowManager);
     } else {
-      console.warn("Unable to acquire windowManagerEl");
+      this.log.warn("Unable to acquire elWindowManager");
     }
   }
 
@@ -230,8 +239,8 @@ export default class WindowController extends PhantomState {
       return;
     }
 
-    const windowEl = this._windowEl;
-    if (windowEl) {
+    const elWindow = this._elWindow;
+    if (elWindow) {
       /**
        * FIXME: (jh) While using translate would be better here, it is buggier
        * to use with some of the window animations (open / minimize / restore)
@@ -247,16 +256,16 @@ export default class WindowController extends PhantomState {
 
       requestSkippableAnimationFrame(() => {
         if (x !== undefined) {
-          windowEl.style.left = `${x}px`;
+          elWindow.style.left = `${x}px`;
 
           // Delete opposing right style
-          delete windowEl.style.right;
+          delete elWindow.style.right;
         }
         if (y !== undefined) {
-          windowEl.style.top = `${y}px`;
+          elWindow.style.top = `${y}px`;
 
           // Delete opposing bottom style
-          delete windowEl.style.bottom;
+          delete elWindow.style.bottom;
         }
 
         // IMPORTANT!: Do not update state on each iteration (if at all)
@@ -271,15 +280,20 @@ export default class WindowController extends PhantomState {
     this.emit(EVT_MOVED);
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the window's position relative to its parent (the window manager).
+   *
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft}
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop}
+   *
+   * @param {HTMLElement} el
+   * @return {{x: number, y: number}}
+   */
   getPosition() {
-    const windowEl = this._windowEl;
+    const elWindow = this._elWindow;
 
-    if (windowEl) {
-      return {
-        x: parseInt(windowEl.offsetLeft, 10),
-        y: parseInt(windowEl.offsetTop, 10),
-      };
+    if (elWindow) {
+      return getElPosition(elWindow);
     }
   }
 

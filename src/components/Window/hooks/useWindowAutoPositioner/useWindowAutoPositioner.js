@@ -1,51 +1,68 @@
 import { useCallback, useEffect, useRef } from "react";
+
 import getElCenterPoint from "@utils/getElCenterPoint";
 import getElSize from "@utils/getElSize";
 
+import useWindowOutOfBoundsPositionCorrection from "./useWindowOutOfBoundsPositionCorrection";
+
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
-import useUIParadigm, {
-  DESKTOP_PARADIGM,
-  MOBILE_PARADIGM,
-} from "@hooks/useUIParadigm";
 
-// TODO: Apply auto-position to window if viewport is resized and window is
-// out-of-bounds
-
-// TODO: Document
-export default function useWindowAutoPositioner(
-  elWindowManager,
+/**
+ * Handles auto-positioning of the given windows.
+ *
+ * @typedef { import('../../classesWindowController').default} WindowController
+ *
+ * @param {{elWindow: HTMLElement, elWindowManager: HTMLElement, windowController: WindowController, onInitialAutoPosition?: Function }} options
+ * @return {void}
+ */
+export default function useWindowAutoPositioner({
   elWindow,
+  elWindowManager,
   windowController,
-  onInitialAutoPosition = () => null
-) {
-  const desktopParadigm = useUIParadigm();
-
-  // Apply auto-maximize / restore depending on paradigm
-  useEffect(() => {
-    if (windowController) {
-      switch (desktopParadigm) {
-        case MOBILE_PARADIGM:
-          // Auto-maximize windows if on mobile
-          windowController.maximize();
-          break;
-
-        case DESKTOP_PARADIGM:
-          // Restore windows if switched to desktop
-          windowController.restore();
-          break;
-
-        default:
-          break;
-      }
-    }
-  }, [windowController, desktopParadigm]);
-
+  onInitialAutoPosition = () => null,
+}) {
   const refOnInitialAutoPosition = useRef(null);
   if (elWindow) {
     refOnInitialAutoPosition.current = onInitialAutoPosition;
   }
 
-  // TODO: Document
+  const outOfBoundsCorrectionPosition = useWindowOutOfBoundsPositionCorrection({
+    elWindow,
+    elWindowManager,
+    windowController,
+  });
+
+  // Apply auto-position to window if viewport is resized and window is out-of-
+  // bounds
+  useEffect(() => {
+    if (windowController) {
+      if (
+        outOfBoundsCorrectionPosition.x !== null ||
+        outOfBoundsCorrectionPosition.y !== null
+      ) {
+        const currentPosition = windowController.getPosition();
+
+        const nextPosition = {
+          x:
+            outOfBoundsCorrectionPosition.x !== null
+              ? outOfBoundsCorrectionPosition.x
+              : currentPosition.x,
+          y:
+            outOfBoundsCorrectionPosition.y !== null
+              ? outOfBoundsCorrectionPosition.y
+              : currentPosition.y,
+        };
+
+        windowController.setPosition(nextPosition);
+      }
+    }
+  }, [windowController, outOfBoundsCorrectionPosition]);
+
+  /**
+   * Centers the window in relation to the desktop layout.
+   *
+   * @return {void}
+   */
   const handleCenter = useCallback(() => {
     const winManCenter = getElCenterPoint(elWindowManager);
     const winSize = getElSize(elWindow);
@@ -59,7 +76,11 @@ export default function useWindowAutoPositioner(
     });
   }, [elWindowManager, elWindow, windowController]);
 
-  // TODO: Document
+  /**
+   * Randomly positions the window within the confines of the desktop layout.
+   *
+   * @return {void}
+   */
   const handleScatter = useCallback(() => {
     if (windowController) {
       const winManSize = getElSize(elWindowManager);
@@ -73,7 +94,6 @@ export default function useWindowAutoPositioner(
 
       windowController.setPosition({ x, y });
     }
-    // TODO:Implement
   }, [elWindowManager, elWindow, windowController]);
 
   // TODO: Refactor; Determine current app runtimes so we can determine if
@@ -90,14 +110,18 @@ export default function useWindowAutoPositioner(
       windowController.__INTERNAL__setScatterHandler(handleScatter);
 
       // IMPORTANT: This must be called asynchronously or it will not set
-      requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
         // Determine initial window position
         // TODO: Obtain previous value from local storage, or from window
         // registration
+        //
+        // TODO: Fix issue where opening more than one initial window will not
+        // center the first window
         if (refInitialAppRuntimes.current.length < 2) {
-          // If first window
+          // Center first window
           handleCenter();
         } else {
+          // Randomly scatter subsequent windows
           handleScatter();
         }
 
@@ -106,7 +130,7 @@ export default function useWindowAutoPositioner(
         // handleScatter)
         //
         // FIXME: (jh) Use setImmediate instead?
-        requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
           refOnInitialAutoPosition.current();
         });
       });

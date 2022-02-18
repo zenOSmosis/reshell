@@ -1,9 +1,20 @@
 import { useCallback } from "react";
 
-// TODO: Document
-export default function useWindowControls(windowController) {
-  // TODO: Document
-  // TODO: Implement
+/**
+ * Handles window control binding for the given window.
+ *
+ * @typedef { import('../classesWindowController').default} WindowController
+ *
+ * @param {{ windowController: WindowController }} options
+ * @return {{ onRestoreOrMaximize: Function, onMinimize: Function, onClose: Function}}
+ */
+export default function useWindowControls({ windowController }) {
+  /**
+   * Handles toggling of window restore or maximize, depending on current
+   * state.
+   *
+   * @return {void}
+   */
   const handleRestoreOrMaximize = useCallback(() => {
     if (windowController.getIsMaximized()) {
       windowController.restore();
@@ -12,14 +23,20 @@ export default function useWindowControls(windowController) {
     }
   }, [windowController]);
 
-  // TODO: Document
-  // TODO: Implement
+  /**
+   * Handles minimizing of the window.
+   *
+   * @return {void}
+   */
   const handleMinimize = useCallback(() => {
     windowController.minimize();
   }, [windowController]);
 
-  // TODO: Document
-  // TODO: Implement
+  /**
+   * Handles closing of the window.
+   *
+   * @return {void}
+   */
   const handleClose = useCallback(() => {
     if (!windowController.getIsDestroying()) {
       windowController.destroy();
