@@ -19,19 +19,21 @@ export default function useWindowAutoSizer({ windowController }) {
   // Apply auto-maximize / restore depending on paradigm
   useEffect(() => {
     if (windowController) {
-      switch (uiParadigm) {
-        case MOBILE_PARADIGM:
-          // Auto-maximize windows if on mobile
-          windowController.maximize();
-          break;
+      if (!windowController.getIsMinimized()) {
+        switch (uiParadigm) {
+          case MOBILE_PARADIGM:
+            // Auto-maximize windows if on mobile
+            windowController.maximize();
+            break;
 
-        case DESKTOP_PARADIGM:
-          // Restore windows if switched to desktop
-          windowController.restore();
-          break;
+          case DESKTOP_PARADIGM:
+            // Restore windows if switched to desktop
+            windowController.restore();
+            break;
 
-        default:
-          break;
+          default:
+            break;
+        }
       }
     }
   }, [windowController, uiParadigm]);
