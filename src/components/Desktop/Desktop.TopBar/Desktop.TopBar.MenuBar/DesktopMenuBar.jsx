@@ -27,102 +27,112 @@ export default function DesktopMenuBar() {
     }
   }, [activeWindowController, forceUpdate]);
 
-  const DESKTOP_MENU_STRUCTURE = useMemo(
-    () => ({
-      label: "Desktop",
-      submenu: [
-        {
-          label: "Applications",
-          submenu: appRegistrations
-            // Sort registrations alphabetically
-            .sort((a, b) => {
-              const aTitle = a.getTitle();
-              const bTitle = b.getTitle();
+  const applicationsMenuData = useMemo(
+    () =>
+      appRegistrations
+        // Sort registrations alphabetically
+        .sort((a, b) => {
+          const aTitle = a.getTitle();
+          const bTitle = b.getTitle();
 
-              if (aTitle < bTitle) {
-                return -1;
-              } else if (bTitle > aTitle) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .map(app => ({
-              // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-              role: app.getTitle(),
-              click: () => activateAppRegistration(app),
-            })),
-        },
-        // Dynamically include pinned apps, if they exist
-        ...(() => {
-          const pinnedApps = appRegistrations
-            .filter(registration => registration.getIsPinned())
-            .map(app => ({
-              // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-              role: app.getTitle(),
-              click: () => activateAppRegistration(app),
-            }));
-
-          if (pinnedApps.length) {
-            return [
-              {
-                type: "separator",
-                label: "Pinned Applications",
-              },
-              ...pinnedApps,
-            ];
+          if (aTitle < bTitle) {
+            return -1;
+          } else if (bTitle > aTitle) {
+            return 1;
           } else {
-            return [];
+            return 0;
           }
-        })(),
-        {
-          type: "separator",
-          label: "Global Window Management",
-        },
-        {
-          label: "Scatter Windows",
-          click: () =>
-            appRuntimes.forEach(runtime => {
-              const windowController = runtime.getWindowController();
-
-              if (windowController) {
-                windowController.scatter();
-              }
-            }),
-        },
-        {
-          label: "Center Windows",
-          click: () =>
-            appRuntimes.forEach(runtime => {
-              const windowController = runtime.getWindowController();
-
-              if (windowController) {
-                windowController.center();
-              }
-            }),
-        },
-        {
-          type: "separator",
-          label: "Desktop Operations",
-        },
-        {
-          label: "Reload ReShell",
-          click: () => {
-            window.confirm("Are you sure you wish to reload?") &&
-              ReShellCore.reload();
-          },
-        },
-        {
-          label: "Quit ReShell",
-          click: () => {
-            window.confirm("Are you sure you wish to close the desktop?") &&
-              ReShellCore.destroy();
-          },
-        },
-      ],
-    }),
-    [appRegistrations, appRuntimes, activateAppRegistration]
+        })
+        .map(app => ({
+          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+          role: app.getTitle(),
+          click: () => activateAppRegistration(app),
+        })),
+    [appRegistrations, activateAppRegistration]
   );
+
+  const pinnedAppsMenuData = useMemo(() => {
+    const pinnedApps = appRegistrations
+      .filter(registration => registration.getIsPinned())
+      .map(app => ({
+        // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+        role: app.getTitle(),
+        click: () => activateAppRegistration(app),
+      }));
+
+    if (pinnedApps.length) {
+      return [
+        {
+          type: "separator",
+          label: "Pinned Applications",
+        },
+        ...pinnedApps,
+      ];
+    } else {
+      return [];
+    }
+  }, [appRegistrations, activateAppRegistration]);
+
+  const hasOpenedWindows = appRuntimes.length > 0;
+
+  const DESKTOP_MENU_STRUCTURE = {
+    label: "Desktop",
+    submenu: [
+      {
+        label: "Applications",
+        submenu: applicationsMenuData,
+      },
+      // Dynamically include pinned apps and their corresponding separator, if
+      // exists
+      ...pinnedAppsMenuData,
+      {
+        type: "separator",
+        label: "Global Window Management",
+      },
+      {
+        label: "Scatter Windows",
+        click: () =>
+          appRuntimes.forEach(runtime => {
+            const windowController = runtime.getWindowController();
+
+            if (windowController) {
+              windowController.scatter();
+            }
+          }),
+        disabled: !hasOpenedWindows,
+      },
+      {
+        label: "Center Windows",
+        click: () =>
+          appRuntimes.forEach(runtime => {
+            const windowController = runtime.getWindowController();
+
+            if (windowController) {
+              windowController.center();
+            }
+          }),
+        disabled: !hasOpenedWindows,
+      },
+      {
+        type: "separator",
+        label: "Desktop Operations",
+      },
+      {
+        label: "Reload ReShell",
+        click: () => {
+          window.confirm("Are you sure you wish to reload?") &&
+            ReShellCore.reload();
+        },
+      },
+      {
+        label: "Quit ReShell",
+        click: () => {
+          window.confirm("Are you sure you wish to close the desktop?") &&
+            ReShellCore.destroy();
+        },
+      },
+    ],
+  };
 
   const activeWindowTitle = activeWindowController?.getTitle();
 
