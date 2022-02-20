@@ -10,8 +10,12 @@ import useForceUpdate from "@hooks/useForceUpdate";
 // TODO: Document
 export default function DesktopMenuBar() {
   const { activeWindowController } = useDesktopContext();
-  const { appRegistrations, activateAppRegistration, appRuntimes } =
-    useAppOrchestrationContext();
+  const {
+    appRegistrations,
+    activateAppRegistration,
+    appRuntimes,
+    windowControllers,
+  } = useAppOrchestrationContext();
 
   const forceUpdate = useForceUpdate();
 
@@ -99,7 +103,12 @@ export default function DesktopMenuBar() {
               windowController.scatter();
             }
           }),
-        disabled: !hasOpenedWindows,
+        disabled:
+          !hasOpenedWindows ||
+          windowControllers.every(
+            // Disable if every window controller can't scatter
+            winController => !winController.getCanScatter()
+          ),
       },
       {
         label: "Center Windows",
@@ -111,7 +120,12 @@ export default function DesktopMenuBar() {
               windowController.center();
             }
           }),
-        disabled: !hasOpenedWindows,
+        disabled:
+          !hasOpenedWindows ||
+          windowControllers.every(
+            // Disable if every window controller can't center
+            winController => !winController.getCanCenter()
+          ),
       },
       {
         type: "separator",
@@ -176,10 +190,12 @@ export default function DesktopMenuBar() {
           {
             label: "Scatter",
             click: () => activeWindowController.scatter(),
+            disabled: !activeWindowController.getCanScatter(),
           },
           {
             label: "Center",
             click: () => activeWindowController.center(),
+            disabled: !activeWindowController.getCanCenter(),
           },
         ],
       };

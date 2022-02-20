@@ -20,6 +20,10 @@ export default function AppOrchestrationProvider({ children }) {
     appOrchestrationService.getActiveAppRegistrations();
   const appRegistrations = appOrchestrationService.getAppRegistrations();
   const appRuntimes = appOrchestrationService.getAppRuntimes();
+  const windowControllers = appRuntimes
+    .map(runtime => runtime.getWindowController())
+    // Don't include runtimes without window controllers
+    .filter(pred => pred);
 
   const activateAppRegistration =
     appOrchestrationService.activateAppRegistration;
@@ -43,6 +47,7 @@ export default function AppOrchestrationProvider({ children }) {
         activeAppRegistrations,
         appRegistrations,
         appRuntimes,
+        windowControllers,
         //
         activateAppRegistration,
         activateAppRegistrationID,

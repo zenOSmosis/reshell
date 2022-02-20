@@ -90,7 +90,18 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   center() {
-    return this._centerHandler();
+    if (this.getCanCenter()) {
+      return this._centerHandler();
+    }
+  }
+
+  /**
+   * Retrieves whether or not the window can be centered.
+   *
+   * @return {boolean}
+   */
+  getCanCenter() {
+    return !this.getIsMinimized() && !this.getIsMaximized();
   }
 
   // TODO: Document
@@ -100,7 +111,18 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   scatter() {
-    return this._scatterHandler();
+    if (this.getCanScatter()) {
+      return this._scatterHandler();
+    }
+  }
+
+  /**
+   * Retrieves whether or not the window can be scattered.
+   *
+   * @return {boolean}
+   */
+  getCanScatter() {
+    return !this.getIsMinimized() && !this.getIsMaximized();
   }
 
   // TODO: Document

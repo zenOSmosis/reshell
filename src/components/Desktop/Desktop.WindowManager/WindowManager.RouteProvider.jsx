@@ -45,8 +45,10 @@ export default function WindowManagerRouteProvider({ children }) {
 
   // Update URL when active registration ID changes
   useEffect(() => {
-    history.push(activeRegistrationID ? `/${activeRegistrationID}` : "/");
-  }, [activeRegistrationID, history]);
+    if (activeRegistrationID !== locationAppRegistrationID) {
+      history.push(activeRegistrationID ? `/${activeRegistrationID}` : "/");
+    }
+  }, [activeRegistrationID, locationAppRegistrationID, history]);
 
   return (
     <WindowManagerRouteContext.Provider value={{}}>
