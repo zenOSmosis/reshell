@@ -38,9 +38,8 @@ button.szh-menu-button.szh-menu-button--open {
   color: inherit;
 }
 
-.szh-menu-container li:not([role="presentation"]):hover,
-.szh-menu-container li div[role="menuitem"]:hover,
-.szh-menu-container li div[aria-expanded="true"] {
+.szh-menu-container li div[role="menuitem"].szh-menu__item--hover,
+.szh-menu-container li.szh-menu__item--hover {
   background-color: #3c8aff;
   color: #000;
 }

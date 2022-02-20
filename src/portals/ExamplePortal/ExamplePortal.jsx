@@ -4,6 +4,7 @@ import ApplicationsApp from "./apps/ApplicationsApp";
 import AboutReShellApp from "./apps/AboutReShellApp";
 import BackgroundSelectorApp from "./apps/BackgroundSelectorApp";
 import BeepPrototypeApp from "./apps/BeepPrototypeApp";
+import CheckForUpdatesApp from "./apps/CheckForUpdatesApp";
 import KeyVaultApp from "./apps/KeyVaultApp";
 import InputMediaDevicesApp from "./apps/InputMediaDevicesApp";
 import VUMeterApp from "./apps/VUMeterApp";
@@ -11,7 +12,7 @@ import ScreenCaptureApp from "./apps/ScreenCaptureApp";
 import ApplicationMonitorApp from "./apps/ApplicationMonitorApp";
 import ServiceMonitorApp from "./apps/ServiceMonitorApp";
 import PresentationExpressApp from "./apps/PresentationExpressApp";
-import MenubarPrototypeApp from "./apps/MenubarPrototypeApp";
+import MenuBarPrototypeApp from "./apps/MenuBarPrototypeApp";
 import Box3DPrototypeApp from "./apps/Box3DPrototypeApp";
 import ColorAdjusterApp from "./apps/ColorAdjusterApp";
 import NotesPrototypeApp from "./apps/NotesPrototypeApp";
@@ -35,6 +36,7 @@ export default function ExamplePortal() {
         AboutReShellApp,
         BackgroundSelectorApp,
         BeepPrototypeApp,
+        CheckForUpdatesApp,
         KeyVaultApp,
         InputMediaDevicesApp,
         VUMeterApp,
@@ -42,7 +44,7 @@ export default function ExamplePortal() {
         ApplicationMonitorApp,
         ServiceMonitorApp,
         PresentationExpressApp,
-        MenubarPrototypeApp,
+        MenuBarPrototypeApp,
         Box3DPrototypeApp,
         ColorAdjusterApp,
         NotesPrototypeApp,

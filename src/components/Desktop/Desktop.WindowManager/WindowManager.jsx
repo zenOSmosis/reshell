@@ -1,20 +1,20 @@
 import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import WindowManagerRouteProvider from "./WindowManager.RouteProvider"; // WindowManagerRouteContext,
-import Cover from "../Cover";
-import Window from "../Window";
 
-import WindowProvider from "../Window/Window.Provider";
-import useWindowContext from "../Window/hooks/useWindowContext";
+import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
+
+import Cover from "@components/Cover";
+import Window from "@components/Window";
+import WindowProvider from "@components/Window/Window.Provider";
+import useWindowContext from "@components/Window/hooks/useWindowContext";
+import WindowController from "@components/Window/classes/WindowController";
+
+import WindowManagerRouteProvider from "./WindowManager.RouteProvider"; // WindowManagerRouteContext,
 
 import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useForceUpdate from "@hooks/useForceUpdate";
-
-import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
-
-import WindowController from "../Window/classes/WindowController";
 
 // TODO: Add hotkey listener service and map to active window
 
@@ -277,7 +277,7 @@ function WindowManagerView({ children }) {
 
                 windowController.setTitle(title);
 
-                windowController.attachWindowManagerElement(elBase);
+                windowController.__INTERNAL__attachWindowManagerElement(elBase);
 
                 // Link app runtime to window controller (so that when the window
                 // controller is destructed it will take down the app runtime)

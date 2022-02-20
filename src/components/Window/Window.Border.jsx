@@ -1,9 +1,7 @@
 import Layout, { Header, Content, Footer, Row, Column } from "../Layout";
 import { useDrag } from "@use-gesture/react";
 
-// TODO: Height and width are synonymous
-
-// TODO: Resizable element for touch displays: https://csslayout.io/patterns/resizable-element
+// FIXME: (jh) Look into resizble element for touch displays: https://csslayout.io/resizable-element/
 
 export const DIR_BORDER_NW = "NW";
 export const DIR_BORDER_N = "N";
@@ -36,6 +34,7 @@ const useDirectionalDragger = function (direction, onBorderDrag) {
 export default function WindowBorder({
   children,
   onBorderDrag,
+  // FIXME: (jh) Document how height and width are synonymous
   borderWidth = 3,
   isDisabled = false,
   ...rest

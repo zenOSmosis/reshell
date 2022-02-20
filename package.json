@@ -1,6 +1,6 @@
 {
   "name": "reshell",
-  "version": "0.0.127",
+  "version": "0.0.128",
   "author": {
     "name": "zenOSmosis",
     "email": "info@zenosmosis.com",
@@ -11,7 +11,7 @@
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@shelf/fast-chunk-string": "^1.1.1",
-    "@szhsin/react-menu": "^2.1.0",
+    "@szhsin/react-menu": "^2.3.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

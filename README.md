@@ -11,6 +11,7 @@ Other goals:  Expose all "magic" via documentation; Keep everything understandab
 Misc: 
 
 * Something to the effect of "shared multi-tenant?"
+* Frontend for PhantomCore
 
 # Getting Started with Create React App
 

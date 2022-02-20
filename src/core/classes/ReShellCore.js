@@ -5,6 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import UIServiceManager from "../classes/UIServiceManager";
+import BrowserShutdownInterceptorService from "@services/BrowserShutdownInterceptorService";
 import KeyVaultService from "@services/KeyVaultService";
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
@@ -78,6 +79,7 @@ export default class ReShellCore extends PhantomCore {
     _instance = this;
 
     this._uiServiceManager = new UIServiceManager();
+    this._uiServiceManager.startServiceClass(BrowserShutdownInterceptorService);
     this._uiServiceManager.startServiceClass(KeyVaultService);
     this._uiServiceManager.startServiceClass(LocalDeviceIdentificationService);
 
@@ -203,7 +205,7 @@ export default class ReShellCore extends PhantomCore {
 
     const ret = await super.destroy();
 
-    // TODO: Refactor this handling into PhantomCore as optional single-instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
+    // TODO: Refactor this handling into PhantomCore as optional singleton instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
     _instance = null;
 
     return ret;

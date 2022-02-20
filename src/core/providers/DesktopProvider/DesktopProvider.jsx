@@ -1,7 +1,6 @@
 import React from "react";
 
 import useActiveWindowController from "./hooks/useActiveWindowController";
-import useBackgroundAssetCollection from "./hooks/useBackgroundAssetCollection";
 
 import useServiceClass from "@hooks/useServiceClass";
 
@@ -15,8 +14,6 @@ export default function DesktopProvider({ children }) {
 
   const { activeWindowController, setActiveWindowController } =
     useActiveWindowController();
-  const { backgroundAssets, addBackgroundAsset, removeBackgroundAsset } =
-    useBackgroundAssetCollection();
 
   return (
     <DesktopContext.Provider
@@ -25,10 +22,6 @@ export default function DesktopProvider({ children }) {
         setActiveWindowController,
 
         paradigm: uiParadigmService.getParadigm(),
-
-        backgroundAssets,
-        addBackgroundAsset,
-        removeBackgroundAsset,
       }}
     >
       {children}

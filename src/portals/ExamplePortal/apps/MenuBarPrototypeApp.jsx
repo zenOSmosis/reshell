@@ -1,12 +1,12 @@
 import Layout, { Header, Content } from "@components/Layout";
-import Menubar from "@components/Menubar";
+import MenuBar from "@components/MenuBar";
 import Center from "@components/Center";
 
-const MenubarPrototypeApp = {
+const MenuBarPrototypeApp = {
   // TODO: Do we still need "id" if using path? (use path + title concatenation for id)
   id: "menubar-Prototype",
   // path: "/Applications/Utilities/Prototypes" // TODO: Sync path w/ OpenFS?
-  title: "Menubar Prototype",
+  title: "MenuBar Prototype",
   menu: {
     // TODO: Prototype this
   },
@@ -17,22 +17,22 @@ const MenubarPrototypeApp = {
   view: function View({ appRuntime }) {
     // TODO: Handle dynamic setting of menubar
 
-    const menuData = createTestMenuStructure(appRuntime, true);
+    const menuStructures = createTestMenuStructures(appRuntime, true);
 
     return (
       // TODO: Add proto menubar here and populate it w/ test structure
       <Layout>
         <Header>
-          <Menubar menuData={menuData} />
+          <MenuBar menuStructures={menuStructures} />
         </Header>
         <Content>
           <Center>
             <button
               onClick={() =>
-                console.log(createTestMenuStructure(appRuntime, true))
+                console.log(createTestMenuStructures(appRuntime, true))
               }
             >
-              log(createTestMenuStructure())
+              log(createTestMenuStructures())
             </button>
           </Center>
         </Content>
@@ -41,9 +41,9 @@ const MenubarPrototypeApp = {
   },
 };
 
-export default MenubarPrototypeApp;
+export default MenuBarPrototypeApp;
 
-function createTestMenuStructure(appRuntime, isMac = false) {
+function createTestMenuStructures(appRuntime, isMac = false) {
   //
   const app = {
     name: appRuntime.getTitle(),

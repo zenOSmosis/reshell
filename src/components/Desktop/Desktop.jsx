@@ -1,73 +1,28 @@
 import PhantomCore from "phantom-core";
 import ReShellCore from "@core";
 
+import WindowManager from "./Desktop.WindowManager";
+import TopBar from "./Desktop.TopBar";
+import Dock from "./Desktop.Dock";
+
 import FullViewport from "../FullViewport";
-import WindowManager from "../WindowManager";
 import Cover from "../Cover";
-import Layout, { Header, Content, Row, Column } from "../Layout";
-import LED from "../LED";
-import Dock from "../Dock";
+import Layout, { Header, Content } from "../Layout";
+
 import AutoScaler from "../AutoScaler";
-
-// TODO: Change this to use data-driven Menubar
-import Menu, {
-  MenuButton,
-  MenuItem,
-  MenuHeader,
-  MenuDivider,
-  SubMenu,
-} from "../_Menu.LibWrapper";
-
-import useDesktopContext from "@hooks/useDesktopContext";
-import useServicesContext from "@hooks/useServicesContext";
-import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
-import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
-
-import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitorApp";
 
 import NotificationProvider from "./providers/NotificationProvider";
 import ModalProvider from "./providers/ModalProvider";
 
-// import { useEffect } from "react";
-
-// TODO: Implement top menu-bar
-// @see https://headlessui.dev/react/menu
-// or (better?) https://szhsin.github.io/react-menu
-
 // TODO: Implement context menu
 // @see https://szhsin.github.io/react-menu/#context-menu
 
-// TODO: Backgrounds?
-// @see https://coolbackgrounds.io (particles: https://github.com/marcbruederlin/particles.js)
-// @see [Unsplash 3D renders] https://unsplash.com/blog/unsplash-library-now-accepts-3d-renders/?utm_source=vero&utm_medium=email&utm_content=control&utm_campaign=Unsplash%20Awards%20Announcement&utm_term=Newsletter&vero_id=6421463&vero_conv=PmNPLiUVlfrNjJJhv6nsCKDC_PNDDxf0FWY02n1x7jyPWwq0KgHl-nQmk0Pq6aTzRvvwjcixMGRPZlAmMwIqQz72F0DGURijjA%3D%3D
-
 // TODO: Use prop-types
+// TODO: Document
 export default function Desktop({
   backgroundView = <div style={{ backgroundColor: "#ccc" }} />,
   appDescriptors,
 }) {
-  // FIXME: (jh) This currently triggers a "Could ot locate appRegistration
-  // with id: service-monitor" warning on first render; it should be refactored
-  const { link: openServiceMonitor } = useAppRegistrationLink(
-    SERVICE_MONITOR_REGISTRATION_ID
-  );
-
-  const { services } = useServicesContext();
-  const { activeWindowController /* addBackgroundAsset */ } =
-    useDesktopContext();
-  const { appRegistrations, activateAppRegistration, appRuntimes } =
-    useAppOrchestrationContext();
-
-  // TODO: Implement after PhantomWrapper (or equiv.; assets need to be wrapped in
-  // PhantomCore instances in order to be added to background collection)
-  /*
-  useEffect(() => {
-    if (backgroundView) {
-      addBackgroundAsset(backgroundView);
-    }
-  }, [backgroundView, addBackgroundAsset]);
-  */
-
   return (
     <FullViewport>
       {
@@ -91,226 +46,7 @@ export default function Desktop({
                   backgroundColor: "rgba(0,0,0,.5)",
                 }}
               >
-                <Row>
-                  <Column style={{ width: "100%" }}>
-                    {
-                      // TODO: Replace menu with data-driven Menubar component
-                    }
-                    <div>
-                      {
-                        // TODO: Include bookmark menu option (use browser bookmark system and / or store somewhere else); in combination w/ deep-linking functionality
-                      }
-                      <Menu
-                        menuButton={
-                          <MenuButton>
-                            {
-                              // TODO: Make this string configurable
-                            }
-                            Desktop
-                          </MenuButton>
-                        }
-                      >
-                        {
-                          // TODO: Show divider
-                        }
-                        <SubMenu label="Applications">
-                          {appRegistrations
-                            .sort((a, b) => {
-                              const aTitle = a.getTitle();
-                              const bTitle = b.getTitle();
-
-                              if (aTitle < bTitle) {
-                                return -1;
-                              } else if (bTitle > aTitle) {
-                                return 1;
-                              } else {
-                                return 0;
-                              }
-                            })
-                            .map(app => (
-                              <MenuItem
-                                key={app.getUUID()}
-                                onClick={() => activateAppRegistration(app)}
-                              >
-                                {app.getTitle()}
-                              </MenuItem>
-                            ))}
-                        </SubMenu>
-                        {
-                          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
-                        }
-                        {appRegistrations
-                          .filter(app => app.getIsPinned())
-                          .map(app => (
-                            <MenuItem
-                              key={app.getUUID()}
-                              onClick={() => activateAppRegistration(app)}
-                            >
-                              {app.getTitle()}
-                            </MenuItem>
-                          ))}
-                        <MenuDivider />
-                        <MenuHeader>Global Window Management</MenuHeader>
-                        <MenuItem
-                          // TODO: Refactor
-                          onClick={() =>
-                            appRuntimes.forEach(runtime => {
-                              const windowController =
-                                runtime.getWindowController();
-
-                              if (windowController) {
-                                windowController.scatter();
-                              }
-                            })
-                          }
-                        >
-                          Scatter Windows
-                        </MenuItem>
-                        <MenuItem
-                          // TODO: Refactor
-                          onClick={() =>
-                            appRuntimes.forEach(runtime => {
-                              const windowController =
-                                runtime.getWindowController();
-
-                              if (windowController) {
-                                windowController.center();
-                              }
-                            })
-                          }
-                        >
-                          Center Windows
-                        </MenuItem>
-                        <MenuDivider />
-                        <MenuHeader>Desktop Operations</MenuHeader>
-                        <MenuItem
-                          onClick={() =>
-                            window.confirm(
-                              "Are you sure you wish to close the desktop?"
-                            ) && ReShellCore.destroy()
-                          }
-                        >
-                          Close
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() =>
-                            window.confirm(
-                              "Are you sure you wish to reload?"
-                            ) && ReShellCore.reload()
-                          }
-                        >
-                          Reload
-                        </MenuItem>
-                      </Menu>
-                      {activeWindowController && (
-                        <>
-                          {
-                            // TODO: Implement quadrant snapping here
-                          }
-                          <Menu
-                            portal={true}
-                            menuButton={
-                              <MenuButton>
-                                <span style={{ fontWeight: "bold" }}>
-                                  {activeWindowController.getTitle()}
-                                </span>
-                              </MenuButton>
-                            }
-                          >
-                            <MenuItem
-                              onClick={() => {
-                                if (!activeWindowController.getIsDestroying()) {
-                                  activeWindowController.destroy();
-                                }
-                              }}
-                            >
-                              Close
-                            </MenuItem>
-                          </Menu>
-                          <Menu
-                            portal={true}
-                            menuButton={<MenuButton>Window</MenuButton>}
-                          >
-                            {
-                              // TODO: Refresh items when activeWindowController updates
-                            }
-                            <MenuItem
-                              onClick={() =>
-                                activeWindowController.setIsMinimized(true)
-                              }
-                              // disabled={activeWindowController?.getIsMinimized()}
-                            >
-                              Minimize
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() =>
-                                activeWindowController.setIsMaximized(true)
-                              }
-                              // disabled={activeWindowController?.getIsMaximized()}
-                            >
-                              Maximize
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => activeWindowController.restore()}
-                              // disabled={}
-                            >
-                              Restore
-                            </MenuItem>
-                            <MenuDivider />
-                            <MenuItem
-                              onClick={() => activeWindowController.center()}
-                            >
-                              Center
-                            </MenuItem>
-                            <MenuItem
-                              onClick={() => activeWindowController.scatter()}
-                            >
-                              Scatter
-                            </MenuItem>
-                          </Menu>
-                        </>
-                      )}
-                    </div>
-                  </Column>
-                  <Column
-                    style={{
-                      // TODO: Rework so column width expands according to content
-                      maxWidth: 110,
-                    }}
-                  >
-                    <div style={{ textAlign: "right" }}>
-                      <Menu
-                        portal={true}
-                        menuButton={
-                          <MenuButton>
-                            Service Core{" "}
-                            <LED
-                              color={services.length > 0 ? "green" : "gray"}
-                            />
-                          </MenuButton>
-                        }
-                      >
-                        {services.length === 0 ? (
-                          <MenuItem>
-                            <span style={{ fontStyle: "italic" }}>
-                              No running services
-                            </span>
-                          </MenuItem>
-                        ) : (
-                          services.map(service => (
-                            <MenuItem
-                              key={service.getUUID()}
-                              // TODO: Open direct service in service monitor
-                              onClick={openServiceMonitor}
-                            >
-                              {service.getTitle()}
-                            </MenuItem>
-                          ))
-                        )}
-                      </Menu>
-                    </div>
-                  </Column>
-                </Row>
+                <TopBar />
               </Header>
               <Content>
                 {

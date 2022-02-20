@@ -45,11 +45,8 @@ const CallPlayerApp = {
   id: REGISTRATION_ID,
   title: "Call Player",
   style: {
-    // TODO: Re-implement once window auto-maximizes on mobile (currently has
-    // bottom buttons hide behind dock)
-    // @link https://github.com/jzombie/pre-re-shell/issues/95
-    width: 640 /* * 1.5*/,
-    height: 480 /* * 1.5*/,
+    width: 640 * 1.5,
+    height: 480 * 1.5,
   },
   isAutoStart: true,
   isPinned: true,

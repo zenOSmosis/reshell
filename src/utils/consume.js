@@ -5,5 +5,5 @@
  * @return {null}
  */
 export default function consume(obj) {
-  return Boolean(obj) ? null : null;
+  return obj ? null : null;
 }

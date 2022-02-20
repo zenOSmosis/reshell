@@ -131,12 +131,12 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
-  attachWindowElement(el) {
+  __INTERNAL__attachWindowElement(el) {
     this._elWindow = el;
   }
 
   // TODO: Document
-  attachWindowManagerElement(el) {
+  __INTERNAL__attachWindowManagerElement(el) {
     this._elWindowManager = el;
   }
 
@@ -281,7 +281,8 @@ export default class WindowController extends PhantomState {
   }
 
   /**
-   * Retrieves the window's position relative to its parent (the window manager).
+   * Retrieves the window's upper-left-hand corner position relative to its
+   * parent (the window manager).
    *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft}
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop}

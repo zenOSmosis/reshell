@@ -1,5 +1,6 @@
 /**
- * Retrieves the given element's position in pixels relative to its parent.
+ * Retrieves the given element's upper-left-hand corner position in pixels
+ * relative to its parent.
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop}

@@ -100,6 +100,13 @@ export default function useWindowOutOfBoundsPositionCorrection({
       // resized
       const _handleResizeOrMove = debounce(
         () => {
+          // Fixes issue where previously minimized windows might be out of
+          // position once restored
+          // Relevant issue: https://github.com/jzombie/pre-re-shell/issues/131
+          if (windowController.getIsMinimized()) {
+            return;
+          }
+
           const nextCorrectionPosition = getOutOfBoundsPositionCorrection(
             elWindow,
             elWindowManager

@@ -66,7 +66,7 @@ const WindowView = ({
   // TODO: Refactor into useWindowController hook
   useEffect(() => {
     if (windowController && elWindow) {
-      windowController.attachWindowElement(elWindow);
+      windowController.__INTERNAL__attachWindowElement(elWindow);
     }
   }, [windowController, elWindow]);
 
