@@ -1,4 +1,4 @@
-import { PhantomState, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomState, EVT_UPDATED, EVT_DESTROYED, sleep } from "phantom-core";
 import { debounce } from "debounce";
 
 import getElPosition from "@utils/getElPosition";
@@ -13,6 +13,12 @@ export const EVT_RENDER_PROFILED = "render-profile";
 
 export const EVT_RESIZED = "resized";
 export const EVT_MOVED = "moved";
+
+// Number of milliseconds to wait after a restore operation before running a
+// positioning effect such as scattering or centering. This is necessary in
+// order to allow all restore calculations (along with their CSS transitions,
+// etc.) to occur before trying to run the position effect calculations.
+const POST_RESTORE_POSITION_EFFECT_TIMEOUT = 1000;
 
 // TODO: Implement ability to take snapshot (i.e. save to png, etc) for window previewing
 
@@ -89,19 +95,16 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
-  center() {
-    if (this.getCanCenter()) {
-      return this._centerHandler();
-    }
-  }
+  async center() {
+    if (this.getIsMaximized() || this.getIsMinimized()) {
+      this.restore();
 
-  /**
-   * Retrieves whether or not the window can be centered.
-   *
-   * @return {boolean}
-   */
-  getCanCenter() {
-    return !this.getIsMinimized() && !this.getIsMaximized();
+      // NOTE: Sleep is used to allow window time to restore and effects run,
+      // otherwise it may not center correctly
+      await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
+    }
+
+    this._centerHandler();
   }
 
   // TODO: Document
@@ -110,19 +113,16 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
-  scatter() {
-    if (this.getCanScatter()) {
-      return this._scatterHandler();
-    }
-  }
+  async scatter() {
+    if (this.getIsMaximized() || this.getIsMinimized()) {
+      this.restore();
 
-  /**
-   * Retrieves whether or not the window can be scattered.
-   *
-   * @return {boolean}
-   */
-  getCanScatter() {
-    return !this.getIsMinimized() && !this.getIsMaximized();
+      // NOTE: Sleep is used to allow window time to restore and effects run,
+      // otherwise it may not scatter correctly
+      await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
+    }
+
+    this._scatterHandler();
   }
 
   // TODO: Document
