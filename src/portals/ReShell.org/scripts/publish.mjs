@@ -30,9 +30,20 @@ const packageVersion = packageJSON.version;
 const GH_PAGES_REPO = "git@github.com:zenOSmosis/reshell.org-static.git";
 const TMP_REPO_PATH = "/tmp/reshell.org-static.git";
 
+// Delete TMP_REPO_PATH from filesystem (the script will create it again)
+//
+// FIXME: (jh) This fixes an issue where the script would sometimes error out
+// when rebuilding but deleting each time might not be the best approach,
+// either. This should be looked into.
+await $`rm -rf ${TMP_REPO_PATH}`;
+
+// Build the ReShell portal
 await $`npm run build ReShell.org`;
+
+// Resolve the absolute build path
 const BUILD_PATH = path.resolve(PROJECT_ROOT_PATH, "build");
 
+// Clone the GitHub Pages repo into temp location
 try {
   await $`git clone ${GH_PAGES_REPO} ${TMP_REPO_PATH}`;
 } catch (p) {
@@ -42,8 +53,9 @@ try {
   }
 }
 
+// Remove all files except for the ignored files from the GitHub Pages temp
+// repo
 const IGNORE_PATH_NAMES = [".git", "CNAME", "README.md"];
-
 for (const pathName of fs.readdirSync(TMP_REPO_PATH)) {
   if (!IGNORE_PATH_NAMES.includes(pathName)) {
     fs.rmSync(path.resolve(TMP_REPO_PATH, pathName), {
@@ -53,18 +65,23 @@ for (const pathName of fs.readdirSync(TMP_REPO_PATH)) {
   }
 }
 
-// Copy files from the build to the temp project
+// Copy files from the build to the GitHub Pages temp repo
 await $`cp -r ${BUILD_PATH}/* ${TMP_REPO_PATH}/.`;
 
-// Copy the index.html to the 404.html
+// Copy the index.html to the 404.html (fixes GitHub Pages issue where opening
+// non-index.html file would lead to 404 page that wasn't React app)
 await $`cp ${TMP_REPO_PATH}/index.html ${TMP_REPO_PATH}/404.html`;
 
-// Show the files in the temp path
+// Show the files in the temp path (for debugging purposes)
 await $`ls ${TMP_REPO_PATH}`;
 
-// Make the commit [without pushing]
+// Stage the files and make the commit, using package version obtained from
+// package.json
+//
+// IMPORTANT: Not pushing here
 await $`cd ${TMP_REPO_PATH} && git add . && git commit -m "v${packageVersion}"`;
 
+// Prompt the user to push manually
 console.log(
   `\n\n\nNOTE: Skipping auto-publish and opening temporary intermediate terminal at the ${TMP_REPO_PATH} location for testing / manual remote commit\n\nType "git push" to publish`
 );
