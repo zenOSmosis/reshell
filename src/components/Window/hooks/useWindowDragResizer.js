@@ -106,13 +106,19 @@ export default function useWindowDragResizer({ windowController }) {
 
         // TODO: Handle min width / height
 
-        // Prevent left resize from extending left of left threshold
-        if (x < 0) {
-          // This affects window height calculations when cursor is left of
-          // left threshold
-          const diffX = 0 - x;
-          x = 0;
-          width = width - diffX;
+        // NOTE: The directional check fixes an issue where resizing the right
+        // edge of the window while very close to the left of the window
+        // manager would make the window reposition substantially to the right
+        // before resizing
+        if (![DIR_BORDER_NE, DIR_BORDER_E, DIR_BORDER_SE].includes(direction)) {
+          // Prevent left resize from extending left of left threshold
+          if (x < 0) {
+            // This affects window height calculations when cursor is left of
+            // left threshold
+            const diffX = 0 - x;
+            x = 0;
+            width = width - diffX;
+          }
         }
 
         // Prevent top resize from extending above top threshold
@@ -124,10 +130,17 @@ export default function useWindowDragResizer({ windowController }) {
           height = height - diffY;
         }
 
-        // Prevent right resize from extending right of right threshold
-        if (width + x > windowManagerWidth) {
-          width = windowManagerWidth - x;
-          x = null;
+        // NOTE: The directional check fixes an issue where resizing the left
+        // edge of the window while very close to the right of the window
+        // manager would appear to resize from the right side of the window
+        // instead
+        // @see https://github.com/jzombie/pre-re-shell/issues/116
+        if (![DIR_BORDER_NW, DIR_BORDER_W, DIR_BORDER_SW].includes(direction)) {
+          // Prevent right resize from extending right of right threshold
+          if (width + x > windowManagerWidth) {
+            width = windowManagerWidth - x;
+            x = null;
+          }
         }
 
         // Prevent bottom resize from extending below bottom threshold

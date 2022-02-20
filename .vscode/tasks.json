@@ -22,6 +22,17 @@
         "reveal": "always"
       },
       "group": "build"
+    },
+    {
+      "label": "Start ExamplePortal",
+      "command": "npm start ExamplePortal",
+      "type": "shell",
+      "args": [],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
     }
   ]
 }

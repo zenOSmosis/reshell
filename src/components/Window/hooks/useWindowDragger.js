@@ -3,9 +3,9 @@ import { useDrag } from "@use-gesture/react";
 
 import {
   WINDOW_POINTER_DRAG_TOP_THRESHOLD,
+  WINDOW_POINTER_DRAG_RIGHT_THRESHOLD,
   WINDOW_POINTER_DRAG_BOTTOM_THRESHOLD,
   WINDOW_POINTER_DRAG_LEFT_THRESHOLD,
-  WINDOW_POINTER_DRAG_RIGHT_THRESHOLD,
 } from "./__window_hook_constants__";
 
 /**
