@@ -33,6 +33,17 @@
         "reveal": "always"
       },
       "group": "build"
+    },
+    {
+      "label": "Start TestPortal",
+      "command": "npm start TestPortal",
+      "type": "shell",
+      "args": [],
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
     }
   ]
 }
