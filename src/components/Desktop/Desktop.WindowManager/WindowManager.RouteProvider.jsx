@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import debounce from "debounce";
+
 import useDesktopContext from "@hooks/useDesktopContext";
 import useLocationAppRegistrationID from "@hooks/useLocationAppRegistrationID";
-
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
+
 import { useHistory } from "react-router-dom";
 
 export const WindowManagerRouteContext = React.createContext({});
@@ -46,7 +48,22 @@ export default function WindowManagerRouteProvider({ children }) {
   // Update URL when active registration ID changes
   useEffect(() => {
     if (activeRegistrationID !== locationAppRegistrationID) {
-      history.push(activeRegistrationID ? `/${activeRegistrationID}` : "/");
+      // IMPORTANT: This debounce fixes an issue where the browser could get
+      // stuck in an infinite URL redirect loop if in-development and certain
+      // host files were updated. Firefox could still see the issue present
+      // with a lower debounce time (of 0).
+      // @see https://github.com/jzombie/pre-re-shell/issues/129
+      const handleRegistrationOrLocationChange = debounce(
+        () =>
+          history.push(activeRegistrationID ? `/${activeRegistrationID}` : "/"),
+
+        50,
+        false
+      );
+
+      handleRegistrationOrLocationChange();
+
+      return () => handleRegistrationOrLocationChange.clear();
     }
   }, [activeRegistrationID, locationAppRegistrationID, history]);
 

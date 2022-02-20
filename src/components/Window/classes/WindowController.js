@@ -340,7 +340,7 @@ export default class WindowController extends PhantomState {
       throw new TypeError("partialNextState is not an object");
     }
 
-    // Potentially reset polar-opposite states
+    // Reset polar-opposite states
     if (partialNextState.isMaximized) {
       partialNextState.isMinimized = false;
     } else if (partialNextState.isMinimized) {
