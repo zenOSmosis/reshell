@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import symlinkDir from "symlink-dir";
+import chalk from "chalk";
 
 const PORTALS_BASE_PATH = path.join(__dirname, "src", "portals");
 
@@ -43,21 +44,20 @@ const commands = {
   "list-commands": {
     description: "Lists the available commands",
     action: () => {
-      console.log(
-        Object.entries(commands)
-          .map(([cmd, meta]) => {
-            let ret = `${cmd}\n`;
+      Object.entries(commands).forEach(([cmd, meta], idx) => {
+        if (idx > 0) {
+          console.log("");
+        }
 
-            if (meta.description) {
-              ret += `${meta.description}\n`;
-            }
+        console.log(chalk.bold("  " + cmd));
 
-            ret += `Usage: ${meta.example || `npm run ${cmd}`}\n`;
+        if (meta.description) {
+          console.log("   " + meta.description);
+        }
 
-            return ret;
-          })
-          .join("\n")
-      );
+        const usage = `${meta.example || `npm run ${cmd}`}`;
+        console.log(chalk.gray("   Usage: " + usage));
+      });
     },
   },
 
@@ -141,6 +141,7 @@ const commands = {
   },
 
   test: {
+    description: `Runs ReShell tests for all portals`,
     action: async () => {
       await $`craco test`;
     },
