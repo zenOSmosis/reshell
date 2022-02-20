@@ -104,7 +104,9 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    this._centerHandler();
+    if (!this.getIsDestroying()) {
+      this._centerHandler();
+    }
   }
 
   // TODO: Document
@@ -122,7 +124,9 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    this._scatterHandler();
+    if (!this.getIsDestroying()) {
+      this._scatterHandler();
+    }
   }
 
   // TODO: Document
