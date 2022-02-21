@@ -21,6 +21,7 @@ export default class UIParadigmService extends UIServiceCore {
 
     this._screenService = this.useServiceClass(ScreenService);
 
+    // TODO: Retain preferred setting across page loads
     this.setState({
       uiParadigm: null,
       isAutoSet: true,
@@ -53,8 +54,14 @@ export default class UIParadigmService extends UIServiceCore {
    * null, auto-set will be re-enabled.
    */
   setStaticUIParadigm(uiParadigm) {
-    if (uiParadigm !== DESKTOP_PARADIGM && uiParadigm !== MOBILE_PARADIGM && uiParadigm !== null) {
-      throw new Error(`uiParadigm must be set to "${DESKTOP_PARADIGM}", "${MOBILE_PARADIGM}", or null`)
+    if (
+      uiParadigm !== DESKTOP_PARADIGM &&
+      uiParadigm !== MOBILE_PARADIGM &&
+      uiParadigm !== null
+    ) {
+      throw new Error(
+        `uiParadigm must be set to "${DESKTOP_PARADIGM}", "${MOBILE_PARADIGM}", or null`
+      );
     }
 
     if (uiParadigm) {
