@@ -23,7 +23,7 @@ export default function WindowTitleBar({
   titleBarView: TitleBarView,
   ...rest
 }) {
-  const uiParadigm = useUIParadigm();
+  const { uiParadigm } = useUIParadigm();
 
   const shouldDisplay = uiParadigm === DESKTOP_PARADIGM || TitleBarView;
 

@@ -14,7 +14,7 @@ import useUIParadigm, {
  * @return {void}
  */
 export default function useWindowAutoSizer({ windowController }) {
-  const uiParadigm = useUIParadigm();
+  const { uiParadigm } = useUIParadigm();
 
   // Apply auto-maximize / restore depending on paradigm
   useEffect(() => {

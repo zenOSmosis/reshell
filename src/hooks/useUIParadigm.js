@@ -7,7 +7,11 @@ export { DESKTOP_PARADIGM, MOBILE_PARADIGM };
 /**
  * Retrieves the currently detected paradigm.
  *
- * @return {DESKTOP_PARADIGM | MOBILE_PARADIGM}
+ * @return {{
+ *  uiParadigm: DESKTOP_PARADIGM | MOBILE_PARADIGM,
+ *  isUIParadigmAutoSet: boolean,
+ *  setStaticUIParadigm: Function
+ * }}
  */
 export default function useUIParadigm() {
   // NOTE: The desktop context is utilized for this vs. tapping into the
@@ -16,7 +20,12 @@ export default function useUIParadigm() {
   // change would typically affect the entire app, and should not happen
   // frequently, so having the entire app re-render per paradigm change is not
   // unreasonable.
-  const { uiParadigm } = useDesktopContext();
+  const { uiParadigm, isUIParadigmAutoSet, setStaticUIParadigm } =
+    useDesktopContext();
 
-  return uiParadigm;
+  return {
+    uiParadigm,
+    isUIParadigmAutoSet,
+    setStaticUIParadigm,
+  };
 }

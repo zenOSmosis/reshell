@@ -148,11 +148,20 @@ function xChildren(menuStructure) {
           </LibSubMenu>
         );
       } else {
+        /**
+         * @see {@link https://www.electronjs.org/docs/latest/api/menu-item}
+         * @see {@link https://szhsin.github.io/react-menu/docs#menu-item}
+         */
         children.push(
           <LibMenuItem
             key={children.length}
             onClick={item.click}
             disabled={item.disabled}
+            checked={item.checked}
+            // FIXME: (jh) Update checkbox handling
+            // @see https://szhsin.github.io/react-menu/docs#menu-item
+            // @see https://www.electronjs.org/docs/latest/api/menu-item
+            type={item.type}
           >
             {
               // TODO: Normalize label / role handling

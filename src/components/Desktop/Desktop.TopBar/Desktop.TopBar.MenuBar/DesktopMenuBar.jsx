@@ -6,11 +6,15 @@ import MenuBar from "@components/MenuBar";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useForceUpdate from "@hooks/useForceUpdate";
-import useUIParadigm, { DESKTOP_PARADIGM } from "@hooks/useUIParadigm";
+import useUIParadigm, {
+  DESKTOP_PARADIGM,
+  MOBILE_PARADIGM,
+} from "@hooks/useUIParadigm";
 
 // TODO: Document
 export default function DesktopMenuBar() {
-  const uiParadigm = useUIParadigm();
+  const { uiParadigm, isUIParadigmAutoSet, setStaticUIParadigm } =
+    useUIParadigm();
 
   const { activeWindowController } = useDesktopContext();
   const { appRegistrations, activateAppRegistration, appRuntimes } =
@@ -88,13 +92,36 @@ export default function DesktopMenuBar() {
       // Dynamically include pinned apps and their corresponding separator, if
       // exists
       ...pinnedAppsMenuData,
+      {
+        type: "separator",
+        label: "Layout Control",
+      },
+      {
+        label: "UI Paradigm",
+        submenu: [
+          {
+            label: "Desktop Paradigm",
+            click: () => setStaticUIParadigm(DESKTOP_PARADIGM),
+            type: "checkbox",
+            checked: uiParadigm === DESKTOP_PARADIGM,
+          },
+          {
+            label: "Mobile Paradigm",
+            click: () => setStaticUIParadigm(MOBILE_PARADIGM),
+            type: "checkbox",
+            checked: uiParadigm === MOBILE_PARADIGM,
+          },
+          {
+            label: "Auto Detect",
+            click: () => setStaticUIParadigm(null),
+            type: "checkbox",
+            checked: isUIParadigmAutoSet,
+          },
+        ],
+      },
       ...(() => {
         if (uiParadigm === DESKTOP_PARADIGM) {
           return [
-            {
-              type: "separator",
-              label: "Global Window Management",
-            },
             {
               label: "Scatter Windows",
               click: () =>
@@ -124,7 +151,6 @@ export default function DesktopMenuBar() {
           return [];
         }
       })(),
-
       {
         type: "separator",
         label: "Desktop Operations",

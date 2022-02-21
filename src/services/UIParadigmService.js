@@ -23,19 +23,63 @@ export default class UIParadigmService extends UIServiceCore {
 
     this.setState({
       uiParadigm: null,
+      isAutoSet: true,
     });
 
     // Monitor paradigm changes
     (() => {
-      const _handleParadigmAutoDetect = () => this._detectParadigm();
+      const _handleUIParadigmAutoDetect = () => {
+        // Skip if not auto set
+        if (!this.getState().isAutoSet) {
+          return;
+        }
+
+        this.setState({
+          uiParadigm: this._detectUIParadigm(),
+        });
+      };
 
       this.proxyOn(this._screenService, EVT_UPDATED, () =>
-        _handleParadigmAutoDetect()
+        _handleUIParadigmAutoDetect()
       );
 
       // Perform initial auto-detection
-      _handleParadigmAutoDetect();
+      _handleUIParadigmAutoDetect();
     })();
+  }
+
+  /**
+   * @param {DESKTOP_PARADIGM | MOBILE_PARADIGM | null} uiParadigm If set to
+   * null, auto-set will be re-enabled.
+   */
+  setStaticUIParadigm(uiParadigm) {
+    if (uiParadigm !== DESKTOP_PARADIGM && uiParadigm !== MOBILE_PARADIGM && uiParadigm !== null) {
+      throw new Error(`uiParadigm must be set to "${DESKTOP_PARADIGM}", "${MOBILE_PARADIGM}", or null`)
+    }
+
+    if (uiParadigm) {
+      this.setState({
+        uiParadigm,
+        // Skip auto-set
+        isAutoSet: false,
+      });
+    } else {
+      this.setState({
+        uiParadigm: this._detectUIParadigm(),
+        // Reset to auto-set
+        isAutoSet: true,
+      });
+    }
+  }
+
+  /**
+   * Retrieves if the UI paradigm is automatically set, otherwise being
+   * manually set.
+   *
+   * @return {boolean}
+   */
+  getIsAutoSet() {
+    return this.getState().isAutoSet;
   }
 
   /**
@@ -43,16 +87,16 @@ export default class UIParadigmService extends UIServiceCore {
    *
    * @return {DESKTOP_PARADIGM | MOBILE_PARADIGM}
    */
-  getParadigm() {
+  getUIParadigm() {
     return this.getState().uiParadigm;
   }
 
   /**
-   * Detects the current desktop paradigm and sets it as state.
+   * Detects the current desktop paradigm.
    *
-   * @return {void}
+   * @return {boolean}
    */
-  _detectParadigm() {
+  _detectUIParadigm() {
     const { screenWidth, screenHeight } = this._screenService.getState();
 
     let uiParadigm = DESKTOP_PARADIGM;
@@ -64,8 +108,6 @@ export default class UIParadigmService extends UIServiceCore {
       uiParadigm = MOBILE_PARADIGM;
     }
 
-    this.setState({
-      uiParadigm,
-    });
+    return uiParadigm;
   }
 }

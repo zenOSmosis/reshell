@@ -19,7 +19,15 @@ export default class ScreenService extends UIServiceCore {
     // Monitor resolution changes
     (() => {
       // FIXME: (jh) Debounce?
-      const _handleViewportResize = () => this._detectScreenResolution();
+      const _handleViewportResize = () => {
+        const { width: screenWidth, height: screenHeight } =
+          this._detectScreenResolution();
+
+        this.setState({
+          screenWidth,
+          screenHeight,
+        });
+      };
 
       // TODO: Use common handler instead
       window.addEventListener("resize", _handleViewportResize);
@@ -46,18 +54,18 @@ export default class ScreenService extends UIServiceCore {
   }
 
   /**
-   * Detects the current screen resolution and sets it as state.
+   * Detects the current screen resolution.
    *
-   * @return {void}
+   * @return {{width: number, height: number}}
    */
   _detectScreenResolution() {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    this.setState({
-      screenWidth,
-      screenHeight,
-    });
+    return {
+      width,
+      height,
+    };
   }
 
   // TODO: fetchMonitorRefreshRate (via request-skippable-animation-frame)

@@ -95,7 +95,7 @@ export default function useWindowOutOfBoundsPositionCorrection({
     []
   );
 
-  const uiParadigm = useUIParadigm();
+  const { uiParadigm } = useUIParadigm();
 
   // Bind event listeners
   useEffect(() => {

@@ -23,7 +23,9 @@ export default function DesktopProvider({ children }) {
         activeWindowController,
         setActiveWindowController,
 
-        uiParadigm: uiParadigmService.getParadigm(),
+        uiParadigm: uiParadigmService.getUIParadigm(),
+        isUIParadigmAutoSet: uiParadigmService.getIsAutoSet(),
+        setStaticUIParadigm: uiParadigmService.setStaticUIParadigm,
 
         isProfiling,
         setIsProfiling,
