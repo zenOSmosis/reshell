@@ -1,10 +1,15 @@
 import PhantomCore from "phantom-core";
 
+import { useEffect } from "react";
+
+import AppRuntimeTable from "./AppRuntime.Table";
+
+import Center from "@components/Center";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
-import AppRuntimeTable from "./AppRuntime.Table";
 import Timer from "@components/Timer";
 
+import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 
 const ApplicationMonitorApp = {
@@ -15,8 +20,15 @@ const ApplicationMonitorApp = {
     height: 480,
   },
   isPinned: true,
-  view: function View() {
+  view: function View({ windowController }) {
     const { appRuntimes } = useAppOrchestrationContext();
+    const { isProfiling, setIsProfiling } = useDesktopContext();
+
+    useEffect(() => {
+      if (isProfiling) {
+        return () => setIsProfiling(false);
+      }
+    }, [isProfiling, setIsProfiling]);
 
     // TODO: Determine if profiler is available in the current environment
 
@@ -26,6 +38,26 @@ const ApplicationMonitorApp = {
     // TODO: Implement ability to record render profile intervals, with the ability to show them in a graph (per application; use legend)
     // TODO: Implement ability to show how linked services affect render profiles; capture in recordings
     // TODO: Implement ability to do call stack tracing (only when recording)
+
+    if (!isProfiling) {
+      return (
+        <Center>
+          <div>
+            IMPORTANT: Each window may lose its current state once profiling is
+            enabled. Also, once enabled and closing this application, the state
+            may be lost again!
+            <Padding>
+              <button
+                onClick={() => setIsProfiling(true)}
+                style={{ backgroundColor: "red" }}
+              >
+                Enable Profiling
+              </button>
+            </Padding>
+          </div>
+        </Center>
+      );
+    }
 
     return (
       <Layout>

@@ -4,10 +4,6 @@ import styles from "./StackingContext.module.css";
 
 import PropTypes from "prop-types";
 
-// Amount of time, in milliseconds, to wait before trying to determine if a 2D
-// or 3D matrix
-const MATRIX_DETECTION_DELAY = 100;
-
 StackingContext.propTypes = {
   /**
    * Whether or not the stacking context should be GPU accelerated
@@ -21,13 +17,6 @@ StackingContext.propTypes = {
    * the DOM.
    **/
   onMount: PropTypes.func,
-
-  /**
-   * Called, with the DOM Matrix, after acquisition from the stacking context.
-   *
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
-   */
-  onDOMMatrix: PropTypes.func,
 };
 
 /**
@@ -48,12 +37,9 @@ export default function StackingContext({
   children,
   isAccelerated = false,
   onMount = () => null,
-  onDOMMatrix = () => null,
   ...rest
 }) {
   const refOnMount = useRef(onMount);
-  const refOnDOMMatrix = useRef(onDOMMatrix);
-  const refIsAccelerated = useRef(isAccelerated);
 
   const refEl = useRef(null);
 
@@ -63,53 +49,8 @@ export default function StackingContext({
 
     if (el) {
       const onMount = refOnMount.current;
-      const onDOMMatrix = refOnDOMMatrix.current;
-      const isAccelerated = refIsAccelerated.current;
-
-      let detectionTimeout = null;
-
-      if (isAccelerated) {
-        // Handle 3D space detection and onDOMMatrix callback
-        //
-        // FIXME: (jh) Use of setTimeout fixes an issue where is2D didn't seem
-        // to be accurate on the first render, and possibly some subsequent
-        // render attempts.  I'm not positive this has fixed it for good and it
-        // might need to be investigated some more.
-        detectionTimeout = setTimeout(() => {
-          const computedStyle = window.getComputedStyle(el);
-
-          /** @see https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix */
-          const matrix = new DOMMatrix(computedStyle.transform);
-
-          /**
-           * NOTE: Each matrix value will be a string, not a number
-           *
-           * @see https://zellwk.com/blog/css-translate-values-in-javascript/
-           **/
-          /*
-            const matrixValues = computedStyle.transform
-              .match(/matrix.*\((.+)\)/)[1]
-              .split(", ");*/
-
-          // NOTE: (jh) It seems that the matrix can be 3D and still not be
-          // accelerated, so some further considerations may need to be made
-
-          if (matrix.is2D /* || matrixValues[14] === undefined*/) {
-            console.warn(
-              "Unable to apply, or detect, added 3D space to accelerated element",
-              el
-            );
-          }
-
-          onDOMMatrix(matrix);
-        }, MATRIX_DETECTION_DELAY);
-      }
 
       onMount(el);
-
-      return function unmount() {
-        clearTimeout(detectionTimeout);
-      };
     }
   }, []);
 

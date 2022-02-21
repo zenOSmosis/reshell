@@ -6,9 +6,12 @@ import MenuBar from "@components/MenuBar";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useForceUpdate from "@hooks/useForceUpdate";
+import useUIParadigm, { DESKTOP_PARADIGM } from "@hooks/useUIParadigm";
 
 // TODO: Document
 export default function DesktopMenuBar() {
+  const uiParadigm = useUIParadigm();
+
   const { activeWindowController } = useDesktopContext();
   const { appRegistrations, activateAppRegistration, appRuntimes } =
     useAppOrchestrationContext();
@@ -85,34 +88,43 @@ export default function DesktopMenuBar() {
       // Dynamically include pinned apps and their corresponding separator, if
       // exists
       ...pinnedAppsMenuData,
-      {
-        type: "separator",
-        label: "Global Window Management",
-      },
-      {
-        label: "Scatter Windows",
-        click: () =>
-          appRuntimes.forEach(runtime => {
-            const windowController = runtime.getWindowController();
+      ...(() => {
+        if (uiParadigm === DESKTOP_PARADIGM) {
+          return [
+            {
+              type: "separator",
+              label: "Global Window Management",
+            },
+            {
+              label: "Scatter Windows",
+              click: () =>
+                appRuntimes.forEach(runtime => {
+                  const windowController = runtime.getWindowController();
 
-            if (windowController) {
-              windowController.scatter();
-            }
-          }),
-        disabled: !hasOpenedWindows,
-      },
-      {
-        label: "Center Windows",
-        click: () =>
-          appRuntimes.forEach(runtime => {
-            const windowController = runtime.getWindowController();
+                  if (windowController) {
+                    windowController.scatter();
+                  }
+                }),
+              disabled: !hasOpenedWindows,
+            },
+            {
+              label: "Center Windows",
+              click: () =>
+                appRuntimes.forEach(runtime => {
+                  const windowController = runtime.getWindowController();
 
-            if (windowController) {
-              windowController.center();
-            }
-          }),
-        disabled: !hasOpenedWindows,
-      },
+                  if (windowController) {
+                    windowController.center();
+                  }
+                }),
+              disabled: !hasOpenedWindows,
+            },
+          ];
+        } else {
+          return [];
+        }
+      })(),
+
       {
         type: "separator",
         label: "Desktop Operations",
@@ -152,7 +164,7 @@ export default function DesktopMenuBar() {
   }, [activeWindowController, activeWindowTitle]);
 
   const ACTIVE_WINDOW_MENU_STRUCTURE = (() => {
-    if (activeWindowController) {
+    if (uiParadigm === DESKTOP_PARADIGM && activeWindowController) {
       return {
         label: "Window",
         submenu: [

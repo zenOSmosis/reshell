@@ -17,12 +17,12 @@ export default class UIParadigmService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Paradigm Switching Service");
+    this.setTitle("UI Paradigm Service");
 
     this._screenService = this.useServiceClass(ScreenService);
 
     this.setState({
-      paradigm: null,
+      uiParadigm: null,
     });
 
     // Monitor paradigm changes
@@ -44,7 +44,7 @@ export default class UIParadigmService extends UIServiceCore {
    * @return {DESKTOP_PARADIGM | MOBILE_PARADIGM}
    */
   getParadigm() {
-    return this.getState().paradigm;
+    return this.getState().uiParadigm;
   }
 
   /**
@@ -55,19 +55,17 @@ export default class UIParadigmService extends UIServiceCore {
   _detectParadigm() {
     const { screenWidth, screenHeight } = this._screenService.getState();
 
-    let paradigm = null;
+    let uiParadigm = DESKTOP_PARADIGM;
 
     if (
       screenWidth < DESKTOP_MINIMUM_WIDTH ||
       screenHeight < DESKTOP_MINIMUM_HEIGHT
     ) {
-      paradigm = MOBILE_PARADIGM;
-    } else {
-      paradigm = DESKTOP_PARADIGM;
+      uiParadigm = MOBILE_PARADIGM;
     }
 
     this.setState({
-      paradigm,
+      uiParadigm,
     });
   }
 }

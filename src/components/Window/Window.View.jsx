@@ -18,6 +18,8 @@ import useWindowDragResizer from "./hooks/useWindowDragResizer";
 import useWindowOpenAnimation from "./hooks/useWindowOpenAnimation";
 import useWindowControls from "./hooks/useWindowControls";
 
+import useDesktopContext from "@hooks/useDesktopContext";
+
 // TODO: Apply considerations from Apple's Human Interface Guidelines:
 // https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/
 
@@ -36,9 +38,6 @@ const WindowView = ({
 
   // TODO: Obtain via windowController instead?
   isActive,
-
-  // TODO: Obtain via windowController
-  isProfiling = true,
 
   titleBarView = null,
 
@@ -146,6 +145,8 @@ const WindowView = ({
     windowController,
   });
 
+  const { isProfiling } = useDesktopContext();
+
   // TODO: Document
   const DynamicProfilingWrapper = useMemo(
     () =>
@@ -190,8 +191,10 @@ const WindowView = ({
           isMinimized && styles["minimized"],
           (isUserDragging || isUserResizing) && styles["dragging"]
         )}
-        // Enable hardware acceleration of window stacking context
-        isAccelerated={true}
+        // Enable hardware acceleration of window stacking context when user is
+        // dragging or resizing
+        isAccelerated={isUserDragging || isUserResizing}
+        // For debugging reference
         data-reshell-window-title={windowController.getTitle()}
       >
         <WindowView.Border

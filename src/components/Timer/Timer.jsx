@@ -23,10 +23,11 @@ export default function Timer({ onTick, className, ...rest }) {
     // Perform initial render
     handleUpdate();
 
-    const updateInterval = setInterval(handleUpdate, 1000);
+    // FIXME: (jh) Would it be more performant to combine these intervals?
+    const updateInterval = window.setInterval(handleUpdate, 1000);
 
     return function unmount() {
-      clearInterval(updateInterval);
+      window.clearInterval(updateInterval);
     };
   }, [getSeconds]);
 

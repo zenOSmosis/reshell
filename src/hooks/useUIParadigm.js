@@ -16,7 +16,7 @@ export default function useUIParadigm() {
   // change would typically affect the entire app, and should not happen
   // frequently, so having the entire app re-render per paradigm change is not
   // unreasonable.
-  const { paradigm } = useDesktopContext();
+  const { uiParadigm } = useDesktopContext();
 
-  return paradigm;
+  return uiParadigm;
 }

@@ -1,6 +1,6 @@
 {
   "name": "reshell",
-  "version": "0.0.150",
+  "version": "0.0.153",
   "author": {
     "name": "zenOSmosis",
     "email": "info@zenosmosis.com",
@@ -59,16 +59,18 @@
     "start": "zx reshell-scripts.mjs start",
     "start:no-ssl": "zx reshell-scripts.mjs start:no-ssl",
     "exec": "zx reshell-scripts.mjs exec",
+    "build": "zx reshell-scripts.mjs build",
+    "test": "zx reshell-scripts.mjs test",
+    "lint": "prettier --write '(**/)*.js'"
+  },
+  "old_scripts": {
     "// start:docker.dev": "npm run stop:docker.dev && docker-compose -f docker-compose.dev.yml up",
     "// stop:docker.dev": "docker-compose -f docker-compose.dev.yml down --remove-orphans",
     "// build:docker.dev": "docker-compose -f docker-compose.dev.yml build",
     "// start:frontend-with-hostbridge-proxy": "concurrently \"npm run start:host-bridge\" \"npm run start\"",
     "// start:host-bridge": "cd host.bridge-prototype && npm install node-pty && npm run start:dev",
-    "build": "zx reshell-scripts.mjs build",
     "// build:no-profiling": "craco build",
-    "test": "zx reshell-scripts.mjs test",
-    "// eject": "craco eject",
-    "lint": "prettier --write '(**/)*.js'"
+    "// eject": "craco eject"
   },
   "eslintConfig": {
     "extends": [

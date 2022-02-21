@@ -15,6 +15,8 @@ import {
   WINDOW_POSITION_OOB_RIGHT_THRESHOLD,
 } from "../__window_hook_constants__";
 
+import useUIParadigm, { DESKTOP_PARADIGM } from "@hooks/useUIParadigm";
+
 /**
  * Dynamically detects if the given window is out-of-bounds and calculates
  * the corrected position to bring it back within the acceptable boundary.
@@ -93,9 +95,17 @@ export default function useWindowOutOfBoundsPositionCorrection({
     []
   );
 
+  const uiParadigm = useUIParadigm();
+
   // Bind event listeners
   useEffect(() => {
-    if (elWindow && elWindowManager && windowController) {
+    if (
+      // Only run in desktop paradigm
+      uiParadigm === DESKTOP_PARADIGM &&
+      elWindow &&
+      elWindowManager &&
+      windowController
+    ) {
       // Invoked when window is resized or removed, or if the viewport is
       // resized
       const _handleResizeOrMove = debounce(
@@ -139,6 +149,7 @@ export default function useWindowOutOfBoundsPositionCorrection({
       };
     }
   }, [
+    uiParadigm,
     elWindow,
     elWindowManager,
     windowController,

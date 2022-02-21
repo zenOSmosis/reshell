@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import useActiveWindowController from "./hooks/useActiveWindowController";
 
@@ -9,6 +9,8 @@ import UIParadigmService from "@services/UIParadigmService";
 export const DesktopContext = React.createContext({});
 
 export default function DesktopProvider({ children }) {
+  const [isProfiling, setIsProfiling] = useState(false);
+
   const { serviceInstance: uiParadigmService } =
     useServiceClass(UIParadigmService);
 
@@ -21,7 +23,10 @@ export default function DesktopProvider({ children }) {
         activeWindowController,
         setActiveWindowController,
 
-        paradigm: uiParadigmService.getParadigm(),
+        uiParadigm: uiParadigmService.getParadigm(),
+
+        isProfiling,
+        setIsProfiling,
       }}
     >
       {children}
