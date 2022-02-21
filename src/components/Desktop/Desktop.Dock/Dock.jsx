@@ -1,17 +1,49 @@
-import { useMemo } from "react";
-// import LED from "@components/LED";
+import { useCallback, useMemo, useState } from "react";
+import DockItem from "./DockItem";
 
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useDesktopContext from "@hooks/useDesktopContext";
+import useOverflowDetection from "@hooks/useOverflowDetection";
 
-// TODO: Incorporate this logic
-// "The user can also click an app’s Dock icon to bring all of that app’s windows forward; the most recently accessed app window becomes the key window."
-// (Ref. "Activating Windows": https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/)
+import styles from "./Dock.module.css";
+import classNames from "classnames";
 
-// TODO: Scroll dock when scrolling mouse wheel
-
-// TODO: Document
+/**
+ * Application selection Dock component.
+ */
 export default function Dock() {
+  const [elDock, _setElDock] = useState(null);
+  const [elContentWrapper, _setElContentWrapper] = useState(null);
+
+  /**
+   * @type {boolean} If true, the Dock is scrollable
+   */
+  const isOverflown = useOverflowDetection(elContentWrapper);
+
+  /**
+   * Handles scrolling of Dock in relation to mousewheel.
+   *
+   * @return {void}
+   */
+  const handleDockScroll = useCallback(
+    evt => {
+      /**
+       * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/scroll}
+       */
+      elDock.scroll({
+        top: 0,
+        // If horizontal orientation...
+        left: elDock.scrollLeft + evt.deltaY,
+        // FIXME: (jh) I can't yet tell if it's just me, or maybe my hardware,
+        // but "smooth" scrolling on my laptop seems a bit quirky to get
+        // started, as if the initial delta should be multiplied higher than
+        // subsequent deltas
+        // behavior: "smooth",
+      });
+    },
+    [elDock]
+  );
+
   const { activeWindowController } = useDesktopContext();
   const { appRegistrations, activeAppRegistrations, activateAppRegistration } =
     useAppOrchestrationContext();
@@ -20,6 +52,7 @@ export default function Dock() {
   /** @type {AppRegistration[]} */
   const dockRegistrations = useMemo(
     () => [
+      // Show unique app registrations
       ...new Set([
         ...appRegistrations.filter(registration =>
           registration.getIsPinnedToDock()
@@ -39,19 +72,13 @@ export default function Dock() {
 
   return (
     <div
-      // TODO: Move to module.css
-      style={{
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        width: "100%",
-        textAlign: "center",
-        isolation: "isolate",
-        // TODO: Handle different?
-        zIndex: 99999999,
-        overflowX: "auto",
-        pointerEvents: "none",
-      }}
+      ref={_setElDock}
+      className={classNames(
+        styles["dock"],
+        styles["horizontal-orientation"],
+        isOverflown && styles["overflown"]
+      )}
+      onWheel={handleDockScroll}
     >
       {
         // TODO: Add tooltip functionality
@@ -63,32 +90,26 @@ export default function Dock() {
         // - See original Shell implementation: https://github.com/zenOSmosis/js-shell/blob/master/frontend/src/components/Desktop/Dock/DockItem.jsx
       }
       <div
-        style={{
-          display: "inline-block",
-          color: "black",
-          whiteSpace: "nowrap",
-          maxWidth: "100%",
-          pointerEvents: "all",
-        }}
-        className="button-group"
+        ref={_setElContentWrapper}
+        className={classNames("button-group", styles["content-wrapper"])}
       >
+        {
+          // FIXME: (jh) Add left / right scroll buttons [in horizontal
+          // orientation] when Dock overflows
+          //
+          // TODO: (jh) Automatically switch to another window / dock item if
+          // a window is minimized or closed (should be handled via
+          // AppOrchestrationService; there's a TODO there as well; search for
+          // "Activating Windows")
+        }
         {dockRegistrations.map(registration => (
-          <button
-            style={Object.assign(
-              registration === activeRegistration
-                ? {
-                    // TODO: Make this color a variable for highlighted elements
-                    backgroundColor: "#347FE8",
-                    color: "#000",
-                  }
-                : { backgroundColor: "#000" },
-              { minWidth: 120 }
-            )}
+          <DockItem
             key={registration.getUUID()}
+            appRegistration={registration}
+            isActiveRegistration={registration === activeRegistration}
             onClick={() => activateAppRegistration(registration)}
-          >
-            {registration.getTitle()} {/* <LED color="gray" /> */}
-          </button>
+            elDock={elDock}
+          />
         ))}
       </div>
     </div>

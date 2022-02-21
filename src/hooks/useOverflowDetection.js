@@ -21,7 +21,7 @@ if (!window.ResizeObserver) {
  * @see https://github.com/wojtekmaj/detect-element-overflow/blob/main/src/index.js
  *
  * @param {HTMLElement} element
- * @param {Object} isDetecting? [optional; default = true] Whether or not the
+ * @param {boolean} isDetecting? [optional; default = true] Whether or not the
  * hook should detect overflow.
  * @return {boolean}
  */
@@ -36,7 +36,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
     [element]
   );
 
-  const [isOverflown, setIsOverflown] = useState(() => getIsOverflown());
+  const [isOverflown, setIsOverflown] = useState(getIsOverflown);
 
   refPrevIsOverflown.current = isOverflown;
 
@@ -54,6 +54,8 @@ export default function useOverflowDetection(element, isDetecting = true) {
        *
        * @return {void}
        */
+      // FIXME: (jh) Debounce? (even though it's called within
+      // requestAnimationFrame it probably doesn't need to check at 60+fps)
       const checkIsOverflown = () => {
         if (_isUnmounting) {
           return;

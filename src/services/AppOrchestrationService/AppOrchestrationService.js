@@ -95,8 +95,13 @@ export default class AppOrchestrationService extends UIServiceCore {
       this._launchAppRegistration(appRegistration);
     } else {
       // Move grouped windows to top
-      // TODO: Order by window manager stacking order (most recently used
-      // window in group should appear in top)
+      //
+      // TODO: Incorporate this logic:
+      // "The user can also click an app’s Dock icon to bring all of that app’s
+      // windows forward; the most recently accessed app window becomes the key
+      // window."
+      // (Ref. "Activating Windows": https://developer.apple.com/design/human-interface-guidelines/macos/windows-and-views/window-anatomy/)
+      //
       // TODO: Refactor into window manager?
       this.getAppRuntimes()
         .filter(runtime => runtime.getRegistration() === appRegistration)

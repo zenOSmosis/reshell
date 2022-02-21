@@ -1,0 +1,45 @@
+.dock {
+  position: absolute;
+  text-align: center;
+  isolation: isolate;
+  /* FIXME: (jh Don't use z-index for this, if possible */
+  z-index: 99999999;
+  overflow-x: auto;
+  /** 
+   * This is tricky; if set to none, the Dock cannot be scrolled, however,
+   * adjacent windows cannot be interacted with either, hence deterministically
+   * altering pointer-events based on if the inner wrapper overflows the
+   * parent.
+   */
+  pointer-events: none;
+}
+
+.dock.overflown {
+  pointer-events: all;
+}
+
+.dock.horizontal-orientation {
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+}
+
+.dock .content-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+  pointer-events: all;
+}
+
+.dock .dock-item {
+  background-color: #000;
+}
+
+.dock.horizontal-orientation .dock-item {
+  min-width: 120px;
+}
+
+.dock .dock-item.active {
+  /** TODO: Use color variable for highlighted elements */
+  background-color: #347fe8;
+  color: #000;
+}

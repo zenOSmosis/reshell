@@ -17,7 +17,7 @@ const VUMeterApp = {
   style: {
     width: 360,
     height: 360,
-    backgroundColor: "rgba(0,0,0,.4)",
+    // backgroundColor: "rgba(0,0,0,.4)",
   },
   serviceClasses: [InputMediaDevicesService],
   view: ({ appServices }) => {

@@ -19,10 +19,7 @@ import ModalProvider from "./providers/ModalProvider";
 
 // TODO: Use prop-types
 // TODO: Document
-export default function Desktop({
-  backgroundView = <div style={{ backgroundColor: "#ccc" }} />,
-  appDescriptors,
-}) {
+export default function Desktop({ backgroundView = null, appDescriptors }) {
   return (
     <FullViewport>
       {
@@ -31,7 +28,12 @@ export default function Desktop({
       }
       <ModalProvider>
         <NotificationProvider>
-          <Cover style={{ backgroundColor: "#424242" }}>
+          <Cover
+            // TODO: Remove this hardcoding
+            style={{
+              backgroundColor: "#424242",
+            }}
+          >
             {
               // TODO: Refactor
             }
