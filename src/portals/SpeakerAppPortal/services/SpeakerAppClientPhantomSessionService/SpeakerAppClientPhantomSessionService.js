@@ -212,7 +212,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       const handleUpdate = debounce(
         async () => {
           // Fix issue where the following getState() might return null
-          if (readOnlySyncObject.getIsDestroying()) {
+          if (readOnlySyncObject.getIsDestroyed()) {
             return;
           }
 
