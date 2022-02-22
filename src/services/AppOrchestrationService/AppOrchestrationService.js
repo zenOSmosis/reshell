@@ -48,19 +48,19 @@ export default class AppOrchestrationService extends UIServiceCore {
 
   /**
    * Retrieves the app registration title associated with the given app
-   * descriptor ID.
+   * registration ID.
    *
-   * @param {string} appDescriptorID
+   * @param {string} appRegistrationID
    * @return {string | void}
    */
-  getAppRegistrationTitleWithDescriptorID(appDescriptorID) {
+  getAppRegistrationTitleWithID(appRegistrationID) {
     const appRegistration = this._appRegistrationCollection
       .getAppRegistrations()
-      .find(predicate => predicate.getID() === appDescriptorID);
+      .find(predicate => predicate.getID() === appRegistrationID);
 
     if (!appRegistration) {
       console.warn(
-        `Could not locate appRegistration with id: ${appDescriptorID}`
+        `Could not locate appRegistration with id: ${appRegistrationID}`
       );
     } else {
       return appRegistration.getTitle();
@@ -135,7 +135,7 @@ export default class AppOrchestrationService extends UIServiceCore {
    * @param {string} appRegistrationID
    * @return {void}
    */
-  activateAppRegistrationID(appRegistrationID) {
+  activateAppRegistrationWithID(appRegistrationID) {
     const appRegistration = this.getAppRegistrations().find(
       predicate => predicate.getID() === appRegistrationID
     );

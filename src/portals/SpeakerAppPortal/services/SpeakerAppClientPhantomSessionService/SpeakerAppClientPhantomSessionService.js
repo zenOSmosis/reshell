@@ -397,8 +397,10 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
             </div>
           </>
         ),
-        // FIXME: (jh) Bind onClick / onClose handling?
-        // onClick, onClose = () => null
+        onClick: () =>
+          appOrchestrationService.activateAppRegistrationWithID(
+            CHAT_REGISTRATION_ID
+          ),
       });
     }
   }

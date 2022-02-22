@@ -14,7 +14,7 @@ export const WindowManagerRouteContext = React.createContext({});
  * ReShell applications.
  */
 export default function WindowManagerRouteProvider({ children }) {
-  const { getAppRuntimesWithRegistrationID, activateAppRegistrationID } =
+  const { getAppRuntimesWithRegistrationID, activateAppRegistrationWithID } =
     useAppOrchestrationContext();
 
   const { activeWindowController, setActiveWindowController } =
@@ -27,7 +27,7 @@ export default function WindowManagerRouteProvider({ children }) {
   useEffect(() => {
     if (locationAppRegistrationID) {
       // Launch, or bring to front
-      activateAppRegistrationID(locationAppRegistrationID);
+      activateAppRegistrationWithID(locationAppRegistrationID);
     } else {
       setActiveWindowController(null);
     }
@@ -35,7 +35,7 @@ export default function WindowManagerRouteProvider({ children }) {
     locationAppRegistrationID,
     getAppRuntimesWithRegistrationID,
     setActiveWindowController,
-    activateAppRegistrationID,
+    activateAppRegistrationWithID,
   ]);
 
   // Active window controller app registration ID

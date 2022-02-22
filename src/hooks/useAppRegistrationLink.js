@@ -9,16 +9,16 @@ import useAppOrchestrationContext from "./useAppOrchestrationContext";
 
 // TODO: Document
 export default function useAppRegistrationLink(appDescriptorID) {
-  const { getAppRegistrationTitleWithDescriptorID, activateAppRegistrationID } =
+  const { getAppRegistrationTitleWithID, activateAppRegistrationWithID } =
     useAppOrchestrationContext();
 
   const title = useMemo(
-    () => getAppRegistrationTitleWithDescriptorID(appDescriptorID),
-    [getAppRegistrationTitleWithDescriptorID, appDescriptorID]
+    () => getAppRegistrationTitleWithID(appDescriptorID),
+    [getAppRegistrationTitleWithID, appDescriptorID]
   );
   const link = useCallback(
-    () => activateAppRegistrationID(appDescriptorID),
-    [activateAppRegistrationID, appDescriptorID]
+    () => activateAppRegistrationWithID(appDescriptorID),
+    [activateAppRegistrationWithID, appDescriptorID]
   );
 
   return {

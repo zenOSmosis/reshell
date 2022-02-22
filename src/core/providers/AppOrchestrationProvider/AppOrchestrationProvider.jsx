@@ -29,12 +29,12 @@ export default function AppOrchestrationProvider({ children }) {
 
   const activateAppRegistration =
     appOrchestrationService.activateAppRegistration;
-  const activateAppRegistrationID =
-    appOrchestrationService.activateAppRegistrationID;
+  const activateAppRegistrationWithID =
+    appOrchestrationService.activateAppRegistrationWithID;
   const addOrUpdateAppRegistration =
     appOrchestrationService.addOrUpdateAppRegistration;
-  const getAppRegistrationTitleWithDescriptorID =
-    appOrchestrationService.getAppRegistrationTitleWithDescriptorID;
+  const getAppRegistrationTitleWithID =
+    appOrchestrationService.getAppRegistrationTitleWithID;
   const getAppRuntimesWithRegistrationID =
     appOrchestrationService.getAppRuntimesWithRegistrationID;
 
@@ -52,9 +52,9 @@ export default function AppOrchestrationProvider({ children }) {
         // windowControllers,
         //
         activateAppRegistration,
-        activateAppRegistrationID,
+        activateAppRegistrationWithID,
         addOrUpdateAppRegistration,
-        getAppRegistrationTitleWithDescriptorID,
+        getAppRegistrationTitleWithID,
         getAppRuntimesWithRegistrationID,
       }}
     >

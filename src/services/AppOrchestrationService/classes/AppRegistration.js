@@ -92,10 +92,27 @@ export default class AppRegistration extends PhantomCore {
   }
 
   /**
-   * @return {string | number}
+   * Retrieves the app descriptor's ID.
+   *
+   * NOTE: [appRegistration]ID and appDescriptorID are synonymous here, however
+   * they should not be confused with UUID and shortUUID.
+   *
+   * @return {string}
    */
   getID() {
     return this._appDescriptor.id;
+  }
+
+  /**
+   * Alias for this.getID().
+   *
+   * NOTE: [appRegistration]ID and appDescriptorID are synonymous here, however
+   * they should not be confused with UUID and shortUUID.
+   *
+   * @alias <getAppDescriptorID>
+   */
+  getAppDescriptorID() {
+    return this.getID();
   }
 
   /**
