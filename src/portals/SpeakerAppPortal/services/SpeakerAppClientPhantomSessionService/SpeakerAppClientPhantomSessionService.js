@@ -373,6 +373,10 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
       this.proxyOn(readOnlySyncObject, EVT_UPDATED, handleUpdate);
       this.proxyOn(localZenRTCPeer, EVT_UPDATED, handleUpdate);
+
+      this.registerCleanupHandler(() => {
+        handleUpdate.clear();
+      });
     })();
   }
 
