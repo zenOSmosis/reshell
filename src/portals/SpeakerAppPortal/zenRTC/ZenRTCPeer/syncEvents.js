@@ -67,7 +67,7 @@ export const SYNC_EVT_DEBUG = "debug";
 /**
  * Emits when there is a partial state update to send through a SyncObject.
  *
- * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
+ * @see {@link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js}
  *
  * @event s0 Partial sync object sync
  * @type {Object} Partial state
@@ -77,7 +77,7 @@ export const SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC = "s0";
 /**
  * Emits when there is a complete state to send through a SyncObject.
  *
- * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
+ * @see {@link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js}
  *
  * @event s1 Full sync object sync
  * @type {Object} Full state
@@ -88,7 +88,7 @@ export const SYNC_EVT_SYNC_OBJECT_FULL_SYNC = "s1";
  * Emits when there is a state update hash, used for remote state sync
  * integrity checking.
  *
- * @link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js
+ * @see {@link https://github.com/zenOSmosis/sync-object/blob/master/src/SyncObject.js}
  *
  * @event s2 Update hash
  * @type {string} The hash which represents full state
