@@ -16,8 +16,8 @@ export default function AppOrchestrationProvider({ children }) {
     AppOrchestrationService
   );
 
-  const activeAppRegistrations =
-    appOrchestrationService.getActiveAppRegistrations();
+  const runningAppRegistrations =
+    appOrchestrationService.getRunningAppRegistrations();
   const appRegistrations = appOrchestrationService.getAppRegistrations();
   const appRuntimes = appOrchestrationService.getAppRuntimes();
   /*
@@ -46,7 +46,7 @@ export default function AppOrchestrationProvider({ children }) {
   return (
     <AppOrchestrationContext.Provider
       value={{
-        activeAppRegistrations,
+        runningAppRegistrations,
         appRegistrations,
         appRuntimes,
         // windowControllers,

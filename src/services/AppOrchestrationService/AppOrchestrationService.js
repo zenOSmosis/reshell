@@ -9,6 +9,8 @@ import AppRegistrationCollection from "./classes/AppRegistrationCollection";
 import AppRuntime from "./classes/AppRuntime";
 import AppRuntimeCollection from "./classes/AppRuntimeCollection";
 
+import DesktopService from "@services/DesktopService";
+
 export { EVT_UPDATED, EVT_DESTROYED };
 
 /**
@@ -25,6 +27,23 @@ export default class AppOrchestrationService extends UIServiceCore {
       AppRegistrationCollection
     );
     this._appRuntimeCollection = this.bindCollectionClass(AppRuntimeCollection);
+
+    this._DesktopService = this.useServiceClass(DesktopService);
+  }
+
+  // TODO: Document
+  getActiveWindowController() {
+    return this._DesktopService.getActiveWindowController();
+  }
+
+  // TODO: Document
+  getActiveAppRegistration() {
+    return this.getActiveWindowController()?.getAppRegistration();
+  }
+
+  // TODO: Document
+  getActiveAppRuntime() {
+    return this.getActiveWindowController()?.getActiveAppRuntime();
   }
 
   /**
@@ -90,7 +109,7 @@ export default class AppOrchestrationService extends UIServiceCore {
    * @return {void}
    */
   activateAppRegistration(appRegistration) {
-    if (!this.getActiveAppRegistrations().includes(appRegistration)) {
+    if (!this.getRunningAppRegistrations().includes(appRegistration)) {
       // Open app w/ registration
       this._launchAppRegistration(appRegistration);
     } else {
@@ -166,14 +185,31 @@ export default class AppOrchestrationService extends UIServiceCore {
    * Retrieves the current AppRegistration instances associated with running
    * AppRuntime instances.
    *
+   * NOTE: This is not named "getActiveAppRegistrations" because the "active"
+   * connotes the top-most window.
+   *
    * @return {AppRegistration[]}
    */
-  getActiveAppRegistrations() {
+  getRunningAppRegistrations() {
     return [
       ...new Set(
         this.getAppRuntimes().map(runtime => runtime.getRegistration())
       ),
     ];
+  }
+
+  /**
+   * Retrieves whether or not an AppRegistration with the given ID is running.
+   *
+   * @param {string} appRegistrationID
+   * @return {boolean}
+   */
+  getIsAppRegistrationRunningWithID(appRegistrationID) {
+    return Boolean(
+      this.getRunningAppRegistrations().find(
+        registration => registration.getID() === appRegistrationID
+      )
+    );
   }
 
   /**

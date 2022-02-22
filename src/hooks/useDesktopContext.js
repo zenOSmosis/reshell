@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { DesktopContext } from "../core/providers/DesktopProvider";
+import { DesktopServiceContext } from "../core/providers/DesktopServiceProvider";
 
 export default function useDesktopContext() {
-  return useContext(DesktopContext);
+  return useContext(DesktopServiceContext);
 }

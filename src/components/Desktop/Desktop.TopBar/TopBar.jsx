@@ -1,33 +1,39 @@
 import DesktopMenuBar from "./Desktop.TopBar.MenuBar";
 
 import { Row, Column } from "@components/Layout";
-import LED from "@components/LED";
+
+// FIXME: (jh) Refactor commented-code into panel applet which can be tied-into
+// services (related issue: https://github.com/jzombie/pre-re-shell/issues/159)
+// import LED from "@components/LED";
 
 // TODO: Change this to use data-driven MenuBar
-import Menu, { MenuButton, MenuItem } from "@components/Menu/_Menu.LibWrapper";
+// import Menu, { MenuButton, MenuItem } from "@components/Menu/_Menu.LibWrapper";
 
-import useServicesContext from "@hooks/useServicesContext";
-import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
+// import useServicesContext from "@hooks/useServicesContext";
+// import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
-import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitorApp";
+// import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ServiceMonitorApp";
 
 // TODO: Use prop-types
 // TODO: Document
 export default function TopBar() {
   // FIXME: (jh) This currently triggers a "Could not locate appRegistration
   // with id: service-monitor" warning on first render; it should be refactored
+  /*
   const { link: openServiceMonitor } = useAppRegistrationLink(
     SERVICE_MONITOR_REGISTRATION_ID
   );
+  */
 
-  const { services } = useServicesContext();
+  // const { services } = useServicesContext();
 
   return (
     <Row>
       <Column style={{ width: "100%" }}>
         <DesktopMenuBar />
       </Column>
-      <Column
+      {/*
+        <Column
         style={{
           // TODO: Rework so column width expands according to content
           maxWidth: 110,
@@ -64,6 +70,7 @@ export default function TopBar() {
           </Menu>
         </div>
       </Column>
+        */}
     </Row>
   );
 }

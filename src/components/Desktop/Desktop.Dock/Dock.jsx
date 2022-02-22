@@ -45,7 +45,7 @@ export default function Dock() {
   );
 
   const { activeWindowController } = useDesktopContext();
-  const { appRegistrations, activeAppRegistrations, activateAppRegistration } =
+  const { appRegistrations, runningAppRegistrations, activateAppRegistration } =
     useAppOrchestrationContext();
 
   // TODO: Import type definition
@@ -57,10 +57,10 @@ export default function Dock() {
         ...appRegistrations.filter(registration =>
           registration.getIsPinnedToDock()
         ),
-        ...activeAppRegistrations,
+        ...runningAppRegistrations,
       ]),
     ],
-    [appRegistrations, activeAppRegistrations]
+    [appRegistrations, runningAppRegistrations]
   );
 
   // TODO: Import type definition

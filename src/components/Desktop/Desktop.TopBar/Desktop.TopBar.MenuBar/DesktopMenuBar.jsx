@@ -51,7 +51,7 @@ export default function DesktopMenuBar() {
           }
         })
         .map(app => ({
-          // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+          // FIXME: (jh) Include checkboxes next to active registrations
           role: app.getTitle(),
           click: () => activateAppRegistration(app),
         })),
@@ -62,7 +62,7 @@ export default function DesktopMenuBar() {
     const pinnedApps = appRegistrations
       .filter(registration => registration.getIsPinned())
       .map(app => ({
-        // TODO: Include LED to show state of application (i.e. "green" for "open" / "gray" for "close")
+        // FIXME: (jh) Include checkboxes next to active pinned registrations?
         role: app.getTitle(),
         click: () => activateAppRegistration(app),
       }));

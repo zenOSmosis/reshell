@@ -30,6 +30,7 @@ import Center from "@components/Center";
 import SystemModal from "@components/modals/SystemModal";
 
 // TODO: Refactor
+import AppOrchestrationService from "@services/AppOrchestrationService";
 import UINotificationService from "@services/UINotificationService";
 import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/ChatApp";
 import AppLinkButton from "@components/AppLinkButton";
@@ -308,53 +309,6 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
                   // Don't render the easter egg in the chat message
                   return false;
                 } else {
-                  // Handle UI notification for remote users
-                  //
-                  // TODO: Don't show if the chat program is the active one
-                  // (will likely require https://github.com/jzombie/pre-re-shell/issues/109
-                  // to be implemented)
-                  if (idx === 0) {
-                    const localPhantomPeer = this.getLocalPhantomPeer();
-                    const localDeviceAddress =
-                      localPhantomPeer.getDeviceAddress();
-
-                    const remotePhantomPeer = this.getRemotePhantomPeers().find(
-                      pred => {
-                        const theirDeviceAddress = pred.getDeviceAddress();
-
-                        if (theirDeviceAddress === localDeviceAddress) {
-                          // Don't show notification if local user has multiple
-                          // browser tabs open
-                          return false;
-                        } else {
-                          // Remote peer device address matches message sender
-                          // address
-                          return theirDeviceAddress === message.senderAddress;
-                        }
-                      }
-                    );
-
-                    if (remotePhantomPeer) {
-                      this.useServiceClass(
-                        UINotificationService
-                      ).showNotification({
-                        image: remotePhantomPeer.getAvatarURL(),
-                        title: remotePhantomPeer.getProfileName(),
-                        body: (
-                          <>
-                            {message.body}
-                            <div style={{ textAlign: "right", marginTop: 4 }}>
-                              <AppLinkButton
-                                id={CHAT_REGISTRATION_ID}
-                                title="Open Chat"
-                              />
-                            </div>
-                          </>
-                        ) /* onClick, onClose = () => null*/,
-                      });
-                    }
-                  }
-
                   // Show the regular chat message
                   return true;
                 }
@@ -364,6 +318,12 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
               chatMessages: reversedChatMessages,
               chatMessagesHash,
             });
+
+            // Handle UI notification for received messages
+            const latestChatMessage = reversedChatMessages[0];
+            if (latestChatMessage) {
+              this._handleChatMessageReceivedUINotification(latestChatMessage);
+            }
           }
         },
         100,
@@ -378,6 +338,69 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
         handleUpdate.clear();
       });
     })();
+  }
+
+  /**
+   * Determines if a UINotification should be generated for the latest chat
+   * message, and if so generates one.
+   *
+   * @param {Object} latestChatMessage
+   * @return {void}
+   */
+  _handleChatMessageReceivedUINotification(latestChatMessage) {
+    const appOrchestrationService = this.useServiceClass(
+      AppOrchestrationService
+    );
+
+    // Don't show if the chat program is the active one
+    const activeAppRegistration =
+      appOrchestrationService.getActiveAppRegistration();
+    const activeAppRegistrationID = activeAppRegistration?.getID();
+    if (activeAppRegistrationID === CHAT_REGISTRATION_ID) {
+      return;
+    }
+
+    const localPhantomPeer = this.getLocalPhantomPeer();
+    const localDeviceAddress = localPhantomPeer.getDeviceAddress();
+
+    const remotePhantomPeer = this.getRemotePhantomPeers().find(pred => {
+      const theirDeviceAddress = pred.getDeviceAddress();
+
+      if (theirDeviceAddress === localDeviceAddress) {
+        // Don't show notification if local user has multiple
+        // browser tabs open
+        return false;
+      } else {
+        // Remote peer device address matches message sender
+        // address
+        return theirDeviceAddress === latestChatMessage.senderAddress;
+      }
+    });
+
+    if (remotePhantomPeer) {
+      const isChatWindowOpen =
+        appOrchestrationService.getIsAppRegistrationRunningWithID(
+          CHAT_REGISTRATION_ID
+        );
+
+      this.useServiceClass(UINotificationService).showNotification({
+        image: remotePhantomPeer.getAvatarURL(),
+        title: remotePhantomPeer.getProfileName(),
+        body: (
+          <>
+            {latestChatMessage.body}
+            <div style={{ textAlign: "right", marginTop: 4 }}>
+              <AppLinkButton
+                id={CHAT_REGISTRATION_ID}
+                title={isChatWindowOpen ? "Switch to Chat" : "Open Chat"}
+              />
+            </div>
+          </>
+        ),
+        // FIXME: (jh) Bind onClick / onClose handling?
+        // onClick, onClose = () => null
+      });
+    }
   }
 
   // TODO: Document

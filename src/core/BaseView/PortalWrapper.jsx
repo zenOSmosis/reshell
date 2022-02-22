@@ -3,7 +3,7 @@ import Center from "@components/Center";
 import Cover from "@components/Cover";
 import UIServicesProvider from "../providers/UIServicesProvider";
 import AppOrchestrationProvider from "../providers/AppOrchestrationProvider";
-import DesktopProvider from "../providers/DesktopProvider";
+import DesktopServiceProvider from "../providers/DesktopServiceProvider";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export default function PortalWrapperView({ portal }) {
     <Router>
       <UIServicesProvider>
         <AppOrchestrationProvider>
-          <DesktopProvider>
+          <DesktopServiceProvider>
             <React.Suspense
               fallback={
                 // NOTE: While Cover works as a FullScreen substitute for
@@ -31,7 +31,7 @@ export default function PortalWrapperView({ portal }) {
             >
               <PortalWrapperTransitionView portal={portal} />
             </React.Suspense>
-          </DesktopProvider>
+          </DesktopServiceProvider>
         </AppOrchestrationProvider>
       </UIServicesProvider>
     </Router>
