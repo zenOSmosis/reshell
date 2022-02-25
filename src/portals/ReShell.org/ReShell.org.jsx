@@ -14,10 +14,6 @@ import VUMeterApp from "../ExamplePortal/apps/VUMeterApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 
-// import WindowAPIDiscovererWindow from "./apps/WindowAPIDiscovererWindow";
-
-// import InputMediaDevicesSelectorView from "./views/InputMediaDevicesSelectorView";
-
 export default function ReShellOrgPortal() {
   return (
     <Desktop

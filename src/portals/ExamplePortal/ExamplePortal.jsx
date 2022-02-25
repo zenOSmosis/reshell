@@ -26,8 +26,6 @@ import NotificationsPrototypeApp from "./apps/NotificationsPrototypeApp";
 import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
 
-// import InputMediaDevicesSelectorView from "./views/InputMediaDevicesSelectorView";
-
 export default function ExamplePortal() {
   return (
     <Desktop
