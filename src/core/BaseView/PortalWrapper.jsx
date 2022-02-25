@@ -2,7 +2,7 @@ import Animation from "@components/Animation";
 import Center from "@components/Center";
 import Cover from "@components/Cover";
 import UIServicesProvider from "../providers/UIServicesProvider";
-import AppOrchestrationProvider from "../providers/AppOrchestrationProvider";
+import AppOrchestrationServiceProvider from "../providers/AppOrchestrationServiceProvider";
 import DesktopServiceProvider from "../providers/DesktopServiceProvider";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -12,7 +12,7 @@ export default function PortalWrapperView({ portal }) {
   return (
     <Router>
       <UIServicesProvider>
-        <AppOrchestrationProvider>
+        <AppOrchestrationServiceProvider>
           <DesktopServiceProvider>
             <React.Suspense
               fallback={
@@ -32,7 +32,7 @@ export default function PortalWrapperView({ portal }) {
               <PortalWrapperTransitionView portal={portal} />
             </React.Suspense>
           </DesktopServiceProvider>
-        </AppOrchestrationProvider>
+        </AppOrchestrationServiceProvider>
       </UIServicesProvider>
     </Router>
   );

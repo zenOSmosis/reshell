@@ -39,6 +39,8 @@ export default class OutputMediaStreamTrackCollection extends PhantomCollection 
     if (phantomAudioWrapper) {
       await phantomAudioWrapper.destroy();
     }
+
+    return super.removeChild(mediaStreamTrack);
   }
 
   // TODO: Document

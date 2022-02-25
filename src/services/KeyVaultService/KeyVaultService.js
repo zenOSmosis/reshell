@@ -1,4 +1,4 @@
-import { PhantomCollection, EVT_UPDATED } from "phantom-core";
+import { PhantomCollection } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 
 import BaseStorageEngine from "./engines/_BaseStorageEngine";
@@ -23,22 +23,8 @@ export default class KeyVaultService extends UIServiceCore {
       StorageEngineCollection
     );
 
-    // Proxy storage engine collection EVT_UPDATED events through this instance
-    this.proxyOn(this._storageEngineCollection, EVT_UPDATED, (...args) =>
-      this.emit(EVT_UPDATED, ...args)
-    );
-
     this.addStorageEngineClass(SessionStorageEngine);
     this.addStorageEngineClass(SecureLocalStorageEngine);
-  }
-
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    await this._storageEngineCollection.destroy();
-
-    return super.destroy();
   }
 
   // TODO: Document
@@ -138,12 +124,12 @@ class StorageEngineCollection extends PhantomCollection {
   }
 
   // TODO: Document
-  removeChild(StorageEngineClass) {
-    const storageEngine = this.getChildWithKey(StorageEngineClass);
-
+  removeChild(storageEngine) {
     if (storageEngine) {
       storageEngine.destroy();
     }
+
+    return super.removeChild(storageEngine);
   }
 
   // TODO: Document

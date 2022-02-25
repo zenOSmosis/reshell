@@ -17,8 +17,12 @@ export default function DesktopMenuBar() {
     useUIParadigm();
 
   const { activeWindowController } = useDesktopContext();
-  const { appRegistrations, activateAppRegistration, appRuntimes } =
-    useAppOrchestrationContext();
+  const {
+    appRegistrations,
+    activateAppRegistration,
+    appRuntimes,
+    runningAppRegistrations,
+  } = useAppOrchestrationContext();
 
   const forceUpdate = useForceUpdate();
 
@@ -34,7 +38,9 @@ export default function DesktopMenuBar() {
     }
   }, [activeWindowController, forceUpdate]);
 
-  const applicationsMenuData = useMemo(
+  // TODO: Don't sort here; the sort is not working with Firefox, anyway; it
+  // probably needs to be sorted internally via the relevant collection(s)
+  const alphabetizedAppRegistrations = useMemo(
     () =>
       appRegistrations
         // Sort registrations alphabetically
@@ -49,13 +55,25 @@ export default function DesktopMenuBar() {
           } else {
             return 0;
           }
-        })
-        .map(app => ({
-          // FIXME: (jh) Include checkboxes next to active registrations
-          role: app.getTitle(),
-          click: () => activateAppRegistration(app),
-        })),
-    [appRegistrations, activateAppRegistration]
+        }),
+    [appRegistrations]
+  );
+
+  const applicationsMenuData = useMemo(
+    () =>
+      alphabetizedAppRegistrations.map(app => ({
+        type: "checkbox",
+        label: app.getTitle(),
+        checked: runningAppRegistrations
+          .map(pred => pred.getID())
+          .includes(app.getID()),
+        click: () => activateAppRegistration(app),
+      })),
+    [
+      alphabetizedAppRegistrations,
+      runningAppRegistrations,
+      activateAppRegistration,
+    ]
   );
 
   const pinnedAppsMenuData = useMemo(() => {
@@ -63,7 +81,7 @@ export default function DesktopMenuBar() {
       .filter(registration => registration.getIsPinned())
       .map(app => ({
         // FIXME: (jh) Include checkboxes next to active pinned registrations?
-        role: app.getTitle(),
+        label: app.getTitle(),
         click: () => activateAppRegistration(app),
       }));
 

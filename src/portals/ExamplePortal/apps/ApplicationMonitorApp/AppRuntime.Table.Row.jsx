@@ -1,4 +1,4 @@
-import consume from "@utils/consume";
+import { consume } from "phantom-core";
 import { useEffect, useState } from "react";
 import Timer from "@components/Timer";
 import { EVT_RENDER_PROFILED } from "@components/Window/classes/WindowController";

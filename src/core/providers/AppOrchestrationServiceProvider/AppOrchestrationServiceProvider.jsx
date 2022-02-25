@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import useServiceClass from "@hooks/useServiceClass";
 
@@ -6,12 +6,12 @@ import AppOrchestrationService from "@services/AppOrchestrationService";
 
 import useAppRuntimesAutoStart from "./useAppRuntimesAutoStart";
 
-export const AppOrchestrationContext = React.createContext({});
+export const AppOrchestrationServiceContext = React.createContext({});
 
 /**
  * Provides the React application with ReShell app orchestration servicing.
  */
-export default function AppOrchestrationProvider({ children }) {
+export default function AppOrchestrationServiceProvider({ children }) {
   const { serviceInstance: appOrchestrationService } = useServiceClass(
     AppOrchestrationService
   );
@@ -20,6 +20,9 @@ export default function AppOrchestrationProvider({ children }) {
     appOrchestrationService.getRunningAppRegistrations();
   const appRegistrations = appOrchestrationService.getAppRegistrations();
   const appRuntimes = appOrchestrationService.getAppRuntimes();
+
+  // TODO: If enabling, this needs to be memoized (or contained within a
+  // phantom collection)
   /*
   const windowControllers = appRuntimes
     .map(runtime => runtime.getWindowController())
@@ -38,13 +41,23 @@ export default function AppOrchestrationProvider({ children }) {
   const getAppRuntimesWithRegistrationID =
     appOrchestrationService.getAppRuntimesWithRegistrationID;
 
+  // TODO: Remove
+  useEffect(() => {
+    console.log({ appRegistrations });
+  }, [appRegistrations]);
+
+  // TODO: Remove
+  useEffect(() => {
+    console.log({ appRuntimes });
+  }, [appRuntimes]);
+
   // Handles auto-start of apps which are set to automatically launch
   //
   // FIXME: (jh) Refactor using a different approach
   useAppRuntimesAutoStart(appRegistrations, activateAppRegistration);
 
   return (
-    <AppOrchestrationContext.Provider
+    <AppOrchestrationServiceContext.Provider
       value={{
         runningAppRegistrations,
         appRegistrations,
@@ -59,6 +72,6 @@ export default function AppOrchestrationProvider({ children }) {
       }}
     >
       {children}
-    </AppOrchestrationContext.Provider>
+    </AppOrchestrationServiceContext.Provider>
   );
 }

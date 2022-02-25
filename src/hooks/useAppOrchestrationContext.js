@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AppOrchestrationContext } from "@core/providers/AppOrchestrationProvider";
+import { AppOrchestrationServiceContext } from "@core/providers/AppOrchestrationServiceProvider";
 
 export default function useAppOrchestrationContext() {
-  return useContext(AppOrchestrationContext);
+  return useContext(AppOrchestrationServiceContext);
 }

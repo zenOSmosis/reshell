@@ -1,11 +1,10 @@
+import { consume } from "phantom-core";
 import { useMemo } from "react";
 import Center from "@components/Center";
 import LED from "@components/LED";
 import Padding from "@components/Padding";
 
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
-
-import consume from "@utils/consume";
 
 export default function ApplicationSelector({
   searchQuery = "",

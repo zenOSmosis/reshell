@@ -201,14 +201,13 @@ export default class ReShellCore extends PhantomCore {
     // Stop the current UI
     ReactDOM.render(<div>[Tear down]</div>, this._elBase);
 
-    await this._uiServiceManager.destroy();
+    return super.destroy(async () => {
+      await this._uiServiceManager.destroy();
 
-    const ret = await super.destroy();
-
-    // TODO: Refactor this handling into PhantomCore as optional singleton instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
-    _instance = null;
-
-    return ret;
+      // TODO: Refactor this handling into PhantomCore as optional singleton
+      // instance (@see https://github.com/zenOSmosis/phantom-core/issues/72)
+      _instance = null;
+    });
   }
 
   // TODO: Document
