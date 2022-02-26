@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// FIXME: (jh) Rename to fetchIsLatestReShellVersion
 /**
  * This attempts to determine if we're running the latest version, regardless
  * if we have the ability to control the server-side headers related to browser

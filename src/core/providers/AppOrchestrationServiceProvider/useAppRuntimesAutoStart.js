@@ -22,13 +22,9 @@ export default function useAppRuntimesAutoStart(
       // Prevent auto-start sequence from happening more than once
       refHasBegunAutoStart.current = true;
 
-      // FIXME: (jh) The reversed registrations seems to open apps in forward
-      // order, based on how they are defined in the desktop array.  I
-      // haven't done a lot of testing against this, so this may need to be
-      // redefined as necessary
-      for (const registration of [...appRegistrations]
-        .filter(registration => registration.getIsAutoStart())
-        .reverse()) {
+      for (const registration of [...appRegistrations].filter(registration =>
+        registration.getIsAutoStart()
+      )) {
         activateAppRegistration(registration);
       }
 

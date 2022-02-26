@@ -4,11 +4,14 @@ import ButtonTransparent from "../ButtonTransparent";
 
 import PropTypes from "prop-types";
 
-// TODO: Apply "active" class to button whenever registration is active?
+// FIXME: (jh) Apply "active" class to button whenever registration is active?
 
 AppLinkButton.propTypes = {
+  // App descriptor / registration ID
   id: PropTypes.string.isRequired,
 
+  // Optional title override for button link, if wanting to inherit title from
+  // app itself
   title: PropTypes.string,
 };
 
@@ -21,14 +24,16 @@ export default function AppLinkButton({
 }) {
   const { title: registrationTitle, link } = useAppRegistrationLink(id);
 
-  // If there are children, show a non-styled button, otherwise, show a
-  // standard button
+  // If there are children, show a non-styled [transparent] button, otherwise,
+  // show a standard button
   const ButtonView = useMemo(
     () => props =>
       children ? <ButtonTransparent {...props} /> : <button {...props} />,
     [children]
   );
 
+  // Link might not be available if calling from another portal or if the app
+  // descriptor is not currently registered with app registrations
   if (!link) {
     return null;
   }

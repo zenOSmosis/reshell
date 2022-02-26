@@ -1,5 +1,6 @@
 const FULL_YEAR = new Date().getFullYear();
 
+// FIXME: (jh) Rename to getReShellCopyright
 /**
  * @return {string}
  */
