@@ -1,6 +1,8 @@
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 
 import MesaSpeechRecognizer, {
+  EVT_CONNECTING,
+  EVT_CONNECTED,
   EVT_BEGIN_RECOGNIZE,
   EVT_TRANSCRIPTION_RECOGNIZING,
   EVT_END_RECOGNIZE,
@@ -24,6 +26,8 @@ export default class MesaSpeechRecognizerService extends UIServiceCore {
     this.setTitle("Mesa Speech Recognizer Service");
 
     this.setState({
+      isConnecting: false,
+      isConnected: false,
       hasRecognizer: false,
       isRecognizing: false,
       realTimeTranscription: null,
@@ -51,6 +55,24 @@ export default class MesaSpeechRecognizerService extends UIServiceCore {
     this._subscriptionKeyService = this.useServiceClass(
       MesaSubscriptionKeyManagementService
     );
+  }
+
+  /**
+   * Whether or not the speech recognizer is connecting.
+   *
+   * @return {boolean}
+   */
+  getIsConnecting() {
+    return this.getState().isConnecting;
+  }
+
+  /**
+   * Whether or not the speech recognizer is connected.
+   *
+   * @return {boolean}
+   */
+  getIsConnected() {
+    return this.getState().isConnected;
   }
 
   /**
@@ -146,6 +168,8 @@ export default class MesaSpeechRecognizerService extends UIServiceCore {
       // FIXME: (jh) Reset state once implemented
       // Relevant issue: https://github.com/zenOSmosis/phantom-core/issues/112
       this.setState({
+        isConnecting: false,
+        isConnected: false,
         hasRecognizer: false,
         isRecognizing: false,
         realTimeTranscription: null,
@@ -155,6 +179,16 @@ export default class MesaSpeechRecognizerService extends UIServiceCore {
 
     // Handle recognizer event binding
     (() => {
+      this.proxyOn(this._recognizer, EVT_CONNECTING, () => {
+        this.setState({ isConnecting: true });
+        this.setState({ isConnected: false });
+      });
+
+      this.proxyOn(this._recognizer, EVT_CONNECTED, () => {
+        this.setState({ isConnecting: false });
+        this.setState({ isConnected: true });
+      });
+
       this.proxyOn(this._recognizer, EVT_BEGIN_RECOGNIZE, () => {
         this.setState({ isRecognizing: true });
       });

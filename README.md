@@ -21,6 +21,17 @@ $ # Enjoy
 
 Or, skip the setup and [experience the hosted version](https://reshell.org).
 
+![ReShell Web Desktop](https://user-images.githubusercontent.com/1139657/157343908-313135c7-4b52-48e1-a2a8-2fdfb8571df5.jpeg)
+
+## Some useful links
+
+- About ReShell: https://reshell.org/about-reshell
+- Example Phrases: https://reshell.org/desktop-commander-debugger (NOTE: These do not have to be exactly spoken)
+- Speech Commander: https://reshell.org/speech-commander
+- Speech Recognition Debugger: https://reshell.org/mesa-speech-recognition-debugger
+
+Note that speech control is currently only available in English.
+
 # Project Goals
 
 - Stable and efficient on desktop and mobile
@@ -32,6 +43,10 @@ Or, skip the setup and [experience the hosted version](https://reshell.org).
 # Additional Resources
 
 Additional open-source repositories for ReShell can be found on GitHub: https://github.com/zenosmosis
+
+# License
+
+[MIT](https://github.com/zenOSmosis/reshell/blob/main/LICENSE) License. Copyright (c) 2022 zenOSmosis. Included works are bound by their own copyrights, rights, and licensing.
 
 # Getting Started with Create React App
 

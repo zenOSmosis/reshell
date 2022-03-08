@@ -28,7 +28,7 @@ export default class AppOrchestrationService extends UIServiceCore {
     );
     this._appRuntimeCollection = this.bindCollectionClass(AppRuntimeCollection);
 
-    this._DesktopService = this.useServiceClass(DesktopService);
+    this._desktopService = this.useServiceClass(DesktopService);
   }
 
   // TODO: Import WindowController type
@@ -55,7 +55,7 @@ export default class AppOrchestrationService extends UIServiceCore {
 
   // TODO: Document
   getActiveWindowController() {
-    return this._DesktopService.getActiveWindowController();
+    return this._desktopService.getActiveWindowController();
   }
 
   // TODO: Import WindowController type

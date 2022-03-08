@@ -39,25 +39,40 @@ export const CMD_ACTIVATE_NEXT_WINDOW = {
 };
 */
 
-// TODO: Handle
-/*
 export const CMD_ACTIVATE_NEXT_WINDOW = {
   id: "activate-next-window",
   keywords: "cycle activate next window",
   description: "Activate next window",
-  action: (commander, params = {}) => null,
-};
-*/
+  action: (commander, { windowController, appOrchestrationService }) => {
+    const windowControllers = appOrchestrationService.getWindowControllers();
+    const idxCurrent = windowControllers.indexOf(windowController);
 
-// TODO: Handle
-/*
+    const nextWindowController =
+      windowControllers[idxCurrent + 1] || windowControllers[0];
+
+    if (nextWindowController) {
+      nextWindowController.bringToTop();
+    }
+  },
+};
+
 export const CMD_ACTIVATE_PREVIOUS_WINDOW = {
   id: "activate-previous-window",
   keywords: "cycle activate previous window",
   description: "Activate previous window",
-  action: (commander, params = {}) => null,
+  action: (commander, { windowController, appOrchestrationService }) => {
+    const windowControllers = appOrchestrationService.getWindowControllers();
+    const idxCurrent = windowControllers.indexOf(windowController);
+
+    const prevWindowController =
+      windowControllers[idxCurrent - 1] ||
+      windowControllers[windowControllers.length - 1];
+
+    if (prevWindowController) {
+      prevWindowController.bringToTop();
+    }
+  },
 };
-*/
 
 export const CMD_MOVE_WINDOW_UP = {
   id: "move-window-up",

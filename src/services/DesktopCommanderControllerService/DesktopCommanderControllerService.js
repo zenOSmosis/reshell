@@ -84,8 +84,18 @@ export default class DesktopCommanderControllerService extends UIServiceCore {
   // TODO: This could be an async operation, so potentially treat it as so
   async execCommand(command, params = {}) {
     if (!params.windowController) {
-      params.windowController =
+      const activeWindowController =
         this._appOrchestrationService.getActiveWindowController();
+
+      // FIXME: (jh) This side-steps an issue where no window controller might
+      // be available at all, so select ANY window controller just to have
+      // something selected
+      if (activeWindowController) {
+        params.windowController = activeWindowController;
+      } else {
+        params.windowController =
+          this._appOrchestrationService.getWindowControllers()?.[0];
+      }
     }
 
     params.appOrchestrationService = this._appOrchestrationService;

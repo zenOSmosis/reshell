@@ -131,6 +131,7 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
+  // TODO: Rename to bringToFront and / or activate
   bringToTop() {
     this._handleBringToTop(this);
   }

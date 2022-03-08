@@ -7,7 +7,7 @@
 import fs from "fs";
 import path from "path";
 
-const PUBLISH_FROM_BRANCH = "master";
+const PUBLISH_FROM_BRANCH = "main";
 
 const gitBranch = (await $`git rev-parse --abbrev-ref HEAD`).stdout.replace(
   "\n",

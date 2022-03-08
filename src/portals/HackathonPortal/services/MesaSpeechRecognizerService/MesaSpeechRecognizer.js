@@ -2,6 +2,9 @@ import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROYED } from "phantom-core";
 
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
+export const EVT_CONNECTING = "connecting";
+export const EVT_CONNECTED = "connected";
+
 export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
 export const EVT_END_RECOGNIZE = "end-recognize";
 
@@ -32,10 +35,9 @@ export default class MesaSpeechRecognizer extends PhantomCore {
   constructor(mediaStream, subscriptionKey, options) {
     super(options);
 
-    this._isRecognizing = false;
-    this._isRecognized = false;
-
     this._subscriptionKey = subscriptionKey;
+
+    this._isConnected = false;
 
     // TODO: Replace hardcoding with config param
     this._locationRegion = "eastus";
@@ -43,8 +45,10 @@ export default class MesaSpeechRecognizer extends PhantomCore {
 
     this._mediaStream = mediaStream;
 
-    // Automatically start recognizing
-    this._startRecognizing();
+    // Automatically start recognizing (allow events to be bound first)
+    setImmediate(() => {
+      this._startRecognizing();
+    });
   }
 
   /**
@@ -75,8 +79,6 @@ export default class MesaSpeechRecognizer extends PhantomCore {
    * @return {void}
    */
   _setIsRecognizing(isRecognizing) {
-    this._isRecognizing = isRecognizing;
-
     if (isRecognizing) {
       this.emit(EVT_BEGIN_RECOGNIZE);
     } else {
@@ -108,6 +110,8 @@ export default class MesaSpeechRecognizer extends PhantomCore {
   _startRecognizing() {
     const stream = this._mediaStream;
 
+    this.emit(EVT_CONNECTING);
+
     const speechConfig = sdk.SpeechConfig.fromSubscription(
       this._subscriptionKey,
       this._locationRegion
@@ -132,7 +136,17 @@ export default class MesaSpeechRecognizer extends PhantomCore {
     //
     // TODO: Refactor
     (() => {
+      // TODO: Remove
+      console.log({ recognizer });
+
       recognizer.recognizing = (s, e) => {
+        // FIXME: (jh) Is there a more appropriate place to put this?
+        if (!this._isConnected) {
+          this._isConnected = true;
+
+          this.emit(EVT_CONNECTED);
+        }
+
         this._setIsRecognizing(true);
 
         // TODO: Change to debug
@@ -180,6 +194,8 @@ export default class MesaSpeechRecognizer extends PhantomCore {
       };
 
       recognizer.sessionStopped = (s, e) => {
+        this._isConnected = false;
+
         this._setIsRecognizing(false);
 
         // TODO: Change to debug

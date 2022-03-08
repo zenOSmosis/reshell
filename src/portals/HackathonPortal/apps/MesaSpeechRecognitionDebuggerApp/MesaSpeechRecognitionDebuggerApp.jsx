@@ -44,6 +44,7 @@ const MesaSpeechRecognitionDebuggerApp = {
   */
   view: function View({ appServices }) {
     const speechRecognizerService = appServices[MesaSpeechRecognizerService];
+    const isConnecting = speechRecognizerService.getIsConnecting();
     const hasRecognizer = speechRecognizerService.getHasRecognizer();
     const finalizedTranscription =
       speechRecognizerService.getFinalizedTranscription();
@@ -162,7 +163,13 @@ const MesaSpeechRecognitionDebuggerApp = {
 
                 <Padding style={{ display: "inline-block" }}>
                   <LabeledLED
-                    color={!hasRecognizer ? "gray" : "green"}
+                    color={
+                      !hasRecognizer
+                        ? "gray"
+                        : isConnecting
+                        ? "yellow"
+                        : "green"
+                    }
                     label="Recognizer Engine"
                   />
                 </Padding>
