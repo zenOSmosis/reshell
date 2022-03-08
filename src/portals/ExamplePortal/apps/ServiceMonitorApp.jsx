@@ -1,8 +1,20 @@
 // NOTE: No hook is wrapped directly around this because the goal is to not
 // make it easy to expose services to windows which don't directly use said
 // service
+
+import PhantomCore from "phantom-core";
+
 import { useContext } from "react";
+import Layout, { Content, Footer } from "@components/Layout";
+import Full from "@components/Full";
+import Padding from "@components/Padding";
+import Timer from "@components/Timer";
+import NoWrap from "@components/NoWrap";
+import AppLinkButton from "@components/AppLinkButton";
+
 import { UIServicesContext } from "@core/providers/UIServicesProvider";
+
+import { REGISTRATION_ID as APPLICATION_MONITOR_REGISTRATION_ID } from "./ApplicationMonitorApp";
 
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
@@ -13,10 +25,6 @@ import { UIServicesContext } from "@core/providers/UIServicesProvider";
 // integrated
 
 // TODO: Include ability to monitor React providers exposed by the service
-
-import Padding from "@components/Padding";
-import Timer from "@components/Timer";
-import NoWrap from "@components/NoWrap";
 
 export const REGISTRATION_ID = "service-monitor";
 
@@ -34,14 +42,22 @@ const ServiceMonitorApp = {
     // TODO: Group by runtime
 
     return (
-      <Padding style={{ overflowY: "auto" }}>
-        <table style={{ width: "100%" }}>
-          <thead>
-            <tr>
-              <td>Service Name</td>
-              <td>Uptime</td>
-              <td>f(x)</td>
-              {/**
+      <Layout>
+        <Content>
+          <Full style={{ overflowY: "auto" }}>
+            <table style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <td>
+                    <Padding>Service Name</Padding>
+                  </td>
+                  <td>
+                    <Padding>Uptime</Padding>
+                  </td>
+                  <td>
+                    <Padding>f(x)</Padding>
+                  </td>
+                  {/**
               <td>
                 Active
                 <br />
@@ -53,20 +69,22 @@ const ServiceMonitorApp = {
                 Linked Providers
               </td>  
                */}
-            </tr>
-          </thead>
-          <tbody>
-            {services.map(service => (
-              <tr key={service.getUUID()}>
-                <td>{service.getTitle() || "[Untitled]"}</td>
-                <td className="center">
-                  <Timer onTick={() => service.getInstanceUptime()} />
-                </td>
-                {/*
+                </tr>
+              </thead>
+              <tbody>
+                {services.map(service => (
+                  <tr key={service.getUUID()}>
+                    <td>
+                      <Padding>{service.getTitle() || "[Untitled]"}</Padding>
+                    </td>
+                    <td className="center">
+                      <Timer onTick={() => service.getInstanceUptime()} />
+                    </td>
+                    {/*
                   <td className="center">N/A</td>
                   <td className="center">N/A</td>
                   */}
-                {/*
+                    {/*
               <td>
                 <button
                   onClick={() => service.destroy()}
@@ -76,19 +94,38 @@ const ServiceMonitorApp = {
                 </button>
               </td>
                 */}
-                <td className="center">
-                  {
-                    // TODO: Remove
-                  }
-                  <button onClick={() => service.log(service.getState())}>
-                    <NoWrap>log(state)</NoWrap>
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Padding>
+                    <td className="center">
+                      {
+                        // TODO: Remove
+                      }
+                      <Padding>
+                        <button onClick={() => service.log(service.getState())}>
+                          <NoWrap>log(state)</NoWrap>
+                        </button>
+                      </Padding>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Full>
+        </Content>
+        <Footer>
+          <hr style={{ margin: 0, padding: 0 }} />
+          <Padding>
+            <Full>
+              <div style={{ position: "absolute", bottom: 0, left: 0 }}>
+                PhantomCore uptime:{" "}
+                <Timer onTick={() => PhantomCore.getUptime()} />
+              </div>
+              <AppLinkButton
+                id={APPLICATION_MONITOR_REGISTRATION_ID}
+                style={{ float: "right", verticalAlign: "bottom" }}
+              />
+            </Full>
+          </Padding>
+        </Footer>
+      </Layout>
     );
   },
 };

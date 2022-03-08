@@ -14,6 +14,9 @@ import AutoScaler from "../AutoScaler";
 import NotificationProvider from "./providers/NotificationProvider";
 import ModalProvider from "./providers/ModalProvider";
 
+// TODO: Consider using Noto Sans font for UI (same that Slack uses, nice font;
+// preload resources w/ Preloader component): https://fonts.google.com/noto/specimen/Noto+Sans
+
 // TODO: Implement context menu
 // @see https://szhsin.github.io/react-menu/#context-menu
 
@@ -66,18 +69,18 @@ export default function Desktop({ backgroundView = null, appDescriptors }) {
                     right: 10,
                     color: "rgba(255,255,255,.2)",
                     fontSize: "2rem",
+
+                    // The following properties enable this to overlay all (or
+                    // most) other components without interfering with their
+                    // handling (thanks to "pointer-events: none")
+                    pointerEvents: "none",
+                    // FIXME: (jh) Is there a way to do this overlawy w/o using
+                    // z-index?
+                    zIndex: 2147483647,
                   }}
                 >
-                  {
-                    // TODO: Read from package.json
-                    // @see https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script/48619640
-                    // (i.e. REACT_APP_VERSION=$npm_package_version)
-                    //
-                    // TODO: If wanting to overlay completely on top of all other windows, and ignore mouse, etc:
-                    // use CSS [pointer-events: none]
-                  }
                   <AutoScaler style={{ whiteSpace: "nowrap" }}>
-                    <div style={{ textAlign: "left", fontSize: ".7em" }}>
+                    <div style={{ textAlign: "left", fontSize: ".5em" }}>
                       {
                         // TODO: Load as env variable
                       }
@@ -85,7 +88,15 @@ export default function Desktop({ backgroundView = null, appDescriptors }) {
                       <div>
                         PhantomCore {PhantomCore.getPhantomCoreVersion()}
                       </div>
-                      <div>Portal: {ReShellCore.getPortalName()}</div>
+                      {
+                        // FIXME: (jh) This typically always renders "default"
+                        // for the portal name, and portal name acquisition
+                        // needs to be improved (more than likely via
+                        // reshell-scripts and __registerPortals__.js)
+                        /*
+                        <div>Portal: {ReShellCore.getPortalName()}</div>
+                        */
+                      }
                       <div>Env: {process.env.NODE_ENV}</div>
                     </div>
                   </AutoScaler>

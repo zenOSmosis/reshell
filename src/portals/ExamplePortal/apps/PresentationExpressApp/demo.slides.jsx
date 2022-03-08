@@ -236,8 +236,8 @@ const slides = [
                 ]
               </li>
               <li>
-                Cross-platform testing (the core view framework is actively
-                tested across all major platforms)
+                Cross-platform testing (the core view library is actively tested
+                across all major platforms)
               </li>
             </ul>
             <hr />

@@ -15,6 +15,7 @@ import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
+import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -22,8 +23,10 @@ import VirtualServerApp from "./apps/VirtualServerApp";
 import LocalUserProfileApp from "./apps/LocalUserProfileApp";
 import ChatApp from "./apps/ChatApp";
 
-// TODO: Remove
-import NotificationsPrototypeApp from "../ExamplePortal/apps/NotificationsPrototypeApp";
+// Mesa Hackathon apps
+import MesaSpeechRecognitionDebuggerApp from "../HackathonPortal/apps/MesaSpeechRecognitionDebuggerApp";
+import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
+import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
 export default function SpeakerAppPortal() {
   return (
@@ -47,13 +50,16 @@ export default function SpeakerAppPortal() {
         CheckForUpdatesApp,
         MemoryInfoApp,
         SoftwareInfoApp,
+        AppRegistrationViewerApp,
 
         CallPlayerApp,
         VirtualServerApp,
         ChatApp,
 
-        // TODO: Remove
-        NotificationsPrototypeApp,
+        // Mesa Hackathon apps
+        MesaSpeechRecognitionDebuggerApp,
+        SpeechCommanderApp,
+        DesktopCommanderDebuggerApp,
       ]}
     />
   );

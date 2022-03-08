@@ -23,7 +23,7 @@ import beep from "@utils/beep";
 
 export { EVT_UPDATED };
 
-// TODO: Consider renaming to non-speaker-app for more dynamic usage
+// FIXME: (jh) Consider renaming to non-speaker-app for more dynamic usage
 export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
@@ -94,6 +94,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
       // modal to ask for media (iOS might not play WebRTC audio if no hardware
       // device is being captured)
       if (!inputMediaDevicesService.getCaptureFactories().length) {
+        // TODO: Replace w/ InputMediaDeviceUIModalService handler
         await new Promise((resolve, reject) => {
           const uiModalService = this.useServiceClass(UIModalService);
 

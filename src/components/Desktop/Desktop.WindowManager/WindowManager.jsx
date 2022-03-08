@@ -320,7 +320,7 @@ function WindowManagerView({ children }) {
               // necessary anyway
             }
             {windowController && (
-              <WrappedView
+              <WrappedWindowView
                 appServices={appServices}
                 windowController={windowController}
                 appRuntime={appRuntime}
@@ -356,7 +356,7 @@ function WindowManagerView({ children }) {
 
 // TODO: Document
 const WrappedTitleBarView = function ({ titleBarView, ...rest }) {
-  return <WrappedView {...rest} view={titleBarView} />;
+  return <WrappedWindowView {...rest} view={titleBarView} />;
 };
 
 // FIXME: (jh) [As a consideration] Implement Svelte lifecycle methods, to
@@ -376,7 +376,7 @@ const WrappedTitleBarView = function ({ titleBarView, ...rest }) {
 // TODO: Document; rename? (NOTE: this wrapped view was designed to make it
 // easier to make the wrapping view render out-of-sequence with the containing
 // view, such as when a service updates, etc.)
-const WrappedView = function WrappedView({
+function WrappedWindowView({
   appServices,
   windowController,
   appRuntime,
@@ -418,4 +418,4 @@ const WrappedView = function WrappedView({
       setSharedState={setSharedState}
     />
   );
-};
+}

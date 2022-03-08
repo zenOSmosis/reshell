@@ -29,6 +29,13 @@ export default class AppRegistration extends PhantomCore {
    * @return {void}
    */
   static addOrUpdateAppRegistration(appDescriptor) {
+    // TODO: Validate against proper type
+    if (!Object.keys(appDescriptor).length) {
+      throw new TypeError(
+        "appDescriptor does not appear to be a valid application descriptor"
+      );
+    }
+
     const { id } = appDescriptor;
 
     // Registrations may be updated when in development mode, and updating the

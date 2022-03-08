@@ -14,8 +14,8 @@ LabeledToggle.propTypes = {
 // TODO: Implement ability to disable
 export default function LabeledToggle({
   className,
-  labelOff = "",
-  labelOn = "",
+  labelOff = "Off",
+  labelOn = "On",
   masterLabel = "",
   isOn,
   disabled,

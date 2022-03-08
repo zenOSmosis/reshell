@@ -72,9 +72,6 @@ export default class InputMediaDevicesService extends UIServiceCore {
       .catch(console.error)
       .finally(() => this.setState({ isFetchingMediaDevices: false }));
 
-    // TODO: Remove
-    console.log({ inputMediaDevices });
-
     // Set the captured device information as state so that calls to
     // this.getInputMediaDevices() can retrieve cached state, and any UI
     // listeners can see the state of cached device information.

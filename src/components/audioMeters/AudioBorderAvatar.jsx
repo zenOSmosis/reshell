@@ -28,6 +28,7 @@ export default function AudioBorderAvatar({
 }) {
   const [elAvatar, setElAvatar] = useState(null);
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   /**

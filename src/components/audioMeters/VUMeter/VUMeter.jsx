@@ -39,6 +39,7 @@ export default function VUMeter({
   const [elVU, setElVU] = useState(null);
   const [elNeedle, setElNeedle] = useState(null);
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   useEffect(() => {

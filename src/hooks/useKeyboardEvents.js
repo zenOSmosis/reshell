@@ -10,8 +10,13 @@ const DEFAULT_PROPS = {
 
 /**
  * Binds keyboard event handlers to the given DOM element.
- * 
- * @param {DOMElement} domNode 
+ *
+ * IMPORTANT: If domNode is captured via a ref on a React element, the ref
+ * should be wired through a useState in the component, and the resulting state
+ * be sent here, or it might not work on subsequent calls. This is a known
+ * issue when trying to use with multiple iterations of TextInputModal.
+ *
+ * @param {DOMElement} domNode // TODO: Default to window or document body?
  * @param {Object} props TODO: Document structure
  */
 export default function useKeyboardEvents(domNode, props = {}) {
@@ -20,6 +25,7 @@ export default function useKeyboardEvents(domNode, props = {}) {
     [props]
   );
 
+  // Handle event binding and unbinding
   useEffect(() => {
     if (!domNode || !isEnabled) {
       return;
@@ -56,7 +62,7 @@ export default function useKeyboardEvents(domNode, props = {}) {
     domNode.addEventListener("keydown", _handleKeyDown);
     domNode.addEventListener("keyup", _handleKeyUp);
 
-    return function unmount() {
+    return () => {
       domNode.removeEventListener("keydown", _handleKeyDown);
       domNode.removeEventListener("keyup", _handleKeyUp);
     };

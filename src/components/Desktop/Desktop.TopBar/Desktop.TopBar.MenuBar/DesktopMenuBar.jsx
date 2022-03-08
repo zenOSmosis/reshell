@@ -9,12 +9,21 @@ import useForceUpdate from "@hooks/useForceUpdate";
 import useUIParadigm, {
   DESKTOP_PARADIGM,
   MOBILE_PARADIGM,
+  AUTO_DETECT_PARADIGM,
 } from "@hooks/useUIParadigm";
+import useServiceClass from "@hooks/useServiceClass";
+
+import UIModalWidgetService from "@services/UIModalWidgetService";
 
 // TODO: Document
 export default function DesktopMenuBar() {
   const { uiParadigm, isUIParadigmAutoSet, setStaticUIParadigm } =
     useUIParadigm();
+
+  const { serviceInstance: uiModalWidgetService } = useServiceClass(
+    UIModalWidgetService,
+    false
+  );
 
   const { activeWindowController } = useDesktopContext();
   const {
@@ -38,30 +47,9 @@ export default function DesktopMenuBar() {
     }
   }, [activeWindowController, forceUpdate]);
 
-  // TODO: Don't sort here; the sort is not working with Firefox, anyway; it
-  // probably needs to be sorted internally via the relevant collection(s)
-  const alphabetizedAppRegistrations = useMemo(
-    () =>
-      appRegistrations
-        // Sort registrations alphabetically
-        .sort((a, b) => {
-          const aTitle = a.getTitle();
-          const bTitle = b.getTitle();
-
-          if (aTitle < bTitle) {
-            return -1;
-          } else if (bTitle > aTitle) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }),
-    [appRegistrations]
-  );
-
   const applicationsMenuData = useMemo(
     () =>
-      alphabetizedAppRegistrations.map(app => ({
+      appRegistrations.map(app => ({
         type: "checkbox",
         label: app.getTitle(),
         checked: runningAppRegistrations
@@ -69,11 +57,7 @@ export default function DesktopMenuBar() {
           .includes(app.getID()),
         click: () => activateAppRegistration(app),
       })),
-    [
-      alphabetizedAppRegistrations,
-      runningAppRegistrations,
-      activateAppRegistration,
-    ]
+    [appRegistrations, runningAppRegistrations, activateAppRegistration]
   );
 
   const pinnedAppsMenuData = useMemo(() => {
@@ -88,6 +72,7 @@ export default function DesktopMenuBar() {
     if (pinnedApps.length) {
       return [
         {
+          // TODO: Use constant
           type: "separator",
           label: "Pinned Applications",
         },
@@ -100,6 +85,7 @@ export default function DesktopMenuBar() {
 
   const hasOpenedWindows = appRuntimes.length > 0;
 
+  // FIXME: (jh) Include menu option to reload the app (force refresh)
   const DESKTOP_MENU_STRUCTURE = {
     label: "Desktop",
     submenu: [
@@ -111,6 +97,7 @@ export default function DesktopMenuBar() {
       // exists
       ...pinnedAppsMenuData,
       {
+        // TODO: Use constant
         type: "separator",
         label: "Layout Control",
       },
@@ -131,7 +118,7 @@ export default function DesktopMenuBar() {
           },
           {
             label: "Auto Detect",
-            click: () => setStaticUIParadigm(null),
+            click: () => setStaticUIParadigm(AUTO_DETECT_PARADIGM),
             type: "checkbox",
             checked: isUIParadigmAutoSet,
           },
@@ -170,21 +157,26 @@ export default function DesktopMenuBar() {
         }
       })(),
       {
+        // TODO: Use constant
         type: "separator",
         label: "Desktop Operations",
       },
       {
         label: "Reload ReShell",
-        click: () => {
-          window.confirm("Are you sure you wish to reload?") &&
-            ReShellCore.reload();
+        click: async () => {
+          // TODO: Replace w/ UIModal
+          (await uiModalWidgetService.confirm(
+            "Are you sure you wish to reload?"
+          )) && ReShellCore.reload();
         },
       },
       {
         label: "Quit ReShell",
-        click: () => {
-          window.confirm("Are you sure you wish to close the desktop?") &&
-            ReShellCore.destroy();
+        click: async () => {
+          // TODO: Replace w/ UIModal
+          (await uiModalWidgetService.confirm(
+            "Are you sure you wish to close the desktop?"
+          )) && ReShellCore.destroy();
         },
       },
     ],

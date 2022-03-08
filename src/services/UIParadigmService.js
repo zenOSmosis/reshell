@@ -9,6 +9,7 @@ const DESKTOP_MINIMUM_HEIGHT = 480;
 
 export const DESKTOP_PARADIGM = "desktop";
 export const MOBILE_PARADIGM = "mobile";
+export const AUTO_DETECT_PARADIGM = null;
 
 /**
  * UI service class for desktop paradigm detection.
@@ -23,7 +24,7 @@ export default class UIParadigmService extends UIServiceCore {
 
     // TODO: Retain preferred setting across page loads
     this.setState({
-      uiParadigm: null,
+      uiParadigm: AUTO_DETECT_PARADIGM,
       isAutoSet: true,
     });
 
@@ -50,14 +51,14 @@ export default class UIParadigmService extends UIServiceCore {
   }
 
   /**
-   * @param {DESKTOP_PARADIGM | MOBILE_PARADIGM | null} uiParadigm If set to
+   * @param {DESKTOP_PARADIGM | MOBILE_PARADIGM | AUTO_DETECT_PARADIGM} uiParadigm If set to
    * null, auto-set will be re-enabled.
    */
   setStaticUIParadigm(uiParadigm) {
     if (
       uiParadigm !== DESKTOP_PARADIGM &&
       uiParadigm !== MOBILE_PARADIGM &&
-      uiParadigm !== null
+      uiParadigm !== AUTO_DETECT_PARADIGM
     ) {
       throw new Error(
         `uiParadigm must be set to "${DESKTOP_PARADIGM}", "${MOBILE_PARADIGM}", or null`

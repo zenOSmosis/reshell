@@ -9,6 +9,7 @@
 }
 
 .labeled-led .label-wrap {
+  margin-top: 5px;
   text-align: left;
   font-size: 0.8rem;
 }

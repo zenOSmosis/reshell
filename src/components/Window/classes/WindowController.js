@@ -73,6 +73,7 @@ export default class WindowController extends PhantomState {
       this._emitDebouncedResized.clear();
 
       // TODO: Determine if in dirty state, prior to closing
+      // TODO: Replace w/ UIModal
       // if (
       // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
       // ) {

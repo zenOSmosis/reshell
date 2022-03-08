@@ -12,6 +12,11 @@ if (!window.ResizeObserver) {
   install();
 }
 
+// FIXME: (jh) Fix issue where SVG images appear blurry if scaled on Safari
+// (experienced issues on Safari 14 & 15; not tested on other versions at this
+// time)
+// Related issue: https://github.com/jzombie/pre-re-shell/issues/174
+
 /**
  * Automatically applies CSS transform scaling to children to fill parent node,
  * while preserving aspect ratio.
@@ -23,6 +28,7 @@ export default function AutoScaler({ children, className, ...rest }) {
   const [elOuterWrap, setElOuterWrap] = useState(null);
   const [elInnerWrap, setElInnerWrap] = useState(null);
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   // Handle scaling

@@ -4,14 +4,14 @@ export default function Image({
   alt = "",
   title = "",
   src,
-  onLoad = (ref) => null,
+  onLoad = ref => null,
   ...rest
 }) {
   const [img, setImg] = useState(null);
 
   const refOnLoad = useRef(onLoad);
 
-  const handleOnLoad = useCallback(() => {
+  const handleLoad = useCallback(() => {
     const onLoad = refOnLoad.current;
 
     onLoad(img);
@@ -21,7 +21,7 @@ export default function Image({
     <img
       ref={setImg}
       {...rest}
-      onLoad={handleOnLoad}
+      onLoad={handleLoad}
       alt={alt}
       title={title}
       src={src}

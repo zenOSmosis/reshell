@@ -1,25 +1,26 @@
-import React, { useMemo } from "react";
+import React from "react";
 import classNames from "classnames";
 import styles from "./Toggle.module.css";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
+import useUUID from "@hooks/useUUID";
 
 Toggle.propTypes = {
-  onChange: PropTypes.func,
-
   isOn: PropTypes.bool,
+
+  // Invoked with boolean "on" value as its argument
+  onChange: PropTypes.func,
 
   disabled: PropTypes.bool,
 };
 
 export default function Toggle({
   className,
-  onChange = () => null,
   isOn,
   disabled,
+  onChange = () => null,
   ...rest
 }) {
-  const domId = useMemo(uuidv4, []);
+  const domId = useUUID();
 
   return (
     <div
@@ -34,6 +35,7 @@ export default function Toggle({
         type="checkbox"
         id={domId}
         className={styles["checkbox"]}
+        // FIXME: (jh) Implement optional name and value: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#value
         checked={isOn}
         onChange={evt => onChange(evt.target.checked)}
         disabled={disabled}

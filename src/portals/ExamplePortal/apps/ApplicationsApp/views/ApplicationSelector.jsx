@@ -62,13 +62,23 @@ export default function ApplicationSelector({
               style={{
                 width: 100,
                 height: 100,
-                overflow: "hidden",
+                // IMPORTANT: This overflow being hidden was causing an issue
+                // in Chrome where buttons could be clickable in the title bar
+                // region of the window, if scrolled beyond.
+                // Relevant issue: https://github.com/jzombie/pre-re-shell/issues/169
+                //
+                // overflow: "hidden",
                 backgroundColor: "transparent",
                 borderColor: totalInstances > 0 ? "green" : "",
               }}
               onClick={() => activateAppRegistration(registration)}
             >
               {registration.getTitle()}
+
+              {
+                // FIXME: (jh) This isn't valid HTML, as a button element
+                // shouldn't contain non-inline styling
+              }
               <div style={{ position: "absolute", bottom: 0, right: 0 }}>
                 {[...new Array(totalInstances)].map((nonUsed, idx) => {
                   consume(nonUsed);

@@ -175,28 +175,33 @@ const WindowView = ({
 
   return (
     // TODO: Wrap with ErrorBoundary and React.Suspense
-    <DynamicProfilingWrapper>
-      <StackingContext
-        onMount={_setElWindow}
-        {...rest}
-        style={{ ...outerBorderStyle, zIndex }}
-        className={classNames(
-          styles["window-outer-border"],
+    <StackingContext
+      onMount={_setElWindow}
+      {...rest}
+      style={{ ...outerBorderStyle, zIndex }}
+      className={classNames(
+        styles["window-outer-border"],
 
-          // Prevents "popping" of window before open animation ends
-          !isOpenAnimationEnded && styles["hidden"],
+        // Prevents "popping" of window before open animation ends
+        !isOpenAnimationEnded && styles["hidden"],
 
-          isActive && styles["active"],
-          isMaximized && styles["maximized"],
-          isMinimized && styles["minimized"],
-          (isUserDragging || isUserResizing) && styles["dragging"]
-        )}
-        // Enable hardware acceleration of window stacking context when user is
-        // dragging or resizing
-        isAccelerated={isUserDragging || isUserResizing}
-        // For debugging reference
-        data-reshell-window-title={windowController.getTitle()}
-      >
+        isActive && styles["active"],
+        isMaximized && styles["maximized"],
+        isMinimized && styles["minimized"],
+        (isUserDragging || isUserResizing) && styles["dragging"]
+      )}
+      // Enable hardware acceleration of window stacking context when user is
+      // dragging or resizing
+      isAccelerated={isUserDragging || isUserResizing}
+      // For debugging reference
+      data-reshell-window-title={windowController.getTitle()}
+    >
+      {
+        // IMPORTANT: The DynamicProfilingWrapper is contained within the
+        // stacking context due to an issue w/ the window losing its
+        // positioning state if profiling is enabled / disabled
+      }
+      <DynamicProfilingWrapper>
         <WindowView.Border
           isDisabled={isWindowBorderDisabled}
           onBorderDrag={handleBorderDrag}
@@ -228,8 +233,8 @@ const WindowView = ({
             </Layout>
           </Full>
         </WindowView.Border>
-      </StackingContext>
-    </DynamicProfilingWrapper>
+      </DynamicProfilingWrapper>
+    </StackingContext>
   );
 };
 

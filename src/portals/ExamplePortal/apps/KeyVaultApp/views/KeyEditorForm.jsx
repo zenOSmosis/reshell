@@ -69,7 +69,15 @@ export default function KeyEditorForm({
             </Padding>
 
             <div>
-              <input type="submit" value="Submit" disabled={!isValid} />
+              <input
+                type="submit"
+                value="Submit"
+                style={{
+                  // TODO: Use color variable for highlighted elements
+                  backgroundColor: "#347fe8",
+                }}
+                disabled={!isValid}
+              />
             </div>
           </>
         )}

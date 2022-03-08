@@ -28,7 +28,7 @@ export default function Details() {
   return (
     <Full style={{ overflowY: "auto" }}>
       <p>
-        ReShell is a browser-based layout framework and UI services engine
+        ReShell is a browser-based layout library and UI services engine
         composed of various{" "}
         <a
           href="https://github.com/zenosmosis"
@@ -40,8 +40,11 @@ export default function Details() {
         .
       </p>
       <p>
-        It is currently in an alpha phase, and other builds may have other
-        built-in applications.
+        It is currently in an alpha phase, and{" "}
+        <span style={{ fontWeight: "bold" }}>
+          other builds (i.e. "portals") may have other built-in applications
+        </span>
+        .
       </p>
       <p>
         Leveraged off of the core code for{" "}
@@ -58,28 +61,24 @@ export default function Details() {
       <p style={{ fontWeight: "bold" }}>Some included technologies:</p>
 
       <div style={{ textAlign: "center" }}>
-        <div
-          style={{ display: "inline-grid", gridTemplateColumns: "1fr 1fr 1fr" }}
-        >
-          {Object.entries(LINKS).map(([title, urlOrAction], idx) => {
-            return (
-              <Padding key={idx}>
-                {typeof urlOrAction === "string" ? (
-                  <ExternalLinkButton
-                    href={urlOrAction}
-                    style={LINK_BUTTON_STYLE}
-                  >
-                    {title}
-                  </ExternalLinkButton>
-                ) : (
-                  <button onClick={urlOrAction} style={LINK_BUTTON_STYLE}>
-                    {title}
-                  </button>
-                )}
-              </Padding>
-            );
-          })}
-        </div>
+        {Object.entries(LINKS).map(([title, urlOrAction], idx) => {
+          return (
+            <Padding key={idx} style={{ width: 200, display: "inline-block" }}>
+              {typeof urlOrAction === "string" ? (
+                <ExternalLinkButton
+                  href={urlOrAction}
+                  style={LINK_BUTTON_STYLE}
+                >
+                  {title}
+                </ExternalLinkButton>
+              ) : (
+                <button onClick={urlOrAction} style={LINK_BUTTON_STYLE}>
+                  {title}
+                </button>
+              )}
+            </Padding>
+          );
+        })}
       </div>
     </Full>
   );

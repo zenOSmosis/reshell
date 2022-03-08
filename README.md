@@ -1,17 +1,37 @@
-# ReShell Prototype ("ESUI")
+# ReShell - Web Desktop and UI Service Engine
 
-**Work in progress**
+**This is a work in progress.**
 
-PRIMARY GOAL: UI should never require a backend to be present; should be easily portable to be used for a variety of frontend-related needs, from small to large projects.
+ReShell is a web-based desktop & mobile user interface featuring individual "portals," or collections of apps, based on the [PhantomCore](https://github.com/zenOSmosis/phantom-core) library.
 
-SECONDARY GOAL: Try not to break CRA nor get too clever
+ReShell extends [Create React App](https://create-react-app.dev/) with a window management system, multiple portal handling, some core applications and utilities, and utilizes [Google's zx JavaScript Bash replacement utility](https://github.com/google/zx) to do some file system management.
 
-Other goals:  Expose all "magic" via documentation; Keep everything understandable; abstract away the hard parts but make it easy to know about the inner-workings of those parts (and why certain decisions were made)
+Currently, a demonstration portal is running on [ReShell.org](https://reshell.org/about-reshell), and a portal is being created for a future version of [Speaker.app](https://speaker.app) (more details for Speaker.app are in the DEV article "[A WebRTC server in your browser](https://dev.to/jzombie/a-webrtc-server-in-your-web-browser-for-group-communications-5c6l)").
 
-Misc: 
+# Notes for DEV Hackathon Competition
 
-* Something to the effect of "shared multi-tenant?"
-* Frontend for PhantomCore
+A [dedicated ReShell portal](https://reshell.org) has been created for the [DEV Microsoft Azure Trial Hackathon](https://dev.to/devteam/hack-the-microsoft-azure-trial-on-dev-2ne5), with speech recognition integration support which can supply a limited set of spoken phrase commmands to windows and the desktop environment (i.e. "switch to mobile [or desktop] paradigm").
+
+```bash
+$ npm start
+$ # Select option 2 "HackathonPortal"
+$ # Navigate to https://localhost:3000
+$ # Enjoy
+```
+
+Or, skip the setup and [experience the hosted version](https://reshell.org).
+
+# Project Goals
+
+- Stable and efficient on desktop and mobile
+- Base portal UI should never require a backend to be present (specific portals may require one as necessary); should be easily distributable across multiple channels for a variety of frontend-related needs, from small to large projects
+- Try not to break [Create React App](https://create-react-app.dev/) nor get too clever
+- React components which provide low DOM abstraction
+- Expose all "magic" via documentation; Keep everything understandable; abstract away the hard parts but make it easy to know about the inner-workings of those parts (and **_why certain decisions were made_**)
+
+# Additional Resources
+
+Additional open-source repositories for ReShell can be found on GitHub: https://github.com/zenosmosis
 
 # Getting Started with Create React App
 
@@ -22,6 +42,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 
 ### `npm start`
+
+**Note: [Notes for DEV Hackathon Competition](#notes-for-dev-hackathon-competition)** are found above.
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -46,7 +68,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Note: This is a one-way operation. Once you `eject`, you can’t go back!**
+
+**Note: This option has been disabled from the ReShell npm scripts due to a custom craco configuration. While the project could still be ejected, there is no support for ejected configurations.**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 

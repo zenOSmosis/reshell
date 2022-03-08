@@ -17,6 +17,7 @@ export default function CanvasMicAudioMeter({
 }) {
   const [elSVGRect, setElSVGRect] = useState(null);
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   const handleAudioLevelChange = useCallback(

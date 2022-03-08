@@ -31,9 +31,16 @@ export default class AppOrchestrationService extends UIServiceCore {
     this._DesktopService = this.useServiceClass(DesktopService);
   }
 
-  // TODO: Document
-  getActiveWindowController() {
-    return this._DesktopService.getActiveWindowController();
+  // TODO: Import WindowController type
+  /**
+   * Retrieves all of the window controllers for all of the running apps.
+   *
+   * @return {WindowController[]}
+   */
+  getWindowControllers() {
+    return this.getAppRuntimes()
+      .map(runtime => runtime.getWindowController())
+      .filter(windowController => windowController);
   }
 
   // TODO: Document
@@ -44,6 +51,31 @@ export default class AppOrchestrationService extends UIServiceCore {
   // TODO: Document
   getActiveAppRuntime() {
     return this.getActiveWindowController()?.getActiveAppRuntime();
+  }
+
+  // TODO: Document
+  getActiveWindowController() {
+    return this._DesktopService.getActiveWindowController();
+  }
+
+  // TODO: Import WindowController type
+  /**
+   * Retrieves the window controller with the given UUID.
+   *
+   * @param {uuid} string
+   * @return {WindowController | void}
+   */
+  getWindowControllerWithUUID(uuid) {
+    let matchedWindowController;
+
+    for (const windowController of this.getWindowControllers()) {
+      if (windowController.getUUID() === uuid) {
+        matchedWindowController = windowController;
+        break;
+      }
+    }
+
+    return matchedWindowController;
   }
 
   /**

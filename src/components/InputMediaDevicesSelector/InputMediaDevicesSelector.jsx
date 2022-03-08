@@ -73,9 +73,6 @@ export default function InputMediaDevicesSelector({
               </thead>
               <tbody>
                 {audioInputDevices.map((device, idx) => {
-                  // TODO: Remove
-                  // console.log({ device });
-
                   const isCapturing =
                     capturedAudioInputDevices.includes(device);
 
@@ -89,6 +86,7 @@ export default function InputMediaDevicesSelector({
                     deviceCaptureFactory?.getOutputMediaStream()?.getTracks();
 
                   // TODO: Remove
+                  /*
                   const audioTrackController =
                     isCapturing &&
                     deviceCaptureFactory?.getAudioTrackControllers()[0];
@@ -97,6 +95,7 @@ export default function InputMediaDevicesSelector({
                       settings: audioTrackController.getSettings(),
                     });
                   }
+                  */
 
                   return (
                     <AudioInputDeviceTableRow

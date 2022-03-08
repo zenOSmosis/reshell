@@ -6,7 +6,7 @@ import SecureLS from "secure-ls";
 export default class SecureLocalStorageEngine extends BaseStorageEngine {
   constructor(options) {
     const DEFAULT_OPTIONS = {
-      encryptionType: "aes",
+      encryptionType: "AES",
     };
 
     super(PhantomCore.mergeOptions(DEFAULT_OPTIONS, options));

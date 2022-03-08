@@ -4,12 +4,15 @@ import useAnimation from "@hooks/useAnimation";
 import classNames from "classnames";
 import styles from "./Animation.module.css";
 
+// TODO: Document
+// TODO: Add prop-types
 export default function Animation({
   className,
   children,
 
   // TODO: Rename to effect name
   animationName,
+  // i.e. "1s"
   animationDuration,
   animationDelay,
 

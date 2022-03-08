@@ -7,14 +7,23 @@ import SystemModal from "../SystemModal";
 export default function InputDeviceSelectorModal({
   onDeviceCapture,
   onDeviceUncapture,
-  // onCancel,
+  onCancel,
   onClose,
 }) {
-  const handleDeviceCapture = useCallback(() => {
-    onDeviceCapture();
+  /**
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/InputDeviceInfo}
+   *
+   * @param {InputDeviceInfo}
+   * @return {void}
+   */
+  const handleDeviceCapture = useCallback(
+    device => {
+      onDeviceCapture(device);
 
-    onClose();
-  }, [onDeviceCapture, onClose]);
+      onClose();
+    },
+    [onDeviceCapture, onClose]
+  );
 
   /*
   const handleCancel = useCallback(() => {
@@ -25,7 +34,7 @@ export default function InputDeviceSelectorModal({
   */
 
   return (
-    <SystemModal onClose={onClose}>
+    <SystemModal onClose={onClose} onCancel={onCancel}>
       <Padding>
         <InputMediaDevicesSelector
           onDeviceCapture={handleDeviceCapture}

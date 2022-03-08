@@ -48,6 +48,10 @@ function PortalWrapperTransitionView({
   return (
     <>
       <PortalView />
+
+      {
+        // Fade-out overlay view for fade-in effect
+      }
       <Cover
         style={{
           // Enable UI to be usable below cover

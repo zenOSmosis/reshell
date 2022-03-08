@@ -1,11 +1,10 @@
 import { EVT_DESTROYED } from "phantom-core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
 import Cover from "@components/Cover";
 import Center from "@components/Center";
 import { Video } from "@components/audioVideoRenderers";
-import LED from "@components/LED";
 import Padding from "@components/Padding";
 import AppLinkButton from "@components/AppLinkButton";
 import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
@@ -20,6 +19,10 @@ export const REGISTRATION_ID = "screen-capture-window";
 
 // TODO: Include ability to screen record and take arbitrary snapshot from video feed (separate from ScreenShot app which is a one-time deal)
 
+// TODO: Include ability to NOT show local screen capture monitor feedback
+
+// TODO: Include ability to open multiple windows with a unique capture per window
+
 const ScreenCaptureApp = {
   id: REGISTRATION_ID,
   title: "Screen Capture",
@@ -28,8 +31,34 @@ const ScreenCaptureApp = {
     height: 480 * 0.8,
   },
   serviceClasses: [ScreenCapturerService],
-  view: function View({ appServices }) {
+  view: function View({ appServices, windowController }) {
     const scs = appServices[ScreenCapturerService];
+
+    /**
+     * NOTE: This value is memoized because it shouldn't change during this
+     * browsing session.
+     *
+     * @type {boolean}
+     */
+    const isScreenCaptureSupported = useMemo(
+      () => scs.getIsScreenCaptureSupported(),
+      [scs]
+    );
+
+    // Automatically close the window after a short duration if screen sharing
+    // is not supported
+    useEffect(() => {
+      if (!isScreenCaptureSupported) {
+        const autoCloseTimeout = window.setTimeout(
+          windowController.destroy,
+          3000
+        );
+
+        windowController.once(EVT_DESTROYED, () =>
+          window.clearTimeout(autoCloseTimeout)
+        );
+      }
+    }, [isScreenCaptureSupported, windowController]);
 
     const [screenCaptureFactory, setScreenCaptureFactory] = useState(null);
 
@@ -76,6 +105,16 @@ const ScreenCaptureApp = {
     const audioTrack = screenCaptureFactory
       ?.getAudioTrackControllers()[0]
       ?.getOutputTrack();
+
+    if (!isScreenCaptureSupported) {
+      return (
+        <Center>
+          <div style={{ fontWeight: "bold" }}>
+            Screen capture is not supported in this browser.
+          </div>
+        </Center>
+      );
+    }
 
     return (
       <Layout style={{ backgroundColor: "#424242", color: "#999" }}>
@@ -160,25 +199,6 @@ const ScreenCaptureApp = {
                     {!screenCaptureFactory ? "Capture" : "Stop"}
                   </button>
                 </Center>
-              </Column>
-              <Column>
-                <Row>
-                  <Column>
-                    <Center>
-                      <LED
-                        color={screenCaptureFactory ? "green" : "gray"}
-                        style={{ float: "left", marginLeft: 8 }}
-                      />
-                    </Center>
-                  </Column>
-                  <Column>
-                    <Center>
-                      <button disabled style={{ whiteSpace: "nowrap" }}>
-                        Video Stats
-                      </button>
-                    </Center>
-                  </Column>
-                </Row>
               </Column>
             </Row>
           </Padding>

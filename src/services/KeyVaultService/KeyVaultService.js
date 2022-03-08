@@ -1,4 +1,4 @@
-import { PhantomCollection } from "phantom-core";
+import { PhantomCollection, EVT_UPDATED } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 
 import BaseStorageEngine from "./engines/_BaseStorageEngine";
@@ -19,17 +19,43 @@ export default class KeyVaultService extends UIServiceCore {
 
     this.setTitle("Key Vault Service");
 
+    this.setState({
+      /** @type {Array<key: string, storageEngine: BaseStorageEngine>[]} */
+      keyStorageEngineMaps: [],
+    });
+
     this._storageEngineCollection = this.bindCollectionClass(
       StorageEngineCollection
     );
+
+    // Cache the collection key / storage engine maps to the instance state so
+    // that any attached UIs will know to update
+    this._storageEngineCollection.on(EVT_UPDATED, async () => {
+      const keyStorageEngineMaps = await this._fetchKeyStorageEngineMaps();
+
+      // Cache the key / storage engine maps
+      this.setState({ keyStorageEngineMaps });
+    });
 
     this.addStorageEngineClass(SessionStorageEngine);
     this.addStorageEngineClass(SecureLocalStorageEngine);
   }
 
-  // TODO: Document
-  // TODO: TODO: Implement optional filtering
-  async fetchKeyStorageEngineMaps() {
+  /**
+   * Retrieves the cached key / storage engine maps from the service state.
+   *
+   * @return {Array<key: string, storageEngine: BaseStorageEngine>[]}
+   */
+  getKeyStorageEngineMaps() {
+    return this.getState().keyStorageEngineMaps;
+  }
+
+  /**
+   * Retrieves key / storage engine maps via a new calculation.
+   *
+   * @return {Array<key: string, storageEngine: BaseStorageEngine>[]}
+   */
+  async _fetchKeyStorageEngineMaps() {
     const storageEngines = this._storageEngineCollection.getStorageEngines();
 
     const keyStorageEngineMaps = [];
@@ -54,8 +80,8 @@ export default class KeyVaultService extends UIServiceCore {
    *
    * @return {any[]}
    */
-  async fetchKeys() {
-    return (await this.fetchKeyStorageEngineMaps()).map(
+  async _fetchKeys() {
+    return (await this._fetchKeyStorageEngineMaps()).map(
       keyStorageEngineMaps => keyStorageEngineMaps[0]
     );
   }

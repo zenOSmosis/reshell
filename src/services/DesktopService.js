@@ -128,7 +128,7 @@ export default class DesktopService extends UIServiceCore {
    * @typedef {import('./UIParadigmService').DESKTOP_PARADIGM} DESKTOP_PARADIGM
    * @typedef {import('./UIParadigmService').MOBILE_PARADIGM} MOBILE_PARADIGM
    *
-   * @param {DESKTOP_PARADIGM | MOBILE_PARADIGM | null} staticUIParadigm If set
+   * @param {DESKTOP_PARADIGM | MOBILE_PARADIGM | AUTO_DETECT_PARADIGM} staticUIParadigm If set
    * to null, auto-set will be re-enabled.
    */
   setStaticUIParadigm(staticUIParadigm) {

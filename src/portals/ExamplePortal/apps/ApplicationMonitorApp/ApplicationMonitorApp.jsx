@@ -5,15 +5,21 @@ import { useEffect } from "react";
 import AppRuntimeTable from "./AppRuntime.Table";
 
 import Center from "@components/Center";
+import Full from "@components/Full";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
+import AppLinkButton from "@components/AppLinkButton";
+
+import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "../ServiceMonitorApp";
 
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 
+export const REGISTRATION_ID = "application-monitor";
+
 const ApplicationMonitorApp = {
-  id: "application-monitor",
+  id: REGISTRATION_ID,
   title: "Application Monitor",
   style: {
     width: 640,
@@ -43,9 +49,27 @@ const ApplicationMonitorApp = {
       return (
         <Center>
           <div>
-            IMPORTANT: Each window may lose its current state once profiling is
-            enabled. Also, once enabled and closing this application, the state
-            may be lost again!
+            <p style={{ fontWeight: "bold" }}>
+              Application Profiling is experimental!
+            </p>
+
+            <ol
+              style={{
+                maxWidth: 500,
+                textAlign: "left",
+                display: "inline-block",
+              }}
+            >
+              <li>
+                Each window may lose its current state once profiling is
+                enabled.
+              </li>
+              <li>
+                Also, once enabled and closing this application, the state may
+                be lost again!
+              </li>
+            </ol>
+
             <Padding>
               <button
                 onClick={() => setIsProfiling(true)}
@@ -53,6 +77,9 @@ const ApplicationMonitorApp = {
               >
                 Enable Profiling
               </button>
+              <p className="note">
+                Profiling will be disabled once closing this window
+              </p>
             </Padding>
           </div>
         </Center>
@@ -67,8 +94,18 @@ const ApplicationMonitorApp = {
           </Padding>
         </Content>
         <Footer style={{ fontSize: ".8rem" }}>
+          <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
-            PhantomCore uptime: <Timer onTick={() => PhantomCore.getUptime()} />
+            <Full>
+              <div style={{ position: "absolute", bottom: 0, left: 0 }}>
+                PhantomCore uptime:{" "}
+                <Timer onTick={() => PhantomCore.getUptime()} />
+              </div>
+              <AppLinkButton
+                id={SERVICE_MONITOR_REGISTRATION_ID}
+                style={{ float: "right", verticalAlign: "bottom" }}
+              />
+            </Full>
           </Padding>
         </Footer>
       </Layout>

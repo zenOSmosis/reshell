@@ -187,6 +187,15 @@ input[type="submit"] {
   cursor: pointer;
 
   border-radius: 8px;
+
+  /**
+   * IMPORTANT: It should be noted that applying overflow hidden to buttons
+   * here has an adverse affect in Chrome where if a button is within an
+   * scrolling container in a flexbox [may or may not affect non-flexbox
+   * containers], and the button is scrolled outside of its displayable region,
+   * it may still be clickable.
+   * Relevant issue: https://github.com/jzombie/pre-re-shell/issues/169
+   */
 }
 
 .button-group button {

@@ -13,6 +13,12 @@ import ScreenCaptureApp from "../ExamplePortal/apps/ScreenCaptureApp";
 import VUMeterApp from "../ExamplePortal/apps/VUMeterApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
+import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
+
+// Mesa Hackathon apps
+import MesaSpeechRecognitionDebuggerApp from "../HackathonPortal/apps/MesaSpeechRecognitionDebuggerApp";
+import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
+import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
 export default function ReShellOrgPortal() {
   return (
@@ -31,6 +37,11 @@ export default function ReShellOrgPortal() {
         SoftwareInfoApp,
         VUMeterApp,
         KeyVaultApp,
+        AppRegistrationViewerApp,
+        //
+        MesaSpeechRecognitionDebuggerApp,
+        SpeechCommanderApp,
+        DesktopCommanderDebuggerApp,
       ]}
     />
   );

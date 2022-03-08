@@ -38,7 +38,9 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   && chown -R node /app/frontend.web/node_modules/.cache \
   ; fi
 
-# Create dynamic __registerPortals__.js file and make it writable by the "node" user
+# Create dynamic __registerPortals__.js file and make it writable by the "node"
+# user. This fixes an issue where the dynamically written file was not writable
+# by reshell-scripts.
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   touch src/__registerPortals__.js && chown node src/__registerPortals__.js \
   ; fi

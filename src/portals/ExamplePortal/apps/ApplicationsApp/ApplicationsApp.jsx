@@ -14,12 +14,14 @@ const LEN_PORTALS = Object.keys(ReShellCore.getPortals()).length;
 
 const DEFAULT_SEARCH_QUERY = "";
 
+export const REGISTRATION_ID = "applications";
+
 const ApplicationsApp = {
-  id: "applications",
+  id: REGISTRATION_ID,
   title: "Applications",
   style: {
-    width: 640,
-    height: 400,
+    width: 640 * 1.2,
+    height: 400 * 1.2,
   },
   isAutoStart: true,
   isPinnedToDock: true,
@@ -68,9 +70,7 @@ const ApplicationsApp = {
 
     const handleDoubleClick = useCallback(
       evt => {
-        // Prevent double-clicks from resizing the window if there is text in
-        // the search bar (i.e. so that all text can be selected w/ the
-        // gesture)
+        // Prevent double-clicks from propagating if there is text
         if (Boolean(sharedState.searchQuery)) {
           evt.stopPropagation();
         }
@@ -82,11 +82,18 @@ const ApplicationsApp = {
       <Padding>
         {
           // TODO: Automatically focus when window is activated (unless on mobile)
+          //
           // TODO: Switch to Applications view on change
+          //
           // FIXME: (jh) I tried to use type="search", which gives you an X in
           // the input field, however I wasn't able to make it clear itself. If
           // this were an uncontrolled component, it might work. Needs some
           // refactoring.
+          //
+          // FIXME: Create common TextInput component which has double-click
+          // functionality baked in; use in TextInputModal as well, etc. It
+          // shouldn't get fancy and it should be compatible with regular DOM-
+          // based text input props
         }
         <input
           ref={setElSearch}

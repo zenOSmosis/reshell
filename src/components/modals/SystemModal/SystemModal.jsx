@@ -25,11 +25,12 @@ export default function SystemModal({
   children,
   className,
   onClose,
+  onCancel,
   headerView = null,
-  footerView = ({ onClose }) => (
+  footerView = ({ onCancel }) => (
     <div style={{ textAlign: "center" }}>
       <Padding>
-        <button onClick={onClose} style={{ backgroundColor: "red" }}>
+        <button onClick={onCancel} style={{ backgroundColor: "red" }}>
           <CloseIcon /> Cancel
         </button>
       </Padding>
@@ -57,7 +58,7 @@ export default function SystemModal({
 
   // Close modal when escape button is pressed
   useKeyboardEvents(window, {
-    onEscape: onClose,
+    onEscape: onCancel,
   });
 
   return (
@@ -74,7 +75,7 @@ export default function SystemModal({
             {headerView && (
               <Header className={styles["header"]}>
                 {typeof headerView === "function"
-                  ? headerView({ onClose })
+                  ? headerView({ onCancel, onClose })
                   : headerView}
               </Header>
             )}
@@ -84,7 +85,7 @@ export default function SystemModal({
             {footerView && (
               <Footer className={styles["footer"]}>
                 {typeof footerView === "function"
-                  ? footerView({ onClose })
+                  ? footerView({ onCancel, onClose })
                   : footerView}
               </Footer>
             )}

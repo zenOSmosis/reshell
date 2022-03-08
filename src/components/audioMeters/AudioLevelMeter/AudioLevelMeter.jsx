@@ -34,6 +34,7 @@ export default function AudioLevelMeter({
 }) {
   const [elAudioLevel, setElAudioLevel] = useState(null);
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   /**

@@ -2,8 +2,10 @@
   position: absolute;
   text-align: center;
   isolation: isolate;
-  /* FIXME: (jh Don't use z-index for this, if possible */
+
+  /* FIXME: (jh) Don't use z-index for this, if possible */
   z-index: 99999999;
+
   overflow-x: auto;
   /** 
    * This is tricky; if set to none, the Dock cannot be scrolled, however,

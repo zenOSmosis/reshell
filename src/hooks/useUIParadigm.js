@@ -1,8 +1,12 @@
 import useDesktopContext from "./useDesktopContext";
 
-import { DESKTOP_PARADIGM, MOBILE_PARADIGM } from "@services/UIParadigmService";
+import {
+  DESKTOP_PARADIGM,
+  MOBILE_PARADIGM,
+  AUTO_DETECT_PARADIGM,
+} from "@services/UIParadigmService";
 
-export { DESKTOP_PARADIGM, MOBILE_PARADIGM };
+export { DESKTOP_PARADIGM, MOBILE_PARADIGM, AUTO_DETECT_PARADIGM };
 
 /**
  * Retrieves the currently detected paradigm.

@@ -17,6 +17,15 @@ export default class ScreenCapturerService extends UIServiceCore {
     this.bindCollectionClass(ScreenCaptureFactoryCollection);
   }
 
+  /**
+   * Determines if screen capture is supported in the browser.
+   *
+   * @return {boolean}
+   */
+  getIsScreenCaptureSupported() {
+    return utils.screen.getIsScreenCaptureSupported();
+  }
+
   // TODO: Document
   async startScreenCapture(constraints = {}, factoryOptions = {}) {
     const factory = await utils.screen.captureScreen(

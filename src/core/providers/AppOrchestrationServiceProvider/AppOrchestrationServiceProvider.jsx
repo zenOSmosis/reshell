@@ -19,6 +19,26 @@ export default function AppOrchestrationServiceProvider({ children }) {
   const runningAppRegistrations =
     appOrchestrationService.getRunningAppRegistrations();
   const appRegistrations = appOrchestrationService.getAppRegistrations();
+
+  // Sort app registrations in place
+  //
+  // FIXME: (jh) It would be better to move this functionality into the
+  // collection itself; this also might not handle situations where updating
+  // a registration title during runtime will automatically re-apply the sort.
+  // Relevant issue: https://github.com/jzombie/pre-re-shell/issues/172
+  useEffect(() => {
+    appRegistrations
+      // Locale compare sort fix borrowed from: https://dev.to/charlesmwray/comment/l899
+      .sort((a, b) => {
+        return a.getTitle().localeCompare(
+          b.getTitle(),
+          // TODO: Replace hardcoding with dynamic variable
+          "en",
+          { sensitivity: "base" }
+        );
+      });
+  }, [appRegistrations]);
+
   const appRuntimes = appOrchestrationService.getAppRuntimes();
 
   // TODO: If enabling, this needs to be memoized (or contained within a
@@ -40,16 +60,6 @@ export default function AppOrchestrationServiceProvider({ children }) {
     appOrchestrationService.getAppRegistrationTitleWithID;
   const getAppRuntimesWithRegistrationID =
     appOrchestrationService.getAppRuntimesWithRegistrationID;
-
-  // TODO: Remove
-  useEffect(() => {
-    console.log({ appRegistrations });
-  }, [appRegistrations]);
-
-  // TODO: Remove
-  useEffect(() => {
-    console.log({ appRuntimes });
-  }, [appRuntimes]);
 
   // Handles auto-start of apps which are set to automatically launch
   //

@@ -5,9 +5,12 @@ import AutoScaler from "@components/AutoScaler";
 import ButtonPanel from "@components/ButtonPanel";
 import VirtualLink from "@components/VirtualLink";
 import NoWrap from "@components/NoWrap";
+import LabeledToggle from "@components/labeled/LabeledToggle";
 
 import Details from "./views/Details";
 import Resources from "./views/Resources";
+
+import useUUID from "@hooks/useUUID";
 
 import getCopyright from "@utils/getCopyright";
 
@@ -20,6 +23,12 @@ import getCopyright from "@utils/getCopyright";
 // TODO: Include "declarative API" (it is React, but the components themselves
 // do their base to abstract away logic w/ their opinionated internal handling,
 // while trying to stay very performant themselves)
+
+import useUIParadigm, {
+  DESKTOP_PARADIGM,
+  MOBILE_PARADIGM,
+  AUTO_DETECT_PARADIGM,
+} from "@hooks/useUIParadigm";
 
 export const REGISTRATION_ID = "about-reshell";
 
@@ -79,6 +88,11 @@ const AboutReShellApp = {
     );
   },
   view: function View({ sharedState, setSharedState }) {
+    const { uiParadigm, isUIParadigmAutoSet, setStaticUIParadigm } =
+      useUIParadigm();
+
+    const uuidAutoDetectCheckbox = useUUID();
+
     return (
       <Padding>
         <Layout>
@@ -86,11 +100,11 @@ const AboutReShellApp = {
             {sharedState.screen === "overview" && (
               <AutoScaler>
                 <Center>
-                  <div style={{ fontSize: "8rem", fontStyle: "italic" }}>
+                  <div style={{ fontSize: "5rem", fontStyle: "italic" }}>
                     ReShell
                   </div>
                   <NoWrap style={{ fontSize: "1.5rem" }}>
-                    App layout framework and UI services engine
+                    Web Desktop and UI Service Engine
                   </NoWrap>
                 </Center>
               </AutoScaler>
@@ -102,19 +116,56 @@ const AboutReShellApp = {
           </Content>
           <Footer style={{ textAlign: "center" }}>
             {sharedState.screen === "overview" && (
-              <p>
-                <VirtualLink
-                  onClick={() => setSharedState({ screen: "details" })}
-                >
-                  Details
-                </VirtualLink>{" "}
-                |{" "}
-                <VirtualLink
-                  onClick={() => setSharedState({ screen: "resources" })}
-                >
-                  Resources
-                </VirtualLink>
-              </p>
+              <div>
+                <div style={{ marginBottom: 4 }}>
+                  <NoWrap>
+                    <LabeledToggle
+                      labelOff="Mobile"
+                      labelOn="Desktop"
+                      isOn={uiParadigm === DESKTOP_PARADIGM}
+                      onChange={isDesktop =>
+                        setStaticUIParadigm(
+                          isDesktop ? DESKTOP_PARADIGM : MOBILE_PARADIGM
+                        )
+                      }
+                    />
+                    <NoWrap>
+                      <input
+                        id={uuidAutoDetectCheckbox}
+                        type="checkbox"
+                        checked={isUIParadigmAutoSet}
+                        onChange={evt =>
+                          setStaticUIParadigm(
+                            evt.target.checked
+                              ? AUTO_DETECT_PARADIGM
+                              : uiParadigm
+                          )
+                        }
+                      />{" "}
+                      <label
+                        htmlFor={uuidAutoDetectCheckbox}
+                        style={{ display: "inline-block" }}
+                      >
+                        Auto-Detect
+                      </label>
+                    </NoWrap>
+                  </NoWrap>
+                </div>
+
+                <div>
+                  <VirtualLink
+                    onClick={() => setSharedState({ screen: "details" })}
+                  >
+                    Details
+                  </VirtualLink>{" "}
+                  |{" "}
+                  <VirtualLink
+                    onClick={() => setSharedState({ screen: "resources" })}
+                  >
+                    Resources
+                  </VirtualLink>
+                </div>
+              </div>
             )}
 
             <div style={{ opacity: 0.5 }}>{getCopyright()}</div>

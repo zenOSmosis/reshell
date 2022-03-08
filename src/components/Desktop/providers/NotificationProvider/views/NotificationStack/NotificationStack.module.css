@@ -6,6 +6,7 @@
   /*
   * TODO: Ensure that modals can be on top of this stack
   */
+  /* FIXME: (jh) Don't use z-index for this, if possible */
   z-index: 99999;
 
   height: 100%;

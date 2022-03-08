@@ -1,5 +1,7 @@
 .notification {
+  /* FIXME: (jh) Don't use z-index for this, if possible */
   z-index: 99999;
+
   width: 310px;
   max-height: 400px;
   display: inline-block;

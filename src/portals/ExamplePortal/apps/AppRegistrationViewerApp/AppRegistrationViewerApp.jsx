@@ -5,11 +5,11 @@ import ReactJson from "react-json-view";
 
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 
-// TODO: Finish building out
+export const REGISTRATION_ID = "app-registration-viewer";
 
-const AppRegistrationMonitorApp = {
-  id: "app-registration-monitor",
-  title: "App Registration Monitor",
+const AppRegistrationViewerApp = {
+  id: REGISTRATION_ID,
+  title: "App Registration Viewer",
   style: {
     width: 640,
     height: 480,
@@ -89,4 +89,4 @@ function AppRegistrationSelector({ onRegistrationChange }) {
   );
 }
 
-export default AppRegistrationMonitorApp;
+export default AppRegistrationViewerApp;

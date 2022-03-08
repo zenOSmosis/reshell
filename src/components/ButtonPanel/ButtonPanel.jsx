@@ -27,6 +27,10 @@ ButtonPanel.propTypes = {
   ),
 };
 
+/**
+ * ButtonPanel is utilized for a set of buttons which need to maintain state
+ * relative to one another, operating much like radio controls.
+ */
 export default function ButtonPanel({ buttons, className, ...rest }) {
   const [selectedIdx, setSelectedIdx] = useState(() => {
     let selectedIdx = 0;

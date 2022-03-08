@@ -2,12 +2,16 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import Padding from "@components/Padding";
 
+import useForceUpdate from "@hooks/useForceUpdate";
+
 export default function LocalStorageItems({
   keyStorageEngineMaps = [],
   onGetValue,
   onEmpty,
   onNewItem,
 }) {
+  const forceUpdate = useForceUpdate();
+
   if (!keyStorageEngineMaps.length) {
     return (
       <Center>
@@ -38,7 +42,7 @@ export default function LocalStorageItems({
               <tr>
                 <td></td>
                 <td>Key</td>
-                <td>Value</td>
+                <td style={{ color: "gray" }}>Value</td>
                 {/*
                     <td>Kind</td>
                     */}
@@ -53,11 +57,19 @@ export default function LocalStorageItems({
                 return (
                   <tr key={idx}>
                     <td className="center">
-                      <input type="checkbox"></input>
+                      <input
+                        type="checkbox"
+                        // TODO: Remove hard-coding
+                        disabled
+                      ></input>
                     </td>
                     <td>{key}</td>
                     <td className="center">
-                      <button onClick={() => onGetValue(key, storageEngine)}>
+                      <button
+                        onClick={() => onGetValue(key, storageEngine)}
+                        // TODO: Remove hard-coding
+                        disabled
+                      >
                         Get
                       </button>
                     </td>
@@ -66,7 +78,7 @@ export default function LocalStorageItems({
                         */}
 
                     <td className="center">
-                      {storageEngine.getEncryptionType() || "Not Encrypted"}
+                      {storageEngine.getEncryptionType() || "None"}
                     </td>
                     <td className="center">{storageEngine.getTitle()}</td>
                   </tr>
@@ -77,8 +89,12 @@ export default function LocalStorageItems({
         </Padding>
       </Content>
       <Footer>
-        <Padding>
+        <Padding style={{ overflow: "auto" }}>
           <button onClick={onEmpty}>Empty</button>
+
+          <button style={{ float: "right" }} onClick={forceUpdate}>
+            Reload
+          </button>
         </Padding>
       </Footer>
     </Layout>

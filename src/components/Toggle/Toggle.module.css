@@ -37,7 +37,8 @@
   left: 20px;
 }
 .toggle-wrapper:not(.disabled) .checkbox:checked + .toggle {
-  background-color: #7983ff;
+  /** TODO: Use color variable for highlighted elements */
+  background-color: #347fe8;
 }
 .toggle-wrapper .checkbox {
   display: none;

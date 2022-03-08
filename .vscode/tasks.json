@@ -24,19 +24,8 @@
       "group": "build"
     },
     {
-      "label": "Start ExamplePortal",
-      "command": "npm start ExamplePortal",
-      "type": "shell",
-      "args": [],
-      "problemMatcher": ["$tsc"],
-      "presentation": {
-        "reveal": "always"
-      },
-      "group": "build"
-    },
-    {
-      "label": "Start TestPortal",
-      "command": "npm start TestPortal",
+      "label": "Start a portal",
+      "command": "npm start",
       "type": "shell",
       "args": [],
       "problemMatcher": ["$tsc"],

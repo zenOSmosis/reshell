@@ -142,7 +142,7 @@ function createTestMenuStructures(appRuntime, isMac = false) {
 
           // TODO: Allow onClick alias as well in our runtime version?
           click: async () => {
-            alert("click");
+            console.debug("click");
 
             // TODO: Hmm... electron exposes a shell object, look into other API similarities
             // const { shell } = require("electron");

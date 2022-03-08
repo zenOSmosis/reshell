@@ -20,11 +20,12 @@ import MemoryInfoApp from "./apps/MemoryInfoApp";
 import HostBridgeApp from "./apps/HostBridgeApp";
 import FilesApp from "./apps/FilesApp";
 import TerminalApp from "./apps/TerminalApp";
-import AppRegistrationMonitorApp from "./apps/AppRegistrationMonitorApp";
+import AppRegistrationViewerApp from "./apps/AppRegistrationViewerApp";
 import EnvironmentApp from "./apps/EnvironmentApp";
 import NotificationsPrototypeApp from "./apps/NotificationsPrototypeApp";
 import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
+import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 
 export default function ExamplePortal() {
   return (
@@ -50,11 +51,12 @@ export default function ExamplePortal() {
         HostBridgeApp,
         FilesApp,
         TerminalApp,
-        AppRegistrationMonitorApp,
+        AppRegistrationViewerApp,
         EnvironmentApp,
         NotificationsPrototypeApp,
         ModalsPrototypeApp,
         SystemInformationApp,
+        DesktopCommanderDebuggerApp,
       ]}
     />
   );

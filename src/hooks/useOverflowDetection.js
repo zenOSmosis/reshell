@@ -40,6 +40,7 @@ export default function useOverflowDetection(element, isDetecting = true) {
 
   refPrevIsOverflown.current = isOverflown;
 
+  // TODO: Replace w/ useUUID
   const uuid = useMemo(uuidv4, []);
 
   useEffect(() => {

@@ -15,55 +15,59 @@ import KeyEditorForm from "./views/KeyEditorForm";
 import BackArrowIcon from "@icons/BackArrowIcon";
 
 import KeyVaultService from "@services/KeyVaultService";
+import UIModalWidgetService from "@services/UIModalWidgetService";
+
+import useKeyboardEvents from "@hooks/useKeyboardEvents";
+
+export const REGISTRATION_ID = "key-vault";
 
 const KeyVaultApp = {
-  id: "key-vault",
+  id: REGISTRATION_ID,
   title: "Key Vault",
   style: {
     width: 640,
     height: 480,
   },
-  serviceClasses: [KeyVaultService],
+  serviceClasses: [KeyVaultService, UIModalWidgetService],
   view: function View({ appServices }) {
     const localDataPersistenceService = appServices[KeyVaultService];
+    const rawKeyStorageEngineMaps =
+      localDataPersistenceService.getKeyStorageEngineMaps();
+
+    const uiModalWidgetService = appServices[UIModalWidgetService];
 
     const [keyStorageEngineMaps, setKeyStorageEngineMaps] = useState([]);
-
-    // TODO: Refactor so this automatically updates if other applications set state
-    const handleFetchKeyStorageEngineMaps = useCallback(async () => {
-      const keyMaps =
-        await localDataPersistenceService.fetchKeyStorageEngineMaps();
-
-      const keyStorageEngineMaps = [];
-
-      for (const keyMap of keyMaps) {
-        const key = keyMap[0];
-        const storageEngine = keyMap[1];
-        const value = await storageEngine.fetchItem(key);
-
-        // TODO: Move this detection into the service (consider automatically
-        // coercing primitive types:
-        // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
-        // const kind = typeof value;
-
-        keyStorageEngineMaps.push({
-          key,
-          storageEngine,
-          value,
-          // kind,
-        });
-      }
-
-      setKeyStorageEngineMaps(keyStorageEngineMaps);
-    }, [localDataPersistenceService]);
 
     const [isCreatingNewKey, setIsCreatingNewKey] = useState(false);
 
     // Auto-fetch
     useEffect(() => {
-      handleFetchKeyStorageEngineMaps();
-    }, [handleFetchKeyStorageEngineMaps]);
+      (async () => {
+        const keyStorageEngineMaps = [];
 
+        for (const keyMap of rawKeyStorageEngineMaps) {
+          const key = keyMap[0];
+          const storageEngine = keyMap[1];
+          const value = await storageEngine.fetchItem(key);
+
+          // TODO: Move this detection into the service (consider automatically
+          // coercing primitive types:
+          // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+          // const kind = typeof value;
+
+          keyStorageEngineMaps.push({
+            key,
+            storageEngine,
+            value,
+            // kind,
+          });
+        }
+
+        setKeyStorageEngineMaps(keyStorageEngineMaps);
+      })();
+    }, [rawKeyStorageEngineMaps]);
+
+    /*
     const handleGetValue = useCallback(async (key, storageEngine) => {
       const value = await storageEngine.fetchItem(key);
 
@@ -75,6 +79,7 @@ const KeyVaultApp = {
       // TODO: Remove
       alert("TODO: Implement get value");
     }, []);
+    */
 
     // TODO: Document
     const handleKeyValueSubmit = useCallback(
@@ -87,23 +92,27 @@ const KeyVaultApp = {
         storageEngine
           .setItem(formValues["key"], formValues["value"])
           .then(() => {
-            handleFetchKeyStorageEngineMaps();
-
             setIsCreatingNewKey(false);
           });
       },
-      [localDataPersistenceService, handleFetchKeyStorageEngineMaps]
+      [localDataPersistenceService]
     );
 
     // TODO: Document
-    const handleEmpty = useCallback(() => {
-      // TODO: Replace window.confirm w/ an async prompt
-      if (window.confirm("Are you sure you wish to empty the Key Vault?")) {
-        localDataPersistenceService
-          .clearAllStorageEngines()
-          .then(handleFetchKeyStorageEngineMaps);
+    const handleEmpty = useCallback(async () => {
+      // TODO: Replace w/ UIModal
+      if (
+        await uiModalWidgetService.confirm(
+          "Are you sure you wish to empty the Key Vault?"
+        )
+      ) {
+        localDataPersistenceService.clearAllStorageEngines();
       }
-    }, [localDataPersistenceService, handleFetchKeyStorageEngineMaps]);
+    }, [uiModalWidgetService, localDataPersistenceService]);
+
+    useKeyboardEvents(window, {
+      onEscape: () => setIsCreatingNewKey(false),
+    });
 
     return (
       <Layout>
@@ -130,7 +139,7 @@ const KeyVaultApp = {
           {!isCreatingNewKey ? (
             <LocalStorageItems
               keyStorageEngineMaps={keyStorageEngineMaps}
-              onGetValue={handleGetValue}
+              // onGetValue={() => null}
               onEmpty={handleEmpty}
               // TODO: Move to callback
               onNewItem={() => setIsCreatingNewKey(true)}
