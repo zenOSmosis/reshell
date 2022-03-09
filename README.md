@@ -21,6 +21,13 @@ $ # Enjoy
 
 Or, skip the setup and [experience the hosted version](https://reshell.org).
 
+
+Here's a video demonstrating speech control.
+
+https://user-images.githubusercontent.com/1139657/157443171-d35decb7-5fd2-460d-b95e-cae7d7b28a80.mov
+
+
+
 ![ReShell Input Media Devices](https://user-images.githubusercontent.com/1139657/157346532-a62db462-292c-4d5d-91d0-17904646d58a.jpeg)
 
 ## Some useful links
