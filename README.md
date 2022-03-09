@@ -21,7 +21,7 @@ $ # Enjoy
 
 Or, skip the setup and [experience the hosted version](https://reshell.org).
 
-![ReShell Web Desktop](https://user-images.githubusercontent.com/1139657/157343908-313135c7-4b52-48e1-a2a8-2fdfb8571df5.jpeg)
+![ReShell Input Media Devices](https://user-images.githubusercontent.com/1139657/157346532-a62db462-292c-4d5d-91d0-17904646d58a.jpeg)
 
 ## Some useful links
 
