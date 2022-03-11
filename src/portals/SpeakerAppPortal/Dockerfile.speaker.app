@@ -20,6 +20,7 @@ WORKDIR /app/frontend.web
 # IMPORTANT: Development modules have to be installed here or the FE can't
 # build
 COPY package.json ./
+COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   chown -R node /app \
   && npm install --loglevel verbose \
