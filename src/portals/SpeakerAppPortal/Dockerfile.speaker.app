@@ -40,7 +40,8 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   rm src/portals/SpeakerAppPortal/shared \
   && mv src/portals/SpeakerAppPortal/tmp.shared src/portals/SpeakerAppPortal/shared \
   && chown -R node:node src/portals/SpeakerAppPortal/shared \
-  && touch src/__registerPortals__.js && chown node:node src/__registerPortals__.js \
+  && touch src/__registerPortals__.js \
+  && chown node:node src/__registerPortals__.js \
   && npm run build SpeakerAppPortal \
   ; fi
 USER node
