@@ -14,6 +14,8 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then npm install -g serve ; fi
 
 WORKDIR /app/frontend.web
 
+RUN chown -R node /app
+
 USER node
 
 # Build node_modules before copying rest of program in order to speed up 
@@ -24,7 +26,6 @@ USER node
 COPY package.json ./
 COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  chown -R node /app \
   # && mkdir -p /root/.npm \
   # && chown -R node:node "/root/.npm" \
   && npm install --loglevel verbose \
