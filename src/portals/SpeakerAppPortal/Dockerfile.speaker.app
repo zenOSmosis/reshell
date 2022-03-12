@@ -24,7 +24,7 @@ COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   chown -R node /app \
   && mkdir -p /root/.npm \
-  && chown -R ${whoami} /root/.npm \
+  && chown -R root:root /root/.npm \
   && npm install --loglevel verbose \
   ; fi
 
