@@ -23,6 +23,8 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   chown -R node /app \
+  && RUN mkdir -p /root/.npm/_cacache/tmp \
+  && chown -R node /root/.npm/_cacache/tmp \
   && npm install --loglevel verbose \
   ; fi
 
@@ -37,8 +39,6 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   && mv src/portals/SpeakerAppPortal/tmp.shared src/portals/SpeakerAppPortal/shared \
   && mkdir -p /app/frontend.web/node_modules/.cache \
   && chown -R node /app/frontend.web/node_modules/.cache \
-  && RUN mkdir -p /root/.npm/_cacache/tmp \
-  && chown -R node /root/.npm/_cacache/tmp \
   ; fi
 
 # Create dynamic __registerPortals__.js file and make it writable by the "node"
