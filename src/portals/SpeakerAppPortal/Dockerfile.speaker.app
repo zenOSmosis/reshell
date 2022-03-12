@@ -14,10 +14,6 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then npm install -g serve ; fi
 
 WORKDIR /app/frontend.web
 
-RUN chown -R node /app
-
-USER node
-
 # Build node_modules before copying rest of program in order to speed up 
 # subsequent Docker builds which don't have changed package.json contents
 #
@@ -25,6 +21,10 @@ USER node
 # build
 COPY package.json ./
 COPY package-lock.json ./
+RUN chown -R node /app/frontend.web
+
+USER node
+
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   npm install --loglevel verbose \
   ; fi
