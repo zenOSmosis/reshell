@@ -29,29 +29,21 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
 # Subsequent builds usually will start here
 COPY ./ ./
 
-# Copy shared modules from parent directory
+# Builds the Speaker.app portal after performing the following actions:
 #
-# Also builds .cache directory, which is needed by the CRA build process
+# - Copy shared modules from parent directory and linking them
+# - Creates dynamic __registerPortals__.js file and make it writable by the
+# "node" user. This fixes an issue where the dynamically written file was not
+# writable by reshell-scripts.
 USER root
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   rm src/portals/SpeakerAppPortal/shared \
   && mv src/portals/SpeakerAppPortal/tmp.shared src/portals/SpeakerAppPortal/shared \
   && chown -R node:node src/portals/SpeakerAppPortal/shared \
+  && touch src/__registerPortals__.js && chown node:node src/__registerPortals__.js \
+  && npm run build SpeakerAppPortal \
   ; fi
 USER node
-
-# TODO: This step might can be removed
-#
-# Create dynamic __registerPortals__.js file and make it writable by the "node"
-# user. This fixes an issue where the dynamically written file was not writable
-# by reshell-scripts.
-RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  touch src/__registerPortals__.js && chown node src/__registerPortals__.js \
-  ; fi
-
-RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  npm run build SpeakerAppPortal \
-  ; fi
 
 EXPOSE 3000
 
