@@ -23,8 +23,8 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   chown -R node /app \
-  && mkdir -p /root/.npm/_cacache/tmp \
-  && chown -R node /root/.npm/_cacache/tmp \
+  && mkdir -p /root/.npm \
+  && chown -R 1000:0 /root/.npm \
   && npm install --loglevel verbose \
   ; fi
 
