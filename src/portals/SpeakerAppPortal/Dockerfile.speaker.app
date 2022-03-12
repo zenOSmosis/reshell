@@ -26,7 +26,7 @@ USER node
 COPY package.json ./
 COPY package-lock.json ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
-  && npm install --loglevel verbose \
+  npm install --loglevel verbose \
   ; fi
 
 # Subsequent builds usually will start here
@@ -38,7 +38,6 @@ COPY ./ ./
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   rm src/portals/SpeakerAppPortal/shared \
   && mv src/portals/SpeakerAppPortal/tmp.shared src/portals/SpeakerAppPortal/shared \
-  && mkdir -p /app/frontend.web/node_modules/.cache \
   ; fi
 
 # Create dynamic __registerPortals__.js file and make it writable by the "node"
