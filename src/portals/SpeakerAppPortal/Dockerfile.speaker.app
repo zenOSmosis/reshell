@@ -2,8 +2,8 @@
 # speaker.app frontend.web Dockerfile
 ###
 
-FROM node:14
-LABEL maintainer="jeremy.harris@zenosmosis.com"
+FROM node:16.14
+LABEL maintainer="info@zenosmosis.com"
 
 ARG BUILD_ENV
 ARG GIT_HASH
