@@ -21,12 +21,9 @@ $ # Enjoy
 
 Or, skip the setup and [experience the hosted version](https://reshell.org).
 
-
 Here's a video demonstrating speech control.
 
 https://user-images.githubusercontent.com/1139657/157443171-d35decb7-5fd2-460d-b95e-cae7d7b28a80.mov
-
-
 
 ![ReShell Input Media Devices](https://user-images.githubusercontent.com/1139657/157346532-a62db462-292c-4d5d-91d0-17904646d58a.jpeg)
 
@@ -53,7 +50,7 @@ Additional open-source repositories for ReShell can be found on GitHub: https://
 
 # License
 
-[MIT](https://github.com/zenOSmosis/reshell/blob/main/LICENSE) License. Copyright (c) 2022 zenOSmosis. Included works are bound by their own copyrights, rights, and licensing.
+[MIT License](https://github.com/zenOSmosis/reshell/blob/main/LICENSE). Copyright (c) 2010 - 2022 [zenOSmosis](https://zenosmosis.com). Included works are bound by their own copyrights and licensing and are not necessarily affiliated with zenOSmosis.
 
 # Getting Started with Create React App
 
