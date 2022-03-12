@@ -16,9 +16,6 @@ WORKDIR /app/frontend.web
 
 # Build node_modules before copying rest of program in order to speed up 
 # subsequent Docker builds which don't have changed package.json contents
-#
-# IMPORTANT: Development modules have to be installed here or the FE can't
-# build
 COPY package.json ./
 COPY package-lock.json ./
 RUN chown -R node:node /app/frontend.web
@@ -35,11 +32,16 @@ COPY ./ ./
 # Copy shared modules from parent directory
 #
 # Also builds .cache directory, which is needed by the CRA build process
+USER root
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   rm src/portals/SpeakerAppPortal/shared \
   && mv src/portals/SpeakerAppPortal/tmp.shared src/portals/SpeakerAppPortal/shared \
+  && chown -R node:node src/portals/SpeakerAppPortal/shared \
   ; fi
+USER node
 
+# TODO: This step might can be removed
+#
 # Create dynamic __registerPortals__.js file and make it writable by the "node"
 # user. This fixes an issue where the dynamically written file was not writable
 # by reshell-scripts.
