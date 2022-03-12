@@ -21,7 +21,7 @@ WORKDIR /app/frontend.web
 # build
 COPY package.json ./
 COPY package-lock.json ./
-RUN chown -R node /app/frontend.web
+RUN chown -R node:node /app/frontend.web
 
 USER node
 
