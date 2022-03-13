@@ -6,7 +6,7 @@
 [![paypal-me][paypal-me-image]][paypal-me-url]
 
 [license-image]: https://img.shields.io/github/license/zenosmosis/reshell
-[license-url]: https://raw.githubusercontent.com/zenOSmosis/reshell/main/LICENSE.txt
+[license-url]: https://raw.githubusercontent.com/zenOSmosis/reshell/main/LICENSE
 [version-image]: https://img.shields.io/github/package-json/v/zenosmosis/reshell
 [version-url]: https://github.com/zenOSmosis/reshell/blob/main/package.json#L3
 [codefactor-image]: https://www.codefactor.io/repository/github/zenOSmosis/reshell/badge
