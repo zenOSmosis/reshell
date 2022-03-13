@@ -1,3 +1,23 @@
+[![MIT License][license-image]][license-url]
+[![version][version-image]][version-url]
+[![CodeFactor][codefactor-image]][codefactor-url]
+[![phantom-core-architecture][phantom-core-architecture-image]][phantom-core-architecture-url]
+[![buy-me-a-coffee][buy-me-a-coffee-image]][buy-me-a-coffee-url]
+[![paypal-me][paypal-me-image]][paypal-me-url]
+
+[license-image]: https://img.shields.io/github/license/zenosmosis/reshell
+[license-url]: https://raw.githubusercontent.com/zenOSmosis/reshell/main/LICENSE.txt
+[version-image]: https://img.shields.io/github/package-json/v/zenosmosis/reshell
+[version-url]: https://github.com/zenOSmosis/reshell/blob/main/package.json#L3
+[codefactor-image]: https://www.codefactor.io/repository/github/zenOSmosis/reshell/badge
+[codefactor-url]: https://www.codefactor.io/repository/github/zenOSmosis/reshell
+[phantom-core-architecture-image]: https://img.shields.io/badge/architecture-phantom--core-red
+[phantom-core-architecture-url]: https://github.com/zenosmosis/phantom-core
+[buy-me-a-coffee-image]: https://img.shields.io/badge/sponsor-buymeacoffee-green
+[buy-me-a-coffee-url]: https://www.buymeacoffee.com/Kg8VCULYI
+[paypal-me-image]: https://img.shields.io/badge/sponsor-paypal.me-blue
+[paypal-me-url]: https://www.paypal.com/paypalme/zenOSmosis
+
 # ReShell - Web Desktop and UI Service Engine
 
 **This is a work in progress.**
