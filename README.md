@@ -1,6 +1,7 @@
 [![MIT License][license-image]][license-url]
 [![version][version-image]][version-url]
 [![CodeFactor][codefactor-image]][codefactor-url]
+[![Style Status][style-image]][style-url]
 [![phantom-core-architecture][phantom-core-architecture-image]][phantom-core-architecture-url]
 [![buy-me-a-coffee][buy-me-a-coffee-image]][buy-me-a-coffee-url]
 [![paypal-me][paypal-me-image]][paypal-me-url]
@@ -11,6 +12,8 @@
 [version-url]: https://github.com/zenOSmosis/reshell/blob/main/package.json#L3
 [codefactor-image]: https://www.codefactor.io/repository/github/zenOSmosis/reshell/badge
 [codefactor-url]: https://www.codefactor.io/repository/github/zenOSmosis/reshell
+[style-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
+[style-url]: https://prettier.io/
 [phantom-core-architecture-image]: https://img.shields.io/badge/architecture-phantom--core-red
 [phantom-core-architecture-url]: https://github.com/zenosmosis/phantom-core
 [buy-me-a-coffee-image]: https://img.shields.io/badge/sponsor-buymeacoffee-green
