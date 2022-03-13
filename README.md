@@ -23,7 +23,7 @@
 
 # ReShell - Web Desktop and UI Service Engine
 
-**This is a work in progress.**
+**This is a work in progress, subject to many API updates and feature regressions in a short amount of time, as it is used for development and prototyping of several applications at once.**
 
 ReShell is a web-based desktop & mobile user interface featuring individual "portals," or collections of apps, based on the [PhantomCore](https://github.com/zenOSmosis/phantom-core) library.
 
