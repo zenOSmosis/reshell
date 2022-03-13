@@ -1,5 +1,6 @@
 [![MIT License][license-image]][license-url]
 [![version][version-image]][version-url]
+[![reshell.org][website-image]][website-url]
 [![CodeFactor][codefactor-image]][codefactor-url]
 [![Style Status][style-image]][style-url]
 [![phantom-core-architecture][phantom-core-architecture-image]][phantom-core-architecture-url]
@@ -10,6 +11,8 @@
 [license-url]: https://raw.githubusercontent.com/zenOSmosis/reshell/main/LICENSE.txt
 [version-image]: https://img.shields.io/github/package-json/v/zenosmosis/reshell
 [version-url]: https://github.com/zenOSmosis/reshell/blob/main/package.json#L3
+[website-image]: https://img.shields.io/badge/website-reshell.org-blue
+[website-url]: https://reshell.org
 [codefactor-image]: https://www.codefactor.io/repository/github/zenOSmosis/reshell/badge
 [codefactor-url]: https://www.codefactor.io/repository/github/zenOSmosis/reshell
 [style-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
