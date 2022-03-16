@@ -1,3 +1,4 @@
+// import {EVT_READY} from 'phantom-core'
 import UIServiceCore from "@core/classes/UIServiceCore";
 
 export default class PartOfSpeechAnalyzerService extends UIServiceCore {
@@ -12,6 +13,8 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
       type: "module",
     });
     this._worker.onmessage = evt => {
+      // TODO: Listen for remote READY event before trying to continue
+
       console.log("received message event", evt);
     };
   }
