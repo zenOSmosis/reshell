@@ -1,10 +1,5 @@
-import Padding from "@components/Padding";
-import Layout, { Header, Content } from "@components/Layout";
-import MesaFooter from "./components/Footer";
 import LabeledToggle from "@components/labeled/LabeledToggle";
 import LabeledLED from "@components/labeled/LabeledLED/LabeledLED";
-import Center from "@components/Center";
-import AppLinkButton from "@components/AppLinkButton";
 
 import WithoutRecognizer from "./views/WithoutRecognizer";
 import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
@@ -15,8 +10,6 @@ import MesaSpeechRecognizerService from "../../services/MesaSpeechRecognizerServ
 import MesaSubscriptionKeyManagementService from "../../services/MesaSubscriptionKeyManagementService";
 
 import DesktopCommanderControllerService from "@services/DesktopCommanderControllerService";
-
-import { REGISTRATION_ID as COMMAND_DEBUGGER_REGISTRATION_ID } from "@portals/ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
 export const REGISTRATION_ID = "speech-commander";
 
