@@ -7,6 +7,8 @@ import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as KEY_VAULT_REGISTRATION_ID } from "@portals/ExamplePortal/apps/KeyVaultApp";
 
+// TODO: Document
+// TODO: Add prop-types
 export default function WithoutRecognizer({
   speechRecognizerService,
   hasCachedSubscriptionKey,

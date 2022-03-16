@@ -7,6 +7,7 @@ import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 
 import WithoutRecognizer from "./views/WithoutRecognizer";
+import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
 
 // Local services
 import MesaSpeechDesktopControllerService from "../../services/MesaSpeechDesktopControllerService";
@@ -95,7 +96,6 @@ const SpeechCommanderApp = {
   view: function View({ appServices, sharedState, setSharedState }) {
     const desktopCommanderService =
       appServices[DesktopCommanderControllerService];
-    const lastCommand = desktopCommanderService.getLastCommand();
 
     const subscriptionKeyManagementService =
       appServices[MesaSubscriptionKeyManagementService];
@@ -112,19 +112,12 @@ const SpeechCommanderApp = {
     const finalizedTranscription =
       speechRecognizerService.getFinalizedTranscription();
 
-    const desktopControllerService =
-      appServices[MesaSpeechDesktopControllerService];
-
     // TODO: Use correct service
     /*
     const isDesktopControlEnabled =
       desktopControllerService.getIsDesktopControlEnabled();
     const lastCommand = desktopControllerService.getLastCommand();
     */
-
-    const transcriptionToRender = isRecognizing
-      ? realTimeTranscription
-      : finalizedTranscription;
 
     if (!hasRecognizer) {
       return (
@@ -135,54 +128,28 @@ const SpeechCommanderApp = {
         />
       );
     } else {
+      const desktopControllerService =
+        appServices[MesaSpeechDesktopControllerService];
+
+      const lastCommand = desktopCommanderService.getLastCommand();
+
+      const transcriptionToRender = isRecognizing
+        ? realTimeTranscription
+        : finalizedTranscription;
+
+      const isDesktopControlEnabled =
+        desktopControllerService.getIsDesktopControlEnabled();
+
       return (
-        <Layout>
-          <Header>
-            <Padding style={{ textAlign: "center" }}>
-              <div>
-                <p>
-                  Enable Desktop Speech Control to control ReShell with your
-                  speech.
-                </p>
-                <LabeledToggle
-                  isOn={desktopControllerService.getIsDesktopControlEnabled()}
-                  onChange={desktopControllerService.setIsDesktopControlEnabled}
-                  masterLabel="Desktop Speech Control"
-                />
-                <div style={{ marginLeft: 20, display: "inline-block" }}>
-                  <AppLinkButton
-                    id={COMMAND_DEBUGGER_REGISTRATION_ID}
-                    style={{
-                      // TODO: Use color variable for highlighted elements
-                      backgroundColor: "#347fe8",
-                    }}
-                    title="View Example Phrases"
-                  ></AppLinkButton>
-                </div>
-              </div>
-            </Padding>
-          </Header>
-          <Content>
-            <Padding>
-              <Center>
-                {transcriptionToRender && (
-                  <span style={{ fontWeight: "bold" }}>
-                    {transcriptionToRender}
-                  </span>
-                )}
-                {lastCommand && (
-                  <div
-                    style={{ color: "green", marginTop: 10 }}
-                    className="note"
-                  >
-                    Last command: {lastCommand.description}
-                  </div>
-                )}
-              </Center>
-            </Padding>
-          </Content>
-          <MesaFooter />
-        </Layout>
+        <WithRecognizer
+          desktopControllerService={desktopControllerService}
+          lastCommand={lastCommand}
+          transcriptionToRender={transcriptionToRender}
+          isDesktopControlEnabled={isDesktopControlEnabled}
+          onDesktopControlEnabledChange={
+            desktopControllerService.setIsDesktopControlEnabled
+          }
+        />
       );
     }
   },
