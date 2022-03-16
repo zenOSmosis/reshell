@@ -112,6 +112,8 @@ const SpeechCommanderApp = {
     const lastCommand = desktopControllerService.getLastCommand();
     */
 
+    // TODO: Include UI control for selecting between speech transcription engines (or using multiples at once)
+
     if (!hasRecognizer) {
       return (
         <WithoutRecognizer
