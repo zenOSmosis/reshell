@@ -1,6 +1,6 @@
 import SpeechRecognizerServiceBase, {
   EVT_UPDATED,
-} from "../../classes/SpeechRecognizerServiceBase";
+} from "../__common__/SpeechRecognizerServiceBase";
 
 import MesaSpeechRecognizer, {
   EVT_TRANSCRIPTION_FINALIZED,
