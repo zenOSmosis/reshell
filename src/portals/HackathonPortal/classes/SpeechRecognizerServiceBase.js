@@ -11,7 +11,7 @@ import {
 } from "./SpeechRecognizerBase";
 
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
-// import UIModalWidgetService from "@services/UIModalWidgetService";
+import UIModalWidgetService from "@services/UIModalWidgetService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
@@ -139,6 +139,66 @@ export default class SpeechRecognizerServiceBase extends UIServiceCore {
    */
   getIsRecognizing() {
     return this.getState().isRecognizing;
+  }
+
+  // TODO: Document
+  async _createRecognizer(stream, recognizerParams) {
+    throw new Error("_createRecognizer must be overridden");
+  }
+
+  // TODO: Refactor
+  // TODO: Document
+  /**
+   * Starts the speech recognition system.
+   *
+   * @return {Promise<void>}
+   */
+  async startRecognizing(recognizerParams = {}) {
+    if (this._recognizer) {
+      await this._recognizer.destroy();
+    }
+
+    this.emit(EVT_CONNECTING);
+
+    let inputCaptureFactories =
+      this._inputMediaDevicesService.getCaptureFactories();
+
+    // Present UIModal to start input
+    // TODO: Filter to only capturing audio
+    if (!inputCaptureFactories.length) {
+      await this.useServiceClass(
+        UIModalWidgetService
+      ).showInputMediaDevicesSelectionModal();
+    }
+
+    inputCaptureFactories =
+      this._inputMediaDevicesService.getCaptureFactories();
+
+    // FIXME: (jh) Handle more nicely?
+    // TODO: Ensure we're capturing audio
+    if (!inputCaptureFactories.length) {
+      throw new Error("Could not obtain input capture factories");
+    }
+
+    // TODO; Refactor
+    const stream = inputCaptureFactories[0].getOutputMediaStream();
+
+    this._recognizer = await this._createRecognizer(stream, recognizerParams);
+
+    this.setState({ hasRecognizer: true });
+
+    this._recognizer.registerCleanupHandler(() => {
+      // FIXME: (jh) Reset state once implemented
+      // Relevant issue: https://github.com/zenOSmosis/phantom-core/issues/112
+      this.setState({
+        isConnecting: false,
+        isConnected: false,
+        hasRecognizer: false,
+        isRecognizing: false,
+        realTimeTranscription: null,
+        finalizedTranscription: null,
+      });
+    });
   }
 
   /**
