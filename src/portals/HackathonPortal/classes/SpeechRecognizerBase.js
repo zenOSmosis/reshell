@@ -15,7 +15,7 @@ export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
 export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
 
 export default class SpeechRecognizerBase extends PhantomCore {
-  // TODO: Force to be extended
+  // FIXME: (jh) Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
   /**
    * @param {MediaStream} mediaStream // or MediaStreamTrack?
