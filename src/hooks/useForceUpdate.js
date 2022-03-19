@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * Usage:
+ *  const forceUpdate = useForceUpdate()
+ *
+ * @return {Function} Force update function, guaranteed to have a stable
+ * reference across renders.
+ */
 export default function useForceUpdate() {
   // Prevent state from trying to be set after unmounted
   const refIsUnmount = useRef(false);
