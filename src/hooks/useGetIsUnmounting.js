@@ -4,7 +4,10 @@ import { useCallback, useEffect, useRef } from "react";
  * Determines whether the connected component or hook is currently in an
  * unmounting state.
  *
- * @return {boolean}
+ * Usage:
+ *  const getIsUnmounting = useGetIsUnmounting()
+ *
+ * @return {Function} A stable-referenced handler to determine if unmounting.
  */
 export default function useGetIsUnmounting() {
   const refIsUnmounting = useRef(false);
