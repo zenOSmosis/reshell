@@ -94,15 +94,4 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
       });
     });
   }
-
-  /**
-   * Stops the speech recognition system.
-   *
-   * @return {Promise<void>}
-   */
-  async stopRecognizing() {
-    if (this._recognizer) {
-      await this._recognizer.destroy();
-    }
-  }
 }
