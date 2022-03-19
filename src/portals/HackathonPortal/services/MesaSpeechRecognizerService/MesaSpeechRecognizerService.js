@@ -3,13 +3,10 @@ import SpeechRecognizerServiceBase, {
 } from "../../classes/SpeechRecognizerServiceBase";
 
 import MesaSpeechRecognizer, {
-  EVT_CONNECTING,
   EVT_TRANSCRIPTION_FINALIZED,
 } from "./MesaSpeechRecognizer";
 
 import MesaSubscriptionKeyManagementService from "../MesaSubscriptionKeyManagementService";
-
-import UIModalWidgetService from "@services/UIModalWidgetService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
