@@ -3,11 +3,11 @@ import SpeechRecognizerCollection from "./SpeechRecognizerCollection";
 
 import { EVT_TRANSCRIPTION_FINALIZED } from "../__common__/SpeechRecognizerBase";
 
-export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
-
-// import MesaSpeechRecognizerService from "../MesaSpeechRecognizerService";
+import MesaSpeechRecognizerService from "../MesaSpeechRecognizerService";
 // TODO: Enable
 // import DeepgramSpeechRecognizerService from "../DeepgramSpeechRecognizerService";
+
+export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
 /**
  * Maintains a collection of speech recognizer services.
@@ -30,7 +30,14 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
       SpeechRecognizerCollection
     );
 
-    // this.useSpeechRecognizerServiceClass(MesaSpeechRecognizerService);
+    // Proxy _speechRecognizerCollection EVT_TRANSCRIPTION_FINALIZED
+    this.proxyOn(
+      this._speechRecognizerCollection,
+      EVT_TRANSCRIPTION_FINALIZED,
+      text => this.emit(EVT_TRANSCRIPTION_FINALIZED, text)
+    );
+
+    this.useSpeechRecognizerServiceClass(MesaSpeechRecognizerService);
 
     // TODO: Enable
     // this.useSpeechRecognizerServiceClass(DeepgramSpeechRecognizerService)

@@ -1,5 +1,7 @@
 import { PhantomCollection } from "phantom-core";
-import SpeechRecognizerServiceBase from "../__common__/SpeechRecognizerServiceBase";
+import SpeechRecognizerServiceBase, {
+  EVT_TRANSCRIPTION_FINALIZED,
+} from "../__common__/SpeechRecognizerServiceBase";
 
 // TODO: Document
 export default class SpeechRecognizerCollection extends PhantomCollection {
@@ -7,6 +9,8 @@ export default class SpeechRecognizerCollection extends PhantomCollection {
     super(...args);
 
     this.registerCleanupHandler(() => this.destroyAllChildren());
+
+    this.bindChildEventName(EVT_TRANSCRIPTION_FINALIZED);
   }
 
   addChild(speechRecognizerService) {
