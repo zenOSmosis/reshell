@@ -86,7 +86,7 @@ const SpeechCommanderApp = {
     );
   },
 
-  view: function View({ appServices, sharedState, setSharedState }) {
+  view: function View({ appServices }) {
     const desktopCommanderService =
       appServices[DesktopCommanderControllerService];
 

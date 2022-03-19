@@ -1,4 +1,7 @@
-import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROYED } from "phantom-core";
+import SpeechRecognizerBase, {
+  EVT_BEFORE_DESTROY,
+  EVT_DESTROYED,
+} from "../../classes/SpeechRecognizerBase";
 
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
@@ -24,31 +27,22 @@ export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
  * microsoft-cognitiveservices-speech-sdk.
  *
  * Interfaces with npm library:
- * @see {@link https://www.npmjs.com/package/microsoft-cognitiveservices-speech-sdk}ß
+ * @see {@link https://www.npmjs.com/package/microsoft-cognitiveservices-speech-sdk}
  */
-export default class MesaSpeechRecognizer extends PhantomCore {
+export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
   /**
    * @param {MediaStream} mediaStream
    * @param {string} subscriptionKey
    * @param {Object} options? [default = {}]
    */
   constructor(mediaStream, subscriptionKey, options) {
-    super(options);
+    super(mediaStream, options);
 
     this._subscriptionKey = subscriptionKey;
-
-    this._isConnected = false;
 
     // TODO: Replace hardcoding with config param
     this._locationRegion = "eastus";
     this._speechRecognitionLanguage = "en-US";
-
-    this._mediaStream = mediaStream;
-
-    // Automatically start recognizing (allow events to be bound first)
-    setImmediate(() => {
-      this._startRecognizing();
-    });
   }
 
   /**
@@ -70,35 +64,6 @@ export default class MesaSpeechRecognizer extends PhantomCore {
     return this._recognitionLanguage;
   }
 
-  /**
-   * Sets whether or not the speech is currently being recognized.
-   *
-   * @param {boolean} isRecognizing
-   * @emits EVT_BEGIN_RECOGNIZE
-   * @emits EVT_END_RECOGNIZE
-   * @return {void}
-   */
-  _setIsRecognizing(isRecognizing) {
-    if (isRecognizing) {
-      this.emit(EVT_BEGIN_RECOGNIZE);
-    } else {
-      this.emit(EVT_END_RECOGNIZE);
-    }
-  }
-
-  /**
-   * Sets the finalized speech transcription.
-   *
-   * @param {string} text
-   * @emits EVT_TRANSCRIPTION_FINALIZED
-   * @return {void}
-   */
-  _setFinalizedTranscription(text) {
-    this._setIsRecognizing(false);
-
-    this.emit(EVT_TRANSCRIPTION_FINALIZED, text);
-  }
-
   // TODO: Ensure this instance is automatically destructed if the speech
   // service errors or has a network error
   /**
@@ -108,9 +73,9 @@ export default class MesaSpeechRecognizer extends PhantomCore {
    * @return {void}
    */
   _startRecognizing() {
-    const stream = this._mediaStream;
-
     this.emit(EVT_CONNECTING);
+
+    const stream = this._mediaStream;
 
     const speechConfig = sdk.SpeechConfig.fromSubscription(
       this._subscriptionKey,
@@ -141,11 +106,13 @@ export default class MesaSpeechRecognizer extends PhantomCore {
 
       recognizer.recognizing = (s, e) => {
         // FIXME: (jh) Is there a more appropriate place to put this?
+        /*
         if (!this._isConnected) {
           this._isConnected = true;
 
           this.emit(EVT_CONNECTED);
         }
+        */
 
         this._setIsRecognizing(true);
 
