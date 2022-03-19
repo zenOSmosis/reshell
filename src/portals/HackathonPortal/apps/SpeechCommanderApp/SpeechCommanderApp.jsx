@@ -5,7 +5,7 @@ import WithoutRecognizer from "./views/WithoutRecognizer";
 import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
 
 // Local services
-import MesaSpeechDesktopControllerService from "../../services/MesaSpeechDesktopControllerService";
+import SpeechInputDesktopControllerService from "../../services/SpeechInputDesktopControllerService";
 import MesaSpeechRecognizerService from "../../services/MesaSpeechRecognizerService";
 import MesaSubscriptionKeyManagementService from "../../services/MesaSubscriptionKeyManagementService";
 
@@ -22,7 +22,7 @@ const SpeechCommanderApp = {
   },
   isAutoStart: true,
   serviceClasses: [
-    MesaSpeechDesktopControllerService,
+    SpeechInputDesktopControllerService,
     MesaSpeechRecognizerService,
     MesaSubscriptionKeyManagementService,
     DesktopCommanderControllerService,
@@ -35,7 +35,7 @@ const SpeechCommanderApp = {
     const isRecognizing = speechRecognizerService.getIsRecognizing();
 
     const desktopControllerService =
-      appServices[MesaSpeechDesktopControllerService];
+      appServices[SpeechInputDesktopControllerService];
     const isDesktopControlEnabled =
       desktopControllerService.getIsDesktopControlEnabled();
 
@@ -124,7 +124,7 @@ const SpeechCommanderApp = {
       );
     } else {
       const desktopControllerService =
-        appServices[MesaSpeechDesktopControllerService];
+        appServices[SpeechInputDesktopControllerService];
 
       const lastCommand = desktopCommanderService.getLastCommand();
 

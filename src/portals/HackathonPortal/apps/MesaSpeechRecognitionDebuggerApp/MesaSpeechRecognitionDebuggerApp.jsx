@@ -17,7 +17,7 @@ import { REGISTRATION_ID as COMMAND_DEBUGGER_REGISTRATION_ID } from "@portals/Ex
 // Local services
 import MesaSpeechRecognizerService from "../../services/MesaSpeechRecognizerService";
 import MesaSubscriptionKeyManagementService from "../../services/MesaSubscriptionKeyManagementService";
-import MesaSpeechDesktopControllerService from "../../services/MesaSpeechDesktopControllerService";
+import SpeechInputDesktopControllerService from "../../services/SpeechInputDesktopControllerService";
 
 // TODO: Show input selector for which device to recognize from (if
 // there are more than one active audio input device)
@@ -36,7 +36,7 @@ const MesaSpeechRecognitionDebuggerApp = {
   serviceClasses: [
     MesaSpeechRecognizerService,
     MesaSubscriptionKeyManagementService,
-    MesaSpeechDesktopControllerService,
+    SpeechInputDesktopControllerService,
   ],
   /*
   titleBarView: function TitleBarView({ sharedState, setSharedState }) {
@@ -58,7 +58,7 @@ const MesaSpeechRecognitionDebuggerApp = {
       keyManagementService.getHasCachedSubscriptionKey();
 
     const desktopControllerService =
-      appServices[MesaSpeechDesktopControllerService];
+      appServices[SpeechInputDesktopControllerService];
     const isDesktopControlEnabled =
       desktopControllerService.getIsDesktopControlEnabled();
 

@@ -4,19 +4,21 @@ import DesktopCommanderControllerService, {
   EVT_UPDATED,
 } from "@services/DesktopCommanderControllerService";
 
-import MesaSpeechRecognizerService, {
+import SpeechRecognizerCollectionService, {
   EVT_TRANSCRIPTION_FINALIZED,
-} from "./MesaSpeechRecognizerService";
+} from "./SpeechRecognizerCollectionService";
 
 export { EVT_UPDATED };
 
 // TODO: Document
 // IMPORTANT: Don't extend DesktopCommanderControllerService
-export default class MesaSpeechDesktopControllerService extends UIServiceCore {
+export default class SpeechDesktopControllerService extends UIServiceCore {
+  // TODO: Prevent extendable (reference: https://github.com/zenOSmosis/phantom-core/issues/149)
+
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Mesa Speech Desktop Controller Service");
+    this.setTitle("Speech Input Desktop Controller Service");
 
     this.setState({
       // Enable by default, though is only active if speech recognition is
@@ -28,24 +30,21 @@ export default class MesaSpeechDesktopControllerService extends UIServiceCore {
       DesktopCommanderControllerService
     );
 
-    this._speechRecognizerService = this.useServiceClass(
-      MesaSpeechRecognizerService
+    // A proxy to all of the speech recognizer services
+    this._speechRecognizerCollectionService = this.useServiceClass(
+      SpeechRecognizerCollectionService
     );
 
     // Handle finalized transcription updates
-    (() => {
-      this.proxyOn(
-        this._speechRecognizerService,
-        EVT_TRANSCRIPTION_FINALIZED,
-        text => {
-          if (this.getIsDesktopControlEnabled()) {
-            this.extractCommandIntentFromText(text);
-          }
+    this.proxyOn(
+      this._speechRecognizerCollectionService,
+      EVT_TRANSCRIPTION_FINALIZED,
+      text => {
+        if (this.getIsDesktopControlEnabled()) {
+          this.extractCommandIntentFromText(text);
         }
-      );
-    })();
-
-    // TODO: Tie in with speech recognizer service
+      }
+    );
   }
 
   /**

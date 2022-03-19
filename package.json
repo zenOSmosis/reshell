@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
+    "@deepgram/sdk": "^1.2.4",
     "@shelf/fast-chunk-string": "^1.1.1",
     "@szhsin/react-menu": "^2.3.4",
     "@testing-library/jest-dom": "^5.11.4",
