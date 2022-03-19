@@ -10,7 +10,6 @@ import MesaSubscriptionKeyManagementService from "../MesaSubscriptionKeyManageme
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
-// TODO: Refactor w/ SpeechRecognizerRegistrationService
 /**
  * Manages the creation and destruction of MesaSpeechRecognizer instances.
  */
