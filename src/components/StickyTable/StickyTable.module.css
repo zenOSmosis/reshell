@@ -1,0 +1,19 @@
+/** CSS styling borrowed from: https://css-tricks.com/making-tables-with-sticky-header-and-footers-got-a-bit-easier/ */
+
+table.sticky thead,
+table.sticky tfoot {
+  position: sticky;
+
+  /** 
+   * FIXME: (jh) This fixes an issue where ServiceMonitorApps rows were
+   * rendering <Padding /> elements on top of the thead element. There could be a
+   * better approach.
+   */
+  z-index: 1;
+}
+table.sticky thead {
+  inset-block-start: 0; /* "top" */
+}
+table.sticky tfoot {
+  inset-block-end: 0; /* "bottom" */
+}

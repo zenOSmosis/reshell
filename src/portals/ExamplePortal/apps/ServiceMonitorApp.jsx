@@ -5,6 +5,7 @@
 import PhantomCore from "phantom-core";
 
 import { useContext } from "react";
+import StickyTable from "@components/StickyTable";
 import Layout, { Content, Footer } from "@components/Layout";
 import Full from "@components/Full";
 import Padding from "@components/Padding";
@@ -45,7 +46,7 @@ const ServiceMonitorApp = {
       <Layout>
         <Content>
           <Full style={{ overflowY: "auto" }}>
-            <table style={{ width: "100%" }}>
+            <StickyTable style={{ width: "100%" }}>
               <thead>
                 <tr>
                   <td>
@@ -107,7 +108,7 @@ const ServiceMonitorApp = {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </StickyTable>
           </Full>
         </Content>
         <Footer>

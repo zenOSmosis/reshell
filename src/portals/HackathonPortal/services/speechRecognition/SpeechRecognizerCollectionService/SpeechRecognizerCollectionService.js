@@ -1,5 +1,5 @@
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
-import SpeechRecognizerCollection from "./SpeechRecognizerCollection";
+import SpeechRecognizerServiceCollection from "./SpeechRecognizerServiceCollection";
 
 import { EVT_TRANSCRIPTION_FINALIZED } from "../__common__/SpeechRecognizerBase";
 
@@ -26,13 +26,16 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
 
     this.setTitle("Speech Recognizer Collection Service");
 
-    this._speechRecognizerCollection = this.bindCollectionClass(
-      SpeechRecognizerCollection
+    this._speechRecognizerServiceCollection = this.bindCollectionClass(
+      SpeechRecognizerServiceCollection
     );
 
+    // NOTE: This does not currently facilitate dynamically adding / removing
+    // speech recognizer services
+    //
     // Proxy _speechRecognizerCollection EVT_TRANSCRIPTION_FINALIZED
     this.proxyOn(
-      this._speechRecognizerCollection,
+      this._speechRecognizerServiceCollection,
       EVT_TRANSCRIPTION_FINALIZED,
       text => this.emit(EVT_TRANSCRIPTION_FINALIZED, text)
     );
@@ -43,18 +46,27 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
     // this.useSpeechRecognizerServiceClass(DeepgramSpeechRecognizerService)
   }
 
-  // TODO: Document
+  /**
+   *
+   * @param {*} SpeechRecognizerServiceClass
+   */
   useSpeechRecognizerServiceClass(SpeechRecognizerServiceClass) {
+    // TODO: Check for class instance before
     const speechRecognizerServiceInstance = this.useServiceClass(
       SpeechRecognizerServiceClass
     );
 
-    this._speechRecognizerCollection.addSpeechRecognizerServiceInstance(
+    this._speechRecognizerServiceCollection.addSpeechRecognizerServiceInstance(
       speechRecognizerServiceInstance
     );
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the speech recognizer service instances which are bound to this
+   * service.
+   *
+   * @return {SpeechRecognizerServiceBase[]}
+   */
   getSpeechRecognizerServices() {
     return this.getChildren();
   }

@@ -305,7 +305,7 @@ table:not(.layout) {
 }
 
 table:not(.layout) thead tr {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 table:not(.layout) tbody tr:nth-child(even) {

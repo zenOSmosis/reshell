@@ -3,16 +3,25 @@ import SpeechRecognizerServiceBase, {
   EVT_TRANSCRIPTION_FINALIZED,
 } from "../__common__/SpeechRecognizerServiceBase";
 
-// TODO: Document
-export default class SpeechRecognizerCollection extends PhantomCollection {
+/**
+ * A collection of speech recognizer service instances.
+ */
+export default class SpeechRecognizerServiceCollection extends PhantomCollection {
   constructor(...args) {
     super(...args);
 
+    // Destroy all children on cleanup
     this.registerCleanupHandler(() => this.destroyAllChildren());
 
     this.bindChildEventName(EVT_TRANSCRIPTION_FINALIZED);
   }
 
+  /**
+   * Adds a speech recognizer service instance to the collection.
+   *
+   * @param {SpeechRecognizerServiceBase}
+   * @return {void}
+   */
   addChild(speechRecognizerService) {
     // TODO: Check for class instance before trying to instantiate it (even
     // better would be to make this collection do the validation internally
@@ -27,12 +36,19 @@ export default class SpeechRecognizerCollection extends PhantomCollection {
     return super.addChild(speechRecognizerService);
   }
 
-  // TODO: Document
+  /**
+   * @alias addChild
+   */
   addSpeechRecognizerServiceInstance(speechRecognizerService) {
     return this.addChild(speechRecognizerService);
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the speech recognizer service instances which are bound to this
+   * collection.
+   *
+   * @return {SpeechRecognizerServiceBase[]}
+   */
   getSpeechRecognizerServices() {
     return this.getChildren();
   }
