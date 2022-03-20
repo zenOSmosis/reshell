@@ -26,6 +26,8 @@ const SpeechCommanderApp = {
 
   view: function View({ appServices }) {
     // TODO: Implement multiple speech recognizer input controls
+
+    return <div>speech commander</div>;
   },
 
   /*
