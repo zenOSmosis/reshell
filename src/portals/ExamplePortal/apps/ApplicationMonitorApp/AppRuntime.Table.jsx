@@ -1,9 +1,10 @@
+import StickyTable from "@components/StickyTable";
 import AppRuntimeTableRow from "./AppRuntime.Table.Row";
 
 // TODO: Document
 export default function AppRuntimeTable({ appRuntimes }) {
   return (
-    <table style={{ width: "100%" }}>
+    <StickyTable style={{ width: "100%" }}>
       <thead>
         <tr>
           <td rowSpan="2">Name</td>
@@ -38,10 +39,10 @@ export default function AppRuntimeTable({ appRuntimes }) {
         </tr>
       </thead>
       <tbody>
-        {appRuntimes.map((runtime) => (
+        {appRuntimes.map(runtime => (
           <AppRuntimeTableRow key={runtime.getUUID()} appRuntime={runtime} />
         ))}
       </tbody>
-    </table>
+    </StickyTable>
   );
 }
