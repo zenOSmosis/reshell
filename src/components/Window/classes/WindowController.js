@@ -203,6 +203,11 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   setSize({ width, height }) {
+    // Skip if maximized
+    if (this.getIsMaximized()) {
+      return;
+    }
+
     // IMPORTANT!: Do not update state on each iteration (if at all) because that would cause excessive re-rendering
     const elWindow = this._elWindow;
     if (elWindow) {
