@@ -38,11 +38,13 @@ const SpeechCommanderApp = {
       collectionService.getSpeechRecognizerServices();
 
     // TODO: Document
+    // TODO: Refactor into a data view
     const speechRecognitionProviders = useMemo(() => {
       const providers = speechRecognitionServices.map(service => ({
         title: service.getTitle(),
         disabled: false,
         requiresAPIKey: true,
+        serviceProviderURL: service.getServiceProviderURL(),
       }));
 
       // TODO: Remove once native provider is implemented
@@ -50,6 +52,9 @@ const SpeechCommanderApp = {
         title: "Native Speech Recognizer Service",
         disabled: true,
         requiresAPIKey: false,
+        serviceProviderURL:
+          "https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition",
+        status: "Not implemented",
       });
 
       return providers;
@@ -57,8 +62,6 @@ const SpeechCommanderApp = {
 
     // TODO: Remove
     console.log({ speechRecognitionProviders, speechRecognitionServices });
-
-    // TODO: Implement multiple speech recognizer input controls
 
     return (
       <Layout>

@@ -13,32 +13,36 @@ export default function SpeechRecognizerSection({ speechProvider }) {
   return (
     <Section>
       {!speechProvider.disabled && (
-        <>
-          <div style={{ position: "absolute", top: 4, left: 8 }}>
-            {
-              // TODO: Add onTick handler
-            }
-            <Timer
-              onTick={() => null}
-              style={{
-                color:
-                  !speechProvider.active || speechProvider.disabled
-                    ? "gray"
-                    : "inherit",
-              }}
-            />
-          </div>
-
+        <div style={{ position: "absolute", top: 4, left: 8 }}>
+          {
+            // TODO: Add onTick handler
+          }
+          <Timer
+            onTick={() => null}
+            style={{
+              color:
+                !speechProvider.active || speechProvider.disabled
+                  ? "gray"
+                  : "inherit",
+            }}
+          />
+        </div>
+      )}
+      {!speechProvider.disabled ||
+        (speechProvider.status && (
           <div style={{ float: "right", overflow: "auto" }}>
             <div style={{ display: "inline-block", marginLeft: 10 }}>
-              <LabeledLED
-                label="Voice Activity"
-                disabled={!speechProvider.active || speechProvider.disabled}
-              />
+              {!speechProvider.disabled ? (
+                <LabeledLED
+                  label="Voice Activity"
+                  disabled={!speechProvider.active || speechProvider.disabled}
+                />
+              ) : (
+                <span className="note">{speechProvider.status}</span>
+              )}
             </div>
           </div>
-        </>
-      )}
+        ))}
 
       <h2 style={{ color: speechProvider.disabled ? "gray" : null }}>
         {speechProvider.title}
@@ -60,7 +64,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
         </Row>
       </Padding>
       {!speechProvider.disabled && (
-        <>
+        <div style={{ overflow: "auto" }}>
           <Padding>
             <SpeechActivityTable disabled={!speechProvider.active} />
           </Padding>
@@ -77,7 +81,19 @@ export default function SpeechRecognizerSection({ speechProvider }) {
               )}
             </div>
           </div>
-        </>
+        </div>
+      )}
+      {speechProvider.serviceProviderURL && (
+        <div className="note">
+          Provider information:{" "}
+          <a
+            href={speechProvider.serviceProviderURL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {speechProvider.serviceProviderURL}
+          </a>
+        </div>
       )}
     </Section>
   );

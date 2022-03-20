@@ -26,6 +26,11 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
   }
 
   // TODO: Document
+  getServiceProviderURL() {
+    return "https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/";
+  }
+
+  // TODO: Document
   async _createRecognizer(stream, { subscriptionKey }) {
     return new MesaSpeechRecognizer(stream, subscriptionKey);
   }

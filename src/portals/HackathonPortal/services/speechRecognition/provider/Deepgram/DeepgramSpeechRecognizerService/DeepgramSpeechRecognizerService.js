@@ -31,6 +31,16 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
     */
   }
 
+  /**
+   * For documentation purposes, retrieves the service provider URL which
+   * supplies the speech recognition to ReShell.
+   *
+   * @return {string}
+   */
+  getServiceProviderURL() {
+    return "https://deepgram.com/";
+  }
+
   // TODO: Document
   async _createRecognizer(stream, { apiKey }) {
     return new DeepgramSpeechRecognizer(stream, apiKey);

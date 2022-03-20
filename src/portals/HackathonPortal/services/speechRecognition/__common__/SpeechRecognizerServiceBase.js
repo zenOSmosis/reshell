@@ -84,6 +84,16 @@ export default class SpeechRecognizerServiceBase extends UIServiceCore {
   }
 
   /**
+   * For documentation purposes, retrieves the service provider URL which
+   * supplies the speech recognition to ReShell.
+   *
+   * @return {string}
+   */
+  getServiceProviderURL() {
+    throw new Error("getServiceProviderURL must be overridden");
+  }
+
+  /**
    * Whether or not the speech recognizer is connecting.
    *
    * @return {boolean}
