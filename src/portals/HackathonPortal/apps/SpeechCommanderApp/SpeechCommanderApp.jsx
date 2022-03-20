@@ -7,9 +7,6 @@ import Layout, { Content } from "@components/Layout";
 import SpeechRecognizerSection from "./components/SpeechRecognizerSection";
 import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
 
-// import WithoutRecognizer from "./views/WithoutRecognizer";
-// import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
-
 // Local services
 import SpeechInputDesktopControllerService from "../../services/speechRecognition/SpeechInputDesktopControllerService";
 import SpeechRecognizerCollectionService from "../../services/speechRecognition/SpeechRecognizerCollectionService";
@@ -32,6 +29,8 @@ const SpeechCommanderApp = {
     DesktopCommanderControllerService,
   ],
 
+  // TODO: Include load screen?
+
   view: function View({ appServices }) {
     const collectionService = appServices[SpeechRecognizerCollectionService];
 
@@ -42,12 +41,14 @@ const SpeechCommanderApp = {
       const providers = speechRecognitionServices.map(service => ({
         title: service.getTitle(),
         disabled: false,
+        requiresAPIKey: true,
       }));
 
       // TODO: Remove once native provider is implemented
       providers.push({
         title: "Native Speech Recognizer Service",
         disabled: true,
+        requiresAPIKey: false,
       });
 
       return providers;
