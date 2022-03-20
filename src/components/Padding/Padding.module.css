@@ -2,8 +2,6 @@
   padding: 8px;
 
   position: relative;
-
-  /** Ensure float elements are contained within padding */
   overflow: auto;
 }
 
