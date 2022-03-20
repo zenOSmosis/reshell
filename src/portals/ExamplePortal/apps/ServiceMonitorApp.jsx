@@ -20,12 +20,12 @@ import { REGISTRATION_ID as APPLICATION_MONITOR_REGISTRATION_ID } from "./Applic
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
 
+// TODO: Include links to apps which are using this service
+
 // TODO: Show last update time, state, etc.
 
 // TODO: Include ability to render service reporters, once functionality is
 // integrated
-
-// TODO: Include ability to monitor React providers exposed by the service
 
 export const REGISTRATION_ID = "service-monitor";
 
