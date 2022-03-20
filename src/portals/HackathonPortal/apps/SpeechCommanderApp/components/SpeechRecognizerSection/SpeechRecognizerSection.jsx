@@ -69,18 +69,16 @@ export default function SpeechRecognizerSection({ speechProvider }) {
             <SpeechActivityTable disabled={!speechProvider.active} />
           </Padding>
 
-          <div style={{ position: "relative" }}>
-            <div style={{ float: "right" }}>
-              {speechProvider.requiresAPIKey && (
-                <>
-                  <button>Set API Key</button>{" "}
-                  <button style={{ backgroundColor: "red" }}>
-                    Delete API Key
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
+          <Padding style={{ textAlign: "right" }}>
+            {speechProvider.requiresAPIKey && (
+              <>
+                <button>Set API Key</button>{" "}
+                <button style={{ backgroundColor: "red" }}>
+                  Delete API Key
+                </button>
+              </>
+            )}
+          </Padding>
         </div>
       )}
       {speechProvider.serviceProviderURL && (
