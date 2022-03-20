@@ -16,7 +16,6 @@ import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 
 // Mesa Hackathon apps
-import MesaSpeechRecognitionDebuggerApp from "../HackathonPortal/apps/MesaSpeechRecognitionDebuggerApp";
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
@@ -39,7 +38,6 @@ export default function ReShellOrgPortal() {
         KeyVaultApp,
         AppRegistrationViewerApp,
         //
-        MesaSpeechRecognitionDebuggerApp,
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
       ]}

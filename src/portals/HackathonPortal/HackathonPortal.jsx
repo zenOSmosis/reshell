@@ -20,7 +20,6 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 
-import MesaSpeechRecognitionDebuggerApp from "./apps/MesaSpeechRecognitionDebuggerApp";
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 import PartOfSpeechAnalyzerApp from "./apps/PartOfSpeechAnalyzerApp";
@@ -48,7 +47,6 @@ export default function HackathonPortal() {
         EnvironmentApp,
         //
         SpeechCommanderApp,
-        MesaSpeechRecognitionDebuggerApp,
         DesktopCommanderDebuggerApp,
         PartOfSpeechAnalyzerApp,
       ]}

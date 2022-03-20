@@ -1,4 +1,12 @@
-// import LabeledToggle from "@components/labeled/LabeledToggle";
+import { useMemo } from "react";
+
+import Full from "@components/Full";
+import Padding from "@components/Padding";
+import Section from "@components/Section";
+import Layout, { Content } from "@components/Layout";
+import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
+
+import LabeledToggle from "@components/labeled/LabeledToggle";
 // import LabeledLED from "@components/labeled/LabeledLED/LabeledLED";
 
 // import WithoutRecognizer from "./views/WithoutRecognizer";
@@ -6,6 +14,7 @@
 
 // Local services
 import SpeechInputDesktopControllerService from "../../services/speechRecognition/SpeechInputDesktopControllerService";
+import SpeechRecognizerCollectionService from "../../services/speechRecognition/SpeechRecognizerCollectionService";
 
 import DesktopCommanderControllerService from "@services/DesktopCommanderControllerService";
 
@@ -20,14 +29,68 @@ const SpeechCommanderApp = {
   },
   isAutoStart: true,
   serviceClasses: [
+    SpeechRecognizerCollectionService,
     SpeechInputDesktopControllerService,
     DesktopCommanderControllerService,
   ],
 
   view: function View({ appServices }) {
+    const collectionService = appServices[SpeechRecognizerCollectionService];
+
+    const speechRecognitionServices =
+      collectionService.getSpeechRecognizerServices();
+
+    const speechRecognitionProviders = useMemo(() => {
+      const providers = speechRecognitionServices.map(service => ({
+        title: service.getTitle(),
+        disabled: false,
+      }));
+
+      // TODO: Remove once native provider is implemented
+      providers.push({
+        title: "Native",
+        disabled: true,
+      });
+
+      return providers;
+    }, [speechRecognitionServices]);
+
+    // TODO: Remove
+    console.log({ speechRecognitionProviders, speechRecognitionServices });
+
     // TODO: Implement multiple speech recognizer input controls
 
-    return <div>speech commander</div>;
+    return (
+      <Layout>
+        <Content>
+          <Full>
+            <Padding>
+              <Section>
+                <h1>Configure</h1>
+
+                <Section>
+                  <h2>Speech Recognition Providers</h2>
+
+                  <p className="note">
+                    Multiple speech recognition providers can be run
+                    concurrently.
+                  </p>
+
+                  {speechRecognitionProviders.map(provider => (
+                    <LabeledToggle
+                      key={provider.title}
+                      masterLabel={provider.title}
+                      disabled={provider.disabled}
+                    />
+                  ))}
+                </Section>
+              </Section>
+            </Padding>
+          </Full>
+        </Content>
+        <SpeechCommanderAppFooter />
+      </Layout>
+    );
   },
 
   /*
