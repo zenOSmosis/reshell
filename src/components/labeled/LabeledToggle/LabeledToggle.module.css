@@ -2,7 +2,6 @@
   display: inline-block;
   vertical-align: middle;
   text-align: center;
-  white-space: nowrap;
   margin: 0px 4px;
 }
 
@@ -21,6 +20,10 @@
 .labeled-toggle .cell.right:not(.active),
 .labeled-toggle .cell.left:not(.active) {
   opacity: 0.7;
+}
+
+.labeled-toggle .content-row {
+  white-space: nowrap;
 }
 
 .labeled-toggle .title-row {
