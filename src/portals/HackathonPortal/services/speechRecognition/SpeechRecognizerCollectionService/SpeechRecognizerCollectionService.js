@@ -3,9 +3,9 @@ import SpeechRecognizerCollection from "./SpeechRecognizerCollection";
 
 import { EVT_TRANSCRIPTION_FINALIZED } from "../__common__/SpeechRecognizerBase";
 
-import MesaSpeechRecognizerService from "../MesaSpeechRecognizerService";
+import MesaSpeechRecognizerService from "../vendor/Mesa/MesaSpeechRecognizerService";
 // TODO: Enable
-// import DeepgramSpeechRecognizerService from "../DeepgramSpeechRecognizerService";
+// import DeepgramSpeechRecognizerService from "../vendor/Deepgram/DeepgramSpeechRecognizerService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 

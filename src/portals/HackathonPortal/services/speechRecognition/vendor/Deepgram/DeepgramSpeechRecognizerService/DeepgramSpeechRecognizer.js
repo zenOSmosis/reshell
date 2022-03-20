@@ -1,7 +1,7 @@
 import SpeechRecognizerBase, {
   EVT_BEFORE_DESTROY,
   EVT_DESTROYED,
-} from "../__common__/SpeechRecognizerBase";
+} from "../../__common__/SpeechRecognizerBase";
 
 import { Deepgram } from "@deepgram/sdk";
 

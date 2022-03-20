@@ -15,9 +15,9 @@ import { REGISTRATION_ID as KEY_VAULT_REGISTRATION_ID } from "@portals/ExamplePo
 import { REGISTRATION_ID as COMMAND_DEBUGGER_REGISTRATION_ID } from "@portals/ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
 // Local services
-import MesaSpeechRecognizerService from "../../services/MesaSpeechRecognizerService";
-import MesaSubscriptionKeyManagementService from "../../services/MesaSubscriptionKeyManagementService";
-import SpeechInputDesktopControllerService from "../../services/SpeechInputDesktopControllerService";
+import MesaSpeechRecognizerService from "../../services/speechRecognition/vendor/Mesa/MesaSpeechRecognizerService";
+import MesaSubscriptionKeyManagementService from "../../services/speechRecognition/vendor/Mesa/MesaSubscriptionKeyManagementService";
+import SpeechInputDesktopControllerService from "../../services/speechRecognition/SpeechInputDesktopControllerService";
 
 // TODO: Show input selector for which device to recognize from (if
 // there are more than one active audio input device)

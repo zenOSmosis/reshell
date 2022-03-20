@@ -5,9 +5,9 @@ import WithoutRecognizer from "./views/WithoutRecognizer";
 import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
 
 // Local services
-import SpeechInputDesktopControllerService from "../../services/SpeechInputDesktopControllerService";
-import MesaSpeechRecognizerService from "../../services/MesaSpeechRecognizerService";
-import MesaSubscriptionKeyManagementService from "../../services/MesaSubscriptionKeyManagementService";
+import SpeechInputDesktopControllerService from "../../services/speechRecognition/SpeechInputDesktopControllerService";
+import MesaSpeechRecognizerService from "../../services/speechRecognition/vendor/Mesa/MesaSpeechRecognizerService";
+import MesaSubscriptionKeyManagementService from "../../services/speechRecognition/vendor/Mesa/MesaSubscriptionKeyManagementService";
 
 import DesktopCommanderControllerService from "@services/DesktopCommanderControllerService";
 
