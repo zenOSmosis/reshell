@@ -25,7 +25,12 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
     );
   }
 
-  // TODO: Document
+  /**
+   * For documentation purposes, retrieves the service provider URL which
+   * supplies the speech recognition to ReShell.
+   *
+   * @return {string}
+   */
   getServiceProviderURL() {
     return "https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/";
   }

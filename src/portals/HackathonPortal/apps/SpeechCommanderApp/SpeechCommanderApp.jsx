@@ -3,6 +3,11 @@ import { useMemo } from "react";
 import Full from "@components/Full";
 import Padding from "@components/Padding";
 import Layout, { Content } from "@components/Layout";
+import Section from "@components/Section";
+import Center from "@components/Center";
+import ExternalLinkButton from "@components/ExternalLinkButton";
+
+import getContactURL from "@utils/getContactURL";
 
 import SpeechRecognizerSection from "./components/SpeechRecognizerSection";
 import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
@@ -80,6 +85,20 @@ const SpeechCommanderApp = {
                   speechProvider={provider}
                 />
               ))}
+
+              <Section>
+                <Center>
+                  <Padding style={{ fontWeight: "bold" }}>
+                    Do you have a speech recognition API you'd like to see in
+                    this list?
+                  </Padding>
+                  <Padding>
+                    <ExternalLinkButton href={getContactURL()}>
+                      Contact us
+                    </ExternalLinkButton>
+                  </Padding>
+                </Center>
+              </Section>
             </Padding>
           </Full>
         </Content>

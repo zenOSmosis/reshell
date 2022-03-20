@@ -4,6 +4,7 @@ import LabeledToggle from "@components/labeled/LabeledToggle";
 import LabeledLED from "@components/labeled/LabeledLED";
 import { Row, Column } from "@components/Layout";
 import Timer from "@components/Timer";
+import ExternalLink from "@components/ExternalLink";
 
 import SpeechActivityTable from "../SpeechActivityTable";
 
@@ -84,13 +85,9 @@ export default function SpeechRecognizerSection({ speechProvider }) {
       {speechProvider.serviceProviderURL && (
         <div className="note">
           Provider information:{" "}
-          <a
-            href={speechProvider.serviceProviderURL}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <ExternalLink href={speechProvider.serviceProviderURL}>
             {speechProvider.serviceProviderURL}
-          </a>
+          </ExternalLink>
         </div>
       )}
     </Section>
