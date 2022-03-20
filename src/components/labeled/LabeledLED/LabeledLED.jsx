@@ -9,6 +9,8 @@ LabeledLED.propTypes = {
 
   /** The color of the LED */
   color: PropTypes.string,
+
+  disabled: PropTypes.bool,
 };
 
 export default function LabeledLED({
@@ -16,10 +18,18 @@ export default function LabeledLED({
   className,
   style,
   label,
+  disabled,
   ...rest
 }) {
   return (
-    <div className={classNames(styles["labeled-led"], className)} style={style}>
+    <div
+      className={classNames(
+        styles["labeled-led"],
+        disabled && styles["disabled"],
+        className
+      )}
+      style={style}
+    >
       <div className={styles["led-wrap"]}>
         <LED color={color} {...rest} />
       </div>
