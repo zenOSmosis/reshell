@@ -20,6 +20,8 @@ import DesktopCommanderControllerService from "@services/DesktopCommanderControl
 
 export const REGISTRATION_ID = "speech-commander";
 
+// TODO: Show matched command
+
 const SpeechCommanderApp = {
   id: REGISTRATION_ID,
   title: "Speech Commander",
