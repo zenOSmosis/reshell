@@ -6,7 +6,11 @@ import DeepgramSpeechRecognizer, {
   EVT_TRANSCRIPTION_FINALIZED,
 } from "./DeepgramSpeechRecognizer";
 
-// import MesaSubscriptionKeyManagementService from "../MesaSubscriptionKeyManagementService";
+// import DeepgramAPIKeyManagementService from "../DeepgramAPIKeyManagementService";
+
+// Deepgram details:
+// - Hackathon details: https://dev.to/devteam/join-us-for-a-new-kind-of-hackathon-on-dev-brought-to-you-by-deepgram-2bjd
+// - MediaStream implementation: https://github.com/deepgram/deepgram-node-sdk#transcribe-audio-in-real-time
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
@@ -19,10 +23,10 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
 
     this.setTitle("Deepgram Speech Recognizer Service");
 
-    /** @type {MesaSubscriptionKeyManagementService} */
+    /** @type {DeepgramAPIKeyManagementService} */
     /*
     this._subscriptionKeyService = this.useServiceClass(
-      MesaSubscriptionKeyManagementService
+      DeepgramAPIKeyManagementService
     );
     */
   }
