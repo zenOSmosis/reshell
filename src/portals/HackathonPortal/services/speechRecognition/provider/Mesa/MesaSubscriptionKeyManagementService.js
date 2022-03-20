@@ -9,7 +9,7 @@ const KEY_SECURE_LOCAL_STORAGE_MESA_SUBSCRIPTION_KEY = "mesa-sub-1";
 // Reference: https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/samples/js/browser
 
 /**
- * Manages the subscription key acquisition and usage for Mesa Azure.
+ * Manages the subscription key acquisition and usage for Mesa.
  */
 export default class MesaSubscriptionKeyManagementService extends UIServiceCore {
   constructor(...args) {
