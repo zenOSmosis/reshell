@@ -315,6 +315,9 @@ table:not(.layout) tbody tr:nth-child(even) {
 .note {
   font-style: italic;
   font-size: 0.9em;
+
+  /** Fix issue where right-justification would not completely display all characters */
+  margin: 0px 1px;
 }
 
 .section {
