@@ -94,7 +94,7 @@ const SpeechCommanderApp = {
                   </Padding>
                   <Padding>
                     <ExternalLinkButton href={getContactURL()}>
-                      Contact us
+                      Contact Us
                     </ExternalLinkButton>
                   </Padding>
                 </Center>
