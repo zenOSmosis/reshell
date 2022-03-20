@@ -2,13 +2,10 @@ import { useMemo } from "react";
 
 import Full from "@components/Full";
 import Padding from "@components/Padding";
-import Section from "@components/Section";
 import Layout, { Content } from "@components/Layout";
-import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
-import SpeechActivityTable from "./components/SpeechActivityTable";
 
-import LabeledToggle from "@components/labeled/LabeledToggle";
-// import LabeledLED from "@components/labeled/LabeledLED/LabeledLED";
+import SpeechRecognizerSection from "./components/SpeechRecognizerSection";
+import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
 
 // import WithoutRecognizer from "./views/WithoutRecognizer";
 // import WithRecognizer from "./views/WithRecognizer/WithRecognizer";
@@ -49,7 +46,7 @@ const SpeechCommanderApp = {
 
       // TODO: Remove once native provider is implemented
       providers.push({
-        title: "Native",
+        title: "Native Speech Recognizer Service",
         disabled: true,
       });
 
@@ -73,17 +70,10 @@ const SpeechCommanderApp = {
               </p>
 
               {speechRecognitionProviders.map(provider => (
-                <Section key={provider.title}>
-                  <Padding>
-                    <LabeledToggle
-                      masterLabel={provider.title}
-                      disabled={provider.disabled}
-                    />
-                  </Padding>
-                  <Padding>
-                    <SpeechActivityTable />
-                  </Padding>
-                </Section>
+                <SpeechRecognizerSection
+                  key={provider.title}
+                  speechProvider={provider}
+                />
               ))}
             </Padding>
           </Full>
