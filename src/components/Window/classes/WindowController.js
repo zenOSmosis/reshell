@@ -68,15 +68,15 @@ export default class WindowController extends PhantomState {
    * @return {Promise<void>}
    */
   async destroy() {
+    // TODO: Determine if in dirty state, prior to closing
+    // TODO: Replace w/ UIModal
+    // if (
+    // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
+    // ) {
+
     return super.destroy(async () => {
       // Clear any currently scheduled resize executions
       this._emitDebouncedResized.clear();
-
-      // TODO: Determine if in dirty state, prior to closing
-      // TODO: Replace w/ UIModal
-      // if (
-      // window.confirm(`Are you sure you wish to close "${this.getTitle()}"?`)
-      // ) {
 
       if (this._appRuntime && !this._appRuntime.getIsDestroying()) {
         await this._appRuntime.destroy();
