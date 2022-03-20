@@ -68,6 +68,6 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
    * @return {SpeechRecognizerServiceBase[]}
    */
   getSpeechRecognizerServices() {
-    return this.getChildren();
+    return this._speechRecognizerServiceCollection.getChildren();
   }
 }
