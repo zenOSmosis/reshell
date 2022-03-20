@@ -37,6 +37,7 @@ const SpeechCommanderApp = {
     const speechRecognitionServices =
       collectionService.getSpeechRecognizerServices();
 
+    // TODO: Document
     const speechRecognitionProviders = useMemo(() => {
       const providers = speechRecognitionServices.map(service => ({
         title: service.getTitle(),

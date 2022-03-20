@@ -18,14 +18,22 @@ export default function SpeechRecognizerSection({ speechProvider }) {
             {
               // TODO: Add onTick handler
             }
-            <Timer onTick={() => null} />
+            <Timer
+              onTick={() => null}
+              style={{
+                color:
+                  !speechProvider.active || speechProvider.disabled
+                    ? "gray"
+                    : "inherit",
+              }}
+            />
           </div>
 
           <div style={{ float: "right", overflow: "auto" }}>
             <div style={{ display: "inline-block", marginLeft: 10 }}>
               <LabeledLED
                 label="Voice Activity"
-                disabled={speechProvider.disabled}
+                disabled={!speechProvider.active || speechProvider.disabled}
               />
             </div>
           </div>
@@ -54,7 +62,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
       {!speechProvider.disabled && (
         <>
           <Padding>
-            <SpeechActivityTable />
+            <SpeechActivityTable disabled={!speechProvider.active} />
           </Padding>
 
           <div style={{ position: "relative" }}>

@@ -4,6 +4,7 @@ import Padding from "@components/Padding";
 export default function SpeechActivityTable({
   realTimeTranscription,
   finalizedTranscription,
+  disabled = false,
 }) {
   return (
     <Row disableVerticalFill style={{ height: 80 }}>
@@ -17,7 +18,11 @@ export default function SpeechActivityTable({
         <Padding>
           <Layout>
             <Content>
-              <div>{realTimeTranscription || "N/A"}</div>
+              <div style={{ color: disabled ? "gray" : "inherit" }}>
+                {!disabled && realTimeTranscription
+                  ? realTimeTranscription
+                  : "N/A"}
+              </div>
             </Content>
             <Footer>
               <div
@@ -43,7 +48,11 @@ export default function SpeechActivityTable({
         <Padding>
           <Layout>
             <Content>
-              <div>{finalizedTranscription || "N/A"}</div>
+              <div style={{ color: disabled ? "gray" : "inherit" }}>
+                {!disabled && finalizedTranscription
+                  ? finalizedTranscription
+                  : "N/A"}
+              </div>
             </Content>
             <Footer>
               <div
