@@ -5,6 +5,7 @@ import Padding from "@components/Padding";
 import Section from "@components/Section";
 import Layout, { Content } from "@components/Layout";
 import SpeechCommanderAppFooter from "./components/SpeechCommanderApp.Footer";
+import SpeechActivityTable from "./components/SpeechActivityTable";
 
 import LabeledToggle from "@components/labeled/LabeledToggle";
 // import LabeledLED from "@components/labeled/LabeledLED/LabeledLED";
@@ -24,8 +25,8 @@ const SpeechCommanderApp = {
   id: REGISTRATION_ID,
   title: "Speech Commander",
   style: {
-    width: 640,
-    height: 480,
+    width: 640 * 1.5,
+    height: 480 * 1.5,
   },
   isAutoStart: true,
   serviceClasses: [
@@ -63,28 +64,27 @@ const SpeechCommanderApp = {
     return (
       <Layout>
         <Content>
-          <Full>
+          <Full style={{ overflowY: "auto" }}>
             <Padding>
-              <Section>
-                <h1>Configure</h1>
+              <h1>Speech Recognition Providers</h1>
 
-                <Section>
-                  <h2>Speech Recognition Providers</h2>
+              <p className="note">
+                Multiple speech recognition providers can be run concurrently.
+              </p>
 
-                  <p className="note">
-                    Multiple speech recognition providers can be run
-                    concurrently.
-                  </p>
-
-                  {speechRecognitionProviders.map(provider => (
+              {speechRecognitionProviders.map(provider => (
+                <Section key={provider.title}>
+                  <Padding>
                     <LabeledToggle
-                      key={provider.title}
                       masterLabel={provider.title}
                       disabled={provider.disabled}
                     />
-                  ))}
+                  </Padding>
+                  <Padding>
+                    <SpeechActivityTable />
+                  </Padding>
                 </Section>
-              </Section>
+              ))}
             </Padding>
           </Full>
         </Content>
