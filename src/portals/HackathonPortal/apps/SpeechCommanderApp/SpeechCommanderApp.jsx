@@ -49,6 +49,7 @@ const SpeechCommanderApp = {
     const speechRecognitionProviders = useMemo(() => {
       const providers = speechRecognitionServices.map(service => ({
         title: service.getTitle(),
+        service,
         disabled: false,
         requiresAPIKey: true,
         serviceProviderURL: service.getServiceProviderURL(),
@@ -57,6 +58,7 @@ const SpeechCommanderApp = {
       // TODO: Remove once native provider is implemented
       providers.push({
         title: "Native Speech Recognizer Service",
+        service: null,
         disabled: true,
         requiresAPIKey: false,
         serviceProviderURL:

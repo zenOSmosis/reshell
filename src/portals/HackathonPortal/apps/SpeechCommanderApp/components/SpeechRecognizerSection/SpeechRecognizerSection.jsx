@@ -36,6 +36,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
               {!speechProvider.disabled ? (
                 <LabeledLED
                   label="Voice Activity"
+                  color={speechProvider.service?.getIsRecognizing()}
                   disabled={!speechProvider.active || speechProvider.disabled}
                 />
               ) : (
@@ -54,6 +55,12 @@ export default function SpeechRecognizerSection({ speechProvider }) {
             <LabeledToggle
               masterLabel="Speech Recognition"
               disabled={speechProvider.disabled}
+              isOn={speechProvider.service?.getHasRecognizer()}
+              onChange={isOn =>
+                isOn
+                  ? speechProvider.service?.startRecognizing()
+                  : speechProvider.service?.stopRecognizing()
+              }
             />
           </Column>
           <Column>
