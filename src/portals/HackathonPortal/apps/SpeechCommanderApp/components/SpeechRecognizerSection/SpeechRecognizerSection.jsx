@@ -66,7 +66,10 @@ export default function SpeechRecognizerSection({ speechProvider }) {
           <Column>
             <LabeledToggle
               masterLabel="Control Desktop"
-              disabled={!speechProvider.active || speechProvider.disabled}
+              disabled={
+                !speechProvider.service?.getHasRecognizer() ||
+                speechProvider.disabled
+              }
             />
           </Column>
         </Row>
@@ -74,7 +77,14 @@ export default function SpeechRecognizerSection({ speechProvider }) {
       {!speechProvider.disabled && (
         <div style={{ overflow: "auto" }}>
           <Padding>
-            <SpeechActivityTable disabled={!speechProvider.active} />
+            <SpeechActivityTable
+              disabled={
+                !speechProvider.service?.getHasRecognizer() ||
+                speechProvider.disabled
+              }
+              realTimeTranscription={speechProvider.service?.getRealTimeTranscription()}
+              finalizedTranscription={speechProvider.service?.getFinalizedTranscription()}
+            />
           </Padding>
 
           <Padding style={{ textAlign: "right" }}>
