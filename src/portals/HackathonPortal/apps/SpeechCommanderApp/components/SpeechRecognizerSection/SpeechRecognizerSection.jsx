@@ -29,22 +29,30 @@ export default function SpeechRecognizerSection({ speechProvider }) {
           />
         </div>
       )}
-      {!speechProvider.disabled ||
-        (speechProvider.status && (
-          <div style={{ float: "right", overflow: "auto" }}>
-            <div style={{ display: "inline-block", marginLeft: 10 }}>
-              {!speechProvider.disabled ? (
-                <LabeledLED
-                  label="Voice Activity"
-                  color={speechProvider.service?.getIsRecognizing()}
-                  disabled={!speechProvider.active || speechProvider.disabled}
-                />
-              ) : (
-                <span className="note">{speechProvider.status}</span>
-              )}
-            </div>
+      {(!speechProvider.disabled || speechProvider.status) && (
+        <div style={{ float: "right", overflow: "auto" }}>
+          <div style={{ display: "inline-block", marginLeft: 10 }}>
+            {!speechProvider.disabled ? (
+              <LabeledLED
+                label="Voice Activity"
+                color={
+                  !speechProvider.service?.getHasRecognizer()
+                    ? "gray"
+                    : speechProvider.service?.getIsRecognizing()
+                    ? "green"
+                    : "red"
+                }
+                disabled={
+                  !speechProvider.service?.getHasRecognizer() ||
+                  speechProvider.disabled
+                }
+              />
+            ) : (
+              <span className="note">{speechProvider.status}</span>
+            )}
           </div>
-        ))}
+        </div>
+      )}
 
       <h2 style={{ color: speechProvider.disabled ? "gray" : null }}>
         {speechProvider.title}
