@@ -73,6 +73,7 @@ export default class SpeechDesktopControllerService extends UIServiceCore {
 
   // TODO: Document
   // FIXME: (jh) This could be more efficient in terms of CPU usage
+  // TODO: Process in a web worker?
   async extractCommandIntentFromText(text) {
     // Lower-case and alpha-numeric
     const normalizedText = text.toLowerCase().replace(/[^a-z0-9 ]/gi, "");

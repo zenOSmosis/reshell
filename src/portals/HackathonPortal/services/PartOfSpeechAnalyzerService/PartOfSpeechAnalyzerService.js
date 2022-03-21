@@ -8,8 +8,12 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
     this.setTitle("Part of Speech Analyzer Service");
 
     // TODO: Implement accordingly
+    //
+    // TODO: Check for worker feature detection before trying to use: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#worker_feature_detection
+    //
     // @see https://www.npmjs.com/package/worker-plugin
     this._worker = new Worker("./PartOfSpeechAnalyzerService.worker", {
+      // IMPORTANT: Use of "module" is important here
       type: "module",
     });
     this._worker.onmessage = evt => {
@@ -17,5 +21,7 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
 
       console.log("received message event", evt);
     };
+
+    // TODO: Terminate worker once this class destructs: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#terminating_a_worker
   }
 }

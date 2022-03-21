@@ -15,10 +15,10 @@ import UIModalWidgetService from "@services/UIModalWidgetService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
-/**
- * Manages the creation and destruction of MesaSpeechRecognizer instances.
- */
 export default class SpeechRecognizerServiceBase extends UIServiceCore {
+  // TODO: Turn into a service core (utilize in service.cores directory)
+  //TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
+
   constructor(...args) {
     super(...args);
 

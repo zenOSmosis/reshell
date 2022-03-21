@@ -17,7 +17,7 @@ import Center from "@components/Center";
 // import { REGISTRATION_ID as KEY_VAULT_REGISTRATION_ID } from "@portals/ExamplePortal/apps/KeyVaultApp";
 // import { REGISTRATION_ID as COMMAND_DEBUGGER_REGISTRATION_ID } from "@portals/ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
-import PartOfSpeechAnalyzerService from "@services/PartOfSpeechAnalyzerService";
+import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerService";
 
 export const REGISTRATION_ID = "part-of-speech-analyzer";
 
