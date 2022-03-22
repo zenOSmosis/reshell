@@ -53,8 +53,7 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
    * @return {Promise<void>}
    */
   async startRecognizing() {
-    const subscriptionKey =
-      await this._subscriptionKeyService.acquireSubscriptionKey();
+    const subscriptionKey = await this._subscriptionKeyService.acquireAPIKey();
 
     return super.startRecognizing({ subscriptionKey });
   }

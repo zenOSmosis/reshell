@@ -47,8 +47,7 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
    * @return {Promise<void>}
    */
   async startRecognizing() {
-    const subscriptionKey =
-      await this._subscriptionKeyService.acquireSubscriptionKey();
+    const subscriptionKey = await this._subscriptionKeyService.acquireAPIKey();
 
     return super.startRecognizing({ subscriptionKey });
   }

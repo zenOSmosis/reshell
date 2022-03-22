@@ -14,6 +14,7 @@ module.exports = {
       "@icons": path.resolve(__dirname, "src/components/icons"),
       "@portals": path.resolve(__dirname, "src/portals"),
       "@services": path.resolve(__dirname, "src/services"),
+      "@service.cores": path.resolve(__dirname, "src/service.cores"),
       "@shared": path.resolve(__dirname, "src/shared"),
       "@utils": path.resolve(__dirname, "src/utils"),
     },
