@@ -11,7 +11,11 @@ const KEY_SECURE_LOCAL_STORAGE_MESA_SUBSCRIPTION_KEY = "mesa-sub-1";
  */
 export default class MesaSubscriptionKeyManagementService extends ExternalAPIKeyManagementServiceCore {
   constructor(...args) {
-    super(KEY_SECURE_LOCAL_STORAGE_MESA_SUBSCRIPTION_KEY, {}, ...args);
+    super(
+      KEY_SECURE_LOCAL_STORAGE_MESA_SUBSCRIPTION_KEY,
+      "Azure Subscription",
+      ...args
+    );
 
     this.setTitle("Mesa Subscription Key Management Service");
   }

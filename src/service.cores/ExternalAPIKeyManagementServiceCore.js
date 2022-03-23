@@ -3,8 +3,8 @@ import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import KeyVaultService from "@services/KeyVaultService";
 import UIModalWidgetService from "@services/UIModalWidgetService";
 
-export const LABEL_KEY_ACQUIRE = "acquire";
-export const LABEL_KEY_CONFIRM_DELETE = "confirmDelete";
+const LABEL_KEY_ACQUIRE = "acquire";
+const LABEL_KEY_CONFIRM_DELETE = "confirmDelete";
 
 const STATE_KEY_HAS_CACHED_API_KEY = "hasCachedAPIKey";
 
@@ -13,15 +13,12 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
   // TODO: Ensure this class is extended (reference: https://github.com/zenOSmosis/phantom-core/issues/149)
 
   // TODO: Document
-  constructor(
-    secureLocalStorageKey,
-    labels = {
-      [LABEL_KEY_ACQUIRE]: "Enter the API key",
-      [LABEL_KEY_CONFIRM_DELETE]:
-        "Are you sure you wish to delete the API key?",
-    },
-    ...args
-  ) {
+  constructor(secureLocalStorageKey, keyNickname = "API", ...args) {
+    const LABELS = {
+      [LABEL_KEY_ACQUIRE]: `Enter the ${keyNickname} Key`,
+      [LABEL_KEY_CONFIRM_DELETE]: `Are you sure you wish to delete the ${keyNickname} Key?`,
+    };
+
     // TODO: Ensure secureLocalStorageKey is unique per instance
     if (!secureLocalStorageKey) {
       throw new ReferenceError("secureLocalStorageKey is not set");
@@ -34,7 +31,7 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
     });
 
     this._secureLocalStorageKey = secureLocalStorageKey;
-    this._labels = labels;
+    this._labels = LABELS;
 
     this._keyVaultService = this.useServiceClass(KeyVaultService);
 
