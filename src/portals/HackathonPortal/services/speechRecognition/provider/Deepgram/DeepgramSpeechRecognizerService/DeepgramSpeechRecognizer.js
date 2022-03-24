@@ -94,14 +94,17 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       mimeType: "audio/webm",
     });
 
+    // TODO: Patch as necessary; see related ws issue: https://github.com/deepgram/deepgram-node-sdk/issues/38
+
     this._deepgramSocket.addListener("open", () => {
       this.emit(EVT_CONNECTED);
 
       this._mediaRecorder.addListener("dataavailable", event => {
-        if (event.data.size > 0 && this._deepgramSocket.readyState == 1) {
+        if (event.data.size > 0 && this._deepgramSocket.readyState === 1) {
           this._deepgramSocket.send(event.data);
         }
 
+        // FIXME: (jh) Adjust as necessary
         this._mediaRecorder.start(500);
       });
 
