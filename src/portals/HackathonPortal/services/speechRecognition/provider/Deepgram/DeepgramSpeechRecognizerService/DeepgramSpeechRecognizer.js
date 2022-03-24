@@ -34,12 +34,6 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
   constructor(mediaStream, apiKey, options) {
     super(mediaStream, options);
 
-    // this._subscriptionKey = subscriptionKey;
-
-    // TODO: Replace hardcoding with config param
-    // this._locationRegion = "eastus";
-    // this._speechRecognitionLanguage = "en-US";
-
     this._apiKey = apiKey;
     this._deepgram = null;
     this._deepgramSocket = null;
@@ -61,8 +55,9 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     }
   }
 
+  // TODO: Implement?
   /**
-   * Retrieves the Mesa language code for this recognizer.
+   * Retrieves the language code for this recognizer.
    *
    * @return {string}
    */
