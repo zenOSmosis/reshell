@@ -26,6 +26,8 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
 
     super(...args);
 
+    this.setTitle(`${keyNickname} Key Management Service`);
+
     this.setState({
       [STATE_KEY_HAS_CACHED_API_KEY]: false,
     });

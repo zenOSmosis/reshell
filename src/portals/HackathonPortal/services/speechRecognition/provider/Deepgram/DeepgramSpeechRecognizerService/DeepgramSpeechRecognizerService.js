@@ -1,12 +1,12 @@
 import SpeechRecognizerServiceBase, {
   EVT_UPDATED,
-} from "../__common__/SpeechRecognizerServiceBase";
+} from "../../../__common__/SpeechRecognizerServiceBase";
 
 import DeepgramSpeechRecognizer, {
   EVT_TRANSCRIPTION_FINALIZED,
 } from "./DeepgramSpeechRecognizer";
 
-// import DeepgramAPIKeyManagementService from "../DeepgramAPIKeyManagementService";
+import DeepgramAPIKeyManagementService from "../DeepgramAPIKeyManagementService";
 
 // Deepgram details:
 // - Hackathon details: https://dev.to/devteam/join-us-for-a-new-kind-of-hackathon-on-dev-brought-to-you-by-deepgram-2bjd
@@ -24,11 +24,9 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
     this.setTitle("Deepgram Speech Recognizer Service");
 
     /** @type {DeepgramAPIKeyManagementService} */
-    /*
-    this._subscriptionKeyService = this.useServiceClass(
+    this._apiKeyManagementService = this.useServiceClass(
       DeepgramAPIKeyManagementService
     );
-    */
   }
 
   /**
@@ -41,20 +39,23 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
     return "https://deepgram.com/";
   }
 
-  // TODO: Document
+  /**
+   * @param {MediaStream} stream
+   * @param {Object} props TODO: Define
+   * @return {Promise<DeepgramSpeechRecognizer>}
+   */
   async _createRecognizer(stream, { apiKey }) {
     return new DeepgramSpeechRecognizer(stream, apiKey);
   }
 
-  // TODO: Document
   /**
    * Starts the speech recognition system.
    *
    * @return {Promise<void>}
    */
   async startRecognizing() {
-    const subscriptionKey = await this._subscriptionKeyService.acquireAPIKey();
+    const apiKey = await this._apiKeyManagementService.acquireAPIKey();
 
-    return super.startRecognizing({ subscriptionKey });
+    return super.startRecognizing({ apiKey });
   }
 }
