@@ -90,6 +90,7 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     });
 
     // TODO: Patch as necessary; see related ws issue: https://github.com/deepgram/deepgram-node-sdk/issues/38
+    // Solution: https://github.com/deepgram-devs/browser-mic-streaming/blob/main/index.html#L17
 
     this._deepgramSocket.addListener("open", () => {
       this.emit(EVT_CONNECTED);
