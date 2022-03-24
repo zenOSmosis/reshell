@@ -39,6 +39,26 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     // TODO: Replace hardcoding with config param
     // this._locationRegion = "eastus";
     // this._speechRecognitionLanguage = "en-US";
+
+    this._apiKey = apiKey;
+    this._deepgram = null;
+    this._deepgramSocket = null;
+    this._mediaRecorder = null;
+
+    this.registerCleanupHandler(() => this._stopDeepgram());
+  }
+
+  async _stopDeepgram() {
+    if (this._mediaRecorder) {
+      this._mediaRecorder.stop();
+    }
+
+    if (this._deepgramSocket) {
+      this._deepgramSocket.close();
+
+      this._deepgram = null;
+      this._deepgramSocket = null;
+    }
   }
 
   /**
@@ -58,9 +78,45 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
    * Starts the speech recognition processing, performs remote event binding to
    * the class instance, and handles cleanup operations.
    *
-   * @return {void}
+   * @return {Promise<void>}
    */
-  _startRecognizing() {
-    throw new Error("TODO: Implement");
+  async _startRecognizing() {
+    // Stop previous instance
+    await this._stopDeepgram();
+
+    this.emit(EVT_CONNECTING);
+
+    this._deepgram = new Deepgram(this._apiKey);
+    this._deepgramSocket = this._deepgram.transcription.live({
+      puncturate: true,
+    });
+    this._mediaRecorder = new MediaRecorder(this._mediaStream, {
+      mimeType: "audio/webm",
+    });
+
+    this._deepgramSocket.addListener("open", () => {
+      this.emit(EVT_CONNECTED);
+
+      this._mediaRecorder.addListener("dataavailable", event => {
+        if (event.data.size > 0 && this._deepgramSocket.readyState == 1) {
+          this._deepgramSocket.send(event.data);
+        }
+
+        this._mediaRecorder.start(500);
+      });
+
+      this._deepgramSocket.addListener("transcriptReceived", received => {
+        // TODO: Remove
+        console.log({ received });
+
+        // TODO: Handle
+        /*
+        const transcript = received.channel.alternatives[0].transcript;
+        if (transcript && received.is_final) {
+          console.log(transcript);
+        }
+        */
+      });
+    });
   }
 }

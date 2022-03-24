@@ -70,9 +70,9 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
    * Starts the speech recognition processing, performs remote event binding to
    * the class instance, and handles cleanup operations.
    *
-   * @return {void}
+   * @return {Promise<void>}
    */
-  _startRecognizing() {
+  async _startRecognizing() {
     this.emit(EVT_CONNECTING);
 
     const stream = this._mediaStream;

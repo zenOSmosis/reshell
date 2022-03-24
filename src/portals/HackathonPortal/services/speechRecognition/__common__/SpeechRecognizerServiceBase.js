@@ -151,7 +151,7 @@ export default class SpeechRecognizerServiceBase extends UIServiceCore {
   }
 
   // TODO: Document
-  async _createRecognizer(stream, recognizerParams) {
+  async _createRecognizer(mediaStream, recognizerParams) {
     throw new Error("_createRecognizer must be overridden");
   }
 

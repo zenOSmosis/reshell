@@ -40,12 +40,12 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
   }
 
   /**
-   * @param {MediaStream} stream
+   * @param {MediaStream} mediaStream
    * @param {Object} props TODO: Define
    * @return {Promise<DeepgramSpeechRecognizer>}
    */
-  async _createRecognizer(stream, { apiKey }) {
-    return new DeepgramSpeechRecognizer(stream, apiKey);
+  async _createRecognizer(mediaStream, { apiKey }) {
+    return new DeepgramSpeechRecognizer(mediaStream, apiKey);
   }
 
   /**

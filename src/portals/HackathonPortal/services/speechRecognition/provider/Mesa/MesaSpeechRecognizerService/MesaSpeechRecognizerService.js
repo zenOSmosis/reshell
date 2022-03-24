@@ -35,14 +35,17 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
     return "https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/";
   }
 
-  // TODO: Document
-  async _createRecognizer(stream, { subscriptionKey }) {
-    return new MesaSpeechRecognizer(stream, subscriptionKey);
+  /**
+   * @param {MediaStream} mediaStream
+   * @param {Object} props TODO: Document props
+   * @return {Promise<DeepgramSpeechRecognizer>}
+   */
+  async _createRecognizer(mediaStream, { subscriptionKey }) {
+    return new MesaSpeechRecognizer(mediaStream, subscriptionKey);
   }
 
-  // TODO: Document
   /**
-   * Starts the speech recognition system.
+   * Starts the speech recognition engine.
    *
    * @return {Promise<void>}
    */
