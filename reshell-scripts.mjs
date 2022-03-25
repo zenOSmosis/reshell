@@ -19,6 +19,8 @@ const INITIAL_PORTAL_NAME = process.argv[4];
 const cmd = process.argv[3];
 const scriptName = process.argv[5];
 
+// FIXME: (jh) Pass additional process argvs to reshell-script commands
+
 // Initial setup work
 if (INITIAL_PORTAL_NAME) {
   setupPortalWithName(INITIAL_PORTAL_NAME);
