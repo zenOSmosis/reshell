@@ -3,8 +3,6 @@ import SpeechRecognizerBase, {
   EVT_DESTROYED,
 } from "../../../__common__/SpeechRecognizerBase";
 
-import { Deepgram } from "@deepgram/sdk";
-
 export const EVT_CONNECTING = "connecting";
 export const EVT_CONNECTED = "connected";
 
@@ -18,6 +16,8 @@ export const EVT_TRANSCRIPTION_RECOGNIZING = "transcription-recognizing";
 export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
 
 export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
+
+const DEEPGRAM_WSS_ADDRESS = "wss://api.deepgram.com/v1/listen";
 
 // Examples:
 // https://github.com/deepgram/deepgram-node-sdk#transcribe-audio-in-real-time
@@ -35,7 +35,6 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     super(mediaStream, options);
 
     this._apiKey = apiKey;
-    this._deepgram = null;
     this._deepgramSocket = null;
     this._mediaRecorder = null;
 
@@ -50,7 +49,6 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     if (this._deepgramSocket) {
       this._deepgramSocket.close();
 
-      this._deepgram = null;
       this._deepgramSocket = null;
     }
   }
@@ -81,21 +79,21 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
 
     this.emit(EVT_CONNECTING);
 
-    this._deepgram = new Deepgram(this._apiKey);
-    this._deepgramSocket = this._deepgram.transcription.live({
-      puncturate: true,
-    });
+    this._deepgramSocket = new WebSocket(DEEPGRAM_WSS_ADDRESS, [
+      "token",
+      this._apiKey,
+    ]);
+
     this._mediaRecorder = new MediaRecorder(this._mediaStream, {
       mimeType: "audio/webm",
     });
 
-    // TODO: Patch as necessary; see related ws issue: https://github.com/deepgram/deepgram-node-sdk/issues/38
     // Solution: https://github.com/deepgram-devs/browser-mic-streaming/blob/main/index.html#L17
 
-    this._deepgramSocket.addListener("open", () => {
+    this._deepgramSocket.addEventListener("open", () => {
       this.emit(EVT_CONNECTED);
 
-      this._mediaRecorder.addListener("dataavailable", event => {
+      this._mediaRecorder.addEventListener("dataavailable", event => {
         if (event.data.size > 0 && this._deepgramSocket.readyState === 1) {
           this._deepgramSocket.send(event.data);
         }
@@ -104,7 +102,7 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
         this._mediaRecorder.start(500);
       });
 
-      this._deepgramSocket.addListener("transcriptReceived", received => {
+      this._deepgramSocket.addEventListener("transcriptReceived", received => {
         // TODO: Remove
         console.log({ received });
 
