@@ -8,7 +8,9 @@ const LABEL_KEY_CONFIRM_DELETE = "confirmDelete";
 
 const STATE_KEY_HAS_CACHED_API_KEY = "hasCachedAPIKey";
 
-// TODO: Document
+/**
+ * Manages acquisition and caching of API keys for external services.
+ */
 export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
   // TODO: Ensure this class is extended (reference: https://github.com/zenOSmosis/phantom-core/issues/149)
 
@@ -88,7 +90,7 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
   }
 
   /**
-   * TODO: Document
+   * Retrieves whether or not there is a cached API key.
    *
    * @return {boolean}
    */
@@ -96,9 +98,11 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
     return this.getState()[STATE_KEY_HAS_CACHED_API_KEY];
   }
 
-  // TODO: Document
-  // NOTE: This is intentionally not setting the API key in the state
   /**
+   * Acquires the API key. If a cached key is not present, it will show a UI
+   * modal prompting the user to enter one.
+   *
+   * Note, this is intentionally not setting the API key in the state.
    *
    * @return {string | null} A null value will be returned if the user cancels.
    */
@@ -138,8 +142,9 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
     }
   }
 
-  // TODO: Document
   /**
+   * Deletes the cached API key.
+   *
    * @return {Promise<void>}
    */
   async deleteCachedAPIKey() {
