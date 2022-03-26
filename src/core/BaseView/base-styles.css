@@ -146,6 +146,9 @@ textarea {
   outline: 1px solid transparent;
 
   resize: none;
+
+  /** TODO: Use color variable for highlighted elements */
+  accent-color: #347fe8;
 }
 
 ::placeholder {
