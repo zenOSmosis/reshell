@@ -321,7 +321,7 @@ table:not(.layout) tbody tr:nth-child(even) {
   font-size: 0.9em;
 
   /** Fix issue where right-justification would not completely display all characters */
-  margin: 0px 1px;
+  margin: 0 1px;
 }
 
 .section {
