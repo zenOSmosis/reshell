@@ -1,6 +1,6 @@
-import SpeechRecognizerServiceBase, {
+import SpeechRecognizerServiceCore, {
   EVT_UPDATED,
-} from "../../../__common__/SpeechRecognizerServiceBase";
+} from "../../../__common__/SpeechRecognizerServiceCore";
 
 import MesaSpeechRecognizer, {
   EVT_TRANSCRIPTION_FINALIZED,
@@ -13,16 +13,12 @@ export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 /**
  * Manages the creation and destruction of MesaSpeechRecognizer instances.
  */
-export default class MesaSpeechRecognizerService extends SpeechRecognizerServiceBase {
+export default class MesaSpeechRecognizerService extends SpeechRecognizerServiceCore {
+  // TODO: Document
   constructor(...args) {
-    super(...args);
+    super(MesaSubscriptionKeyManagementService, ...args);
 
     this.setTitle("Mesa Speech Recognizer Service");
-
-    /** @type {MesaSubscriptionKeyManagementService} */
-    this._subscriptionKeyService = this.useServiceClass(
-      MesaSubscriptionKeyManagementService
-    );
   }
 
   /**
@@ -50,7 +46,7 @@ export default class MesaSpeechRecognizerService extends SpeechRecognizerService
    * @return {Promise<void>}
    */
   async startRecognizing() {
-    const subscriptionKey = await this._subscriptionKeyService.acquireAPIKey();
+    const subscriptionKey = await this._apiKeyManagementService.acquireAPIKey();
 
     return super.startRecognizing({ subscriptionKey });
   }

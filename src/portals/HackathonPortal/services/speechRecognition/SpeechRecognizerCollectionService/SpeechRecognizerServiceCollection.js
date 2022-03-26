@@ -1,7 +1,7 @@
 import { PhantomCollection } from "phantom-core";
-import SpeechRecognizerServiceBase, {
+import SpeechRecognizerServiceCore, {
   EVT_TRANSCRIPTION_FINALIZED,
-} from "../__common__/SpeechRecognizerServiceBase";
+} from "../__common__/SpeechRecognizerServiceCore";
 
 /**
  * A collection of speech recognizer service instances.
@@ -19,7 +19,7 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
   /**
    * Adds a speech recognizer service instance to the collection.
    *
-   * @param {SpeechRecognizerServiceBase}
+   * @param {SpeechRecognizerServiceCore}
    * @return {void}
    */
   addChild(speechRecognizerService) {
@@ -27,9 +27,9 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
     // better would be to make this collection do the validation internally
     // with some sort of config option)
 
-    if (!(speechRecognizerService instanceof SpeechRecognizerServiceBase)) {
+    if (!(speechRecognizerService instanceof SpeechRecognizerServiceCore)) {
       throw new TypeError(
-        "speechRecognizerService is not a SpeechRecognizerServiceBase"
+        "speechRecognizerService is not a SpeechRecognizerServiceCore"
       );
     }
 
@@ -47,7 +47,7 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
    * Retrieves the speech recognizer service instances which are bound to this
    * collection.
    *
-   * @return {SpeechRecognizerServiceBase[]}
+   * @return {SpeechRecognizerServiceCore[]}
    */
   getSpeechRecognizerServices() {
     return this.getChildren();

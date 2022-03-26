@@ -44,21 +44,29 @@ const SpeechCommanderApp = {
     const speechRecognitionServices =
       collectionService.getSpeechRecognizerServices();
 
+    // TODO: Remove
+    console.log("base rerender");
+
     // TODO: Document
     // TODO: Refactor into a data view
     const speechRecognitionProviders = useMemo(() => {
-      const providers = speechRecognitionServices.map(service => ({
-        title: service.getTitle(),
-        service,
-        disabled: false,
-        requiresAPIKey: true,
-        serviceProviderURL: service.getServiceProviderURL(),
-      }));
+      const providers = speechRecognitionServices.map(
+        speechRecognizerService => ({
+          title: speechRecognizerService.getTitle(),
+          speechRecognizerService,
+          apiKeyManagementService:
+            speechRecognizerService.getAPIKeyManagementService(),
+          disabled: false,
+          requiresAPIKey: true,
+          serviceProviderURL: speechRecognizerService.getServiceProviderURL(),
+        })
+      );
 
       // TODO: Remove once native provider is implemented
       providers.push({
         title: "Native Speech Recognizer Service",
-        service: null,
+        speechRecognizerService: null,
+        apiKeyManagementService: null,
         disabled: true,
         requiresAPIKey: false,
         serviceProviderURL:
@@ -68,9 +76,6 @@ const SpeechCommanderApp = {
 
       return providers;
     }, [speechRecognitionServices]);
-
-    // TODO: Remove
-    console.log({ speechRecognitionProviders, speechRecognitionServices });
 
     return (
       <Layout>

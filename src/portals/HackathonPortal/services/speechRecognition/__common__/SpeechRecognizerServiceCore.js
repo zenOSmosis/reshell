@@ -1,5 +1,5 @@
-// TODO: Ensure this class IS extended
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import ExternalAPIKeyManagementServiceCore from "@service.cores/ExternalAPIKeyManagementServiceCore";
 
 import {
   EVT_CONNECTING,
@@ -15,12 +15,29 @@ import UIModalWidgetService from "@services/UIModalWidgetService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
-export default class SpeechRecognizerServiceBase extends UIServiceCore {
+export default class SpeechRecognizerServiceCore extends UIServiceCore {
   // TODO: Turn into a service core (utilize in service.cores directory)
-  //TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
+  // TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
-  constructor(...args) {
+  // TODO: Document
+  constructor(ExternalAPIKeyManagementServiceClass, ...args) {
     super(...args);
+
+    this._apiKeyManagementService = this.useServiceClass(
+      ExternalAPIKeyManagementServiceClass
+    );
+
+    // FIXME: (jh) Validate type before instantiation
+    if (
+      !(
+        this._apiKeyManagementService instanceof
+        ExternalAPIKeyManagementServiceCore
+      )
+    ) {
+      throw new TypeError(
+        "ExternalAPIKeyManagementServiceClass does not extend ExternalAPIKeyManagementServiceCore"
+      );
+    }
 
     this.setState({
       isConnecting: false,
@@ -81,6 +98,15 @@ export default class SpeechRecognizerServiceBase extends UIServiceCore {
     this._inputMediaDevicesService = this.useServiceClass(
       InputMediaDevicesService
     );
+  }
+
+  /**
+   * Retrieves the API key manager for this speech recognizer.
+   *
+   * @return {ExternalAPIKeyManagementService}
+   */
+  getAPIKeyManagementService() {
+    return this._apiKeyManagementService;
   }
 
   /**

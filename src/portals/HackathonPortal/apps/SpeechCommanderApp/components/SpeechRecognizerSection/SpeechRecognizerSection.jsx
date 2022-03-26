@@ -11,6 +11,9 @@ import SpeechActivityTable from "../SpeechActivityTable";
 // TODO: Add prop-types
 // TODO: Document
 export default function SpeechRecognizerSection({ speechProvider }) {
+  const speechRecognizerService = speechProvider.speechRecognizerService;
+  const apiKeyManagementService = speechProvider.apiKeyManagementService;
+
   return (
     <Section>
       {!speechProvider.disabled && (
@@ -36,14 +39,14 @@ export default function SpeechRecognizerSection({ speechProvider }) {
               <LabeledLED
                 label="Voice Activity"
                 color={
-                  !speechProvider.service?.getHasRecognizer()
+                  !speechRecognizerService?.getHasRecognizer()
                     ? "gray"
-                    : speechProvider.service?.getIsRecognizing()
+                    : speechRecognizerService?.getIsRecognizing()
                     ? "green"
                     : "red"
                 }
                 disabled={
-                  !speechProvider.service?.getHasRecognizer() ||
+                  !speechRecognizerService?.getHasRecognizer() ||
                   speechProvider.disabled
                 }
               />
@@ -63,11 +66,11 @@ export default function SpeechRecognizerSection({ speechProvider }) {
             <LabeledToggle
               masterLabel="Speech Recognition"
               disabled={speechProvider.disabled}
-              isOn={speechProvider.service?.getHasRecognizer()}
+              isOn={speechRecognizerService?.getHasRecognizer()}
               onChange={isOn =>
                 isOn
-                  ? speechProvider.service?.startRecognizing()
-                  : speechProvider.service?.stopRecognizing()
+                  ? speechRecognizerService?.startRecognizing()
+                  : speechRecognizerService?.stopRecognizing()
               }
             />
           </Column>
@@ -75,7 +78,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
             <LabeledToggle
               masterLabel="Control Desktop"
               disabled={
-                !speechProvider.service?.getHasRecognizer() ||
+                !speechRecognizerService?.getHasRecognizer() ||
                 speechProvider.disabled
               }
             />
@@ -87,24 +90,35 @@ export default function SpeechRecognizerSection({ speechProvider }) {
           <Padding>
             <SpeechActivityTable
               disabled={
-                !speechProvider.service?.getHasRecognizer() ||
+                !speechRecognizerService?.getHasRecognizer() ||
                 speechProvider.disabled
               }
-              realTimeTranscription={speechProvider.service?.getRealTimeTranscription()}
-              finalizedTranscription={speechProvider.service?.getFinalizedTranscription()}
+              realTimeTranscription={speechRecognizerService?.getRealTimeTranscription()}
+              finalizedTranscription={speechRecognizerService?.getFinalizedTranscription()}
             />
           </Padding>
 
-          <Padding style={{ textAlign: "right" }}>
-            {speechProvider.requiresAPIKey && (
-              <>
-                <button>Set API Key</button>{" "}
-                <button style={{ backgroundColor: "red" }}>
-                  Delete API Key
-                </button>
-              </>
-            )}
-          </Padding>
+          {apiKeyManagementService && (
+            <Padding style={{ textAlign: "right" }}>
+              {speechProvider.requiresAPIKey && (
+                <>
+                  <button
+                    onClick={apiKeyManagementService.acquireAPIKey}
+                    disabled={apiKeyManagementService.getHasCachedAPIKey()}
+                  >
+                    Set API Key
+                  </button>{" "}
+                  <button
+                    onClick={apiKeyManagementService.deleteCachedAPIKey}
+                    disabled={!apiKeyManagementService.getHasCachedAPIKey()}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Delete API Key
+                  </button>
+                </>
+              )}
+            </Padding>
+          )}
         </div>
       )}
       {speechProvider.serviceProviderURL && (

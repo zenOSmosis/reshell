@@ -88,6 +88,7 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       mimeType: "audio/webm",
     });
 
+    // TODO: Patch as necessary; see related ws issue: https://github.com/deepgram/deepgram-node-sdk/issues/38
     // Solution: https://github.com/deepgram-devs/browser-mic-streaming/blob/main/index.html#L17
 
     this._deepgramSocket.addEventListener("open", () => {

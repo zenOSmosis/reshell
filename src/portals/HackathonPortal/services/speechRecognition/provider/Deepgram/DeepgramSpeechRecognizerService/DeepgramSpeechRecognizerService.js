@@ -1,6 +1,6 @@
-import SpeechRecognizerServiceBase, {
+import SpeechRecognizerServiceCore, {
   EVT_UPDATED,
-} from "../../../__common__/SpeechRecognizerServiceBase";
+} from "../../../__common__/SpeechRecognizerServiceCore";
 
 import DeepgramSpeechRecognizer, {
   EVT_TRANSCRIPTION_FINALIZED,
@@ -17,16 +17,12 @@ export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 /**
  * Manages the creation and destruction of MesaSpeechRecognizer instances.
  */
-export default class DeepgramSpeechRecognizerService extends SpeechRecognizerServiceBase {
+export default class DeepgramSpeechRecognizerService extends SpeechRecognizerServiceCore {
+  // TODO: Document
   constructor(...args) {
-    super(...args);
+    super(DeepgramAPIKeyManagementService, ...args);
 
     this.setTitle("Deepgram Speech Recognizer Service");
-
-    /** @type {DeepgramAPIKeyManagementService} */
-    this._apiKeyManagementService = this.useServiceClass(
-      DeepgramAPIKeyManagementService
-    );
   }
 
   /**
