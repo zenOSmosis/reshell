@@ -94,26 +94,29 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     this._deepgramSocket.addEventListener("open", () => {
       this.emit(EVT_CONNECTED);
 
+      // TODO: Remove
+      // console.log("connected....");
+
       this._mediaRecorder.addEventListener("dataavailable", event => {
         if (event.data.size > 0 && this._deepgramSocket.readyState === 1) {
           this._deepgramSocket.send(event.data);
         }
-
-        // FIXME: (jh) Adjust as necessary
-        this._mediaRecorder.start(500);
       });
 
-      this._deepgramSocket.addEventListener("transcriptReceived", received => {
+      // FIXME: (jh) Adjust as necessary
+      this._mediaRecorder.start(100);
+
+      this._deepgramSocket.addEventListener("message", message => {
+        const received = JSON.parse(message.data);
+
         // TODO: Remove
         console.log({ received });
 
-        // TODO: Handle
-        /*
         const transcript = received.channel.alternatives[0].transcript;
         if (transcript && received.is_final) {
+          // TODO: Update
           console.log(transcript);
         }
-        */
       });
     });
   }
