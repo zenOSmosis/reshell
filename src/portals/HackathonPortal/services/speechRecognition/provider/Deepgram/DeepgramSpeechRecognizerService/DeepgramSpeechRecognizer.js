@@ -44,6 +44,8 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
   async _stopDeepgram() {
     if (this._mediaRecorder) {
       this._mediaRecorder.stop();
+
+      this._mediaRecorder = null;
     }
 
     if (this._deepgramSocket) {
@@ -52,18 +54,6 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       this._deepgramSocket = null;
     }
   }
-
-  // TODO: Implement?
-  /**
-   * Retrieves the language code for this recognizer.
-   *
-   * @return {string}
-   */
-  /*
-  getRecognitionLanguage() {
-    return this._recognitionLanguage;
-  }
-  */
 
   // TODO: Ensure this instance is automatically destructed if the speech
   // service errors or has a network error
@@ -94,11 +84,8 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     this._deepgramSocket.addEventListener("open", () => {
       this.emit(EVT_CONNECTED);
 
-      // TODO: Remove
-      // console.log("connected....");
-
       this._mediaRecorder.addEventListener("dataavailable", event => {
-        if (event.data.size > 0 && this._deepgramSocket.readyState === 1) {
+        if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
           this._deepgramSocket.send(event.data);
         }
       });
@@ -109,13 +96,12 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       this._deepgramSocket.addEventListener("message", message => {
         const received = JSON.parse(message.data);
 
-        // TODO: Remove
-        console.log({ received });
-
         const transcript = received.channel.alternatives[0].transcript;
+
         if (transcript && received.is_final) {
-          // TODO: Update
-          console.log(transcript);
+          this._setFinalizedTranscription(transcript);
+        } else {
+          this.emit(EVT_TRANSCRIPTION_RECOGNIZING, transcript);
         }
       });
     });

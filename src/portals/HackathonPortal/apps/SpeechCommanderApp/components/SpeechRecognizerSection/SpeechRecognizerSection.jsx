@@ -8,6 +8,7 @@ import ExternalLink from "@components/ExternalLink";
 
 import SpeechActivityTable from "../SpeechActivityTable";
 
+// TODO: Show simple / advanced views?
 // TODO: Add prop-types
 // TODO: Document
 export default function SpeechRecognizerSection({ speechProvider }) {
@@ -36,20 +37,26 @@ export default function SpeechRecognizerSection({ speechProvider }) {
         <div style={{ float: "right", overflow: "auto" }}>
           <div style={{ display: "inline-block", marginLeft: 10 }}>
             {!speechProvider.disabled ? (
-              <LabeledLED
-                label="Voice Activity"
-                color={
-                  !speechRecognizerService?.getHasRecognizer()
-                    ? "gray"
-                    : speechRecognizerService?.getIsRecognizing()
-                    ? "green"
-                    : "red"
-                }
-                disabled={
-                  !speechRecognizerService?.getHasRecognizer() ||
-                  speechProvider.disabled
-                }
-              />
+              <>
+                <LabeledLED
+                  label="Connection"
+                  color={
+                    !speechRecognizerService?.getHasRecognizer()
+                      ? "red"
+                      : "green"
+                  }
+                />
+                <LabeledLED
+                  label="Voice Activity"
+                  color={
+                    !speechRecognizerService?.getHasRecognizer()
+                      ? "gray"
+                      : speechRecognizerService?.getIsRecognizing()
+                      ? "green"
+                      : "red"
+                  }
+                />
+              </>
             ) : (
               <span className="note">{speechProvider.status}</span>
             )}
