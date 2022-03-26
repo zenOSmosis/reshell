@@ -44,9 +44,6 @@ const SpeechCommanderApp = {
     const speechRecognitionServices =
       collectionService.getSpeechRecognizerServices();
 
-    // TODO: Remove
-    console.log("base rerender");
-
     // TODO: Document
     // TODO: Refactor into a data view
     const speechRecognitionProviders = useMemo(() => {
@@ -116,6 +113,7 @@ const SpeechCommanderApp = {
     );
   },
 
+  // TODO: Remove
   /*
   OLD_titleBarView: function TitleBarView({ appServices }) {
     const speechRecognizerService = appServices[MesaSpeechRecognizerService];

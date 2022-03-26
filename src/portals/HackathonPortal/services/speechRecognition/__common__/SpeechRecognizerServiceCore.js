@@ -27,6 +27,12 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
       ExternalAPIKeyManagementServiceClass
     );
 
+    // Emit EVT_UPDATED when API Key Management Service updates
+    // FIXME: (jh) See relevant issue: https://github.com/zenOSmosis/phantom-core/issues/152
+    this.proxyOn(this._apiKeyManagementService, EVT_UPDATED, data =>
+      this.emit(EVT_UPDATED, data)
+    );
+
     // FIXME: (jh) Validate type before instantiation
     if (
       !(
