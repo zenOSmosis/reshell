@@ -300,6 +300,8 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
   /**
    * Retrieves the number of seconds the speech recognizer has been instantiated.
    *
+   * If the speech recognizer is not active, it will return 0.
+   *
    * @return {number}
    */
   getRecognizerUptime() {
