@@ -291,6 +291,7 @@ table {
   border-spacing: 0px;
   border-collapse: separate;
   text-align: left;
+  width: 100%;
 }
 
 table,
@@ -304,7 +305,6 @@ table thead tr {
 }
 
 table:not(.layout) {
-  border: 1px rgba(255, 255, 255, 0.2) solid;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
