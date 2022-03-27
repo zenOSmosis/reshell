@@ -77,7 +77,7 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
       await this._stopRecognizing();
     }
 
-    this._setIsConnecting = true;
+    this._setIsConnecting(true);
 
     const stream = this._mediaStream;
 

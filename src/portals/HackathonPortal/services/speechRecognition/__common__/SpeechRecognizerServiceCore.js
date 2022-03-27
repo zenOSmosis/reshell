@@ -4,6 +4,7 @@ import ExternalAPIKeyManagementServiceCore from "@service.cores/ExternalAPIKeyMa
 import {
   EVT_CONNECTING,
   EVT_CONNECTED,
+  EVT_DISCONNECTED,
   EVT_BEGIN_RECOGNIZE,
   EVT_TRANSCRIPTION_RECOGNIZING,
   EVT_END_RECOGNIZE,
@@ -74,15 +75,28 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
     // Handle recognizer event binding
     this.on(EVT_UPDATED, (updatedState = {}) => {
       if (updatedState.hasRecognizer) {
-        this.proxyOn(this._recognizer, EVT_CONNECTING, () => {
-          this.setState({ isConnecting: true });
-          this.setState({ isConnected: false });
-        });
+        const _handleConnectStateChange = () => {
+          this.setState({
+            isConnecting: this._recognizer.getIsConnecting(),
+            isConnected: this._recognizer.getIsConnected(),
+          });
+        };
 
-        this.proxyOn(this._recognizer, EVT_CONNECTED, () => {
-          this.setState({ isConnecting: false });
-          this.setState({ isConnected: true });
-        });
+        this.proxyOn(
+          this._recognizer,
+          EVT_CONNECTING,
+          _handleConnectStateChange
+        );
+        this.proxyOn(
+          this._recognizer,
+          EVT_CONNECTED,
+          _handleConnectStateChange
+        );
+        this.proxyOn(
+          this._recognizer,
+          EVT_DISCONNECTED,
+          _handleConnectStateChange
+        );
 
         this.proxyOn(this._recognizer, EVT_BEGIN_RECOGNIZE, () => {
           this.setState({ isRecognizing: true });

@@ -42,8 +42,12 @@ export default function SpeechRecognizerSection({ speechProvider }) {
                   label="Connection"
                   color={
                     !speechRecognizerService?.getHasRecognizer()
-                      ? "red"
-                      : "green"
+                      ? "gray"
+                      : speechRecognizerService?.getIsConnecting()
+                      ? "yellow"
+                      : speechRecognizerService?.getIsConnected()
+                      ? "green"
+                      : "red"
                   }
                 />
                 <LabeledLED

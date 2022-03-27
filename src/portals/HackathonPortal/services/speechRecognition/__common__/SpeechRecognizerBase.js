@@ -99,6 +99,15 @@ export default class SpeechRecognizerBase extends PhantomCore {
   }
 
   /**
+   * Retrieves whether or not the speeech recognizer is connecting.
+   *
+   * @return {boolean}
+   */
+  getIsConnecting() {
+    return this._isConnecting;
+  }
+
+  /**
    * Sets whether or not the speech recognizer is connected.
    *
    * @param {boolean} isConnected
@@ -107,7 +116,7 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * @return {void}
    */
   _setIsConnected(isConnected) {
-    if (!this._isConnected !== isConnected) {
+    if (this._isConnected !== isConnected) {
       this._setIsConnecting(false);
 
       this._isConnected = isConnected;
@@ -121,7 +130,17 @@ export default class SpeechRecognizerBase extends PhantomCore {
   }
 
   /**
-   * Sets whether or not the recognizer is currently recognizing.
+   * Retrieves whether or not the speech recognizer is connected.
+   *
+   * @return {boolean}
+   */
+  getIsConnected() {
+    return this._isConnected;
+  }
+
+  /**
+   * Sets whether or not the speech recognizer is currently recognizing a
+   * transcription.
    *
    * @param {boolean} isRecognizing
    * @emits EVT_BEGIN_RECOGNIZE
@@ -138,6 +157,16 @@ export default class SpeechRecognizerBase extends PhantomCore {
         this.emit(EVT_END_RECOGNIZE);
       }
     }
+  }
+
+  /**
+   * Retrieves whether or not the speech recognizer is currently recognizing a
+   * transcription.
+   *
+   * @return {boolean}
+   */
+  getIsRecognizing() {
+    return this._isRecognizing;
   }
 
   /**
