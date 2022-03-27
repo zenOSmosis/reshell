@@ -25,7 +25,7 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
 
   /**
    * @param {ExternalAPIKeyManagementServiceCore} ExternalAPIKeyManagementServiceClass
-   * A non-instatiated class which manages the API key for the service
+   * A non-instantiated class which manages the API key for the service
    * provider.
    * @param {...args} - The args to pass to the super UIServiceCore.
    */
@@ -61,6 +61,7 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
       isRecognizing: false,
       realTimeTranscription: null,
       finalizedTranscription: null,
+      isControllingDesktop: false,
     });
 
     /** @type {SpeechRecognizerBase} */
@@ -206,7 +207,6 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
     throw new Error("_createRecognizer must be overridden");
   }
 
-  // TODO: Refactor
   // TODO: Document
   /**
    * Starts the speech recognition system.
@@ -270,5 +270,30 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
     if (this._recognizer) {
       await this._recognizer.destroy();
     }
+  }
+
+  /**
+   * Sets whether or not the speech recognizer is controlling the desktop.
+   *
+   * NOTE: Despite the value given it will not be effective if the speech
+   * recognizer is not connected.
+   *
+   * @param {boolean} isControllingDesktop
+   * @return {void}
+   */
+  setIsControllingDesktop(isControllingDesktop) {
+    this.setState({ isControllingDesktop: Boolean(isControllingDesktop) });
+  }
+
+  /**
+   * Retrieves whether or not the speech recognizer is controlling the desktop.
+   *
+   * NOTE: Despite the value returned it will not be effective if the speech
+   * recognizer is not connected.
+   *
+   * @return {boolean}
+   */
+  getIsControllingDesktop() {
+    return this.getState().isControllingDesktop;
   }
 }

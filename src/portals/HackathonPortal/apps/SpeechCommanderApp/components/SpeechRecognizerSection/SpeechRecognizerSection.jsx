@@ -88,7 +88,8 @@ export default function SpeechRecognizerSection({ speechProvider }) {
           <Column>
             <LabeledToggle
               masterLabel="Control Desktop"
-              // TODO: Wire up
+              isOn={speechRecognizerService?.getIsControllingDesktop()}
+              onChange={speechRecognizerService?.setIsControllingDesktop}
               disabled={
                 !speechRecognizerService?.getHasRecognizer() ||
                 speechProvider.disabled

@@ -12,8 +12,6 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
 
     // Destroy all children on cleanup
     this.registerCleanupHandler(() => this.destroyAllChildren());
-
-    this.bindChildEventName(EVT_TRANSCRIPTION_FINALIZED);
   }
 
   /**
@@ -32,6 +30,13 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
         "speechRecognizerService is not a SpeechRecognizerServiceCore"
       );
     }
+
+    // FIXME: (jh) This proxy is utilized instead of bindChildEventName we want
+    // to obtain the service which broadcast the event. This functionality
+    // might should work its way into PhantomCore instead.
+    this.proxyOn(speechRecognizerService, EVT_TRANSCRIPTION_FINALIZED, data => {
+      this.emit(EVT_TRANSCRIPTION_FINALIZED, [speechRecognizerService, data]);
+    });
 
     return super.addChild(speechRecognizerService);
   }

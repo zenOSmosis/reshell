@@ -20,12 +20,6 @@ export default class SpeechDesktopControllerService extends UIServiceCore {
 
     this.setTitle("Speech Input Desktop Controller Service");
 
-    this.setState({
-      // Enable by default, though is only active if speech recognition is
-      // enabled
-      isDesktopControlEnabled: true,
-    });
-
     this._desktopControllerService = this.useServiceClass(
       DesktopCommanderControllerService
     );
@@ -39,36 +33,12 @@ export default class SpeechDesktopControllerService extends UIServiceCore {
     this.proxyOn(
       this._speechRecognizerCollectionService,
       EVT_TRANSCRIPTION_FINALIZED,
-      text => {
-        if (this.getIsDesktopControlEnabled()) {
+      ([speechRecognizerService, text]) => {
+        if (speechRecognizerService.getIsControllingDesktop()) {
           this.extractCommandIntentFromText(text);
         }
       }
     );
-  }
-
-  /**
-   * Sets whether or not the controller should automatically interpret speech
-   * commands.
-   *
-   * @param {boolean} isDesktopControlEnabled
-   * @return {void}
-   */
-  setIsDesktopControlEnabled(isDesktopControlEnabled) {
-    this.setState({
-      isDesktopControlEnabled: Boolean(isDesktopControlEnabled),
-    });
-  }
-
-  /**
-   * Retrieves whether or not the controller should automatically interpret
-   * speech commands.
-   *
-   * @return {boolean}
-   */
-  getIsDesktopControlEnabled() {
-    // TODO: Return false if speech detection is not active
-    return this.getState().isDesktopControlEnabled;
   }
 
   // TODO: Document
