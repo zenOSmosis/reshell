@@ -112,67 +112,6 @@ const SpeechCommanderApp = {
       </Layout>
     );
   },
-
-  // TODO: Remove
-  /*
-  OLD_titleBarView: function TitleBarView({ appServices }) {
-    const speechRecognizerService = appServices[MesaSpeechRecognizerService];
-    const isConnecting = speechRecognizerService.getIsConnecting();
-    const hasRecognizer = speechRecognizerService.getHasRecognizer();
-    const isRecognizing = speechRecognizerService.getIsRecognizing();
-
-    const desktopControllerService =
-      appServices[SpeechInputDesktopControllerService];
-    const isDesktopControlEnabled =
-      desktopControllerService.getIsDesktopControlEnabled();
-
-    return (
-      <div>
-        <LabeledToggle
-          masterLabel="Speech Recognition"
-          isOn={hasRecognizer}
-          onChange={isActive => {
-            isActive
-              ? speechRecognizerService.startRecognizing()
-              : speechRecognizerService.stopRecognizing();
-          }}
-        />
-
-        <LabeledLED
-          color={
-            !hasRecognizer
-              ? "gray"
-              : isConnecting
-              ? "yellow"
-              : isRecognizing
-              ? "green"
-              : "red"
-          }
-          style={{
-            marginLeft: 10,
-            // FIXME: (jh) Make all "labeled" components vertically aligned to
-            // bottom?
-            verticalAlign: "bottom",
-          }}
-          label="Talk Detection"
-        />
-
-        <LabeledLED
-          color={
-            !hasRecognizer ? "gray" : isDesktopControlEnabled ? "green" : "red"
-          }
-          style={{
-            marginLeft: 10,
-            // FIXME: (jh) Make all "labeled" components vertically aligned to
-            // bottom?
-            verticalAlign: "bottom",
-          }}
-          label="Desktop Control"
-        />
-      </div>
-    );
-  },
-  */
 };
 
 export default SpeechCommanderApp;
