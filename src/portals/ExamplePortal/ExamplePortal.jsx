@@ -1,5 +1,6 @@
 import Desktop from "@components/Desktop";
 
+import StartupManagerApp from "./apps/StartupManagerApp";
 import ApplicationsApp from "./apps/ApplicationsApp";
 import AboutReShellApp from "./apps/AboutReShellApp";
 import BackgroundSelectorApp from "./apps/BackgroundSelectorApp";
@@ -27,10 +28,13 @@ import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
 import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 
+import defaultAutoStart from "./defaultAutoStart";
+
 export default function ExamplePortal() {
   return (
     <Desktop
       appDescriptors={[
+        StartupManagerApp,
         ApplicationsApp,
         AboutReShellApp,
         BackgroundSelectorApp,
@@ -58,6 +62,7 @@ export default function ExamplePortal() {
         SystemInformationApp,
         DesktopCommanderDebuggerApp,
       ]}
+      defaultAutoStart={defaultAutoStart}
     />
   );
 }
