@@ -29,7 +29,8 @@ body {
   margin: 0;
   padding: 0;
 
-  font-family: Tahoma, Verdana, Segoe, sans-serif;
+  font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
@@ -145,6 +146,9 @@ textarea {
   outline: 1px solid transparent;
 
   resize: none;
+
+  /** TODO: Use color variable for highlighted elements */
+  accent-color: #347fe8;
 }
 
 ::placeholder {
@@ -305,7 +309,7 @@ table:not(.layout) {
 }
 
 table:not(.layout) thead tr {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 table:not(.layout) tbody tr:nth-child(even) {
@@ -315,6 +319,9 @@ table:not(.layout) tbody tr:nth-child(even) {
 .note {
   font-style: italic;
   font-size: 0.9em;
+
+  /** Fix issue where right-justification would not completely display all characters */
+  margin: 0 1px;
 }
 
 .section {
@@ -322,6 +329,9 @@ table:not(.layout) tbody tr:nth-child(even) {
   padding: 8px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
+
+  position: relative;
+  overflow: auto;
 
   /* These are technically the same, but use both */
   overflow-wrap: break-word;

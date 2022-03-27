@@ -1,0 +1,1 @@
+TODO: Add "native" speech recognition provider https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition

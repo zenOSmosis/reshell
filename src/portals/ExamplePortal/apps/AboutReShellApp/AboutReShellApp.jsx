@@ -116,8 +116,8 @@ const AboutReShellApp = {
           </Content>
           <Footer style={{ textAlign: "center" }}>
             {sharedState.screen === "overview" && (
-              <div>
-                <div style={{ marginBottom: 4 }}>
+              <Padding>
+                <div>
                   <NoWrap>
                     <LabeledToggle
                       labelOff="Mobile"
@@ -151,21 +151,18 @@ const AboutReShellApp = {
                     </NoWrap>
                   </NoWrap>
                 </div>
-
-                <div>
-                  <VirtualLink
-                    onClick={() => setSharedState({ screen: "details" })}
-                  >
-                    Details
-                  </VirtualLink>{" "}
-                  |{" "}
-                  <VirtualLink
-                    onClick={() => setSharedState({ screen: "resources" })}
-                  >
-                    Resources
-                  </VirtualLink>
-                </div>
-              </div>
+                <VirtualLink
+                  onClick={() => setSharedState({ screen: "details" })}
+                >
+                  Details
+                </VirtualLink>{" "}
+                |{" "}
+                <VirtualLink
+                  onClick={() => setSharedState({ screen: "resources" })}
+                >
+                  Resources
+                </VirtualLink>
+              </Padding>
             )}
 
             <div style={{ opacity: 0.5 }}>{getCopyright()}</div>

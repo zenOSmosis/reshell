@@ -5,6 +5,7 @@
 import PhantomCore from "phantom-core";
 
 import { useContext } from "react";
+import StickyTable from "@components/StickyTable";
 import Layout, { Content, Footer } from "@components/Layout";
 import Full from "@components/Full";
 import Padding from "@components/Padding";
@@ -19,12 +20,12 @@ import { REGISTRATION_ID as APPLICATION_MONITOR_REGISTRATION_ID } from "./Applic
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
 
+// TODO: Include links to apps which are using this service
+
 // TODO: Show last update time, state, etc.
 
 // TODO: Include ability to render service reporters, once functionality is
 // integrated
-
-// TODO: Include ability to monitor React providers exposed by the service
 
 export const REGISTRATION_ID = "service-monitor";
 
@@ -45,7 +46,7 @@ const ServiceMonitorApp = {
       <Layout>
         <Content>
           <Full style={{ overflowY: "auto" }}>
-            <table style={{ width: "100%" }}>
+            <StickyTable style={{ width: "100%" }}>
               <thead>
                 <tr>
                   <td>
@@ -107,7 +108,7 @@ const ServiceMonitorApp = {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </StickyTable>
           </Full>
         </Content>
         <Footer>

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import styles from "./LabeledToggle.module.css";
 
+// TODO: Apply htmlFor ids for labels
+
 LabeledToggle.propTypes = {
   labelOff: PropTypes.string,
   labelOn: PropTypes.string,

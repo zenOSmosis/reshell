@@ -2,8 +2,8 @@ import React, { useImperativeHandle, useState } from "react";
 
 import WindowView from "./Window.View";
 
-// TODO: Implement CodeSandbox support for development / debugging:  https://codesandbox.io/docs/embedding#embed-options
-// TODO: See https://csslayout.io/patterns
+// TODO: Implement CodeSandbox support for development / debugging:
+// https://codesandbox.io/docs/embedding#embed-options
 
 // TODO: Add prop-types
 // TODO: Document

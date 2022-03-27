@@ -24,7 +24,6 @@ import LocalUserProfileApp from "./apps/LocalUserProfileApp";
 import ChatApp from "./apps/ChatApp";
 
 // Mesa Hackathon apps
-import MesaSpeechRecognitionDebuggerApp from "../HackathonPortal/apps/MesaSpeechRecognitionDebuggerApp";
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
@@ -57,7 +56,6 @@ export default function SpeakerAppPortal() {
         ChatApp,
 
         // Mesa Hackathon apps
-        MesaSpeechRecognitionDebuggerApp,
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
       ]}

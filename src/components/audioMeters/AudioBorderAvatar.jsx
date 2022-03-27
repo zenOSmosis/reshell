@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Avatar from "../Avatar";
 
 import PropTypes from "prop-types";
@@ -6,8 +6,9 @@ import PropTypes from "prop-types";
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 import getPercentColor from "@utils/getPercentColor";
 
+import useUUID from "@hooks/useUUID";
+
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
-import { v4 as uuidv4 } from "uuid";
 
 AudioBorderAvatar.propTypes = {
   /** When multiple audio tracks may be used together */
@@ -28,8 +29,7 @@ export default function AudioBorderAvatar({
 }) {
   const [elAvatar, setElAvatar] = useState(null);
 
-  // TODO: Replace w/ useUUID
-  const uuid = useMemo(uuidv4, []);
+  const uuid = useUUID();
 
   /**
    * @param {number} audioLevel A float value from 0 - 100, where 100

@@ -8,6 +8,7 @@ export const EVT_DISCONNECTED = "disconnected";
 
 // TODO: Generate UI notifications when socket goes offline / comes online
 
+// TODO: Possibly make this a forced-extended "service.core" (in service.cores directory)
 /**
  * Provides SocketIO servicing for ReShell.
  */

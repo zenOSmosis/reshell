@@ -6,6 +6,7 @@ import UIServiceCore, {
 import WindowController from "@components/Window/classes/WindowController";
 
 import UIParadigmService from "./UIParadigmService";
+import UINotificationService from "./UINotificationService";
 
 /**
  * Manages state for the DesktopServiceProvider.
@@ -17,6 +18,7 @@ export default class DesktopService extends UIServiceCore {
     this.setTitle("Desktop Service");
 
     this._uiParadigmService = this.useServiceClass(UIParadigmService);
+    this._uiNotificationService = this.useServiceClass(UINotificationService);
 
     this.setState({
       isProfiling: false,
@@ -49,7 +51,7 @@ export default class DesktopService extends UIServiceCore {
 
       let prevActiveWindowController = null;
 
-      this.on(EVT_UPDATED, () => {
+      this.on(EVT_UPDATED, isProfiling => {
         const activeWindowController = this.getActiveWindowController();
 
         // Only run comparison if active window controller has changed
@@ -86,6 +88,14 @@ export default class DesktopService extends UIServiceCore {
    */
   setIsProfiling(isProfiling) {
     this.setState({ isProfiling });
+
+    // FIXME: (jh) Show develop icon
+    this._uiNotificationService.showNotification({
+      title: `Desktop profiling ${isProfiling ? "enabled" : "disabled"}`,
+      body: `Desktop profiling has been ${
+        isProfiling ? "enabled" : "disabled"
+      }.`,
+    });
   }
 
   /**

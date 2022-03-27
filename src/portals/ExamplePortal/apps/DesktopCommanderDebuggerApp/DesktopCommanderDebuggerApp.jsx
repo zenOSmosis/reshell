@@ -97,8 +97,8 @@ const DesktopCommanderDebuggerApp = {
     return (
       <Layout>
         <Content>
-          <Padding>
-            <Center canOverflow>
+          <Center canOverflow>
+            <Padding>
               {Object.values(commands).map(command => {
                 const isCurrentCommand = command === lastCommand;
 
@@ -151,8 +151,8 @@ const DesktopCommanderDebuggerApp = {
                   </div>
                 );
               })}
-            </Center>
-          </Padding>
+            </Padding>
+          </Center>
         </Content>
         <Footer>
           <hr />

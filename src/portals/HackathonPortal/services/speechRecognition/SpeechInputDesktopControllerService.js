@@ -4,76 +4,46 @@ import DesktopCommanderControllerService, {
   EVT_UPDATED,
 } from "@services/DesktopCommanderControllerService";
 
-import MesaSpeechRecognizerService, {
+import SpeechRecognizerCollectionService, {
   EVT_TRANSCRIPTION_FINALIZED,
-} from "./MesaSpeechRecognizerService";
+} from "./SpeechRecognizerCollectionService";
 
 export { EVT_UPDATED };
 
 // TODO: Document
 // IMPORTANT: Don't extend DesktopCommanderControllerService
-export default class MesaSpeechDesktopControllerService extends UIServiceCore {
+export default class SpeechDesktopControllerService extends UIServiceCore {
+  // TODO: Prevent extendable (reference: https://github.com/zenOSmosis/phantom-core/issues/149)
+
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Mesa Speech Desktop Controller Service");
-
-    this.setState({
-      // Enable by default, though is only active if speech recognition is
-      // enabled
-      isDesktopControlEnabled: true,
-    });
+    this.setTitle("Speech Input Desktop Controller Service");
 
     this._desktopControllerService = this.useServiceClass(
       DesktopCommanderControllerService
     );
 
-    this._speechRecognizerService = this.useServiceClass(
-      MesaSpeechRecognizerService
+    // A proxy to all of the speech recognizer services
+    this._speechRecognizerCollectionService = this.useServiceClass(
+      SpeechRecognizerCollectionService
     );
 
     // Handle finalized transcription updates
-    (() => {
-      this.proxyOn(
-        this._speechRecognizerService,
-        EVT_TRANSCRIPTION_FINALIZED,
-        text => {
-          if (this.getIsDesktopControlEnabled()) {
-            this.extractCommandIntentFromText(text);
-          }
+    this.proxyOn(
+      this._speechRecognizerCollectionService,
+      EVT_TRANSCRIPTION_FINALIZED,
+      ([speechRecognizerService, text]) => {
+        if (speechRecognizerService.getIsControllingDesktop()) {
+          this.extractCommandIntentFromText(text);
         }
-      );
-    })();
-
-    // TODO: Tie in with speech recognizer service
-  }
-
-  /**
-   * Sets whether or not the controller should automatically interpret speech
-   * commands.
-   *
-   * @param {boolean} isDesktopControlEnabled
-   * @return {void}
-   */
-  setIsDesktopControlEnabled(isDesktopControlEnabled) {
-    this.setState({
-      isDesktopControlEnabled: Boolean(isDesktopControlEnabled),
-    });
-  }
-
-  /**
-   * Retrieves whether or not the controller should automatically interpret
-   * speech commands.
-   *
-   * @return {boolean}
-   */
-  getIsDesktopControlEnabled() {
-    // TODO: Return false if speech detection is not active
-    return this.getState().isDesktopControlEnabled;
+      }
+    );
   }
 
   // TODO: Document
   // FIXME: (jh) This could be more efficient in terms of CPU usage
+  // TODO: Process in a web worker?
   async extractCommandIntentFromText(text) {
     // Lower-case and alpha-numeric
     const normalizedText = text.toLowerCase().replace(/[^a-z0-9 ]/gi, "");

@@ -1,3 +1,5 @@
+// FIXME: (jh) React 18 includes useId and this hook may no longer be necessary
+
 import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
