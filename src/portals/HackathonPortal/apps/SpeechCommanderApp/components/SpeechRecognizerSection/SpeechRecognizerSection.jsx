@@ -19,11 +19,8 @@ export default function SpeechRecognizerSection({ speechProvider }) {
     <Section>
       {!speechProvider.disabled && (
         <div style={{ position: "absolute", top: 4, left: 8 }}>
-          {
-            // TODO: Add onTick handler
-          }
           <Timer
-            onTick={() => null}
+            onTick={() => speechRecognizerService?.getRecognizerUptime()}
             style={{
               color:
                 !speechProvider.active || speechProvider.disabled

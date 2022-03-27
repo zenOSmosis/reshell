@@ -296,4 +296,13 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
   getIsControllingDesktop() {
     return this.getState().isControllingDesktop;
   }
+
+  /**
+   * Retrieves the number of seconds the speech recognizer has been instantiated.
+   *
+   * @return {number}
+   */
+  getRecognizerUptime() {
+    return !this._recognizer ? 0 : this._recognizer.getInstanceUptime();
+  }
 }
