@@ -2,11 +2,13 @@ import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROYED } from "phantom-core";
 
 export const EVT_CONNECTING = "connecting";
 export const EVT_CONNECTED = "connected";
+export const EVT_DISCONNECTED = "disconnected";
 
 export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
 export const EVT_END_RECOGNIZE = "end-recognize";
 
 // Emits with the current text being recognized
+// TODO: Document that this emits with text
 export const EVT_TRANSCRIPTION_RECOGNIZING = "transcription-recognizing";
 
 // TODO: Document that this emits with text
@@ -14,30 +16,112 @@ export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
 
 export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
 
+// TODO: Ensure this automatically stops when the input stops or after a
+// certain amount of time
+
 export default class SpeechRecognizerBase extends PhantomCore {
   // FIXME: (jh) Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
   /**
-   * @param {MediaStream} mediaStream // or MediaStreamTrack?
+   * @param {MediaStream} mediaStream // FIXME: (jh) or MediaStreamTrack?
    * @param {Object} options? [default = {}]
    */
   constructor(mediaStream, options) {
     super(options);
 
-    /** @type {boolean} Whether or not the speech engine is connected to */
+    /**
+     * Whether or not the speech engine is connecting
+     *
+     * @type {boolean}
+     */
+    this._isConnecting = false;
+
+    /**
+     * Whether or not the speech engine is connected
+     *
+     * @type {boolean}
+     **/
     this._isConnected = false;
 
-    // TODO: Automatically stop when the media stream stops
+    /**
+     * Whether or not the speech engine is currently recognizing (otherwise
+     * known as voice activity detection [or VAD])
+     *
+     * @type {boolean}
+     **/
+    this._isRecognizing = false;
+
+    // TODO: Automatically destroy if the media stream stops (may need to make
+    // an API in media-stream-controller)
     this._mediaStream = mediaStream;
 
     // Automatically start recognizing (allow events to be bound first)
     setImmediate(() => {
       this._startRecognizing();
     });
+
+    this.registerCleanupHandler(() => this._stopRecognizing());
   }
 
   /**
-   * Sets whether or not the speech is currently being recognized.
+   * Instantiates the speech engine servicing and binds its lifecycle to this
+   * class.
+   *
+   * @return {Promise<void>}
+   */
+  async _startRecognizing() {
+    throw new Error("_startRecognizing must be overridden");
+  }
+
+  /**
+   * Instantiates the speech engine servicing and binds its lifecycle to this
+   * class.
+   *
+   * @return {Promise<void>}
+   */
+  async _stopRecognizing() {
+    throw new Error("_startRecognizing must be overridden");
+  }
+
+  /**
+   * Sets whether or not the speech recognizer is connecting.
+   *
+   * @param {boolean} isConnecting
+   */
+  _setIsConnecting(isConnecting) {
+    if (this._isConnecting !== isConnecting) {
+      this._isConnecting = isConnecting;
+
+      if (isConnecting) {
+        this.emit(EVT_CONNECTING);
+      }
+    }
+  }
+
+  /**
+   * Sets whether or not the speech recognizer is connected.
+   *
+   * @param {boolean} isConnected
+   * @emits EVT_CONNECTED
+   * @emits EVT_DISCONNECTED
+   * @return {void}
+   */
+  _setIsConnected(isConnected) {
+    if (!this._isConnected !== isConnected) {
+      this._setIsConnecting(false);
+
+      this._isConnected = isConnected;
+
+      if (isConnected) {
+        this.emit(EVT_CONNECTED);
+      } else {
+        this.emit(EVT_DISCONNECTED);
+      }
+    }
+  }
+
+  /**
+   * Sets whether or not the recognizer is currently recognizing.
    *
    * @param {boolean} isRecognizing
    * @emits EVT_BEGIN_RECOGNIZE
@@ -45,15 +129,31 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * @return {void}
    */
   _setIsRecognizing(isRecognizing) {
-    if (!this._isConnected) {
-      this.emit(EVT_CONNECTED);
-    }
+    if (this._isRecognizing !== isRecognizing) {
+      this._isRecognizing = isRecognizing;
 
-    if (isRecognizing) {
-      this.emit(EVT_BEGIN_RECOGNIZE);
-    } else {
-      this.emit(EVT_END_RECOGNIZE);
+      if (isRecognizing) {
+        this.emit(EVT_BEGIN_RECOGNIZE);
+      } else {
+        this.emit(EVT_END_RECOGNIZE);
+      }
     }
+  }
+
+  /**
+   * Sets whether or not the speech is currently being recognized.
+   *
+   * @param {string} text
+   * @return {void}
+   */
+  _setRealTimeTranscription(text) {
+    // FIXME: (jh) This is in place as a fallback because I wasn't able to find
+    // an appropriate connect event with Azure
+    this._setIsConnected(true);
+
+    this._setIsRecognizing(true);
+
+    this.emit(EVT_TRANSCRIPTION_RECOGNIZING, text);
   }
 
   /**
@@ -68,24 +168,4 @@ export default class SpeechRecognizerBase extends PhantomCore {
 
     this.emit(EVT_TRANSCRIPTION_FINALIZED, text);
   }
-
-  // TODO: Document
-  async _initSpeechEngine() {
-    throw new Error("_initSpeechEngine must be overridden");
-  }
-
-  // TODO: Document
-  async _destructSpeechEngine() {
-    throw new Error("_destructSpeechEngine must be overridden");
-  }
-
-  // TODO: Ensure this instance is automatically destructed if the speech
-  // service errors or has a network error
-  /**
-   * Starts the speech recognition processing, performs remote event binding to
-   * the class instance, and handles cleanup operations.
-   *
-   * @return {void}
-   */
-  // _startRecognizing() {}
 }

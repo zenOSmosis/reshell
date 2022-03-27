@@ -1,18 +1,8 @@
-import SpeechRecognizerServiceCore, {
-  EVT_UPDATED,
-} from "../../../__common__/SpeechRecognizerServiceCore";
+import SpeechRecognizerServiceCore from "../../../__common__/SpeechRecognizerServiceCore";
 
-import DeepgramSpeechRecognizer, {
-  EVT_TRANSCRIPTION_FINALIZED,
-} from "./DeepgramSpeechRecognizer";
+import DeepgramSpeechRecognizer from "./DeepgramSpeechRecognizer";
 
 import DeepgramAPIKeyManagementService from "../DeepgramAPIKeyManagementService";
-
-// Deepgram details:
-// - Hackathon details: https://dev.to/devteam/join-us-for-a-new-kind-of-hackathon-on-dev-brought-to-you-by-deepgram-2bjd
-// - MediaStream implementation: https://github.com/deepgram/deepgram-node-sdk#transcribe-audio-in-real-time
-
-export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
 /**
  * Manages the creation and destruction of MesaSpeechRecognizer instances.
@@ -37,7 +27,7 @@ export default class DeepgramSpeechRecognizerService extends SpeechRecognizerSer
 
   /**
    * @param {MediaStream} mediaStream
-   * @param {Object} props TODO: Define
+   * @param {Object} props TODO: Document
    * @return {Promise<DeepgramSpeechRecognizer>}
    */
   async _createRecognizer(mediaStream, { apiKey }) {

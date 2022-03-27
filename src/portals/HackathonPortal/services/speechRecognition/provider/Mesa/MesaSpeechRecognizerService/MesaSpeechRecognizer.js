@@ -1,23 +1,9 @@
-import SpeechRecognizerBase, {
-  EVT_BEFORE_DESTROY,
-  EVT_DESTROYED,
-} from "../../../__common__/SpeechRecognizerBase";
+import SpeechRecognizerBase from "../../../__common__/SpeechRecognizerBase";
 
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
-export const EVT_CONNECTING = "connecting";
-export const EVT_CONNECTED = "connected";
-
-export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
-export const EVT_END_RECOGNIZE = "end-recognize";
-
-// Emits with the current text being recognized
-export const EVT_TRANSCRIPTION_RECOGNIZING = "transcription-recognizing";
-
-// TODO: Document that this emits with text
-export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
-
-export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
+// TODO: Ensure this instance is automatically destructed if the speech service
+// errors or has a network error
 
 // Examples:
 // https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/javascript/browser/from-microphone
@@ -43,6 +29,9 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
     // TODO: Replace hardcoding with config param
     this._locationRegion = "eastus";
     this._speechRecognitionLanguage = "en-US";
+
+    this._recognizer = null;
+    this.registerCleanupHandler(() => this._stopRecognizing());
   }
 
   /**
@@ -64,8 +53,19 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
     return this._recognitionLanguage;
   }
 
-  // TODO: Ensure this instance is automatically destructed if the speech
-  // service errors or has a network error
+  /**
+   * @return {Promise<void>}
+   */
+  async _stopRecognizing() {
+    if (this._recognizer) {
+      this._recognizer.stopContinuousRecognitionAsync();
+
+      this._recognizer.close();
+
+      this._recognizer = null;
+    }
+  }
+
   /**
    * Starts the speech recognition processing, performs remote event binding to
    * the class instance, and handles cleanup operations.
@@ -73,7 +73,11 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
    * @return {Promise<void>}
    */
   async _startRecognizing() {
-    this.emit(EVT_CONNECTING);
+    if (this._recognizer) {
+      await this._stopRecognizing();
+    }
+
+    this._setIsConnecting = true;
 
     const stream = this._mediaStream;
 
@@ -84,26 +88,14 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
 
     speechConfig.speechRecognitionLanguage = this._speechRecognitionLanguage;
 
-    let audioConfig = sdk.AudioConfig.fromStreamInput(stream);
+    const audioConfig = sdk.AudioConfig.fromStreamInput(stream);
 
-    // TODO: Make this a class property
-    let recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+    const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+    this._recognizer = recognizer;
 
-    // Stop recognizer before destruct cleanup happens
-    this.once(EVT_BEFORE_DESTROY, () => {
-      recognizer.stopContinuousRecognitionAsync();
-
-      recognizer.close();
-    });
-
-    // TODO: Ensure this automatically stops when the input stops or after a
-    // certain amount of time
     //
     // TODO: Refactor
     (() => {
-      // TODO: Remove
-      console.log({ recognizer });
-
       recognizer.recognizing = (s, e) => {
         // FIXME: (jh) Is there a more appropriate place to put this?
         /*
@@ -114,39 +106,32 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
         }
         */
 
-        this._setIsRecognizing(true);
+        this.log.debug(`RECOGNIZING: Text=${e.result.text}`);
 
-        // TODO: Change to debug
-        console.log(`RECOGNIZING: Text=${e.result.text}`);
-
-        this.emit(EVT_TRANSCRIPTION_RECOGNIZING, e.result.text);
+        this._setRealTimeTranscription(e.result.text);
       };
 
       recognizer.recognized = (s, e) => {
         if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
           this._setFinalizedTranscription(e.result.text);
 
-          // TODO: Change to debug
-          console.log(`RECOGNIZED: Text=${e.result.text}`);
+          this.log.debug(`RECOGNIZED: Text=${e.result.text}`);
         } else if (e.result.reason === sdk.ResultReason.NoMatch) {
           this._setIsRecognizing(false);
 
-          // TODO: Change to debug
-          console.log("NOMATCH: Speech could not be recognized.");
+          this.log.debug("NOMATCH: Speech could not be recognized.");
         }
       };
 
       recognizer.canceled = async (s, e) => {
         this._setIsRecognizing(false);
 
-        // TODO: Change to debug
-        console.log(`CANCELED: Reason=${e.reason}`);
+        this.log.debug(`CANCELED: Reason=${e.reason}`);
 
         if (e.reason === sdk.CancellationReason.Error) {
-          // TODO: Change to debug
-          console.log(`"CANCELED: ErrorCode=${e.errorCode}`);
-          console.log(`"CANCELED: ErrorDetails=${e.errorDetails}`);
-          console.log(
+          this.log.debug(`"CANCELED: ErrorCode=${e.errorCode}`);
+          this.log.debug(`"CANCELED: ErrorDetails=${e.errorDetails}`);
+          this.log.debug(
             "CANCELED: Did you update the key and location/region info?"
           );
         }
@@ -161,12 +146,7 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
       };
 
       recognizer.sessionStopped = (s, e) => {
-        this._isConnected = false;
-
-        this._setIsRecognizing(false);
-
-        // TODO: Change to debug
-        console.log("\n    Session stopped event.");
+        this.log.debug("Session stopped event");
         recognizer.stopContinuousRecognitionAsync();
       };
 

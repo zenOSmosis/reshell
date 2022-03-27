@@ -1,6 +1,3 @@
-import DeepgramSpeechRecognizerService, {
-  EVT_TRANSCRIPTION_FINALIZED,
-} from "./DeepgramSpeechRecognizerService";
+import DeepgramSpeechRecognizerService from "./DeepgramSpeechRecognizerService";
 
 export default DeepgramSpeechRecognizerService;
-export { EVT_TRANSCRIPTION_FINALIZED };

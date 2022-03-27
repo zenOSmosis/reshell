@@ -1,26 +1,6 @@
-import SpeechRecognizerBase, {
-  EVT_BEFORE_DESTROY,
-  EVT_DESTROYED,
-} from "../../../__common__/SpeechRecognizerBase";
-
-export const EVT_CONNECTING = "connecting";
-export const EVT_CONNECTED = "connected";
-
-export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
-export const EVT_END_RECOGNIZE = "end-recognize";
-
-// Emits with the current text being recognized
-export const EVT_TRANSCRIPTION_RECOGNIZING = "transcription-recognizing";
-
-// TODO: Document that this emits with text
-export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
-
-export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
+import SpeechRecognizerBase from "../../../__common__/SpeechRecognizerBase";
 
 const DEEPGRAM_WSS_ADDRESS = "wss://api.deepgram.com/v1/listen";
-
-// Examples:
-// https://github.com/deepgram/deepgram-node-sdk#transcribe-audio-in-real-time
 
 /**
  * @see https://deepgram.com/
@@ -38,10 +18,15 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     this._deepgramSocket = null;
     this._mediaRecorder = null;
 
-    this.registerCleanupHandler(() => this._stopDeepgram());
+    this.registerCleanupHandler(() => this._stopRecognizing());
   }
 
-  async _stopDeepgram() {
+  /**
+   * Stops the previous speech recognizer instance.
+   *
+   * @return {Promise<void>}
+   */
+  async _stopRecognizing() {
     if (this._mediaRecorder) {
       this._mediaRecorder.stop();
 
@@ -55,19 +40,20 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     }
   }
 
-  // TODO: Ensure this instance is automatically destructed if the speech
-  // service errors or has a network error
   /**
    * Starts the speech recognition processing, performs remote event binding to
    * the class instance, and handles cleanup operations.
+   *
+   * Based on the example from:
+   * @see https://github.com/deepgram/deepgram-node-sdk#transcribe-audio-in-real-time
    *
    * @return {Promise<void>}
    */
   async _startRecognizing() {
     // Stop previous instance
-    await this._stopDeepgram();
+    await this._stopRecognizing();
 
-    this.emit(EVT_CONNECTING);
+    this._setIsConnecting(true);
 
     this._deepgramSocket = new WebSocket(DEEPGRAM_WSS_ADDRESS, [
       "token",
@@ -78,11 +64,8 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       mimeType: "audio/webm",
     });
 
-    // TODO: Patch as necessary; see related ws issue: https://github.com/deepgram/deepgram-node-sdk/issues/38
-    // Solution: https://github.com/deepgram-devs/browser-mic-streaming/blob/main/index.html#L17
-
     this._deepgramSocket.addEventListener("open", () => {
-      this.emit(EVT_CONNECTED);
+      this._setIsConnected(true);
 
       this._mediaRecorder.addEventListener("dataavailable", event => {
         if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
@@ -101,9 +84,11 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
         if (transcript && received.is_final) {
           this._setFinalizedTranscription(transcript);
         } else {
-          this.emit(EVT_TRANSCRIPTION_RECOGNIZING, transcript);
+          this._setRealTimeTranscription(transcript);
         }
       });
+
+      this._deepgramSocket.addEventListener("close", () => this.destroy());
     });
   }
 }

@@ -15,11 +15,19 @@ import UIModalWidgetService from "@services/UIModalWidgetService";
 
 export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
+// TODO: Auto-destruct after a certain amount of time after not retrieving
+// a finalized transcription
+
 export default class SpeechRecognizerServiceCore extends UIServiceCore {
   // TODO: Turn into a service core (utilize in service.cores directory)
   // TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
-  // TODO: Document
+  /**
+   * @param {ExternalAPIKeyManagementServiceCore} ExternalAPIKeyManagementServiceClass
+   * A non-instatiated class which manages the API key for the service
+   * provider.
+   * @param {...args} - The args to pass to the super UIServiceCore.
+   */
   constructor(ExternalAPIKeyManagementServiceClass, ...args) {
     super(...args);
 
@@ -53,9 +61,6 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
       realTimeTranscription: null,
       finalizedTranscription: null,
     });
-
-    // TODO: Auto-destruct after a certain amount of time after not retrieving
-    // a finalized transcription
 
     /** @type {SpeechRecognizerBase} */
     this._recognizer = null;

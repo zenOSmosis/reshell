@@ -1,14 +1,8 @@
-import SpeechRecognizerServiceCore, {
-  EVT_UPDATED,
-} from "../../../__common__/SpeechRecognizerServiceCore";
+import SpeechRecognizerServiceCore from "../../../__common__/SpeechRecognizerServiceCore";
 
-import MesaSpeechRecognizer, {
-  EVT_TRANSCRIPTION_FINALIZED,
-} from "./MesaSpeechRecognizer";
+import MesaSpeechRecognizer from "./MesaSpeechRecognizer";
 
 import MesaSubscriptionKeyManagementService from "../MesaSubscriptionKeyManagementService";
-
-export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
 
 /**
  * Manages the creation and destruction of MesaSpeechRecognizer instances.
