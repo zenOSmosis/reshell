@@ -439,6 +439,8 @@ export default class ZenRTCPeer extends PhantomCore {
     if (this._isConnected) {
       return;
     } else {
+      // FIXME: Return Promise.race and reject if class is destroyed before
+      // connecting
       await new Promise(resolve => this.once(EVT_CONNECTED, resolve));
     }
   }
