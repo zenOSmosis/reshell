@@ -89,6 +89,8 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * @param {boolean} isConnecting
    */
   _setIsConnecting(isConnecting) {
+    isConnecting = Boolean(isConnecting);
+
     if (this._isConnecting !== isConnecting) {
       this._isConnecting = isConnecting;
 
@@ -116,6 +118,8 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * @return {void}
    */
   _setIsConnected(isConnected) {
+    isConnected = Boolean(isConnected);
+
     if (this._isConnected !== isConnected) {
       this._setIsConnecting(false);
 
@@ -148,6 +152,8 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * @return {void}
    */
   _setIsRecognizing(isRecognizing) {
+    isRecognizing = Boolean(isRecognizing);
+
     if (this._isRecognizing !== isRecognizing) {
       this._isRecognizing = isRecognizing;
 
