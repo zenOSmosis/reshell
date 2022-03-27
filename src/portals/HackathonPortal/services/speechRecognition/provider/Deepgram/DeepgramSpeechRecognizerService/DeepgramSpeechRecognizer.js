@@ -3,6 +3,8 @@ import SpeechRecognizerBase from "../../../__common__/SpeechRecognizerBase";
 const DEEPGRAM_WSS_ADDRESS = "wss://api.deepgram.com/v1/listen";
 
 /**
+ * Handles direct communication with Deepgram.
+ *
  * @see https://deepgram.com/
  */
 export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {

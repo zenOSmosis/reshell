@@ -2,12 +2,6 @@ import SpeechRecognizerBase from "../../../__common__/SpeechRecognizerBase";
 
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
-// TODO: Ensure this instance is automatically destructed if the speech service
-// errors or has a network error
-
-// Examples:
-// https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/javascript/browser/from-microphone
-
 /**
  * Handles direct communication with Azure CognitiveService backend using the
  * microsoft-cognitiveservices-speech-sdk.
@@ -70,6 +64,9 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
    * Starts the speech recognition processing, performs remote event binding to
    * the class instance, and handles cleanup operations.
    *
+   * Based on the example:
+   * @see  https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/javascript/browser/from-microphone
+   *
    * @return {Promise<void>}
    */
   async _startRecognizing() {
@@ -93,7 +90,6 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
     const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
     this._recognizer = recognizer;
 
-    //
     // TODO: Refactor
     (() => {
       recognizer.recognizing = (s, e) => {

@@ -8,7 +8,7 @@ import ExternalLink from "@components/ExternalLink";
 
 import SpeechActivityTable from "../SpeechActivityTable";
 
-// TODO: Show simple / advanced views?
+// FIXME: Show simple / advanced views?
 // TODO: Add prop-types
 // TODO: Document
 export default function SpeechRecognizerSection({ speechProvider }) {
@@ -88,6 +88,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
           <Column>
             <LabeledToggle
               masterLabel="Control Desktop"
+              // TODO: Wire up
               disabled={
                 !speechRecognizerService?.getHasRecognizer() ||
                 speechProvider.disabled
