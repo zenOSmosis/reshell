@@ -58,7 +58,6 @@ https://user-images.githubusercontent.com/1139657/157443171-d35decb7-5fd2-460d-b
 - About ReShell: https://reshell.org/about-reshell
 - Example Phrases: https://reshell.org/desktop-commander-debugger (NOTE: These do not have to be exactly spoken)
 - Speech Commander: https://reshell.org/speech-commander
-- Speech Recognition Debugger: https://reshell.org/mesa-speech-recognition-debugger
 
 Note that speech control is currently only available in English.
 
