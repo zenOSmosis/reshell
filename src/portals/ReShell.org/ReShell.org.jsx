@@ -1,8 +1,8 @@
 import Desktop from "@components/Desktop";
 
-import ApplicationsApp from "./apps/ApplicationsApp";
+import ApplicationsApp from "..ExamplePortal/ApplicationsApp";
 import ApplicationMonitorApp from "../ExamplePortal/apps/ApplicationMonitorApp";
-import AboutReShellApp from "./apps/AboutReShellApp";
+import AboutReShellApp from "../ExamplePortal/AboutReShellApp";
 import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
 import ColorAdjusterApp from "../ExamplePortal/apps/ColorAdjusterApp";
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";

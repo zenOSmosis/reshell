@@ -16,17 +16,12 @@ export default function useAppRuntimesAutoStart(
 
   const locationAppRegistrationID = useLocationAppRegistrationID();
 
-  // Automatically start registrations with isAutoStart set to true
+  // Automatically start
+  //
+  // TODO: Move this functionality to AppAutoStartService
   useEffect(() => {
-    if (appRegistrations.length && !refHasBegunAutoStart.current) {
-      // Prevent auto-start sequence from happening more than once
+    if (!refHasBegunAutoStart.current) {
       refHasBegunAutoStart.current = true;
-
-      for (const registration of [...appRegistrations].filter(registration =>
-        registration.getIsAutoStart()
-      )) {
-        activateAppRegistration(registration);
-      }
 
       // IMPORTANT: The setImmediate call fixes an issue where deep-linked apps
       // would not focus

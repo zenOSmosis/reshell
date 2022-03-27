@@ -29,7 +29,6 @@ const SpeechCommanderApp = {
     width: 640 * 1.5,
     height: 480 * 1.5,
   },
-  isAutoStart: true,
   serviceClasses: [
     SpeechRecognizerCollectionService,
     SpeechInputDesktopControllerService,

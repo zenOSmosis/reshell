@@ -196,7 +196,6 @@ function WindowManagerView({ children }) {
         serviceClasses = [],
         isPinned,
         isPinnedToDock,
-        isAutoStart,
         ...windowProps
       } = appDescriptor;
 
