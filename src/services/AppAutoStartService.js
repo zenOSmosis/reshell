@@ -61,6 +61,9 @@ export default class AppAutoStartService extends UIServiceCore {
   }
 
   /**
+   * Sets the default AppRegistrations and priorities, should they not already
+   * be available in the cache.
+   *
    * @param {AppAutoStartConfigs} appAutoStartConfigs
    * @return {void}
    */
@@ -74,8 +77,15 @@ export default class AppAutoStartService extends UIServiceCore {
     }
   }
 
-  // TODO: Document
-  setAutoStartAppRegistration(appRegistration, priority = null) {
+  /**
+   * Adds or updates the given AppRegistration and priority in the auto-start
+   * sequence.
+   *
+   * @param {AppRegistration} appRegistration
+   * @param {number} priority? [default=0] The higher the priority, the more
+   * preference the window is given in the window stack.
+   */
+  setAutoStartAppRegistration(appRegistration, priority = 0) {
     if (!(appRegistration instanceof AppRegistration)) {
       throw new TypeError("appRegistration is not an AppRegistration");
     }
@@ -90,7 +100,11 @@ export default class AppAutoStartService extends UIServiceCore {
     });
   }
 
-  // TODO: Document
+  /**
+   * Removes the given AppRegistration from the auto-start.
+   *
+   * @param {AppRegistration} appRegistration
+   */
   removeAutoStartAppRegistration(appRegistration) {
     if (!(appRegistration instanceof AppRegistration)) {
       throw new TypeError("appRegistration is not an AppRegistration");
@@ -105,6 +119,8 @@ export default class AppAutoStartService extends UIServiceCore {
   }
 
   /**
+   * Retrieves the auto-start configurations.
+   *
    * @return {AutoStartConfigs}
    */
   getAppAutoStartConfigs() {
@@ -112,7 +128,7 @@ export default class AppAutoStartService extends UIServiceCore {
   }
 
   /**
-   * Retrieves a prioritized list of app registrations.
+   * Retrieves a prioritized list of AppRegistration instances.
    *
    * @return {AppRegistration[]}
    */
