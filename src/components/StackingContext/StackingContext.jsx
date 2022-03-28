@@ -1,3 +1,9 @@
+/**
+ * FIXME: (jh) This video might provide some interesting insight for stacking
+ * context or layout components:
+ * @see https://www.youtube.com/watch?v=Xt1Cw4qM3Ec (Secret Mechanisms of CSS)
+ */
+
 import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import styles from "./StackingContext.module.css";
