@@ -22,7 +22,11 @@ import ModalProvider from "./providers/ModalProvider";
 
 // TODO: Use prop-types
 // TODO: Document
-export default function Desktop({ backgroundView = null, appDescriptors }) {
+export default function Desktop({
+  backgroundView = null,
+  appDescriptors,
+  defaultAppAutoStartConfigs,
+}) {
   return (
     <FullViewport>
       {
@@ -101,7 +105,10 @@ export default function Desktop({ backgroundView = null, appDescriptors }) {
                     </div>
                   </AutoScaler>
                 </div>
-                <WindowManager appDescriptors={appDescriptors}>
+                <WindowManager
+                  appDescriptors={appDescriptors}
+                  defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
+                >
                   <Dock />
                 </WindowManager>
               </Content>

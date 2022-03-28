@@ -28,7 +28,7 @@ import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
 import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 
-import defaultAutoStart from "./defaultAutoStart";
+import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
 export default function ExamplePortal() {
   return (
@@ -62,7 +62,7 @@ export default function ExamplePortal() {
         SystemInformationApp,
         DesktopCommanderDebuggerApp,
       ]}
-      defaultAutoStart={defaultAutoStart}
+      defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
   );
 }

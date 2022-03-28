@@ -100,29 +100,31 @@ const StartupManagerApp = {
                       </td>
                       <td>
                         <Padding>
-                          {isAutoStart ? (
-                            <select
-                              disabled={!isAutoStart}
-                              value={priority ? priority.toString() : ""}
-                              onChange={evt =>
-                                appAutoStartService.setAutoStartAppRegistration(
-                                  registration,
-                                  parseInt(evt.target.value, 10)
-                                )
-                              }
-                            >
-                              {priorities.map(priority => (
-                                <option
-                                  key={priority}
-                                  value={priority.toString()}
-                                >
-                                  {priority}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <span>N/A</span>
-                          )}
+                          <select
+                            disabled={!isAutoStart}
+                            value={priority ? priority.toString() : ""}
+                            onChange={evt =>
+                              appAutoStartService.setAutoStartAppRegistration(
+                                registration,
+                                parseInt(evt.target.value, 10)
+                              )
+                            }
+                          >
+                            {isAutoStart ? (
+                              <>
+                                {priorities.map(priority => (
+                                  <option
+                                    key={priority}
+                                    value={priority.toString()}
+                                  >
+                                    {priority}
+                                  </option>
+                                ))}
+                              </>
+                            ) : (
+                              <option>N/A</option>
+                            )}
+                          </select>
                         </Padding>
                       </td>
                     </tr>
