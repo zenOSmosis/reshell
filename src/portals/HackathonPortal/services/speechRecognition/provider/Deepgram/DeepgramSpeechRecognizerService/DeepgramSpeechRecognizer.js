@@ -68,29 +68,31 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
 
     this._deepgramSocket.addEventListener("open", () => {
       this._setIsConnected(true);
-
-      this._mediaRecorder.addEventListener("dataavailable", event => {
-        if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
-          this._deepgramSocket.send(event.data);
-        }
-      });
-
-      // FIXME: (jh) Adjust as necessary
-      this._mediaRecorder.start(100);
-
-      this._deepgramSocket.addEventListener("message", message => {
-        const received = JSON.parse(message.data);
-
-        const transcript = received.channel.alternatives[0].transcript;
-
-        if (transcript && received.is_final) {
-          this._setFinalizedTranscription(transcript);
-        } else {
-          this._setRealTimeTranscription(transcript);
-        }
-      });
-
-      this._deepgramSocket.addEventListener("close", () => this.destroy());
     });
+
+    this._mediaRecorder.addEventListener("dataavailable", event => {
+      if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
+        this._deepgramSocket.send(event.data);
+      }
+    });
+
+    // FIXME: (jh) Adjust as necessary
+    this._mediaRecorder.start(100);
+
+    this._deepgramSocket.addEventListener("message", message => {
+      const received = JSON.parse(message.data);
+
+      const transcript = received.channel.alternatives[0].transcript;
+
+      if (transcript && received.is_final) {
+        this._setFinalizedTranscription(transcript);
+      } else {
+        this._setRealTimeTranscription(transcript);
+      }
+    });
+
+    this._deepgramSocket.addEventListener("error", () => this.destroy());
+
+    this._deepgramSocket.addEventListener("close", () => this.destroy());
   }
 }
