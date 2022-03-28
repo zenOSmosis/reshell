@@ -1,5 +1,11 @@
-/*
-  @see https://codepen.io/anthonyLukes/pen/DLBeE
+/**
+* Note: The usage of z-index fixes a Chrome (~99) issue where overflown content
+* could interfere with the header (and possibly footer), where clicks on the
+* header would previously be sent to the content area, though the header's
+* content would be visible instead. The issue was not experienced on Safari or
+* Firefox.
+* 
+* Inpsired by: @see https://codepen.io/anthonyLukes/pen/DLBe
 */
 
 .layout {
@@ -12,12 +18,21 @@
   flex: 0 0 auto;
   position: relative;
   overflow: hidden;
+
+  z-index: 1;
 }
 
 .layout .content {
   flex: 1 1 auto;
   position: relative;
-  overflow: hidden; /* This is actually required to work with optional <Scrollable /> child */
+
+  /**
+   * "Overflow: hidden" is actually required to work with optional
+   * <Scrollable /> child
+   */
+  overflow: hidden;
+
+  z-index: 0;
 
   /**
   * This fixes an issue where content would appear invisible on iOS
@@ -31,4 +46,6 @@
   flex: 0 0 auto;
   position: relative;
   overflow: hidden;
+
+  z-index: 1;
 }
