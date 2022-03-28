@@ -3,6 +3,7 @@ import Layout, { Header, Content, Footer } from "../Layout";
 import Padding from "../Padding";
 import Center from "../Center";
 import Cover from "../Cover";
+import StickyTable from "../StickyTable";
 
 import RCACableIcon from "@icons/RCACableIcon";
 
@@ -62,13 +63,21 @@ export default function InputMediaDevicesSelector({
               borderRadius: 4,
             }}
           >
-            <table style={{ width: "100%" }}>
+            <StickyTable>
               <thead>
                 <tr>
-                  <td>Name</td>
-                  <td className="center">f(x)</td>
-                  <td className="center">Muted</td>
-                  <td className="center">Level</td>
+                  <td>
+                    <Padding>Name</Padding>
+                  </td>
+                  <td className="center">
+                    <Padding>f(x)</Padding>
+                  </td>
+                  <td className="center">
+                    <Padding>Muted</Padding>
+                  </td>
+                  <td className="center">
+                    <Padding>Level</Padding>
+                  </td>
                 </tr>
               </thead>
               <tbody>
@@ -122,7 +131,7 @@ export default function InputMediaDevicesSelector({
                   );
                 })}
               </tbody>
-            </table>
+            </StickyTable>
           </Full>
         </Padding>
       </Content>
