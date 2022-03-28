@@ -1,8 +1,8 @@
 import Desktop from "@components/Desktop";
 
-// Borrowing from ReShell.org for their "auto-start policy" overrides
-import ApplicationsApp from "../ReShell.org/apps/ApplicationsApp";
-import AboutReShellApp from "../ReShell.org/apps/AboutReShellApp";
+import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
+import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
+import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
 
 // import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
 // import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
@@ -24,12 +24,15 @@ import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 import PartOfSpeechAnalyzerApp from "./apps/PartOfSpeechAnalyzerApp";
 
+import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
+
 export default function HackathonPortal() {
   return (
     <Desktop
       appDescriptors={[
         ApplicationsApp,
         AboutReShellApp,
+        StartupManagerApp,
         // BackgroundSelectorApp,
         // BeepPrototypeApp,
         CheckForUpdatesApp,
@@ -50,6 +53,7 @@ export default function HackathonPortal() {
         DesktopCommanderDebuggerApp,
         PartOfSpeechAnalyzerApp,
       ]}
+      defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
   );
 }

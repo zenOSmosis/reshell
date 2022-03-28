@@ -1,8 +1,9 @@
 import Desktop from "@components/Desktop";
 
-import ApplicationsApp from "./apps/ApplicationsApp";
+import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
 import ApplicationMonitorApp from "../ExamplePortal/apps/ApplicationMonitorApp";
-import AboutReShellApp from "./apps/AboutReShellApp";
+import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
+import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
 import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
 import ColorAdjusterApp from "../ExamplePortal/apps/ColorAdjusterApp";
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
@@ -15,9 +16,11 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 
-// Mesa Hackathon apps
+// Hackathon apps
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
+
+import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
 export default function ReShellOrgPortal() {
   return (
@@ -25,6 +28,7 @@ export default function ReShellOrgPortal() {
       appDescriptors={[
         ApplicationsApp,
         ApplicationMonitorApp,
+        StartupManagerApp,
         AboutReShellApp,
         CheckForUpdatesApp,
         ColorAdjusterApp,
@@ -41,6 +45,7 @@ export default function ReShellOrgPortal() {
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
       ]}
+      defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
   );
 }

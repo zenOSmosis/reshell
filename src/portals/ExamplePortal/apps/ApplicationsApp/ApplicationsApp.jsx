@@ -23,7 +23,6 @@ const ApplicationsApp = {
     width: 640 * 1.2,
     height: 400 * 1.2,
   },
-  isAutoStart: true,
   isPinnedToDock: true,
   initialSharedState: {
     searchQuery: DEFAULT_SEARCH_QUERY,

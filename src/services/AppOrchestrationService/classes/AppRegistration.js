@@ -149,14 +149,9 @@ export default class AppRegistration extends PhantomCore {
     return Boolean(this._appDescriptor.isPinned);
   }
 
-  // TODO: Document
+  // TODO: Remove; manage via a service
   getIsPinnedToDock() {
     return Boolean(this._appDescriptor.isPinnedToDock);
-  }
-
-  // TODO: Document
-  getIsAutoStart() {
-    return Boolean(this._appDescriptor.isAutoStart);
   }
 
   /**

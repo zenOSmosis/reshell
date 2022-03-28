@@ -1,5 +1,9 @@
 import { useEffect, useRef } from "react";
+
 import useLocationAppRegistrationID from "@hooks/useLocationAppRegistrationID";
+import useServiceClass from "@hooks/useServiceClass";
+
+import AppAutoStartService from "@services/AppAutoStartService";
 
 /**
  * Handles auto-start of apps which are set to automatically launch.
@@ -16,15 +20,21 @@ export default function useAppRuntimesAutoStart(
 
   const locationAppRegistrationID = useLocationAppRegistrationID();
 
-  // Automatically start registrations with isAutoStart set to true
+  const { serviceInstance: appAutoStartService } = useServiceClass(
+    AppAutoStartService,
+    false
+  );
+
+  // Automatically start
+  //
+  // TODO: Move this functionality to AppAutoStartService
   useEffect(() => {
     if (appRegistrations.length && !refHasBegunAutoStart.current) {
-      // Prevent auto-start sequence from happening more than once
       refHasBegunAutoStart.current = true;
 
-      for (const registration of [...appRegistrations].filter(registration =>
-        registration.getIsAutoStart()
-      )) {
+      const prioritizedAutoStartAppRegistrations =
+        appAutoStartService.getPrioritizedAppAutoStartRegistrations();
+      for (const registration of prioritizedAutoStartAppRegistrations) {
         activateAppRegistration(registration);
       }
 
@@ -42,5 +52,10 @@ export default function useAppRuntimesAutoStart(
         }
       });
     }
-  }, [locationAppRegistrationID, appRegistrations, activateAppRegistration]);
+  }, [
+    locationAppRegistrationID,
+    appRegistrations,
+    activateAppRegistration,
+    appAutoStartService,
+  ]);
 }

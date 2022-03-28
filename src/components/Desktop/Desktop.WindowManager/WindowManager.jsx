@@ -23,18 +23,7 @@ let stackingIndex = 0;
 
 // TODO: Document
 // TODO: Use prop-types
-export default function WindowManager({ appDescriptors = [], children }) {
-  const { addOrUpdateAppRegistration } = useAppOrchestrationContext();
-
-  // TODO: Refactor outside of window manager?
-  useEffect(() => {
-    appDescriptors.forEach(descriptor =>
-      addOrUpdateAppRegistration(descriptor)
-    );
-
-    // TODO: Add or update these descriptors in the appropriate provider
-  }, [appDescriptors, addOrUpdateAppRegistration]);
-
+export default function WindowManager({ children }) {
   return (
     <WindowManagerRouteProvider>
       <WindowManagerView>{children}</WindowManagerView>
@@ -196,7 +185,6 @@ function WindowManagerView({ children }) {
         serviceClasses = [],
         isPinned,
         isPinnedToDock,
-        isAutoStart,
         ...windowProps
       } = appDescriptor;
 

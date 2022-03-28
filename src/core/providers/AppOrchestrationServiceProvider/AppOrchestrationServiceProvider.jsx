@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 
 import useServiceClass from "@hooks/useServiceClass";
+import useAppRuntimesAutoStart from "./useAppRuntimesAutoStart";
 
 import AppOrchestrationService from "@services/AppOrchestrationService";
-
-import useAppRuntimesAutoStart from "./useAppRuntimesAutoStart";
 
 export const AppOrchestrationServiceContext = React.createContext({});
 

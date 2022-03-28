@@ -15,7 +15,6 @@ const MSTCDebugApp = {
     width: 640,
     height: 480,
   },
-  isAutoStart: true,
   // serviceClasses: [InputMediaDevicesService],
   view: function View(
     {
