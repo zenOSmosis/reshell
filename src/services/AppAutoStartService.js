@@ -39,9 +39,6 @@ export default class AppAutoStartService extends UIServiceCore {
       const nextAutoStartConfigs = updatedState.appAutoStartConfigs;
 
       if (nextAutoStartConfigs !== undefined) {
-        // TODO: Change to debug
-        this.log({ nextAutoStartConfigs });
-
         this._localStorageEngine.setItem(
           KEY_SESSION_STORAGE_APP_AUTOSTART,
           nextAutoStartConfigs
@@ -55,11 +52,12 @@ export default class AppAutoStartService extends UIServiceCore {
     // condition before setDefaultAppAutoStartConfig is externally called, or
     // if the config is used in the useAppRuntimesAutoStart hook. This might
     // need to be refactored.
-    this._localStorageEngine
-      .fetchItem(KEY_SESSION_STORAGE_APP_AUTOSTART)
-      .then(cachedAutoStartConfigs =>
+    this._localStorageEngine.fetchItem(KEY_SESSION_STORAGE_APP_AUTOSTART).then(
+      cachedAutoStartConfigs =>
+        cachedAutoStartConfigs &&
+        // TODO: Perform validation step
         this.setState({ appAutoStartConfigs: cachedAutoStartConfigs })
-      );
+    );
   }
 
   /**
@@ -67,7 +65,7 @@ export default class AppAutoStartService extends UIServiceCore {
    * @return {void}
    */
   setDefaultAppAutoStartConfigs(appAutoStartConfigs) {
-    if (!Object.keys(this.getAutoStartConfigs()).length) {
+    if (!Object.keys(this.getAppAutoStartConfigs()).length) {
       // TODO: Perform validation step
 
       this.setState({
@@ -109,7 +107,7 @@ export default class AppAutoStartService extends UIServiceCore {
   /**
    * @return {AutoStartConfigs}
    */
-  getAutoStartConfigs() {
+  getAppAutoStartConfigs() {
     return this.getState().appAutoStartConfigs;
   }
 
@@ -120,7 +118,7 @@ export default class AppAutoStartService extends UIServiceCore {
    */
   getPrioritizedAppAutoStartRegistrations() {
     const prioritizedAppAutoStartConfigs = Object.entries(
-      this.getAutoStartConfigs()
+      this.getAppAutoStartConfigs()
     )
       .sort(
         (

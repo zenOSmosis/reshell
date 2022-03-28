@@ -24,7 +24,7 @@ const StartupManagerApp = {
     const appRegistrations = appOrchestrationService.getAppRegistrations();
 
     const appAutoStartService = appServices[AppAutoStartService];
-    const appAutoStartConfigs = appAutoStartService.getAutoStartConfigs();
+    const appAutoStartConfigs = appAutoStartService.getAppAutoStartConfigs();
 
     /**
      * @type {number[]} An array of available priority values.
