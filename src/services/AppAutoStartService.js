@@ -48,6 +48,18 @@ export default class AppAutoStartService extends UIServiceCore {
         );
       }
     });
+
+    // Auto-load from cache
+    //
+    // FIXME: (jh) I'm not positive if this could potentially lead to a race
+    // condition before setDefaultAppAutoStartConfig is externally called, or
+    // if the config is used in the useAppRuntimesAutoStart hook. This might
+    // need to be refactored.
+    this._localStorageEngine
+      .fetchItem(KEY_SESSION_STORAGE_APP_AUTOSTART)
+      .then(cachedAutoStartConfigs =>
+        this.setState({ appAutoStartConfigs: cachedAutoStartConfigs })
+      );
   }
 
   /**
@@ -101,7 +113,11 @@ export default class AppAutoStartService extends UIServiceCore {
     return this.getState().appAutoStartConfigs;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves a prioritized list of app registrations.
+   *
+   * @return {AppRegistration[]}
+   */
   getPrioritizedAppAutoStartRegistrations() {
     const prioritizedAppAutoStartConfigs = Object.entries(
       this.getAutoStartConfigs()
