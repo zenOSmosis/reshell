@@ -14,6 +14,8 @@ import AutoScaler from "../AutoScaler";
 import NotificationProvider from "./providers/NotificationProvider";
 import ModalProvider from "./providers/ModalProvider";
 
+import useDesktopAppConfiguration from "./hooks/useDesktopAppConfiguration";
+
 // TODO: Consider using Noto Sans font for UI (same that Slack uses, nice font;
 // preload resources w/ Preloader component): https://fonts.google.com/noto/specimen/Noto+Sans
 
@@ -27,6 +29,11 @@ export default function Desktop({
   appDescriptors,
   defaultAppAutoStartConfigs,
 }) {
+  useDesktopAppConfiguration({
+    appDescriptors,
+    defaultAppAutoStartConfigs,
+  });
+
   return (
     <FullViewport>
       {
@@ -105,10 +112,7 @@ export default function Desktop({
                     </div>
                   </AutoScaler>
                 </div>
-                <WindowManager
-                  appDescriptors={appDescriptors}
-                  defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
-                >
+                <WindowManager>
                   <Dock />
                 </WindowManager>
               </Content>

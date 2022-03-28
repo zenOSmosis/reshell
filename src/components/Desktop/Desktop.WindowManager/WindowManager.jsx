@@ -15,9 +15,6 @@ import useServicesContext from "@hooks/useServicesContext";
 import useDesktopContext from "@hooks/useDesktopContext";
 import useAppOrchestrationContext from "@hooks/useAppOrchestrationContext";
 import useForceUpdate from "@hooks/useForceUpdate";
-import useServiceClass from "@hooks/useServiceClass";
-
-import AppAutoStartService from "@services/AppAutoStartService";
 
 // TODO: Add hotkey listener service and map to active window
 
@@ -26,33 +23,7 @@ let stackingIndex = 0;
 
 // TODO: Document
 // TODO: Use prop-types
-export default function WindowManager({
-  appDescriptors = [],
-  defaultAppAutoStartConfigs = {},
-  children,
-}) {
-  const { addOrUpdateAppRegistration } = useAppOrchestrationContext();
-
-  // TODO: Refactor outside of window manager?
-  useEffect(() => {
-    appDescriptors.forEach(descriptor =>
-      addOrUpdateAppRegistration(descriptor)
-    );
-
-    // TODO: Add or update these descriptors in the appropriate provider
-  }, [appDescriptors, addOrUpdateAppRegistration]);
-
-  // TODO: Refactor outside of window manager?
-  const { serviceInstance: appAutoStartService } = useServiceClass(
-    AppAutoStartService,
-    false
-  );
-  useEffect(() => {
-    appAutoStartService.setDefaultAppAutoStartConfigs(
-      defaultAppAutoStartConfigs
-    );
-  }, [appAutoStartService, defaultAppAutoStartConfigs]);
-
+export default function WindowManager({ children }) {
   return (
     <WindowManagerRouteProvider>
       <WindowManagerView>{children}</WindowManagerView>
