@@ -46,7 +46,7 @@ export default class TextToSpeechService extends UIServiceCore {
     // TODO: Listen for speech end event before resolving
     // https://wicg.github.io/speech-api/#dom-speechsynthesisutterance-speechsynthesisutterance
     //
-    // TODO: Automatically resolve if the queue has been canceled
+    // TODO: Automatically reject if the queue has been canceled
 
     const utterance = new SpeechSynthesisUtterance(text);
 
