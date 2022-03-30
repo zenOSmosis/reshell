@@ -27,6 +27,7 @@ import NotificationsPrototypeApp from "./apps/NotificationsPrototypeApp";
 import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
 import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
+import TextToSpeechApp from "./apps/TextToSpeechApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -61,6 +62,7 @@ export default function ExamplePortal() {
         ModalsPrototypeApp,
         SystemInformationApp,
         DesktopCommanderDebuggerApp,
+        TextToSpeechApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
