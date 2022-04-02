@@ -25,15 +25,6 @@ html {
   touch-action: manipulation;
 }
 
-/**
-  * Note: This is an attempt to fix slight pixel bouncing when clicking on a
-  * window title in Chrome, but it doesn't seem to fix the issue completely
-  */
-*:focus {
-  margin: 0;
-  padding: 0;
-}
-
 body {
   margin: 0;
   padding: 0;
