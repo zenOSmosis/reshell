@@ -5,9 +5,14 @@ const NativeWebSocket = window.WebSocket;
 
 if (NativeWebSocket) {
   registerSpyAgent(() => {
+    // TODO: Implement ability to automatically close
+
     const initSpyAgent = (initialState = { address: null, isOpen: false }) =>
       SpyAgentCore.createSpyAgent(NativeWebSocket, initialState);
 
+    /**
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+     */
     class WebSocketSpy extends NativeWebSocket {
       constructor(address, ...args) {
         super(address, ...args);

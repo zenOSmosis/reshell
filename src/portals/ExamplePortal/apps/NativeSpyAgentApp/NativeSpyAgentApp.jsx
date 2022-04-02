@@ -1,5 +1,13 @@
-import Layout, { Content, Footer, Row, Column } from "@components/Layout";
+import Layout, {
+  Header,
+  Content,
+  Footer,
+  Row,
+  Column,
+} from "@components/Layout";
 import Padding from "@components/Padding";
+import VirtualLink from "@components/VirtualLink";
+import Full from "@components/Full";
 
 import NativeSpyService from "@services/NativeSpyService";
 
@@ -29,19 +37,39 @@ const NativeSpyAgentApp = {
         <Content>
           <Row>
             <Column
-              style={{ backgroundColor: "gray", maxWidth: 180, color: "#000" }}
+              style={{
+                backgroundColor: "rgba(255,255,255,.1)",
+                maxWidth: 180,
+              }}
             >
-              <Padding>
-                <h1>Class</h1>
-                {wrappedNativeClassNames.map(className => (
-                  <ul key={className}>{className} (?)</ul>
-                ))}
-              </Padding>
+              <Full style={{ overflowY: "auto" }}>
+                <Padding>
+                  <h1>Class</h1>
+                  <div>
+                    <ul>
+                      {wrappedNativeClassNames.map(wrappedClassName => (
+                        <li key={wrappedClassName}>
+                          <VirtualLink>{wrappedClassName}</VirtualLink>
+                          <ol>
+                            <li>one</li>
+                            <li>two</li>
+                          </ol>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Padding>
+              </Full>
             </Column>
             <Column>
               <Layout>
+                <Header>
+                  <Padding>[header]</Padding>
+                </Header>
                 <Content>
-                  <Padding>[state]</Padding>
+                  <Full style={{ overflowY: "auto" }}>
+                    <Padding>[content]</Padding>
+                  </Full>
                 </Content>
                 <Footer>
                   <Padding>
