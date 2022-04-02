@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "jsx": "react",
+    "paths": {
+      "@root": ["../"],
+      "@components": ["components"],
+      "@core": ["core"],
+      "@hooks": ["hooks"],
+      "@icons": ["components/icons"],
+      "@portals": ["portals"],
+      "@services": ["services"],
+      "@service.cores": ["service.cores"],
+      "@shared": ["shared"],
+      "@utils": ["utils"]
+    }
+  }
+}
