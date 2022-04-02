@@ -41,6 +41,8 @@ export default class TextToSpeechService extends UIServiceCore {
    * @return {Promise<void>}
    */
   async say(text) {
+    await this.onceReady();
+
     try {
       // TODO: Integrate
       //
