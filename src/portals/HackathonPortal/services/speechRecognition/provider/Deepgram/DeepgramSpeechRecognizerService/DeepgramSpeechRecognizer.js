@@ -62,9 +62,22 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       this._apiKey,
     ]);
 
-    this._mediaRecorder = new MediaRecorder(this._mediaStream, {
-      mimeType: "audio/webm",
-    });
+    this._deepgramSocket.addEventListener("error", () => this.destroy());
+
+    this._deepgramSocket.addEventListener("close", () => this.destroy());
+
+    try {
+      this._mediaRecorder = new MediaRecorder(this._mediaStream, {
+        mimeType: "audio/webm",
+      });
+    } catch (err) {
+      this._stopRecognizing();
+
+      // Does not work in Safari!
+      //
+      // TODO: Handle more gracefully, but ensure we don't continue
+      throw err;
+    }
 
     this._deepgramSocket.addEventListener("open", () => {
       this._setIsConnected(true);
@@ -90,9 +103,5 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
         this._setRealTimeTranscription(transcript);
       }
     });
-
-    this._deepgramSocket.addEventListener("error", () => this.destroy());
-
-    this._deepgramSocket.addEventListener("close", () => this.destroy());
   }
 }
