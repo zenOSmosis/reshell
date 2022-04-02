@@ -201,6 +201,9 @@ export default class SpeechRecognizerBase extends PhantomCore {
   _setFinalizedTranscription(text) {
     this._setIsRecognizing(false);
 
+    // Update real-time transcription, as well, with finalized text
+    this.emit(EVT_TRANSCRIPTION_RECOGNIZING, text);
+
     this.emit(EVT_TRANSCRIPTION_FINALIZED, text);
   }
 }
