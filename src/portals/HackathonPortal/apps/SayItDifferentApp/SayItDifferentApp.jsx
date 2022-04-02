@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
@@ -15,8 +15,6 @@ import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerServ
 import TextToSpeechService from "@services/TextToSpeechService";
 
 export const REGISTRATION_ID = "say-it-different";
-
-// TODO: Show matched command
 
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
@@ -45,17 +43,18 @@ const SayItDifferentApp = {
 
     // TODO: Implement close-captioned service and show caption overlays
 
-    // TODO: Try to squeeze-in native speech-to-text API for sourcing
-
     // TODO: Allow text input as well
 
     return (
       <Layout>
         <Content>
-          <Center canOverflow="true">
+          <Center canOverflow={true}>
             <Section>
               <div>
-                <textarea onChange={evt => setTextInputValue(evt.target.value)}>
+                <textarea
+                  onChange={evt => setTextInputValue(evt.target.value)}
+                  value={textInputValue}
+                >
                   {textInputValue}
                 </textarea>
               </div>
