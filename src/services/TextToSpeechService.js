@@ -41,29 +41,33 @@ export default class TextToSpeechService extends UIServiceCore {
    * @return {Promise<void>}
    */
   async say(text) {
-    // TODO: Integrate
-    //
-    // TODO: Listen for speech end event before resolving
-    // https://wicg.github.io/speech-api/#dom-speechsynthesisutterance-speechsynthesisutterance
-    //
-    // TODO: Automatically reject if the queue has been canceled
+    try {
+      // TODO: Integrate
+      //
+      // TODO: Listen for speech end event before resolving
+      // https://wicg.github.io/speech-api/#dom-speechsynthesisutterance-speechsynthesisutterance
+      //
+      // TODO: Automatically reject if the queue has been canceled
 
-    const utterance = new SpeechSynthesisUtterance(text);
+      const utterance = new SpeechSynthesisUtterance(text);
 
-    // TODO: Dynamically set
-    utterance.lang = "en-US";
-    utterance.pitch = 0.5;
-    utterance.rate = 0.8;
-    // utterance.voice = ...
-    utterance.volume = 1; // 0 - 1
+      // TODO: Dynamically set
+      utterance.lang = "en-US";
+      utterance.pitch = 0.5;
+      utterance.rate = 0.8;
+      // utterance.voice = ...
+      utterance.volume = 1; // 0 - 1
 
-    this._synth.speak(utterance);
+      this._synth.speak(utterance);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
    * Stops words from being spoken immediately and removes remaining words from queue.
    */
   cancel() {
-    this._synth.cancel();
+    this._synth?.cancel();
   }
 }
