@@ -8,13 +8,14 @@ const jsconfig = require("./jsconfig.json");
 
 module.exports = {
   webpack: {
-    alias: (() =>
+    alias:
+      // Dynamically configure via jsconfig.json
       Object.fromEntries(
         Object.entries(jsconfig.compilerOptions.paths).map(([key, value]) => [
           key.replace("/*", ""),
           path.resolve(__dirname, value[0].replace("/*", "")),
         ])
-      ))(),
+      ),
     plugins: {
       add: [
         new WorkerPlugin({
