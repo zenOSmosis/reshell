@@ -32,6 +32,7 @@ import SystemModal from "@components/modals/SystemModal";
 // TODO: Refactor
 import AppOrchestrationService from "@services/AppOrchestrationService";
 import UINotificationService from "@services/UINotificationService";
+import TextToSpeechService from "@services/TextToSpeechService";
 import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/ChatApp";
 import AppLinkButton from "@components/AppLinkButton";
 
@@ -291,19 +292,21 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
                 // TODO: Refactor this Easter egg!!!
                 if (message.body?.startsWith("/alert ")) {
                   if (idx === 0) {
+                    const alertMessage = message.body.replace("/alert ", "");
                     const uiModalService = this.useServiceClass(UIModalService);
                     uiModalService.showModal(
                       ({ ...args }) => (
                         <SystemModal {...args}>
                           <Center>
                             <span style={{ fontSize: "2em" }}>
-                              {message.body.replace("/alert ", "")}
+                              {alertMessage}
                             </span>
                           </Center>
                         </SystemModal>
                       ),
                       { duration: 5000 }
                     );
+                    this.useServiceClass(TextToSpeechService).say(alertMessage);
                   }
 
                   // Don't render the easter egg in the chat message
