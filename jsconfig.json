@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "jsx": "react",
+    "moduleResolution": "node",
     "paths": {
-      "@root": ["../"],
-      "@components": ["components"],
-      "@core": ["core"],
-      "@hooks": ["hooks"],
-      "@icons": ["components/icons"],
-      "@portals": ["portals"],
-      "@services": ["services"],
-      "@service.cores": ["service.cores"],
-      "@shared": ["shared"],
-      "@utils": ["utils"]
+      "@root/*": ["./*"],
+      "@components/*": ["src/components/*"],
+      "@core/*": ["src/core/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@icons/*": ["src/components/icons/*"],
+      "@portals/*": ["src/portals/*"],
+      "@services/*": ["src/services/*"],
+      "@service.cores/*": ["src/service.cores/*"],
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }

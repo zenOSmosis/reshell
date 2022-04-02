@@ -11,8 +11,8 @@ module.exports = {
     alias: (() =>
       Object.fromEntries(
         Object.entries(jsconfig.compilerOptions.paths).map(([key, value]) => [
-          key,
-          path.resolve(__dirname, "src", value[0]),
+          key.replace("/*", ""),
+          path.resolve(__dirname, value[0].replace("/*", "")),
         ])
       ))(),
     plugins: {
