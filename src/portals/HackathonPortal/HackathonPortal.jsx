@@ -22,9 +22,9 @@ import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
-import PartOfSpeechAnalyzerApp from "./apps/PartOfSpeechAnalyzerApp";
 import TextToSpeechApp from "../ExamplePortal/apps/TextToSpeechApp";
-import SayItDifferentApp from "./apps/SayItDifferent";
+import SayItDifferentApp from "./apps/SayItDifferentApp";
+import NativeSpyAgent from "../ExamplePortal/apps/NativeSpyAgent";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -53,9 +53,9 @@ export default function HackathonPortal() {
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
-        PartOfSpeechAnalyzerApp,
         TextToSpeechApp,
         SayItDifferentApp,
+        NativeSpyAgent,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

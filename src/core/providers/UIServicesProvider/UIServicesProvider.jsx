@@ -5,6 +5,8 @@ import {
   EVT_CHILD_INSTANCE_REMOVED,
 } from "@core/classes/UIServiceManager";
 
+import useUIServicesAutoStart from "./hooks/useUIServicesAutoStart";
+
 import useForceUpdate from "@hooks/useForceUpdate";
 
 export const UIServicesContext = React.createContext({});
@@ -71,6 +73,9 @@ export default function UIServicesProvider({ children }) {
     ServiceClass => _uiServiceManager.startServiceClass(ServiceClass),
     [_uiServiceManager]
   );
+
+  // Startup auto-start services
+  useUIServicesAutoStart(startServiceClass);
 
   /**
    * Destructs the service instance with the given ServiceClass.
