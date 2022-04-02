@@ -5,7 +5,7 @@ import NativeSpyService from "@services/NativeSpyService";
 
 export const REGISTRATION_ID = "native-spy-agent";
 
-const NativeSpyAgent = {
+const NativeSpyAgentApp = {
   id: "native-spy-agent",
   title: "Native Spy Agent",
   style: {
@@ -14,14 +14,22 @@ const NativeSpyAgent = {
   },
   serviceClasses: [NativeSpyService],
   view: function View({ appServices }) {
-    // const nativeSpyService = appServices[NativeSpyService];
+    const nativeSpyService = appServices[NativeSpyService];
+
+    // TODO: Remove
+    console.log({ state: nativeSpyService.getState() });
 
     return (
       <Layout>
         <Content>
           <Row>
-            <Column style={{ backgroundColor: "gray", maxWidth: 180 }}>
-              <Padding>[service]</Padding>
+            <Column
+              style={{ backgroundColor: "gray", maxWidth: 180, color: "#000" }}
+            >
+              <Padding>
+                <h1>Class</h1>
+                <ul>WebSocket</ul>
+              </Padding>
             </Column>
             <Column>
               <Layout>
@@ -30,7 +38,9 @@ const NativeSpyAgent = {
                 </Content>
                 <Footer>
                   <Padding>
-                    <span className="note">ReShell DOM Spy System</span>
+                    <span className="note">
+                      ReShell Native JavaScript API Spy System
+                    </span>
                   </Padding>
                 </Footer>
               </Layout>
@@ -42,4 +52,4 @@ const NativeSpyAgent = {
   },
 };
 
-export default NativeSpyAgent;
+export default NativeSpyAgentApp;

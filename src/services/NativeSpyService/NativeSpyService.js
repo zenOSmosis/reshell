@@ -1,13 +1,26 @@
-import UIServiceCore from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import persistentSpyAgentCollection from "./persistentSpyAgentCollection";
 
 import "./spies/WebSocket.spy";
 
+/**
+ * IMPORTANT: For best results this service should be started up while ReShell
+ * is "booting".
+ */
 export default class NativeSpyService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
-    this.setTitle("Native Spy Service");
+    this.setTitle("Native JavaScript Spy Service");
 
-    // TODO: Include ability to monitor services
+    this.setState({ spyAgents: [] });
+
+    this._persistentSpyAgentCollection = persistentSpyAgentCollection;
+    // TODO: Handle accordingly
+    this.proxyOn(this._persistentSpyAgentCollection, EVT_UPDATED, () => {
+      const spyAgents = this._persistentSpyAgentCollection.getChildren();
+
+      this.setState({ spyAgents: spyAgents.map(agent => agent.getState()) });
+    });
   }
 }

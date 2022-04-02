@@ -1,6 +1,6 @@
 /**
  * This file contains optional startup classes which are not required to start
- * up the desktop itself, but help augment some of its control functions.
+ * up the desktop itself, but help augment some of its functionality.
  */
 
 import NativeSpyService from "@services/NativeSpyService";

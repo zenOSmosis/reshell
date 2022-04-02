@@ -15,7 +15,7 @@ import VUMeterApp from "../ExamplePortal/apps/VUMeterApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
-import NativeSpyAgent from "../ExamplePortal/apps/NativeSpyAgent";
+import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 
 // Hackathon apps
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
@@ -42,7 +42,7 @@ export default function ReShellOrgPortal() {
         VUMeterApp,
         KeyVaultApp,
         AppRegistrationViewerApp,
-        NativeSpyAgent,
+        NativeSpyAgentApp,
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,

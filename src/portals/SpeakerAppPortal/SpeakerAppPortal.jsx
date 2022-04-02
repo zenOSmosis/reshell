@@ -3,6 +3,7 @@ import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
 import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
+import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
 // import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 import InputMediaDevicesApp from "../ExamplePortal/apps/InputMediaDevicesApp";
@@ -16,6 +17,7 @@ import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
+import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -35,6 +37,7 @@ export default function SpeakerAppPortal() {
       appDescriptors={[
         ApplicationsApp,
         BeepPrototypeApp,
+        StartupManagerApp,
         // BackgroundSelectorApp,
         AboutReShellApp,
         KeyVaultApp,
@@ -50,6 +53,7 @@ export default function SpeakerAppPortal() {
         MemoryInfoApp,
         SoftwareInfoApp,
         AppRegistrationViewerApp,
+        NativeSpyAgentApp,
 
         CallPlayerApp,
         VirtualServerApp,
