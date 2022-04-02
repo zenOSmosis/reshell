@@ -1,6 +1,8 @@
 import { PhantomCollection } from "phantom-core";
 import SpyAgentCore from "./spies/SpyAgentCore";
 
+// TODO: Rename?
+// TODO: Document
 class SpyAgentCollection extends PhantomCollection {
   /**
    * @param {SpyAgent} spyAgent SpyAgentCore instance

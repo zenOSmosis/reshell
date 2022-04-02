@@ -1,46 +1,51 @@
+import registerSpyAgent from "../registerSpyAgent";
 import SpyAgentCore from "./SpyAgentCore";
 
 const NativeWebSocket = window.WebSocket;
 
 if (NativeWebSocket) {
-  const initSpyAgent = (initialState = { address: null, isOpen: false }) =>
-    SpyAgentCore.createSpyAgent(NativeWebSocket, initialState);
+  registerSpyAgent(() => {
+    const initSpyAgent = (initialState = { address: null, isOpen: false }) =>
+      SpyAgentCore.createSpyAgent(NativeWebSocket, initialState);
 
-  class WebSocketSpy extends NativeWebSocket {
-    constructor(address, ...args) {
-      super(address, ...args);
+    class WebSocketSpy extends NativeWebSocket {
+      constructor(address, ...args) {
+        super(address, ...args);
 
-      let spyAgent = initSpyAgent({
-        address,
-        isOpen: false,
-      });
+        let spyAgent = initSpyAgent({
+          address,
+          isOpen: false,
+        });
 
-      this.addEventListener("open", () => {
-        // TODO: Remove
-        console.log("open", this);
+        this.addEventListener("open", () => {
+          // TODO: Remove
+          console.debug("open", this);
 
-        if (!spyAgent) {
-          spyAgent = initSpyAgent({ address, isOpen: false });
-        }
-        spyAgent.setState({ isOpen: true });
-      });
+          if (!spyAgent) {
+            spyAgent = initSpyAgent({ address, isOpen: false });
+          }
+          spyAgent.setState({ isOpen: true });
+        });
 
-      this.addEventListener("close", () => {
-        // TODO: Remove
-        console.log("close", this);
+        this.addEventListener("close", () => {
+          // TODO: Remove
+          console.debug("close", this);
 
-        spyAgent.destroy();
-      });
+          spyAgent.destroy();
+        });
 
-      this.addEventListener("error", error => {
-        // TODO: Remove
-        console.error(error);
+        this.addEventListener("error", error => {
+          // TODO: Remove
+          console.error(error);
 
-        spyAgent.destroy();
-      });
+          spyAgent.destroy();
+        });
+      }
     }
-  }
 
-  // Override the native WebSocket object
-  window.WebSocket = WebSocketSpy;
+    // Override the native WebSocket object
+    window.WebSocket = WebSocketSpy;
+
+    return NativeWebSocket;
+  });
 }

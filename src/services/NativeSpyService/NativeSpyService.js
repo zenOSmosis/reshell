@@ -1,5 +1,6 @@
 import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 import persistentSpyAgentCollection from "./persistentSpyAgentCollection";
+import { spyAgents } from "./registerSpyAgent";
 
 import "./spies/WebSocket.spy";
 
@@ -16,11 +17,15 @@ export default class NativeSpyService extends UIServiceCore {
     this.setState({ spyAgents: [] });
 
     this._persistentSpyAgentCollection = persistentSpyAgentCollection;
-    // TODO: Handle accordingly
+
     this.proxyOn(this._persistentSpyAgentCollection, EVT_UPDATED, () => {
       const spyAgents = this._persistentSpyAgentCollection.getChildren();
 
       this.setState({ spyAgents: spyAgents.map(agent => agent.getState()) });
     });
+  }
+
+  getRegisteredSpyAgents() {
+    return spyAgents;
   }
 }

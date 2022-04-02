@@ -16,8 +16,13 @@ const NativeSpyAgentApp = {
   view: function View({ appServices }) {
     const nativeSpyService = appServices[NativeSpyService];
 
+    const wrappedNativeClassNames = nativeSpyService.getRegisteredSpyAgents();
+
     // TODO: Remove
-    console.log({ state: nativeSpyService.getState() });
+    console.log({
+      state: nativeSpyService.getState(),
+      // registeredSpyAgents: nativeSpyService.getRegisteredSpyAgents(),
+    });
 
     return (
       <Layout>
@@ -28,7 +33,9 @@ const NativeSpyAgentApp = {
             >
               <Padding>
                 <h1>Class</h1>
-                <ul>WebSocket</ul>
+                {wrappedNativeClassNames.map(className => (
+                  <ul key={className}>{className} (?)</ul>
+                ))}
               </Padding>
             </Column>
             <Column>
