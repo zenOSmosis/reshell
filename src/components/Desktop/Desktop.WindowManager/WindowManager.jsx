@@ -377,6 +377,8 @@ function WrappedWindowView({
   // Re-render window when a service updates
   useEffect(() => {
     const _handleServiceUpdate = () => {
+      // FIXME: (jh) Should this be potentially batched, or will React handle
+      // that on its own?
       forceUpdate();
     };
 
