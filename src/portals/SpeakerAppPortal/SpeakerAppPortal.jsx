@@ -31,6 +31,8 @@ import ChatApp from "./apps/ChatApp";
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
+import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
+
 export default function SpeakerAppPortal() {
   return (
     <Desktop
@@ -67,6 +69,7 @@ export default function SpeakerAppPortal() {
         TextToSpeechApp,
         SayItDifferentApp,
       ]}
+      defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
   );
 }
