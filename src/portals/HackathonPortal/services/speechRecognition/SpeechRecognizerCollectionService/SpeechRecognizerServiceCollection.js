@@ -1,6 +1,6 @@
 import { PhantomCollection } from "phantom-core";
 import SpeechRecognizerServiceCore, {
-  EVT_TRANSCRIPTION_FINALIZED,
+  EVT_FINALIZED_TRANSCRIPTION,
 } from "../__common__/SpeechRecognizerServiceCore";
 
 /**
@@ -34,8 +34,8 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
     // FIXME: (jh) This proxy is utilized instead of bindChildEventName we want
     // to obtain the service which broadcast the event. This functionality
     // might should work its way into PhantomCore instead.
-    this.proxyOn(speechRecognizerService, EVT_TRANSCRIPTION_FINALIZED, data => {
-      this.emit(EVT_TRANSCRIPTION_FINALIZED, [speechRecognizerService, data]);
+    this.proxyOn(speechRecognizerService, EVT_FINALIZED_TRANSCRIPTION, data => {
+      this.emit(EVT_FINALIZED_TRANSCRIPTION, [speechRecognizerService, data]);
     });
 
     return super.addChild(speechRecognizerService);
