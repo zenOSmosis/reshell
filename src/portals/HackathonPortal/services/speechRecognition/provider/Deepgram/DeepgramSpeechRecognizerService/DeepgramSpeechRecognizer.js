@@ -55,21 +55,46 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
     // Stop previous instance
     await this._stopRecognizing();
 
-    this._setIsConnecting(true);
-
-    this._deepgramSocket = new WebSocket(DEEPGRAM_WSS_ADDRESS, [
-      "token",
-      this._apiKey,
-    ]);
-
-    this._deepgramSocket.addEventListener("error", () => this.destroy());
-
-    this._deepgramSocket.addEventListener("close", () => this.destroy());
-
     try {
+      this._setIsConnecting(true);
+
+      this._deepgramSocket = new WebSocket(DEEPGRAM_WSS_ADDRESS, [
+        "token",
+        this._apiKey,
+      ]);
+
       this._mediaRecorder = new MediaRecorder(this._mediaStream, {
         mimeType: "audio/webm",
       });
+
+      this._deepgramSocket.addEventListener("open", () => {
+        this._setIsConnected(true);
+
+        this._mediaRecorder.addEventListener("dataavailable", event => {
+          if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
+            this._deepgramSocket.send(event.data);
+          }
+        });
+
+        // FIXME: (jh) Adjust as necessary
+        this._mediaRecorder.start(100);
+
+        this._deepgramSocket.addEventListener("message", message => {
+          const received = JSON.parse(message.data);
+
+          const transcript = received.channel.alternatives[0].transcript;
+
+          if (transcript && received.is_final) {
+            this._setFinalizedTranscription(transcript);
+          } else {
+            this._setRealTimeTranscription(transcript);
+          }
+        });
+      });
+
+      this._deepgramSocket.addEventListener("error", () => this.destroy());
+
+      this._deepgramSocket.addEventListener("close", () => this.destroy());
     } catch (err) {
       this._stopRecognizing();
 
@@ -78,30 +103,5 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
       // TODO: Handle more gracefully, but ensure we don't continue
       throw err;
     }
-
-    this._deepgramSocket.addEventListener("open", () => {
-      this._setIsConnected(true);
-    });
-
-    this._mediaRecorder.addEventListener("dataavailable", event => {
-      if (event.data.size > 0 && this._deepgramSocket?.readyState === 1) {
-        this._deepgramSocket.send(event.data);
-      }
-    });
-
-    // FIXME: (jh) Adjust as necessary
-    this._mediaRecorder.start(100);
-
-    this._deepgramSocket.addEventListener("message", message => {
-      const received = JSON.parse(message.data);
-
-      const transcript = received.channel.alternatives[0].transcript;
-
-      if (transcript && received.is_final) {
-        this._setFinalizedTranscription(transcript);
-      } else {
-        this._setRealTimeTranscription(transcript);
-      }
-    });
   }
 }
