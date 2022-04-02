@@ -19,6 +19,10 @@ export { EVT_UPDATED, EVT_FINALIZED_TRANSCRIPTION };
 // TODO: Auto-destruct after a certain amount of time after not retrieving
 // a finalized transcription
 
+/**
+ * Speech recognizer service core class which provider-specific speech services
+ * should derive from.
+ */
 export default class SpeechRecognizerServiceCore extends UIServiceCore {
   // TODO: Turn into a service core (utilize in service.cores directory)
   // TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)

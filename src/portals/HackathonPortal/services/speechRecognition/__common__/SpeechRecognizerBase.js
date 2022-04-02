@@ -19,6 +19,9 @@ export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
 // TODO: Ensure this automatically stops when the input stops or after a
 // certain amount of time
 
+/**
+ * Base class which provider-specific speech API classes derive from.
+ */
 export default class SpeechRecognizerBase extends PhantomCore {
   // FIXME: (jh) Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
