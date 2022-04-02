@@ -111,7 +111,7 @@ const ApplicationsApp = {
     // Auto-switch window title depending on "Applications" or "Portals" mode
     useEffect(() => {
       windowController.setTitle(
-        // TODO: Use default values instead of hardcoded
+        // FIXME: Use default values instead of hardcoded
         !isDisplayingPortals ? "Applications" : "Portals"
       );
     }, [windowController, isDisplayingPortals]);

@@ -105,8 +105,9 @@ export default function ApplicationSelector({
       <Footer>
         <Padding>
           <span className="note">
-            {appRuntimeRegistrations.length} registered application
-            {appRuntimeRegistrations.length !== 1 ? "s" : ""}
+            {appRegistrations.length} registered application
+            {appRegistrations.length !== 1 ? "s" : ""} (
+            {appRuntimeRegistrations.length} active)
           </span>
         </Padding>
       </Footer>
