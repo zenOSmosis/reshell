@@ -70,6 +70,10 @@ const ApplicationMonitorApp = {
               </li>
             </ol>
 
+            <p className="note" style={{ fontWeight: "bold" }}>
+              Profiling will be disabled once closing this window.
+            </p>
+
             <Padding>
               <button
                 onClick={() => setIsProfiling(true)}
@@ -77,9 +81,6 @@ const ApplicationMonitorApp = {
               >
                 Enable Profiling
               </button>
-              <p className="note">
-                Profiling will be disabled once closing this window
-              </p>
             </Padding>
           </div>
         </Center>
