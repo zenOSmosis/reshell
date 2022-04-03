@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "paths": {
       "@root/*": ["./*"],
+      "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@core/*": ["src/core/*"],
       "@hooks/*": ["src/hooks/*"],

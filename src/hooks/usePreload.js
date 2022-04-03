@@ -6,7 +6,7 @@ import Preload from "preload-it";
  *
  * @param {string[]} resources An array of URLs to preload. Note that these are
  * cached and the list cannot be changed without re-instantiating the hook.
- * @return {Object} // TODO: Document return type
+ * @return {{isPreloaded: boolean, progress: number}}
  */
 export default function usePreload(resources) {
   const [isPreloaded, _setIsPreloaded] = useState(false);
