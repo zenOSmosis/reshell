@@ -14,29 +14,21 @@ if (NativeWebSocket) {
         constructor(address, ...args) {
           super(address, ...args);
 
-          invokeSpyAgent(this);
+          // Initiate spy agent with initial state for this WebSocket instance
+          invokeSpyAgent(this, { address });
 
           this.addEventListener("open", () => {
-            // TODO: Remove
-            console.debug("open", this);
-
             // Register open state w/ spy agent
             invokeSpyAgent(this, { isOpen: true, error: null });
           });
 
           this.addEventListener("close", () => {
-            // TODO: Remove
-            console.debug("close", this);
-
-            // Register close state w/ spy agent
+            // Register close state w/ spy agent, then destruct the agent
             invokeSpyAgent(this, { isOpen: false }).destroy();
           });
 
           this.addEventListener("error", error => {
-            // TODO: Remove
-            console.error(error);
-
-            // Register error state w/ spy agent
+            // Register error state w/ spy agent, then destruct the agent
             invokeSpyAgent(this, { error }).destroy();
           });
         }
