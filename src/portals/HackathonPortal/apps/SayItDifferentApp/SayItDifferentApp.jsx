@@ -88,7 +88,7 @@ const SayItDifferentApp = {
                   masterLabel="Type w/ Voice"
                   style={{ float: "left" }}
                   onChange={setIsTypingWithVoice}
-                  value={isTypingWithVoice}
+                  isOn={isTypingWithVoice}
                   disabled={!hasRecognizer}
                 />
                 <button>Submit</button>
