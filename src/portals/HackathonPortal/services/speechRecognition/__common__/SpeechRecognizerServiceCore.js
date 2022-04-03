@@ -14,7 +14,11 @@ import {
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import UIModalWidgetService from "@services/UIModalWidgetService";
 
-export { EVT_UPDATED, EVT_FINALIZED_TRANSCRIPTION };
+export {
+  EVT_UPDATED,
+  EVT_REAL_TIME_TRANSCRIPTION,
+  EVT_FINALIZED_TRANSCRIPTION,
+};
 
 // TODO: Auto-destruct after a certain amount of time after not retrieving
 // a finalized transcription
@@ -113,6 +117,9 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
 
         this.proxyOn(this._recognizer, EVT_REAL_TIME_TRANSCRIPTION, text => {
           this.setState({ realTimeTranscription: text });
+
+          // Re-emit
+          this.emit(EVT_REAL_TIME_TRANSCRIPTION, text);
         });
 
         this.proxyOn(this._recognizer, EVT_FINALIZED_TRANSCRIPTION, text => {

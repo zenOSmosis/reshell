@@ -33,10 +33,22 @@ const SayItDifferentApp = {
 
   view: function View({ appServices }) {
     const tts = appServices[TextToSpeechService];
+    const stt = appServices[SpeechRecognizerCollectionService];
+
+    const realTimeTranscription = stt.getRealTimeTranscription();
+    const finalizedTranscription = stt.getFinalizedTranscription();
 
     const [textInputValue, setTextInputValue] = useState("");
 
-    useEffect(() => {}, [textInputValue]);
+    // TODO: Document
+    useEffect(() => {
+      setTextInputValue(realTimeTranscription);
+    }, [realTimeTranscription]);
+
+    // TODO: Document
+    useEffect(() => {
+      setTextInputValue(finalizedTranscription);
+    }, [finalizedTranscription]);
 
     // TODO: Use part of speech servicing to diagram sentences and replace parts of
     // speech with relevant other words (or phrases)
