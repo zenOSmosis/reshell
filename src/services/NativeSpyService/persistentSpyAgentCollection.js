@@ -1,20 +1,17 @@
 import { PhantomCollection } from "phantom-core";
-import SpyAgentCore from "./spies/SpyAgentCore";
+import SpyAgent from "./registerSpyAgent/SpyAgent";
 
 // TODO: Rename?
 // TODO: Document
 class SpyAgentCollection extends PhantomCollection {
   /**
-   * @param {SpyAgent} spyAgent SpyAgentCore instance
+   * @param {SpyAgent} spyAgent SpyAgent instance
    * @return {void}
    */
   addChild(spyAgent) {
-    if (!spyAgent instanceof SpyAgentCore) {
-      throw new TypeError("spyAgent is not a SpyAgentCore");
+    if (!spyAgent instanceof SpyAgent) {
+      throw new TypeError("spyAgent is not a SpyAgent");
     }
-
-    // TODO: Ensure spyAgent extends SpyAgentCore, and is not the core itself
-    // (somewhat related issue, but not quite: https://github.com/zenOSmosis/phantom-core/issues/155)
 
     return super.addChild(spyAgent);
   }

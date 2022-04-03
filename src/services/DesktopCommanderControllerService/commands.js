@@ -1,4 +1,7 @@
+// TODO: Make command?
 // import beep from "@utils/beep";
+
+// TODO: Import ability to "say" (via TTS)
 
 import { REGISTRATION_ID as APPLICATIONS_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ApplicationsApp";
 
