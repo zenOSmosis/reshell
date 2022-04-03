@@ -60,4 +60,14 @@ export default class SpeechRecognizerServiceCollection extends PhantomCollection
   getSpeechRecognizerServices() {
     return this.getChildren();
   }
+
+  /**
+   * Retrieves whether or not a speech recognizer is currently connected to any
+   * of the children.
+   *
+   * @return {boolean}
+   */
+  getHasRecognizer() {
+    return this.getChildren().some(child => child.getHasRecognizer());
+  }
 }

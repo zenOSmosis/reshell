@@ -35,6 +35,7 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
     this.setState({
       realTimeTranscription: null,
       finalizedTranscription: null,
+      // hasRecognizer: false,
     });
 
     /** @type {SpeechRecognizerServiceCollection} */
@@ -99,6 +100,15 @@ export default class SpeechRecognizerCollectionService extends UIServiceCore {
    */
   getSpeechRecognizerServices() {
     return this._speechRecognizerServiceCollection.getChildren();
+  }
+
+  /**
+   * Retrieves whether or not a speech recognizer is currently connected.
+   *
+   * @return {boolean}
+   */
+  getHasRecognizer() {
+    return this._speechRecognizerServiceCollection.getHasRecognizer();
   }
 
   /**

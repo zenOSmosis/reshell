@@ -5,6 +5,7 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Section from "@components/Section";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
+import LabeledToggle from "@components/labeled/LabeledToggle";
 
 import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../SpeechCommanderApp";
 
@@ -35,20 +36,25 @@ const SayItDifferentApp = {
     const tts = appServices[TextToSpeechService];
     const stt = appServices[SpeechRecognizerCollectionService];
 
+    const hasRecognizer = stt.getHasRecognizer();
     const realTimeTranscription = stt.getRealTimeTranscription();
-    const finalizedTranscription = stt.getFinalizedTranscription();
 
     const [textInputValue, setTextInputValue] = useState("");
+    const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
     // TODO: Document
     useEffect(() => {
-      setTextInputValue(realTimeTranscription);
-    }, [realTimeTranscription]);
+      if (!hasRecognizer) {
+        setIsTypingWithVoice(false);
+      }
+    }, [hasRecognizer]);
 
     // TODO: Document
     useEffect(() => {
-      setTextInputValue(finalizedTranscription);
-    }, [finalizedTranscription]);
+      if (isTypingWithVoice) {
+        setTextInputValue(realTimeTranscription);
+      }
+    }, [isTypingWithVoice, realTimeTranscription]);
 
     // TODO: Use part of speech servicing to diagram sentences and replace parts of
     // speech with relevant other words (or phrases)
@@ -78,6 +84,13 @@ const SayItDifferentApp = {
                 >
                   Say It
                 </button>
+                <LabeledToggle
+                  masterLabel="Type w/ Voice"
+                  style={{ float: "left" }}
+                  onChange={setIsTypingWithVoice}
+                  value={isTypingWithVoice}
+                  disabled={!hasRecognizer}
+                />
                 <button>Submit</button>
               </Padding>
             </Section>
