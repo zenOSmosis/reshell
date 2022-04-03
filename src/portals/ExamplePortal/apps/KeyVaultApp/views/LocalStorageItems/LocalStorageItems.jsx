@@ -1,4 +1,6 @@
+import Full from "@components/Full";
 import Layout, { Content, Footer } from "@components/Layout";
+import StickyTable from "@components/StickyTable";
 import Center from "@components/Center";
 import Padding from "@components/Padding";
 
@@ -36,18 +38,26 @@ export default function LocalStorageItems({
   return (
     <Layout>
       <Content>
-        <Padding style={{ overflowY: "auto" }}>
-          <table style={{ width: "100%" }}>
+        <Full style={{ overflowY: "auto" }}>
+          <StickyTable>
             <thead>
               <tr>
                 <td></td>
-                <td>Key</td>
-                <td style={{ color: "gray" }}>Value</td>
+                <td>
+                  <Padding>Key</Padding>
+                </td>
+                <td style={{ color: "gray" }}>
+                  <Padding>Value</Padding>
+                </td>
                 {/*
                     <td>Kind</td>
                     */}
-                <td>Encryption</td>
-                <td>Storage Engine</td>
+                <td>
+                  <Padding>Encryption</Padding>
+                </td>
+                <td>
+                  <Padding>Storage Engine</Padding>
+                </td>
               </tr>
             </thead>
             <tbody>
@@ -57,13 +67,17 @@ export default function LocalStorageItems({
                 return (
                   <tr key={idx}>
                     <td className="center">
-                      <input
-                        type="checkbox"
-                        // TODO: Remove hard-coding
-                        disabled
-                      ></input>
+                      <Padding>
+                        <input
+                          type="checkbox"
+                          // TODO: Remove hard-coding
+                          disabled
+                        ></input>
+                      </Padding>
                     </td>
-                    <td>{key}</td>
+                    <td>
+                      <Padding>{key}</Padding>
+                    </td>
                     <td className="center">
                       <button
                         onClick={() => onGetValue(key, storageEngine)}
@@ -78,15 +92,19 @@ export default function LocalStorageItems({
                         */}
 
                     <td className="center">
-                      {storageEngine.getEncryptionType() || "None"}
+                      <Padding>
+                        {storageEngine.getEncryptionType() || "None"}
+                      </Padding>
                     </td>
-                    <td className="center">{storageEngine.getTitle()}</td>
+                    <td className="center">
+                      <Padding>{storageEngine.getTitle()}</Padding>
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
-          </table>
-        </Padding>
+          </StickyTable>
+        </Full>
       </Content>
       <Footer>
         <Padding style={{ overflow: "auto" }}>
