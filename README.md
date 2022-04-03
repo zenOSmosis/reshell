@@ -34,33 +34,6 @@ ReShell extends [Create React App](https://create-react-app.dev/) with a window 
 
 Currently, a demonstration portal is running on [ReShell.org](https://reshell.org/about-reshell), and a portal is being created for a future version of [Speaker.app](https://speaker.app) (more details for Speaker.app are in the DEV article "[A WebRTC server in your browser](https://dev.to/jzombie/a-webrtc-server-in-your-web-browser-for-group-communications-5c6l)").
 
-# Notes for DEV Hackathon Competition
-
-A [dedicated ReShell portal](https://reshell.org) has been created for the [DEV Microsoft Azure Trial Hackathon](https://dev.to/devteam/hack-the-microsoft-azure-trial-on-dev-2ne5), with speech recognition integration support which can supply a limited set of spoken phrase commmands to windows and the desktop environment (i.e. "switch to mobile [or desktop] paradigm").
-
-```bash
-$ npm start
-$ # Select option 2 "HackathonPortal"
-$ # Navigate to https://localhost:3000
-$ # Enjoy
-```
-
-Or, skip the setup and [experience the hosted version](https://reshell.org).
-
-Here's a video demonstrating speech control.
-
-https://user-images.githubusercontent.com/1139657/157443171-d35decb7-5fd2-460d-b95e-cae7d7b28a80.mov
-
-![ReShell Input Media Devices](https://user-images.githubusercontent.com/1139657/157346532-a62db462-292c-4d5d-91d0-17904646d58a.jpeg)
-
-## Some useful links
-
-- About ReShell: https://reshell.org/about-reshell
-- Example Phrases: https://reshell.org/desktop-commander-debugger (NOTE: These do not have to be exactly spoken)
-- Speech Commander: https://reshell.org/speech-commander
-
-Note that speech control is currently only available in English.
-
 # Project Goals
 
 - Stable and efficient on desktop and mobile
