@@ -5,8 +5,8 @@ const NativeWebSocket = window.WebSocket;
 if (NativeWebSocket) {
   registerSpyAgent(
     NativeWebSocket,
-    { address: null, isOpen: false },
-    createSpyAgent => {
+    { address: null, isOpen: false, error: null },
+    invokeSpyAgent => {
       /**
        * @see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
        */
@@ -14,30 +14,30 @@ if (NativeWebSocket) {
         constructor(address, ...args) {
           super(address, ...args);
 
-          let spyAgent = createSpyAgent(this);
+          invokeSpyAgent(this);
 
           this.addEventListener("open", () => {
             // TODO: Remove
             console.debug("open", this);
 
-            if (!spyAgent) {
-              spyAgent = createSpyAgent(this);
-            }
-            spyAgent.setState({ isOpen: true });
+            // Register open state w/ spy agent
+            invokeSpyAgent(this, { isOpen: true, error: null });
           });
 
           this.addEventListener("close", () => {
             // TODO: Remove
             console.debug("close", this);
 
-            spyAgent.destroy();
+            // Register close state w/ spy agent
+            invokeSpyAgent(this, { isOpen: false }).destroy();
           });
 
           this.addEventListener("error", error => {
             // TODO: Remove
             console.error(error);
 
-            spyAgent.destroy();
+            // Register error state w/ spy agent
+            invokeSpyAgent(this, { error }).destroy();
           });
         }
       }

@@ -2,12 +2,6 @@ import SpyAgent from "./SpyAgent";
 
 const nativeSpies = [];
 
-// TODO: Fix invalid type
-/**
- * @callback registerSpyAgentCallback
- * @param {SpyAgent.createSpyAgentSignature} createSpyAgentSignature
- */
-
 /**
  * Registers a higher-order function to track usage of lower-level APIs.
  *

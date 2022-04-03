@@ -1,4 +1,4 @@
-import { PhantomState } from "phantom-core";
+import { PhantomState, EVT_BEFORE_DESTROY } from "phantom-core";
 import persistentSpyAgentCollection from "../persistentSpyAgentCollection";
 
 // TODO: Document
@@ -9,19 +9,34 @@ export default class SpyAgent extends PhantomState {
    * TODO: Document parameters
    */
   static createSpyAgentSignature(spiesOn, initialState) {
-    let spyAgent = null;
+    /** @type {Map<any, SpyAgent>} */
+    const spyAgentMap = new Map();
 
-    return () => {
+    return (scope, updatedState = {}) => {
+      let spyAgent = spyAgentMap.get(scope);
+
       if (
         !spyAgent ||
         spyAgent.getIsDestroying() ||
         spyAgent.getIsDestroyed()
       ) {
         spyAgent = new SpyAgent(spiesOn, initialState);
+
+        spyAgentMap.set(scope, spyAgent);
+
+        // Remove from scope once entering shutdown phase
+        spyAgent.once(EVT_BEFORE_DESTROY, () => {
+          // Note: While this prev check shouldn't be necessary it provides
+          // double-assurance that we're not accidentally deleting a scoped
+          // instance that we shouldn't be
+          const prev = spyAgentMap.get(scope);
+          if (prev === spyAgent) {
+            spyAgentMap.delete(scope);
+          }
+        });
       }
 
-      // TODO: Remove
-      console.log({ spyAgent });
+      spyAgent.setState(updatedState);
 
       return spyAgent;
     };
