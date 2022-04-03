@@ -22,17 +22,22 @@ export default function ConfirmModal({
         <button
           onClick={onClose}
           style={{
-            // TODO: Use color variable for highlighted elements
-            backgroundColor: "#347fe8",
+            backgroundColor: "red",
           }}
         >
-          Accept
+          Confirm
         </button>
 
         <div style={{ display: "inline-block", width: "1em" }} />
 
-        <button onClick={onCancel} style={{ backgroundColor: "red" }}>
-          Reject
+        <button
+          onClick={onCancel}
+          style={{
+            // TODO: Use color variable for highlighted elements
+            backgroundColor: "#347fe8",
+          }}
+        >
+          Cancel
         </button>
       </Padding>
     </div>
