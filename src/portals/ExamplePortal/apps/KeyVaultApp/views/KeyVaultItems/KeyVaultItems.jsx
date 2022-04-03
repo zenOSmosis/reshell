@@ -6,7 +6,7 @@ import Padding from "@components/Padding";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
-export default function LocalStorageItems({
+export default function KeyVaultItems({
   keyStorageEngineMaps = [],
   onGetValue,
   onEmpty,

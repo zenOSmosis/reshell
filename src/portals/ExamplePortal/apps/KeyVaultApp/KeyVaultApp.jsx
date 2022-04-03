@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import Padding from "@components/Padding";
 import Layout, { Header, Content } from "@components/Layout";
-import LocalStorageItems from "./views/LocalStorageItems";
+import KeyVaultItems from "./views/KeyVaultItems";
 import KeyEditorForm from "./views/KeyEditorForm";
 
 import BackArrowIcon from "@icons/BackArrowIcon";
@@ -137,7 +137,7 @@ const KeyVaultApp = {
         </Header>
         <Content>
           {!isCreatingNewKey ? (
-            <LocalStorageItems
+            <KeyVaultItems
               keyStorageEngineMaps={keyStorageEngineMaps}
               // onGetValue={() => null}
               onEmpty={handleEmpty}
