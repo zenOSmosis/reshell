@@ -46,7 +46,7 @@ export default function StartScreen({ onExit }) {
           <Layout>
             <Content>
               <Center>
-                {isPreloaded && (
+                {isPreloaded ? (
                   <Animation animationName="fadeIn" animationDuration="2s">
                     <div>
                       <div>
@@ -58,6 +58,8 @@ export default function StartScreen({ onExit }) {
                       </div>
                     </div>
                   </Animation>
+                ) : (
+                  <span style={{ fontWeight: "bold" }}>Starting</span>
                 )}
               </Center>
             </Content>
