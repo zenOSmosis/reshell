@@ -33,7 +33,7 @@ export default function BaseView({ portal }) {
 
   return (
     // TODO: Use configurable prop for fallback property
-    <React.Suspense fallback={<div>Loading base utilities...</div>}>
+    <React.Suspense fallback={<div>Loading core utilities...</div>}>
       <PortalWrapper portal={portal} />
     </React.Suspense>
   );
