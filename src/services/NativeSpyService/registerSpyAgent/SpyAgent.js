@@ -1,4 +1,5 @@
-import { PhantomState, EVT_BEFORE_DESTROY } from "phantom-core";
+import { PhantomState, EVT_UPDATED, EVT_BEFORE_DESTROY } from "phantom-core";
+import { getClassName } from "phantom-core";
 import persistentSpyAgentCollection from "../persistentSpyAgentCollection";
 
 // TODO: Document
@@ -46,8 +47,18 @@ export default class SpyAgent extends PhantomState {
     super(initialState);
 
     this._spiesOn = spiesOn;
+    this._spiesOnClassName = getClassName(spiesOn);
 
     persistentSpyAgentCollection.addChild(this);
+
+    // Obtain agent title from state
+    this.on(EVT_UPDATED, updatedState => {
+      const { address, url } = updatedState || {};
+
+      if (address || url) {
+        this.setTitle(address || url);
+      }
+    });
 
     this.registerCleanupHandler(() => {
       // FIXME: (jh) Ensure PhantomState itself prevents memory leaks on its
@@ -61,5 +72,12 @@ export default class SpyAgent extends PhantomState {
   // TODO: Document
   getSpiesOn() {
     return this._spiesOn;
+  }
+
+  /**
+   * @return {string}
+   */
+  getSpiedOnClassName() {
+    return this._spiesOnClassName;
   }
 }

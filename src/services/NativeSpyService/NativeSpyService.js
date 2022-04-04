@@ -3,6 +3,7 @@ import persistentSpyAgentCollection from "./persistentSpyAgentCollection";
 
 // Register spies
 import "./spies/WebSocket.spy";
+import "./spies/WebWorker.spy";
 
 import { nativeSpies } from "./registerSpyAgent";
 
@@ -29,15 +30,17 @@ export default class NativeSpyService extends UIServiceCore {
 
       const spyAgents = this._persistentSpyAgentCollection.getChildren();
 
-      // TODO: Remove
-      console.log({ spyAgents });
-
-      // TODO: Handle
-      // this.setState({ spyAgents: spyAgents.map(agent => agent.getState()) });
+      this.setState({ spyAgents });
     });
   }
 
-  getRegisteredSpyAgents() {
+  // TODO: Document
+  getRegisteredSpies() {
     return nativeSpies;
+  }
+
+  // TODO: Document
+  getSpyAgents() {
+    return this.getState().spyAgents;
   }
 }

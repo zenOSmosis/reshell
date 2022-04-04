@@ -1,13 +1,8 @@
-import Layout, {
-  Header,
-  Content,
-  Footer,
-  Row,
-  Column,
-} from "@components/Layout";
-import Padding from "@components/Padding";
-import VirtualLink from "@components/VirtualLink";
-import Full from "@components/Full";
+import { getClassName } from "phantom-core";
+import { useEffect, useMemo, useState } from "react";
+import Layout, { Content, Row, Column } from "@components/Layout";
+import SidebarColumn from "./views/Sidebar";
+import MainContent from "./views/MainContent";
 
 import NativeSpyService from "@services/NativeSpyService";
 
@@ -24,61 +19,44 @@ const NativeSpyAgentApp = {
   view: function View({ appServices }) {
     const nativeSpyService = appServices[NativeSpyService];
 
-    const wrappedNativeClassNames = nativeSpyService.getRegisteredSpyAgents();
+    const registeredSpies = nativeSpyService.getRegisteredSpies();
 
-    // TODO: Remove
-    console.log({
-      state: nativeSpyService.getState(),
-      // registeredSpyAgents: nativeSpyService.getRegisteredSpyAgents(),
-    });
+    const registeredSpyClassNames = useMemo(
+      () => registeredSpies.map(spiedOn => getClassName(spiedOn)),
+      [registeredSpies]
+    );
+
+    const spyAgents = nativeSpyService.getSpyAgents();
+
+    const spyAgentClassNames = useMemo(
+      () => spyAgents.map(agent => agent.getClassName()),
+      [spyAgents]
+    );
+
+    const [selectedSpyAgent, setSelectedSpyAgent] = useState(null);
+
+    // Reset selected spy agent if it doesn't exist
+    useEffect(() => {
+      if (selectedSpyAgent && !spyAgents.includes(selectedSpyAgent)) {
+        setSelectedSpyAgent(null);
+      }
+    }, [spyAgents, selectedSpyAgent]);
 
     return (
       <Layout>
         <Content>
           <Row>
-            <Column
-              style={{
-                backgroundColor: "rgba(255,255,255,.1)",
-                maxWidth: 180,
-              }}
-            >
-              <Full style={{ overflowY: "auto" }}>
-                <Padding>
-                  <h1>Class</h1>
-                  <div>
-                    <ul>
-                      {wrappedNativeClassNames.map(wrappedClassName => (
-                        <li key={wrappedClassName}>
-                          <VirtualLink>{wrappedClassName}</VirtualLink>
-                          <ol>
-                            <li>one</li>
-                            <li>two</li>
-                          </ol>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Padding>
-              </Full>
-            </Column>
+            <SidebarColumn
+              registeredSpyClassNames={registeredSpyClassNames}
+              spyAgentClassNames={spyAgentClassNames}
+              spyAgents={spyAgents}
+              onSelectSpyAgent={setSelectedSpyAgent}
+            />
             <Column>
-              <Layout>
-                <Header>
-                  <Padding>[header]</Padding>
-                </Header>
-                <Content>
-                  <Full style={{ overflowY: "auto" }}>
-                    <Padding>[content]</Padding>
-                  </Full>
-                </Content>
-                <Footer>
-                  <Padding>
-                    <span className="note">
-                      ReShell Native JavaScript API Spy System
-                    </span>
-                  </Padding>
-                </Footer>
-              </Layout>
+              <MainContent
+                spyAgents={spyAgents}
+                selectedSpyAgent={selectedSpyAgent}
+              />
             </Column>
           </Row>
         </Content>
