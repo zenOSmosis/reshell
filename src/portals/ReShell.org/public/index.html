@@ -49,29 +49,36 @@
       environment.</noscript
     >
 
-    <div id="root"></div>
-    <!-- TODO: Make this body dynamic -->
-    <div>
-      <p>
-        ReShell is a browser-based layout library, web desktop and
-        user-interface (UI) services engine comprised of various
-        <a href="https://github.com/zenosmosis">open-source components</a> from
-        <a href="https://zenosmosis.com/">zenOSmosis</a> and non-affiliated
-        entities.
-      </p>
-      <p>
-        It is currently in an alpha phase, and other builds may have other
-        built-in applications. These builds are called "portals".
-      </p>
-      <p>
-        ReShell is leveraged off of the source code for
-        <a href="https://speaker.app">Speaker.app</a> and other
-        <a href="https://zenosmosis.com">zenOSmosis</a>
-        projects based on
-        <a href="https://github.com/zenOSmosis/phantom-core">PhantomCore</a>, a
-        library for managing the JavaScript application lifecycle.
-      </p>
+    <div id="root">
+      <!-- TODO: Make this body dynamic -->
+      <div>
+        <p>
+          ReShell is a browser-based layout library, web desktop and
+          user-interface (UI) services engine comprised of various
+          <a href="https://github.com/zenosmosis">open-source components</a>
+          from <a href="https://zenosmosis.com/">zenOSmosis</a> and
+          non-affiliated entities.
+        </p>
+        <p>
+          It is currently in an alpha phase, and other builds may have other
+          built-in applications. These builds are called "portals".
+        </p>
+        <p>
+          ReShell is leveraged off of the source code for
+          <a href="https://speaker.app">Speaker.app</a> and other
+          <a href="https://zenosmosis.com">zenOSmosis</a>
+          projects based on
+          <a href="https://github.com/zenOSmosis/phantom-core">PhantomCore</a>,
+          a library for managing the JavaScript application lifecycle.
+        </p>
+      </div>
     </div>
+
+    <script>
+      // Hide main content if JavaScript is enabled (ReShell will take over)
+      document.getElementById("root").style.display = "none";
+    </script>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -85,8 +92,15 @@
   </body>
 
   <script>
-    // Automatically start ReShell's UI (this is left optional in case you want
-    // to start it manually)
-    window.ReShell.init();
+    try {
+      // Automatically start ReShell's UI (this is left optional in case you want
+      // to start it manually)
+      window.ReShell.init();
+    } catch (err) {
+      console.error(err);
+
+      // Unblock main content if there is an error initializing main content
+      document.getElementById("root").style.display = "block";
+    }
   </script>
 </html>
