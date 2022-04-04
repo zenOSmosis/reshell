@@ -3,8 +3,8 @@ const WorkerPlugin = require("worker-plugin");
 
 const jsconfig = require("./jsconfig.json");
 
-// TODO: Will CRA pick up env variables added here?
-// TODO: Add git info, build timestamp, and possibly some build-OS specifics as REACT_APP_ variables here
+// FIXME: Will CRA pick up env variables added here?
+// FIXME: Add git info, build timestamp, and possibly some build-OS specifics as REACT_APP_ variables here
 
 module.exports = {
   webpack: {
