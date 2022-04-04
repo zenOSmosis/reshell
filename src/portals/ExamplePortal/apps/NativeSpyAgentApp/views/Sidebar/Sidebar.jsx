@@ -35,23 +35,36 @@ export default function Sidebar({
 
                     return (
                       <li key={spiedOnClassName}>
-                        <VirtualLink onClick={() => alert("TODO: Handle")}>
+                        <VirtualLink
+                          disabled
+                          onClick={() => alert("TODO: Handle")}
+                        >
                           {spiedOnClassName}
                         </VirtualLink>
                         <ul>
                           {groupedSpyAgents.map(spyAgent => (
                             <li key={spyAgent.getUUID()}>
-                              <button
-                                style={{ width: "100%", textAlign: "left" }}
+                              <VirtualLink
+                                style={{
+                                  width: "100%",
+                                  textAlign: "left",
+                                  overflow: "auto",
+                                }}
                                 onClick={() => onSelectSpyAgent(spyAgent)}
                               >
-                                <div className={styles["title"]}>
+                                <div
+                                  style={{ float: "left" }}
+                                  className={styles["title"]}
+                                >
                                   {spyAgent.getTitle()}
                                 </div>
-                                <div style={{ textAlign: "right" }}>
+                                <div
+                                  style={{ float: "right", marginTop: 8 }}
+                                  className="note"
+                                >
                                   <Timer onTick={spyAgent.getInstanceUptime} />
                                 </div>
-                              </button>
+                              </VirtualLink>
                             </li>
                           ))}
                         </ul>
