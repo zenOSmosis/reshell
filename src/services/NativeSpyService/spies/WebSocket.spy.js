@@ -22,6 +22,8 @@ if (NativeWebSocket) {
             invokeSpyAgent(this, { isOpen: true, error: null });
           });
 
+          // TODO: Inspect traffic?
+
           this.addEventListener("close", () => {
             // Register close state w/ spy agent, then destruct the agent
             invokeSpyAgent(this, { isOpen: false }).destroy();

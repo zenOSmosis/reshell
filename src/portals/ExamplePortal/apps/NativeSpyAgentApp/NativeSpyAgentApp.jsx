@@ -29,7 +29,7 @@ const NativeSpyAgentApp = {
     const spyAgents = nativeSpyService.getSpyAgents();
 
     const spyAgentClassNames = useMemo(
-      () => spyAgents.map(agent => agent.getClassName()),
+      () => spyAgents.map(agent => agent.getSpiedOnClassName()),
       [spyAgents]
     );
 
@@ -54,6 +54,8 @@ const NativeSpyAgentApp = {
             />
             <Column>
               <MainContent
+                registeredSpyClassNames={registeredSpyClassNames}
+                spyAgentClassNames={spyAgentClassNames}
                 spyAgents={spyAgents}
                 selectedSpyAgent={selectedSpyAgent}
               />

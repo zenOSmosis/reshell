@@ -3,9 +3,21 @@ import Padding from "@components/Padding";
 import Full from "@components/Full";
 import ObjectViewer from "@components/ObjectViewer";
 
-export default function MainContent({ spyAgents, selectedSpyAgent }) {
+import Overview from "../../components/Overview";
+
+export default function MainContent({
+  spyAgents,
+  spyAgentClassNames,
+  selectedSpyAgent,
+  registeredSpyClassNames,
+}) {
   if (!selectedSpyAgent) {
-    return <div>Select a spy agent</div>;
+    return (
+      <Overview
+        spyAgentClassNames={spyAgentClassNames}
+        registeredSpyClassNames={registeredSpyClassNames}
+      />
+    );
   }
 
   return (
