@@ -1,11 +1,11 @@
 import Animation from "@components/Animation";
-import Center from "@components/Center";
 import Cover from "@components/Cover";
 import UIServicesProvider from "../providers/UIServicesProvider";
 import AppOrchestrationServiceProvider from "../providers/AppOrchestrationServiceProvider";
 import DesktopServiceProvider from "../providers/DesktopServiceProvider";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import PortalLoadingIndicator from "./PortalLoadingIndicator";
 
 // TODO: Document and add prop-types
 export default function PortalWrapperView({ portal }) {
@@ -23,9 +23,7 @@ export default function PortalWrapperView({ portal }) {
                 // However, it seems that the usage of FullViewport is better
                 // left up to the portal view itself rather than the wrapper.
                 <Cover>
-                  <Center style={{ fontWeight: "bold" }}>
-                    Loading portal...
-                  </Center>
+                  <PortalLoadingIndicator />
                 </Cover>
               }
             >

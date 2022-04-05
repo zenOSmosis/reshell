@@ -75,7 +75,7 @@ export default function TextInputModal({
                   }}
                 />
               </Column>
-              <Column style={{ maxWidth: 100 }}>
+              <Column disableHorizontalFill>
                 <button
                   style={{
                     borderTopLeftRadius: 0,

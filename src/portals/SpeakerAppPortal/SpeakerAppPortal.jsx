@@ -19,7 +19,6 @@ import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import TextToSpeechApp from "../ExamplePortal/apps/TextToSpeechApp";
-import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -67,7 +66,6 @@ export default function SpeakerAppPortal() {
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
         TextToSpeechApp,
-        SayItDifferentApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
