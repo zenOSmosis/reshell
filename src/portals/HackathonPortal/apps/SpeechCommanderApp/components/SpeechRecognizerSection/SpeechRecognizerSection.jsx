@@ -65,36 +65,38 @@ export default function SpeechRecognizerSection({ speechProvider }) {
         </div>
       )}
 
-      <h2 style={{ color: speechProvider.disabled ? "gray" : null }}>
-        {speechProvider.title}
-      </h2>
-      <Padding>
-        <Row>
-          <Column>
-            <LabeledToggle
-              masterLabel="Speech Recognition"
-              disabled={speechProvider.disabled}
-              isOn={speechRecognizerService?.getHasRecognizer()}
-              onChange={isOn =>
-                isOn
-                  ? speechRecognizerService?.startRecognizing()
-                  : speechRecognizerService?.stopRecognizing()
-              }
-            />
-          </Column>
-          <Column>
-            <LabeledToggle
-              masterLabel="Control Desktop"
-              isOn={speechRecognizerService?.getIsControllingDesktop()}
-              onChange={speechRecognizerService?.setIsControllingDesktop}
-              disabled={
-                !speechRecognizerService?.getHasRecognizer() ||
-                speechProvider.disabled
-              }
-            />
-          </Column>
-        </Row>
-      </Padding>
+      <div style={{ marginTop: 14 }}>
+        <h2 style={{ color: speechProvider.disabled ? "gray" : null }}>
+          {speechProvider.title}
+        </h2>
+        <Padding>
+          <Row>
+            <Column>
+              <LabeledToggle
+                masterLabel="Speech Recognition"
+                disabled={speechProvider.disabled}
+                isOn={speechRecognizerService?.getHasRecognizer()}
+                onChange={isOn =>
+                  isOn
+                    ? speechRecognizerService?.startRecognizing()
+                    : speechRecognizerService?.stopRecognizing()
+                }
+              />
+            </Column>
+            <Column>
+              <LabeledToggle
+                masterLabel="Control Desktop"
+                isOn={speechRecognizerService?.getIsControllingDesktop()}
+                onChange={speechRecognizerService?.setIsControllingDesktop}
+                disabled={
+                  !speechRecognizerService?.getHasRecognizer() ||
+                  speechProvider.disabled
+                }
+              />
+            </Column>
+          </Row>
+        </Padding>
+      </div>
       {!speechProvider.disabled && (
         <div style={{ overflow: "auto" }}>
           <Padding>

@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import styles from "./RowColumn.module.css";
 import PropTypes from "prop-types";
+import Full from "@components/Full";
 
 // @see https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01
 
@@ -38,12 +39,24 @@ function Row({ children, className, disableVerticalFill = false, ...rest }) {
 /**
  * Evenly-sized column.
  */
-function Column({ children, className, ...rest }) {
+function Column({
+  children,
+  className,
+  disableHorizontalFill = false,
+  ...rest
+}) {
   // TODO: Enforce that only Row component is direct parent of this
 
   return (
-    <div {...rest} className={classNames(styles["column"], className)}>
-      {children}
+    <div
+      {...rest}
+      className={classNames(
+        styles["column"],
+        disableHorizontalFill && styles["disable-horizontal-fill"],
+        className
+      )}
+    >
+      <Full>{children}</Full>
     </div>
   );
 }

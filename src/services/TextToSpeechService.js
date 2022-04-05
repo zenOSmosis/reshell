@@ -24,6 +24,7 @@ export default class TextToSpeechService extends UIServiceCore {
     return super._init();
   }
 
+  // TODO: This is not a stable reference; it should be memoized
   /**
    * @return {SpeechSynthesisVoice[]}
    */

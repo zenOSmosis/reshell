@@ -91,7 +91,7 @@ const SayItDifferentApp = {
                   isOn={isTypingWithVoice}
                   disabled={!hasRecognizer}
                 />
-                <button>Submit</button>
+                <button disabled>Submit</button>
               </Padding>
             </Section>
             <Section>new</Section>

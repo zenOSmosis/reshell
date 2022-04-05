@@ -2,33 +2,48 @@ import Layout, { Header, Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Full from "@components/Full";
 import ObjectViewer from "@components/ObjectViewer";
+import { Row, Column } from "@components/Layout";
+import Ellipses from "@components/Ellipses";
 
 import Overview from "../../components/Overview";
 
 export default function MainContent({
-  spyAgents,
   spyAgentClassNames,
   selectedSpyAgent,
+  onSpyAgentDeselect,
   registeredSpyClassNames,
 }) {
-  if (!selectedSpyAgent) {
-    return (
-      <Overview
-        spyAgentClassNames={spyAgentClassNames}
-        registeredSpyClassNames={registeredSpyClassNames}
-      />
-    );
-  }
+  const title = selectedSpyAgent ? selectedSpyAgent.getTitle() : "Overview";
 
   return (
     <Layout>
       <Header>
-        <Padding>{selectedSpyAgent.getTitle()}</Padding>
+        <Padding>
+          <Row>
+            <Column>
+              <h1>
+                <Ellipses>{title}</Ellipses>
+              </h1>
+            </Column>
+            <Column disableHorizontalFill>
+              <button disabled={!selectedSpyAgent} onClick={onSpyAgentDeselect}>
+                Reset
+              </button>
+            </Column>
+          </Row>
+        </Padding>
       </Header>
       <Content>
-        <Full style={{ overflowY: "auto" }}>
-          <ObjectViewer src={selectedSpyAgent.getState()} />
-        </Full>
+        {selectedSpyAgent ? (
+          <Full style={{ overflowY: "auto" }}>
+            <ObjectViewer src={selectedSpyAgent.getState()} />
+          </Full>
+        ) : (
+          <Overview
+            spyAgentClassNames={spyAgentClassNames}
+            registeredSpyClassNames={registeredSpyClassNames}
+          />
+        )}
       </Content>
       <Footer>
         <Padding>

@@ -19,6 +19,7 @@ export default function ContentButton({
   children,
   className,
   onClick,
+  disabled = false,
   ...rest
 }) {
   return (
@@ -26,8 +27,9 @@ export default function ContentButton({
       {children}
       <Cover>
         <ButtonTransparent
+          className={styles["overlay"]}
           onClick={onClick}
-          style={{ width: "100%", height: "100%" }}
+          disabled={disabled}
         />
       </Cover>
     </div>

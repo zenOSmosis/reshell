@@ -1,5 +1,5 @@
 import { getClassName } from "phantom-core";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Layout, { Content, Row, Column } from "@components/Layout";
 import SidebarColumn from "./views/Sidebar";
 import MainContent from "./views/MainContent";
@@ -35,6 +35,8 @@ const NativeSpyAgentApp = {
 
     const [selectedSpyAgent, setSelectedSpyAgent] = useState(null);
 
+    const onSpyAgentDeselect = useCallback(() => setSelectedSpyAgent(null), []);
+
     // Reset selected spy agent if it doesn't exist
     useEffect(() => {
       if (selectedSpyAgent && !spyAgents.includes(selectedSpyAgent)) {
@@ -58,6 +60,7 @@ const NativeSpyAgentApp = {
                 spyAgentClassNames={spyAgentClassNames}
                 spyAgents={spyAgents}
                 selectedSpyAgent={selectedSpyAgent}
+                onSpyAgentDeselect={onSpyAgentDeselect}
               />
             </Column>
           </Row>

@@ -18,20 +18,27 @@ export default function Overview({
 
         return (
           <ContentButton
+            disabled
             key={spyClassName}
             style={{
-              border: "1px #ccc solid",
+              border: "1px #999 solid",
+              borderRadius: 8,
               width: 120,
               height: 120,
               display: "inline-block",
-              borderRadius: 8,
               fontWeight: "bold",
               margin: 4,
             }}
           >
             <Layout style={{ padding: 4, borderRadius: 4 }}>
               <Content>
-                <Layout style={{ border: "1px #ccc solid" }}>
+                <Layout
+                  style={{
+                    border: "1px #999 solid",
+                    borderRadius: 4,
+                    backgroundColor: "rgba(255, 255, 255, .05)",
+                  }}
+                >
                   <Content>
                     <Center>
                       <PowerIcon
