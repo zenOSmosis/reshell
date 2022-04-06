@@ -26,8 +26,8 @@ const SayItDifferentApp = {
   },
   serviceClasses: [
     SpeechRecognizerCollectionService,
-    PartOfSpeechAnalyzerService,
     TextToSpeechService,
+    PartOfSpeechAnalyzerService,
   ],
 
   // TODO: Include load screen?
@@ -35,6 +35,8 @@ const SayItDifferentApp = {
   view: function View({ appServices }) {
     const tts = appServices[TextToSpeechService];
     const stt = appServices[SpeechRecognizerCollectionService];
+
+    const posAnalyzer = appServices[PartOfSpeechAnalyzerService];
 
     const hasRecognizer = stt.getHasRecognizer();
     const realTimeTranscription = stt.getRealTimeTranscription();
@@ -91,10 +93,16 @@ const SayItDifferentApp = {
                   isOn={isTypingWithVoice}
                   disabled={!hasRecognizer}
                 />
-                <button disabled>Submit</button>
+                <button
+                  onClick={() =>
+                    // TODO: Refactor accordingly
+                    posAnalyzer.analyze(textInputValue)
+                  }
+                >
+                  Submit
+                </button>
               </Padding>
             </Section>
-            <Section>new</Section>
           </Center>
         </Content>
         <Footer>
