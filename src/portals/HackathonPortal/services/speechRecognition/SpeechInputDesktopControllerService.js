@@ -5,7 +5,7 @@ import DesktopCommanderControllerService, {
 } from "@services/DesktopCommanderControllerService";
 
 import SpeechRecognizerCollectionService, {
-  EVT_TRANSCRIPTION_FINALIZED,
+  EVT_FINALIZED_TRANSCRIPTION,
 } from "./SpeechRecognizerCollectionService";
 
 export { EVT_UPDATED };
@@ -32,7 +32,7 @@ export default class SpeechDesktopControllerService extends UIServiceCore {
     // Handle finalized transcription updates
     this.proxyOn(
       this._speechRecognizerCollectionService,
-      EVT_TRANSCRIPTION_FINALIZED,
+      EVT_FINALIZED_TRANSCRIPTION,
       ([speechRecognizerService, text]) => {
         if (speechRecognizerService.getIsControllingDesktop()) {
           this.extractCommandIntentFromText(text);

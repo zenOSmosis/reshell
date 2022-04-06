@@ -6,19 +6,27 @@ import {
   EVT_CONNECTED,
   EVT_DISCONNECTED,
   EVT_BEGIN_RECOGNIZE,
-  EVT_TRANSCRIPTION_RECOGNIZING,
+  EVT_REAL_TIME_TRANSCRIPTION,
   EVT_END_RECOGNIZE,
-  EVT_TRANSCRIPTION_FINALIZED,
+  EVT_FINALIZED_TRANSCRIPTION,
 } from "./SpeechRecognizerBase";
 
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import UIModalWidgetService from "@services/UIModalWidgetService";
 
-export { EVT_UPDATED, EVT_TRANSCRIPTION_FINALIZED };
+export {
+  EVT_UPDATED,
+  EVT_REAL_TIME_TRANSCRIPTION,
+  EVT_FINALIZED_TRANSCRIPTION,
+};
 
 // TODO: Auto-destruct after a certain amount of time after not retrieving
 // a finalized transcription
 
+/**
+ * Speech recognizer service core class which provider-specific speech services
+ * should derive from.
+ */
 export default class SpeechRecognizerServiceCore extends UIServiceCore {
   // TODO: Turn into a service core (utilize in service.cores directory)
   // TODO: Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
@@ -107,15 +115,18 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
           this.setState({ isRecognizing: false });
         });
 
-        this.proxyOn(this._recognizer, EVT_TRANSCRIPTION_RECOGNIZING, text => {
+        this.proxyOn(this._recognizer, EVT_REAL_TIME_TRANSCRIPTION, text => {
           this.setState({ realTimeTranscription: text });
+
+          // Re-emit
+          this.emit(EVT_REAL_TIME_TRANSCRIPTION, text);
         });
 
-        this.proxyOn(this._recognizer, EVT_TRANSCRIPTION_FINALIZED, text => {
+        this.proxyOn(this._recognizer, EVT_FINALIZED_TRANSCRIPTION, text => {
           this.setState({ finalizedTranscription: text });
 
           // Re-emit
-          this.emit(EVT_TRANSCRIPTION_FINALIZED, text);
+          this.emit(EVT_FINALIZED_TRANSCRIPTION, text);
         });
       }
     });

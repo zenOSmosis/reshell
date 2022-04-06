@@ -78,8 +78,12 @@ h3 {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5 {
   text-align: left;
+
+  margin: 0.2rem;
 }
 
 hr {
@@ -129,7 +133,7 @@ label {
 
 label:not(:only-child) {
   display: block;
-  margin: 0.25em 0em;
+  margin: 0.25em rem;
 }
 
 select,
@@ -322,7 +326,7 @@ table:not(.layout) tbody tr:nth-child(even) {
 
 .note {
   font-style: italic;
-  font-size: 0.9em;
+  font-size: 0.9rem;
 
   /** Fix issue where right-justification would not completely display all characters */
   margin: 0 1px;

@@ -1,23 +1,21 @@
 const path = require("path");
 const WorkerPlugin = require("worker-plugin");
 
-// TODO: Will CRA pick up env variables added here?
-// TODO: Add git info, build timestamp, and possibly some build-OS specifics as REACT_APP_ variables here
+const jsconfig = require("./jsconfig.json");
+
+// FIXME: Will CRA pick up env variables added here?
+// FIXME: Add git info, build timestamp, and possibly some build-OS specifics as REACT_APP_ variables here
 
 module.exports = {
   webpack: {
-    alias: {
-      "@root": path.resolve(__dirname),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@core": path.resolve(__dirname, "src/core"),
-      "@hooks": path.resolve(__dirname, "src/hooks"),
-      "@icons": path.resolve(__dirname, "src/components/icons"),
-      "@portals": path.resolve(__dirname, "src/portals"),
-      "@services": path.resolve(__dirname, "src/services"),
-      "@service.cores": path.resolve(__dirname, "src/service.cores"),
-      "@shared": path.resolve(__dirname, "src/shared"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-    },
+    alias:
+      // Dynamically configure via jsconfig.json
+      Object.fromEntries(
+        Object.entries(jsconfig.compilerOptions.paths).map(([key, value]) => [
+          key.replace("/*", ""),
+          path.resolve(__dirname, value[0].replace("/*", "")),
+        ])
+      ),
     plugins: {
       add: [
         new WorkerPlugin({

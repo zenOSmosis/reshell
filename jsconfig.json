@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "paths": {
+      "@root/*": ["./*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@core/*": ["src/core/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@icons/*": ["src/components/icons/*"],
+      "@portals/*": ["src/portals/*"],
+      "@services/*": ["src/services/*"],
+      "@service.cores/*": ["src/service.cores/*"],
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}

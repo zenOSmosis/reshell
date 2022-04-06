@@ -265,4 +265,16 @@ export default class ReShellCore extends PhantomCore {
   static getPortalName() {
     return _instance?.getPortalName();
   }
+
+  /**
+   * Retrieves the number of seconds since the current ReShell portal was
+   * started.
+   *
+   * Note: If the portal is not initiated, it will return 0.
+   *
+   * @return {number}
+   */
+  static getReShellUptime() {
+    return _instance?.getInstanceUptime() || 0;
+  }
 }

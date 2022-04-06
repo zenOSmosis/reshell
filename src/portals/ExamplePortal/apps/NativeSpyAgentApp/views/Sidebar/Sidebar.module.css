@@ -1,0 +1,11 @@
+.sidebar li {
+  word-break: break-all;
+}
+
+/** Note: This also works with Firefox: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp */
+.sidebar button .title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}

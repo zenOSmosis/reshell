@@ -3,6 +3,7 @@ import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
 import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
+import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
 // import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
 import KeyVaultApp from "../ExamplePortal/apps/KeyVaultApp";
 import InputMediaDevicesApp from "../ExamplePortal/apps/InputMediaDevicesApp";
@@ -16,6 +17,8 @@ import CheckForUpdatesApp from "../ExamplePortal/apps/CheckForUpdatesApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
+import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
+import TextToSpeechApp from "../ExamplePortal/apps/TextToSpeechApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -27,6 +30,8 @@ import ChatApp from "./apps/ChatApp";
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 
+import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
+
 export default function SpeakerAppPortal() {
   return (
     <Desktop
@@ -35,6 +40,7 @@ export default function SpeakerAppPortal() {
       appDescriptors={[
         ApplicationsApp,
         BeepPrototypeApp,
+        StartupManagerApp,
         // BackgroundSelectorApp,
         AboutReShellApp,
         KeyVaultApp,
@@ -50,6 +56,7 @@ export default function SpeakerAppPortal() {
         MemoryInfoApp,
         SoftwareInfoApp,
         AppRegistrationViewerApp,
+        NativeSpyAgentApp,
 
         CallPlayerApp,
         VirtualServerApp,
@@ -58,7 +65,9 @@ export default function SpeakerAppPortal() {
         // Mesa Hackathon apps
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
+        TextToSpeechApp,
       ]}
+      defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
   );
 }

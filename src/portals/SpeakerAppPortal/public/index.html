@@ -318,13 +318,26 @@
         </article>
       </div>
     </div>
+
+    <script>
+      // Hide main content if JavaScript is enabled (ReShell will take over)
+      document.getElementById("root").style.display = "none";
+    </script>
+
     <!--
       This HTML file is a template.      If you open it directly in the browser, you will see an empty page.      You can add webfonts, meta tags, or analytics to this file.      The build step will place the bundled scripts into the <body> tag.      To begin the development, run `npm start` or `yarn start`.      To create a production bundle, use `npm run build` or `yarn build`.    -->
   </body>
 
   <script>
-    // Automatically start ReShell's UI (this is left optional in case you want
-    // to start it manually)
-    window.ReShell.init();
+    try {
+      // Automatically start ReShell's UI (this is left optional in case you want
+      // to start it manually)
+      window.ReShell.init();
+    } catch (err) {
+      console.error(err);
+
+      // Unblock main content if there is an error initializing main content
+      document.getElementById("root").style.display = "block";
+    }
   </script>
 </html>

@@ -28,3 +28,7 @@
   */
   min-width: 0px;
 }
+
+.row .column.disable-horizontal-fill {
+  flex: 0 0 auto;
+}

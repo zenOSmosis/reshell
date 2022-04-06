@@ -377,7 +377,16 @@ function WrappedWindowView({
   // Re-render window when a service updates
   useEffect(() => {
     const _handleServiceUpdate = () => {
-      forceUpdate();
+      // FIXME: (jh) Should this be potentially batched, or will React handle
+      // that on its own?
+
+      // Note: The setImmediate fixes and issue where if two windows are
+      // updated simultaneously, the following error could be thrown: Cannot
+      // update a component (`WrappedWindowView`) while rendering a different
+      // component (`WindowManagerView`)
+      setImmediate(() => {
+        forceUpdate();
+      });
     };
 
     for (const service of Object.values(appServices)) {

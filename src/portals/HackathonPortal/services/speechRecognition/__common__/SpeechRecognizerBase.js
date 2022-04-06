@@ -9,16 +9,19 @@ export const EVT_END_RECOGNIZE = "end-recognize";
 
 // Emits with the current text being recognized
 // TODO: Document that this emits with text
-export const EVT_TRANSCRIPTION_RECOGNIZING = "transcription-recognizing";
+export const EVT_REAL_TIME_TRANSCRIPTION = "real-time-transcription";
 
 // TODO: Document that this emits with text
-export const EVT_TRANSCRIPTION_FINALIZED = "transcription-finalized";
+export const EVT_FINALIZED_TRANSCRIPTION = "finalized-transcription";
 
 export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
 
 // TODO: Ensure this automatically stops when the input stops or after a
 // certain amount of time
 
+/**
+ * Base class which provider-specific speech API classes derive from.
+ */
 export default class SpeechRecognizerBase extends PhantomCore {
   // FIXME: (jh) Force to be extended (relates to: https://github.com/zenOSmosis/phantom-core/issues/149)
 
@@ -188,19 +191,22 @@ export default class SpeechRecognizerBase extends PhantomCore {
 
     this._setIsRecognizing(true);
 
-    this.emit(EVT_TRANSCRIPTION_RECOGNIZING, text);
+    this.emit(EVT_REAL_TIME_TRANSCRIPTION, text);
   }
 
   /**
    * Sets the finalized speech transcription.
    *
    * @param {string} text
-   * @emits EVT_TRANSCRIPTION_FINALIZED
+   * @emits EVT_FINALIZED_TRANSCRIPTION
    * @return {void}
    */
   _setFinalizedTranscription(text) {
     this._setIsRecognizing(false);
 
-    this.emit(EVT_TRANSCRIPTION_FINALIZED, text);
+    // Update real-time transcription, as well, with finalized text
+    this.emit(EVT_REAL_TIME_TRANSCRIPTION, text);
+
+    this.emit(EVT_FINALIZED_TRANSCRIPTION, text);
   }
 }
