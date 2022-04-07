@@ -1,12 +1,7 @@
-import { EVT_READY } from "phantom-core";
 import nlp from "compromise";
+import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
 
 // TODO: Also look into https://www.npmjs.com/package/retext
-
-// TODO: Refactor accordingly
-global.postMessage({
-  eventName: EVT_READY,
-});
 
 /**
  * TODO: Some documentation:
@@ -16,7 +11,7 @@ global.postMessage({
  * - https://www.npmjs.com/package/worker-plugin
  */
 
-function analyze({ text }) {
+registerRPCMethod("analyze", ({ text }) => {
   // TODO: Implement accordingly
   let doc = nlp(text);
   doc.verbs().toPastTense();
@@ -30,20 +25,4 @@ function analyze({ text }) {
     // prepositions: doc.prepositions.json(),
     doc: doc.json(),
   });
-}
-
-global.addEventListener("message", evt => {
-  const { method, params } = evt.data;
-
-  // TODO: Remove
-  console.log({ method, params });
-
-  switch (method) {
-    case "analyze":
-      analyze(params);
-      break;
-
-    default:
-      break;
-  }
 });

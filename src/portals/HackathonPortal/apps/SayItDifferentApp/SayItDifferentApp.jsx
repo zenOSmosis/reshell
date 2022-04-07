@@ -65,6 +65,8 @@ const SayItDifferentApp = {
 
     // TODO: Allow text input as well
 
+    // TODO: Show a robot?
+
     return (
       <Layout>
         <Content>
