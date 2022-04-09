@@ -153,6 +153,8 @@ textarea {
 
   /** TODO: Use color variable for highlighted elements */
   accent-color: #347fe8;
+
+  max-width: 100%;
 }
 
 ::placeholder {
