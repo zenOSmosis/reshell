@@ -78,6 +78,9 @@ export default function Dock() {
         styles["horizontal-orientation"],
         isOverflown && styles["overflown"]
       )}
+      // TODO: Implement ability to scroll dock by dragging mouse cursor (it
+      // should already be working with mouse). Perhaps this handling could be
+      // factored into a useDockGestures hook
       onWheel={handleDockScroll}
     >
       {
