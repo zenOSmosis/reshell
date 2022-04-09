@@ -14,8 +14,13 @@ export default class TextToSpeechService extends UIServiceCore {
     /** @type {LocaleService} */
     this._localeService = this.useServiceClass(LocaleService);
 
+    /** @type {SpeechSynthesis} */
     this._synth = null;
+
+    /** @type {SpeechSynthesisVoice[]} */
     this._voices = [];
+
+    /** @type {SpeechSynthesisVoice[]} */
     this._localeVoices = [];
   }
 
@@ -46,6 +51,7 @@ export default class TextToSpeechService extends UIServiceCore {
    * @return {SpeechSynthesisVoice[]}
    */
   getLocaleVoices() {
+    // FIXME: Bust this cache if the locale changes
     if (!this._localeVoices.length) {
       const languageCode = this._localeService.getLanguageCode();
 
@@ -86,6 +92,7 @@ export default class TextToSpeechService extends UIServiceCore {
       // utterance.voice = ...
       utterance.volume = 1; // 0 - 1
 
+      // TODO: Don't resolve until speaking has finished
       this._synth.speak(utterance);
     } catch (err) {
       console.error(err);
