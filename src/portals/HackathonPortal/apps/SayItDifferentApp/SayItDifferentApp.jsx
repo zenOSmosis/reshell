@@ -162,6 +162,44 @@ const SayItDifferentApp = {
                         >
                           Say It
                         </button>
+                        <button
+                          onClick={() => tts.cancel()}
+                          disabled={!isSpeaking}
+                        >
+                          Cancel
+                        </button>
+                        <Padding>
+                          <label>Pitch</label>
+                          <div>
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step=".05"
+                              value={tts.getDefaultPitch().toString()}
+                              onChange={evt =>
+                                tts.setDefaultPitch(
+                                  parseFloat(evt.target.value)
+                                )
+                              }
+                            />
+                          </div>
+                        </Padding>
+                        <Padding>
+                          <label>Rate</label>
+                          <div>
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step=".05"
+                              value={tts.getDefaultRate().toString()}
+                              onChange={evt =>
+                                tts.setDefaultRate(parseFloat(evt.target.value))
+                              }
+                            />
+                          </div>
+                        </Padding>
                       </Padding>
                     </Center>
                   </Padding>

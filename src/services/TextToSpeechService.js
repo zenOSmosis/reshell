@@ -15,6 +15,10 @@ export default class TextToSpeechService extends UIServiceCore {
       isSpeaking: false,
 
       defaultVoice: null,
+
+      defaultPitch: 1,
+
+      defaultRate: 1,
     });
 
     /** @type {LocaleService} */
@@ -69,6 +73,42 @@ export default class TextToSpeechService extends UIServiceCore {
   }
 
   /**
+   * Sets the default pitch for speech utterance.
+   *
+   * @param {number} defaultPitch A floating point number from 0.0 - 1.0
+   */
+  setDefaultPitch(defaultPitch) {
+    this.setState({ defaultPitch });
+  }
+
+  /**
+   * Retrieves the default pitch for speech utterance.
+   *
+   * @return {number} A floating point number from 0.0 - 1.0
+   */
+  getDefaultPitch(defaultPitch) {
+    return this.getState().defaultPitch;
+  }
+
+  /**
+   * Sets the default rate for speech utterance.
+   *
+   * @param {number} defaultRate A floating point number from 0.0 - 1.0
+   */
+  setDefaultRate(defaultRate) {
+    this.setState({ defaultRate });
+  }
+
+  /**
+   * Retrieves the default rate for speech utterance.
+   *
+   * @return {number} A floating point number from 0.0 - 1.0
+   */
+  getDefaultRate(defaultRate) {
+    return this.getState().defaultRate;
+  }
+
+  /**
    * @param {string} voiceURI
    * @return {SpeechSynthesisVoice | void}
    */
@@ -106,6 +146,10 @@ export default class TextToSpeechService extends UIServiceCore {
     try {
       await this.onceReady();
 
+      const rate =
+        options.rate !== undefined ? options.rate : this.getDefaultRate();
+      const pitch =
+        options.pitch !== undefined ? options.pitch : this.getDefaultPitch();
       const voice = options.voice || this.getDefaultVoice();
 
       // TODO: Integrate
@@ -118,9 +162,9 @@ export default class TextToSpeechService extends UIServiceCore {
       const utterance = new SpeechSynthesisUtterance(text);
 
       // TODO: Dynamically set
-      utterance.lang = "en-US";
-      utterance.pitch = 0.5;
-      utterance.rate = 0.8;
+      utterance.lang = this._localeService.getLanguageCode();
+      utterance.pitch = pitch;
+      utterance.rate = rate;
       utterance.voice = voice;
       utterance.volume = 1; // 0 - 1
 
