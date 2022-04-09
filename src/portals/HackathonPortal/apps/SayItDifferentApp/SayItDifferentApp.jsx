@@ -92,12 +92,19 @@ const SayItDifferentApp = {
                   </div>
                   <Padding style={{ textAlign: "right" }}>
                     <button
+                      onClick={() => setTextInputValue("")}
+                      disabled={!textInputValue}
+                    >
+                      Clear
+                    </button>
+                    <button
                       onClick={() =>
                         // TODO: Refactor accordingly
                         posAnalyzer.analyze(textInputValue)
                       }
+                      disabled={!textInputValue}
                     >
-                      Submit
+                      Analyze
                     </button>
                   </Padding>
                 </Section>

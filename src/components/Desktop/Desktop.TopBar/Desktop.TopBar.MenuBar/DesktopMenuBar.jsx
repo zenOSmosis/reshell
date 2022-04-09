@@ -15,6 +15,9 @@ import useServiceClass from "@hooks/useServiceClass";
 
 import UIModalWidgetService from "@services/UIModalWidgetService";
 
+import ExternalLinkButton from "@components/ExternalLinkButton";
+import getContactURL from "@utils/getContactURL";
+
 // TODO: Document
 export default function DesktopMenuBar() {
   const { uiParadigm, isUIParadigmAutoSet, setStaticUIParadigm } =
@@ -156,6 +159,18 @@ export default function DesktopMenuBar() {
           return [];
         }
       })(),
+      {
+        // TODO: Use constant
+        type: "separator",
+        label: "Help & Support",
+      },
+      {
+        label: () => (
+          <ExternalLinkButton href={getContactURL()}>
+            Contact Us
+          </ExternalLinkButton>
+        ),
+      },
       {
         // TODO: Use constant
         type: "separator",

@@ -1,6 +1,9 @@
 import Center from "@components/Center";
 import Padding from "@components/Padding";
 import ExternalLink from "@components/ExternalLink";
+import ExternalLinkButton from "@components/ExternalLinkButton";
+
+import getContactURL from "@utils/getContactURL";
 
 const LINKS = {
   zenOSmosis: "https://zenOSmosis.com",
@@ -27,11 +30,9 @@ export default function Resources() {
       <hr />
 
       <p>
-        To contact us directly, email:{" "}
-        <ExternalLink href="mailto:info@zenosmosis.com">
-          info@zenosmosis.com
-        </ExternalLink>
-        .
+        <ExternalLinkButton href={getContactURL()}>
+          Contact Us
+        </ExternalLinkButton>
       </p>
     </Center>
   );

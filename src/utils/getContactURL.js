@@ -5,5 +5,5 @@
  */
 export default function getContactURL() {
   // FIXME: (jh) Import from environment variable
-  return "https://www.linkedin.com/in/jeremyharrisconsultant/";
+  return "https://linktr.ee/zenosmosis";
 }
