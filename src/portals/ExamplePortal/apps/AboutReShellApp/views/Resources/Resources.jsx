@@ -18,11 +18,7 @@ export default function Resources() {
       <div style={{ display: "inline-block", textAlign: "left" }}>
         {Object.entries(LINKS).map(([name, url], idx) => (
           <Padding key={idx}>
-            {name}:{" "}
-            {
-              // TODO: Use ExternalLink component for this
-            }
-            <ExternalLink href={url}>{url}</ExternalLink>
+            {name}: <ExternalLink href={url}>{url}</ExternalLink>
           </Padding>
         ))}
       </div>
