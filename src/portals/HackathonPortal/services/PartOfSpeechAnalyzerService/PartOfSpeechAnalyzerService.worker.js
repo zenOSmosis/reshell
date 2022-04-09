@@ -17,12 +17,12 @@ registerRPCMethod("analyze", ({ text }) => {
   doc.verbs().toPastTense();
 
   // TODO: Remove
-  console.log({
+  return {
     verbs: doc.verbs().json(),
     // syllables: doc.syllables().json(),
     nouns: doc.nouns().json(),
     // pronouns: doc.pronouns.json(),
     // prepositions: doc.prepositions.json(),
     doc: doc.json(),
-  });
+  };
 });

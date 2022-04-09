@@ -18,7 +18,6 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
-import TextToSpeechApp from "../ExamplePortal/apps/TextToSpeechApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -65,7 +64,6 @@ export default function SpeakerAppPortal() {
         // Mesa Hackathon apps
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
-        TextToSpeechApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

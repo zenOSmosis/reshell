@@ -22,7 +22,6 @@ import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
-import TextToSpeechApp from "../ExamplePortal/apps/TextToSpeechApp";
 import SayItDifferentApp from "./apps/SayItDifferentApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 
@@ -53,7 +52,6 @@ export default function HackathonPortal() {
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
-        TextToSpeechApp,
         SayItDifferentApp,
         NativeSpyAgentApp,
       ]}

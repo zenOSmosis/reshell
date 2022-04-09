@@ -1,5 +1,7 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 
+import LocaleService from "./LocaleService";
+
 /**
  * Manages speech-to-text servicing.
  */
@@ -9,7 +11,12 @@ export default class TextToSpeechService extends UIServiceCore {
 
     this.setTitle("Text to Speech Service");
 
+    /** @type {LocaleService} */
+    this._localeService = this.useServiceClass(LocaleService);
+
     this._synth = null;
+    this._voices = [];
+    this._localeVoices = [];
   }
 
   /**
@@ -24,12 +31,30 @@ export default class TextToSpeechService extends UIServiceCore {
     return super._init();
   }
 
-  // TODO: This is not a stable reference; it should be memoized
   /**
    * @return {SpeechSynthesisVoice[]}
    */
   getVoices() {
-    return this._synth?.getVoices() || [];
+    if (!this._voices.length) {
+      this._voices = this._synth?.getVoices() || [];
+    }
+
+    return this._voices;
+  }
+
+  /**
+   * @return {SpeechSynthesisVoice[]}
+   */
+  getLocaleVoices() {
+    if (!this._localeVoices.length) {
+      const languageCode = this._localeService.getLanguageCode();
+
+      this._localeVoices = this.getVoices().filter(
+        voice => voice.lang === languageCode
+      );
+    }
+
+    return this._localeVoices;
   }
 
   /**
