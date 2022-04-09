@@ -22,8 +22,8 @@ const SayItDifferentApp = {
   id: REGISTRATION_ID,
   title: "Say It Different",
   style: {
-    width: 480,
-    height: 320,
+    width: 640,
+    height: 480,
   },
   serviceClasses: [
     SpeechRecognizerCollectionService,
@@ -43,6 +43,7 @@ const SayItDifferentApp = {
     /** @type {PartOfSpeechAnalyzerService} */
     const posAnalyzer = appServices[PartOfSpeechAnalyzerService];
 
+    const isSpeaking = tts.getIsSpeaking();
     const localeVoices = tts.getLocaleVoices();
 
     const hasRecognizer = stt.getHasRecognizer();
@@ -130,7 +131,16 @@ const SayItDifferentApp = {
                   <Padding>
                     <Center>
                       <Padding>
-                        <select>
+                        <select
+                          // TODO: Refactor
+                          value={tts.getDefaultVoice()?.voiceURI}
+                          onChange={evt =>
+                            // TODO: Refactor
+                            tts.setDefaultVoice(
+                              tts.getVoiceWithURI(evt.target.value)
+                            )
+                          }
+                        >
                           {localeVoices.map(voice => (
                             <option key={voice.voiceURI} value={voice.voiceURI}>
                               {voice.name}
@@ -141,7 +151,7 @@ const SayItDifferentApp = {
                       <Padding>
                         <button
                           onClick={() => tts.say(textInputValue)}
-                          disabled={!textInputValue}
+                          disabled={!textInputValue || isSpeaking}
                         >
                           Say It
                         </button>
@@ -154,7 +164,7 @@ const SayItDifferentApp = {
           </Row>
         </Content>
         <Footer>
-          <Padding></Padding>
+          <Padding>[...]</Padding>
         </Footer>
       </Layout>
     );

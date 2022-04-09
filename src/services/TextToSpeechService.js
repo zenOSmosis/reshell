@@ -11,6 +11,12 @@ export default class TextToSpeechService extends UIServiceCore {
 
     this.setTitle("Text to Speech Service");
 
+    this.setState({
+      isSpeaking: false,
+
+      defaultVoice: null,
+    });
+
     /** @type {LocaleService} */
     this._localeService = this.useServiceClass(LocaleService);
 
@@ -27,7 +33,7 @@ export default class TextToSpeechService extends UIServiceCore {
   /**
    * Initialize speech synthesis.
    *
-   * @return {void}
+   * @return {Promise<void>}
    */
   async _init() {
     // @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
@@ -45,6 +51,29 @@ export default class TextToSpeechService extends UIServiceCore {
     }
 
     return this._voices;
+  }
+
+  /**
+   * @param {SpeechSynthesisVoice} defaultVoice
+   * @return {void}
+   */
+  setDefaultVoice(defaultVoice) {
+    this.setState({ defaultVoice });
+  }
+
+  /**
+   * @return {SpeechSynthesisVoice | null}
+   */
+  getDefaultVoice() {
+    return this.getState().defaultVoice;
+  }
+
+  /**
+   * @param {string} voiceURI
+   * @return {SpeechSynthesisVoice | void}
+   */
+  getVoiceWithURI(voiceURI) {
+    return this.getVoices().find(voice => voice.voiceURI === voiceURI);
   }
 
   /**
@@ -70,12 +99,15 @@ export default class TextToSpeechService extends UIServiceCore {
    * @see https://caniuse.com/speech-synthesis
    *
    * @param {string} text
+   * @param {Object} options? // TODO: Document
    * @return {Promise<void>}
    */
-  async say(text) {
-    await this.onceReady();
-
+  async say(text, options = {}) {
     try {
+      await this.onceReady();
+
+      const voice = options.voice || this.getDefaultVoice();
+
       // TODO: Integrate
       //
       // TODO: Listen for speech end event before resolving
@@ -89,18 +121,42 @@ export default class TextToSpeechService extends UIServiceCore {
       utterance.lang = "en-US";
       utterance.pitch = 0.5;
       utterance.rate = 0.8;
-      // utterance.voice = ...
+      utterance.voice = voice;
       utterance.volume = 1; // 0 - 1
 
-      // TODO: Don't resolve until speaking has finished
-      this._synth.speak(utterance);
+      await new Promise((resolve, reject) => {
+        // FIXME: Ensure this is properly ended if externally canceled
+
+        utterance.onend = () => resolve();
+
+        utterance.onerror = () => reject();
+
+        this._synth.speak(utterance);
+
+        this.setState({ isSpeaking: true });
+      });
     } catch (err) {
+      // TODO: Handle accordingly
       console.error(err);
+    } finally {
+      this.setState({ isSpeaking: false });
     }
   }
 
   /**
-   * Stops words from being spoken immediately and removes remaining words from queue.
+   * Retrieves whether or not the TTS engine is currently speaking.
+   *
+   * @return {boolean}
+   */
+  getIsSpeaking() {
+    return this.getState().isSpeaking;
+  }
+
+  /**
+   * Stops words from being spoken immediately and removes remaining words from
+   * the queue.
+   *
+   * @return {void}
    */
   cancel() {
     this._synth?.cancel();
