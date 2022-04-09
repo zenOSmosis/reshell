@@ -79,29 +79,30 @@ const SayItDifferentApp = {
         <Content>
           <Row>
             <Column>
-              <Section>
-                <div>
-                  <textarea
-                    onChange={evt => setTextInputValue(evt.target.value)}
-                    value={textInputValue}
-                  >
-                    {textInputValue}
-                  </textarea>
-                </div>
-                <Padding style={{ textAlign: "right" }}>
-                  <button
-                    onClick={() =>
-                      // TODO: Refactor accordingly
-                      posAnalyzer.analyze(textInputValue)
-                    }
-                  >
-                    Submit
-                  </button>
-                </Padding>
-              </Section>
-              <Section>
-                <Padding></Padding>
-              </Section>
+              <Full style={{ overflowY: "auto" }}>
+                <Section>
+                  <div>
+                    <textarea
+                      onChange={evt => setTextInputValue(evt.target.value)}
+                      value={textInputValue}
+                    >
+                      {textInputValue}
+                    </textarea>
+                  </div>
+                  <Padding style={{ textAlign: "right" }}>
+                    <button
+                      onClick={() =>
+                        // TODO: Refactor accordingly
+                        posAnalyzer.analyze(textInputValue)
+                      }
+                    >
+                      Submit
+                    </button>
+                  </Padding>
+                </Section>
+                <Section>[...swap words]</Section>
+                <Section>[...history]</Section>
+              </Full>
             </Column>
             <Column style={{ maxWidth: 210 }}>
               <Full style={{ overflowY: "auto" }}>
