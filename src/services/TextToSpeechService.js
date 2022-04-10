@@ -2,6 +2,8 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 
 import LocaleService from "./LocaleService";
 
+// FIXME: (jh) Refactor so concurrent utterances can be made at once?
+
 /**
  * Manages speech-to-text servicing.
  */
@@ -59,10 +61,12 @@ export default class TextToSpeechService extends UIServiceCore {
 
   /**
    * @param {SpeechSynthesisVoice} defaultVoice
-   * @return {void}
+   * @return {TextToSpeechService}
    */
   setDefaultVoice(defaultVoice) {
     this.setState({ defaultVoice });
+
+    return this;
   }
 
   /**
@@ -76,9 +80,12 @@ export default class TextToSpeechService extends UIServiceCore {
    * Sets the default pitch for speech utterance.
    *
    * @param {number} defaultPitch A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
    */
   setDefaultPitch(defaultPitch) {
     this.setState({ defaultPitch });
+
+    return this;
   }
 
   /**
@@ -94,9 +101,12 @@ export default class TextToSpeechService extends UIServiceCore {
    * Sets the default rate for speech utterance.
    *
    * @param {number} defaultRate A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
    */
   setDefaultRate(defaultRate) {
     this.setState({ defaultRate });
+
+    return this;
   }
 
   /**
@@ -140,7 +150,7 @@ export default class TextToSpeechService extends UIServiceCore {
    *
    * @param {string} text
    * @param {Object} options? // TODO: Document
-   * @return {Promise<void>}
+   * @return {Promise<TextToSpeechService>}
    */
   async say(text, options = {}) {
     try {
@@ -184,6 +194,8 @@ export default class TextToSpeechService extends UIServiceCore {
       console.error(err);
     } finally {
       this.setState({ isSpeaking: false });
+
+      return this;
     }
   }
 
@@ -200,9 +212,11 @@ export default class TextToSpeechService extends UIServiceCore {
    * Stops words from being spoken immediately and removes remaining words from
    * the queue.
    *
-   * @return {void}
+   * @return {TextToSpeechService}
    */
   cancel() {
     this._synth?.cancel();
+
+    return this;
   }
 }

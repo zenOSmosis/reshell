@@ -13,7 +13,11 @@ ContentButton.propTypes = {
 };
 
 /**
- * An HTML content button which tries to not violate HTML specs.
+ * A button with an HTML backdrop layer, which tries to not violate HTML specs.
+ *
+ * Why: Buttons can't contain many internal HTML elements (FIXME: Cite source),
+ * so this works around that placing the button as a transparent overlay on top
+ * of the content, instead of embedding the content in a button.
  */
 export default function ContentButton({
   children,

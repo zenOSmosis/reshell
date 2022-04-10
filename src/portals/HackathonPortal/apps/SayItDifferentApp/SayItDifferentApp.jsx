@@ -8,6 +8,8 @@ import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledToggle from "@components/labeled/LabeledToggle";
 
+import ReadOnlyTextAreaButton from "./components/ReadOnlyTextAreaButton";
+
 import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../SpeechCommanderApp";
 
 // Local services
@@ -154,22 +156,40 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
-                  <Padding>
-                    <h2>Past</h2>
-                    <textarea readOnly value={textInputValue_past} />
-                  </Padding>
-                  <Padding>
-                    <h2>Future</h2>
-                    <textarea readOnly value={textInputValue_future} />
-                  </Padding>
-                  <Padding>
-                    <h2>Singular</h2>
-                    <textarea readOnly value={textInputValue_singularized} />
-                  </Padding>
-                  <Padding>
-                    <h2>Plural</h2>
-                    <textarea readOnly value={textInputValue_pluralized} />
-                  </Padding>
+                  {[
+                    {
+                      title: "Past",
+                      value: textInputValue_past,
+                    },
+                    {
+                      title: "Future",
+                      value: textInputValue_future,
+                    },
+                    {
+                      title: "Singular",
+                      value: textInputValue_singularized,
+                    },
+                    {
+                      title: "Plural",
+                      value: textInputValue_pluralized,
+                    },
+                  ].map(data => {
+                    const key = data.title;
+
+                    return (
+                      <Padding key={key}>
+                        <ReadOnlyTextAreaButton
+                          title={data.title}
+                          value={data.value}
+                          // TODO: Refactor accordingly
+                          onClick={() => {
+                            tts.cancel().say(data.value);
+                          }}
+                        />
+                      </Padding>
+                    );
+                  })}
+
                   <div>[...swap words]</div>
                 </Section>
                 <Section>[...history]</Section>
@@ -242,6 +262,7 @@ const SayItDifferentApp = {
                               value={tts.getDefaultPitch().toString()}
                               onChange={evt =>
                                 tts.setDefaultPitch(
+                                  // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
                                   parseFloat(evt.target.value)
                                 )
                               }
@@ -258,6 +279,7 @@ const SayItDifferentApp = {
                               step=".05"
                               value={tts.getDefaultRate().toString()}
                               onChange={evt =>
+                                // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
                                 tts.setDefaultRate(parseFloat(evt.target.value))
                               }
                             />
