@@ -29,8 +29,8 @@ global.addEventListener("message", async evt => {
       // TODO: Emulate JSON-RPC w/o non-essential data
       // TODO: Ensure same origin
       global.postMessage({ id, method, result });
-    } catch (err) {
-      global.postMessage({ id, method, err });
+    } catch (error) {
+      global.postMessage({ id, method, error });
     }
   }
 });
