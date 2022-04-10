@@ -12,6 +12,7 @@ import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
  * - https://www.npmjs.com/package/worker-plugin
  */
 
+// TODO: Remove?
 registerRPCMethod("analyze", ({ text }) => {
   // TODO: Implement accordingly
   let doc = nlp(text);

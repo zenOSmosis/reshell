@@ -25,16 +25,16 @@ import VirtualServerApp from "./apps/VirtualServerApp";
 import LocalUserProfileApp from "./apps/LocalUserProfileApp";
 import ChatApp from "./apps/ChatApp";
 
-// Mesa Hackathon apps
+// Hackathon apps
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
+import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
 export default function SpeakerAppPortal() {
   return (
     <Desktop
-      // TODO: Refactor
       backgroundView={<SpeakerAppLogoBackground />}
       appDescriptors={[
         ApplicationsApp,
@@ -57,13 +57,15 @@ export default function SpeakerAppPortal() {
         AppRegistrationViewerApp,
         NativeSpyAgentApp,
 
+        // Speaker.app-specific apps
         CallPlayerApp,
         VirtualServerApp,
         ChatApp,
 
-        // Mesa Hackathon apps
+        // Hackathon apps
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
+        SayItDifferentApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

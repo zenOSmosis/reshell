@@ -145,7 +145,24 @@ const SayItDifferentApp = {
                     </button>
                   </Padding>
                 </Section>
-                <Section>[...swap words]</Section>
+                <Section>
+                  <h2>Modifiers</h2>
+                  <div>
+                    <Padding style={{ display: "inline-block" }}>
+                      <input type="radio" name="tense" value="past" />{" "}
+                      <label>Past</label>
+                    </Padding>
+                    <Padding style={{ display: "inline-block" }}>
+                      <input type="radio" name="tense" value="present" />{" "}
+                      <label>Present</label>
+                    </Padding>
+                    <Padding style={{ display: "inline-block" }}>
+                      <input type="radio" name="tense" value="future" />{" "}
+                      <label>Future</label>
+                    </Padding>
+                  </div>
+                  <div>[...swap words]</div>
+                </Section>
                 <Section>[...history]</Section>
               </Full>
             </Column>
