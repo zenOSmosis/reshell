@@ -131,10 +131,6 @@ label {
   font-weight: bold;
 }
 
-label:not(:only-child) {
-  display: block;
-}
-
 select,
 button,
 input,
@@ -154,6 +150,11 @@ textarea {
   accent-color: #347fe8;
 
   max-width: 100%;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+textarea {
+  width: 100%;
 }
 
 ::placeholder {
@@ -268,11 +269,6 @@ select {
 select:disabled {
   /* Remove drop-down arrow */
   background-image: inherit;
-}
-
-input:not([type="checkbox"]):not([type="submit"]),
-textarea {
-  width: 100%;
 }
 
 ul {
