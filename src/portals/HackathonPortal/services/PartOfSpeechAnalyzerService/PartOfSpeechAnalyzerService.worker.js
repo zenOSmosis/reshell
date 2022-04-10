@@ -18,7 +18,7 @@ registerRPCMethod("analyze", ({ text }) => {
   let doc = nlp(text);
 
   // doc.verbs().toPastTense();
-  doc.verbs().toFutureTense();
+  // doc.verbs().toFutureTense();
 
   // TODO: Remove
   console.log(doc);
@@ -54,8 +54,8 @@ registerRPCMethod("applyModifiers", ({ text, modifiers = {} }) => {
     doc.verbs().toFutureTense();
   }
 
-  return doc
-    .json()
-    .map(el => el.text)
-    .join(" ");
+  doc.normalize();
+
+  return doc.text();
+  // return doc.out("text");
 });

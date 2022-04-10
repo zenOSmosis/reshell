@@ -52,6 +52,14 @@ const SayItDifferentApp = {
     const [textInputValue, setTextInputValue] = useState("");
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
+    const [textInputValue_singularized, setTextInputValue_singularized] =
+      useState("");
+    const [textInputValue_pluralized, setTextInputValue_pluralized] =
+      useState("");
+    const [textInputValue_future, setTextInputValue_future] = useState("");
+    // const [textInputValue_present, setTextInputValue_present] = useState("");
+    const [textInputValue_past, setTextInputValue_past] = useState("");
+
     // TODO: Document
     useEffect(() => {
       if (!hasRecognizer) {
@@ -62,7 +70,7 @@ const SayItDifferentApp = {
     // TODO: Document
     useEffect(() => {
       if (isTypingWithVoice) {
-        setTextInputValue(realTimeTranscription);
+        setTextInputValue(realTimeTranscription || "");
       }
     }, [isTypingWithVoice, realTimeTranscription]);
 
@@ -75,7 +83,7 @@ const SayItDifferentApp = {
               toSingular: true,
             },
           })
-          .then(singularized => console.log({ singularized }));
+          .then(singularized => setTextInputValue_singularized(singularized));
 
         posAnalyzer
           .applyModifiers(textInputValue, {
@@ -83,7 +91,7 @@ const SayItDifferentApp = {
               toPlural: true,
             },
           })
-          .then(pluralized => console.log({ pluralized }));
+          .then(pluralized => setTextInputValue_pluralized(pluralized));
 
         posAnalyzer
           .applyModifiers(textInputValue, {
@@ -91,7 +99,7 @@ const SayItDifferentApp = {
               toFutureTense: true,
             },
           })
-          .then(future => console.log({ future }));
+          .then(future => setTextInputValue_future(future));
 
         posAnalyzer
           .applyModifiers(textInputValue, {
@@ -99,7 +107,7 @@ const SayItDifferentApp = {
               toPastTense: true,
             },
           })
-          .then(past => console.log({ past }));
+          .then(past => setTextInputValue_past(past));
       }
     }, [textInputValue, posAnalyzer]);
 
@@ -146,21 +154,22 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
-                  <h2>Modifiers</h2>
-                  <div>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="past" />{" "}
-                      <label>Past</label>
-                    </Padding>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="present" />{" "}
-                      <label>Present</label>
-                    </Padding>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="future" />{" "}
-                      <label>Future</label>
-                    </Padding>
-                  </div>
+                  <Padding>
+                    <h2>Past</h2>
+                    <textarea readOnly value={textInputValue_past} />
+                  </Padding>
+                  <Padding>
+                    <h2>Future</h2>
+                    <textarea readOnly value={textInputValue_future} />
+                  </Padding>
+                  <Padding>
+                    <h2>Singular</h2>
+                    <textarea readOnly value={textInputValue_singularized} />
+                  </Padding>
+                  <Padding>
+                    <h2>Plural</h2>
+                    <textarea readOnly value={textInputValue_pluralized} />
+                  </Padding>
                   <div>[...swap words]</div>
                 </Section>
                 <Section>[...history]</Section>
