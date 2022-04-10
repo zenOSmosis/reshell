@@ -81,6 +81,9 @@ export default class RPCPhantomWorker extends PhantomCore {
           // Unregister the event listener
           this.off(EVT_WORKER_MESSAGE, _handleWorkerMessage);
 
+          // Decrease max listeners count by one
+          this.setMaxListeners(this.getMaxListeners() - 1);
+
           if (error) {
             reject(error);
           } else {
@@ -88,6 +91,11 @@ export default class RPCPhantomWorker extends PhantomCore {
           }
         }
       };
+
+      // Increase max listeners count by one; this fixes an issue where rapidly
+      // calling RPC methods could lead to memory leak warnings (i.e. invoking
+      // a call per keystroke)
+      this.setMaxListeners(this.getMaxListeners() + 1);
 
       this.on(EVT_WORKER_MESSAGE, _handleWorkerMessage);
     });
