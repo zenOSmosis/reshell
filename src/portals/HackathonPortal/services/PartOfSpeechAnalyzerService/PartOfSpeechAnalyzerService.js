@@ -22,10 +22,21 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
     this.registerCleanupHandler(() => this._rpcWorker.destroy());
   }
 
+  // TODO: Handle
   async analyze(text) {
     const result = await this._rpcWorker.call("analyze", { text });
 
     // TODO: Handle
     console.log({ result });
+  }
+
+  // TODO: Document
+  async applyModifiers(text, modifiers) {
+    const outputText = await this._rpcWorker.call("applyModifiers", {
+      text,
+      modifiers,
+    });
+
+    return outputText;
   }
 }

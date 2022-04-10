@@ -66,6 +66,43 @@ const SayItDifferentApp = {
       }
     }, [isTypingWithVoice, realTimeTranscription]);
 
+    // TODO: Implement
+    useEffect(() => {
+      if (textInputValue) {
+        posAnalyzer
+          .applyModifiers(textInputValue, {
+            nouns: {
+              toSingular: true,
+            },
+          })
+          .then(singularized => console.log({ singularized }));
+
+        posAnalyzer
+          .applyModifiers(textInputValue, {
+            nouns: {
+              toPlural: true,
+            },
+          })
+          .then(pluralized => console.log({ pluralized }));
+
+        posAnalyzer
+          .applyModifiers(textInputValue, {
+            verbs: {
+              toFutureTense: true,
+            },
+          })
+          .then(future => console.log({ future }));
+
+        posAnalyzer
+          .applyModifiers(textInputValue, {
+            verbs: {
+              toPastTense: true,
+            },
+          })
+          .then(past => console.log({ past }));
+      }
+    }, [textInputValue, posAnalyzer]);
+
     // TODO: Use part of speech servicing to diagram sentences and replace parts of
     // speech with relevant other words (or phrases)
 
