@@ -40,4 +40,18 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
 
     return outputText;
   }
+
+  // TODO: Document
+  async fetchNouns(text) {
+    const nouns = await this._rpcWorker.call("fetchNouns", { text });
+
+    return nouns;
+  }
+
+  // TODO: Document
+  async fetchVerbs(text) {
+    const verbs = await this._rpcWorker.call("fetchVerbs", { text });
+
+    return verbs;
+  }
 }

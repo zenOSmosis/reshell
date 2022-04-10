@@ -57,5 +57,22 @@ registerRPCMethod("applyTransformations", ({ text, transformations = {} }) => {
   doc.normalize();
 
   return doc.text();
-  // return doc.out("text");
+});
+
+// @see https://observablehq.com/@spencermountain/nouns
+registerRPCMethod("fetchNouns", ({ text }) => {
+  let doc = nlp(text);
+
+  const nouns = [...new Set(doc.nouns().out("array"))];
+
+  return nouns;
+});
+
+// @see https://observablehq.com/@spencermountain/verbs
+registerRPCMethod("fetchVerbs", ({ text }) => {
+  let doc = nlp(text);
+
+  const verbs = [...new Set(doc.verbs().out("array"))];
+
+  return verbs;
 });

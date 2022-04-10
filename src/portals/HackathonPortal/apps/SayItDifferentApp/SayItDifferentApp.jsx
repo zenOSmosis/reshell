@@ -55,6 +55,9 @@ const SayItDifferentApp = {
     const [textInputValue, setTextInputValue] = useState("");
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
+    const [nouns, setNouns] = useState([]);
+    const [verbs, setVerbs] = useState([]);
+
     const [textInputValue_singularized, setTextInputValue_singularized] =
       useState("");
     const [textInputValue_pluralized, setTextInputValue_pluralized] =
@@ -80,6 +83,9 @@ const SayItDifferentApp = {
     // TODO: Document
     useEffect(() => {
       if (textInputValue) {
+        posAnalyzer.fetchNouns(textInputValue).then(nouns => setNouns(nouns));
+        posAnalyzer.fetchVerbs(textInputValue).then(verbs => setVerbs(verbs));
+
         posAnalyzer
           .applyTransformations(textInputValue, {
             nouns: {
@@ -160,7 +166,26 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
-                  <h1>Transformers</h1>
+                  <h1>Parts of Speech</h1>
+                  <Section>
+                    <h2>Nouns</h2>
+                    {nouns.map(noun => (
+                      <button key={noun} onClick={() => tts.say(noun)}>
+                        {noun}
+                      </button>
+                    ))}
+                  </Section>
+                  <Section>
+                    <h2>Verbs</h2>
+                    {verbs.map(verb => (
+                      <button key={verb} onClick={() => tts.say(verb)}>
+                        {verb}
+                      </button>
+                    ))}
+                  </Section>
+                </Section>
+                <Section>
+                  <h1>Transformations</h1>
                   {[
                     {
                       title: "Past",
