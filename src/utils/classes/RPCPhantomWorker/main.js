@@ -2,9 +2,22 @@ import PhantomCore from "phantom-core";
 
 const EVT_WORKER_MESSAGE = "worker-message";
 
-// TODO: Document (controller which runs on main thread)
+/**
+ * Creates and maintains an RPC-controlled web worker, bound to a PhantomCore lifecycle.
+ */
 export default class RPCPhantomWorker extends PhantomCore {
-  // TODO: Document
+  /**
+   * Retrieves whether or not web workers are supported in this browser.
+   *
+   * @return {boolean}
+   */
+  static getIsSupported() {
+    return Boolean(window.Worker);
+  }
+
+  /**
+   * @param {() => Worker} createWorker A function which returns a Worker instance
+   */
   constructor(createWorker = () => new Worker("./worker", { type: "module" })) {
     super();
 
@@ -78,5 +91,16 @@ export default class RPCPhantomWorker extends PhantomCore {
 
       this.on(EVT_WORKER_MESSAGE, _handleWorkerMessage);
     });
+  }
+
+  /**
+   * @alias this.destroy
+   *
+   * @return {Promise<void>}
+   */
+  async terminate() {
+    this._worker.terminate();
+
+    return this.destroy();
   }
 }
