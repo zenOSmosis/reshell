@@ -1,6 +1,6 @@
 import React from "react";
 import AutoScaler from "../AutoScaler";
-import StaggeredWaveLoading from "../StaggeredWaveLoading";
+import LoadingSpinner from "../LoadingSpinner";
 import PropTypes from "prop-types";
 
 import usePreload from "@hooks/usePreload";
@@ -28,7 +28,7 @@ export default function Preload({
   if (!isPreloaded && !disabledLoadingIndicator) {
     return (
       <AutoScaler {...rest}>
-        <StaggeredWaveLoading />
+        <LoadingSpinner />
       </AutoScaler>
     );
   } else {
