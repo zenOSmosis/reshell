@@ -80,7 +80,7 @@ const SayItDifferentApp = {
     useEffect(() => {
       if (textInputValue) {
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             nouns: {
               toSingular: true,
             },
@@ -88,7 +88,7 @@ const SayItDifferentApp = {
           .then(singularized => setTextInputValue_singularized(singularized));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             nouns: {
               toPlural: true,
             },
@@ -96,7 +96,7 @@ const SayItDifferentApp = {
           .then(pluralized => setTextInputValue_pluralized(pluralized));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             verbs: {
               toFutureTense: true,
             },
@@ -104,7 +104,7 @@ const SayItDifferentApp = {
           .then(future => setTextInputValue_future(future));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             verbs: {
               toPastTense: true,
             },
@@ -156,6 +156,7 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
+                  <h1>Transformers</h1>
                   {[
                     {
                       title: "Past",
@@ -183,7 +184,7 @@ const SayItDifferentApp = {
                           value={data.value}
                           // TODO: Refactor accordingly
                           onClick={() => {
-                            tts.cancel().say(data.value);
+                            tts.say(data.value);
                           }}
                         />
                       </Padding>
@@ -198,12 +199,12 @@ const SayItDifferentApp = {
             <Column style={{ maxWidth: 210 }}>
               <Full style={{ overflowY: "auto" }}>
                 <Section>
-                  <h2>Voice Input</h2>
+                  <h1>Voice Input</h1>
                   <Padding>
                     <Center>
                       <Padding>
                         <AppLinkButton
-                          title="Speech Input"
+                          title="Recognizers"
                           id={SPEECH_COMMANDER_REGISTRATION_ID}
                         />
                       </Padding>
@@ -217,7 +218,7 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
-                  <h2>Voice Output</h2>
+                  <h1>Voice Output</h1>
                   <Padding>
                     <Center>
                       <Padding>
@@ -256,7 +257,7 @@ const SayItDifferentApp = {
                           <div>
                             <input
                               type="range"
-                              min="0"
+                              min="0.01"
                               max="1"
                               step=".05"
                               value={tts.getDefaultPitch().toString()}

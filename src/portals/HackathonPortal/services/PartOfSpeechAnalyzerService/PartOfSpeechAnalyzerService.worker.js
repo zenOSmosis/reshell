@@ -35,22 +35,22 @@ registerRPCMethod("analyze", ({ text }) => {
 });
 
 // @see https://observablehq.com/@spencermountain/nouns
-registerRPCMethod("applyModifiers", ({ text, modifiers = {} }) => {
+registerRPCMethod("applyTransformations", ({ text, transformations = {} }) => {
   let doc = nlp(text);
 
-  if (modifiers.nouns?.toPlural) {
+  if (transformations.nouns?.toPlural) {
     doc.nouns().toPlural();
   }
 
-  if (modifiers.nouns?.toSingular) {
+  if (transformations.nouns?.toSingular) {
     doc.nouns().toSingular();
   }
 
-  if (modifiers.verbs?.toPastTense) {
+  if (transformations.verbs?.toPastTense) {
     doc.verbs().toPastTense();
   }
 
-  if (modifiers.verbs?.toFutureTense) {
+  if (transformations.verbs?.toFutureTense) {
     doc.verbs().toFutureTense();
   }
 

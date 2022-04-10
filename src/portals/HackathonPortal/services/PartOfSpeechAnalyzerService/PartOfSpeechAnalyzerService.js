@@ -30,11 +30,15 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
     console.log({ result });
   }
 
-  // TODO: Document
-  async applyModifiers(text, modifiers) {
-    const outputText = await this._rpcWorker.call("applyModifiers", {
+  /**
+   * @param {string} text
+   * @param {Object} transformations // TODO: Document
+   * @returns
+   */
+  async applyTransformations(text, transformations) {
+    const outputText = await this._rpcWorker.call("applyTransformations", {
       text,
-      modifiers,
+      transformations,
     });
 
     return outputText;
