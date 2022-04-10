@@ -1,4 +1,3 @@
-// import {EVT_READY} from 'phantom-core'
 import UIServiceCore from "@core/classes/UIServiceCore";
 import RPCPhantomWorker from "@root/src/utils/classes/RPCPhantomWorker/main";
 
@@ -8,11 +7,7 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
 
     this.setTitle("Part of Speech Analyzer Service");
 
-    // TODO: Implement accordingly
-    //
-    // TODO: Check for worker feature detection before trying to use: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#worker_feature_detection
-    //
-    // TODO: Implement direct worker support w/ UIService?
+    // FIXME: (jh) Implement direct worker support w/ UIService?
     this._rpcWorker = new RPCPhantomWorker(
       () =>
         new Worker("./PartOfSpeechAnalyzerService.worker", { type: "module" })
@@ -31,9 +26,11 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   }
 
   /**
+   * Applies one or more transformations to the given text.
+   *
    * @param {string} text
    * @param {Object} transformations // TODO: Document
-   * @returns
+   * @return {Promise<string>}
    */
   async applyTransformations(text, transformations) {
     const outputText = await this._rpcWorker.call("applyTransformations", {
