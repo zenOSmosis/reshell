@@ -10,6 +10,7 @@ export default function PortalLoadingIndicator() {
   );
 }
 
+// FIXME: (jh) This might be better off being purely CSS-based
 function RotatingDots() {
   const lenDots = 3;
 
