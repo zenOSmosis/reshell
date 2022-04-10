@@ -7,6 +7,7 @@ import Section from "@components/Section";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledToggle from "@components/labeled/LabeledToggle";
+import ButtonGroup from "@components/ButtonGroup";
 
 import ReadOnlyTextAreaButton from "./components/ReadOnlyTextAreaButton";
 
@@ -76,7 +77,7 @@ const SayItDifferentApp = {
       }
     }, [isTypingWithVoice, realTimeTranscription]);
 
-    // TODO: Implement
+    // TODO: Document
     useEffect(() => {
       if (textInputValue) {
         posAnalyzer
@@ -118,8 +119,6 @@ const SayItDifferentApp = {
 
     // TODO: Implement close-captioned service and show caption overlays
 
-    // TODO: Allow text input as well
-
     // TODO: Show a robot?
 
     return (
@@ -138,21 +137,26 @@ const SayItDifferentApp = {
                     </textarea>
                   </div>
                   <Padding style={{ textAlign: "right" }}>
-                    <button
-                      onClick={() => setTextInputValue("")}
-                      disabled={!textInputValue}
-                    >
-                      Clear
-                    </button>
-                    <button
-                      onClick={() =>
-                        // TODO: Refactor accordingly
-                        posAnalyzer.analyze(textInputValue)
-                      }
-                      disabled={!textInputValue}
-                    >
-                      Analyze
-                    </button>
+                    <ButtonGroup>
+                      <button
+                        onClick={() => setTextInputValue("")}
+                        disabled={!textInputValue}
+                      >
+                        Clear
+                      </button>
+                      <button
+                        onClick={() => tts.say(textInputValue)}
+                        disabled={!textInputValue || isSpeaking}
+                      >
+                        Say It
+                      </button>
+                      <button
+                        onClick={() => tts.cancel()}
+                        disabled={!isSpeaking}
+                      >
+                        Cancel
+                      </button>
+                    </ButtonGroup>
                   </Padding>
                 </Section>
                 <Section>
@@ -240,18 +244,20 @@ const SayItDifferentApp = {
                         </select>
                       </Padding>
                       <Padding>
-                        <button
-                          onClick={() => tts.say(textInputValue)}
-                          disabled={!textInputValue || isSpeaking}
-                        >
-                          Say It
-                        </button>
-                        <button
-                          onClick={() => tts.cancel()}
-                          disabled={!isSpeaking}
-                        >
-                          Cancel
-                        </button>
+                        <ButtonGroup>
+                          <button
+                            onClick={() => tts.say(textInputValue)}
+                            disabled={!textInputValue || isSpeaking}
+                          >
+                            Say It
+                          </button>
+                          <button
+                            onClick={() => tts.cancel()}
+                            disabled={!isSpeaking}
+                          >
+                            Cancel
+                          </button>
+                        </ButtonGroup>
                         <Padding>
                           <label>Pitch</label>
                           <div>
