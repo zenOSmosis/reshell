@@ -2,6 +2,10 @@ import nlp from "compromise";
 
 import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
 
+import { retext } from "retext";
+import { inspect } from "unist-util-inspect";
+import retextPos from "retext-pos";
+
 // TODO: Also look into https://www.npmjs.com/package/retext
 
 /**
@@ -57,6 +61,17 @@ registerRPCMethod("applyTransformations", ({ text, transformations = {} }) => {
   doc.normalize();
 
   return doc.text();
+});
+
+registerRPCMethod("fetchSyntaxTree", ({ text }) => {
+  return new Promise(resolve => {
+    retext()
+      .use(retextPos)
+      .use(() => tree => {
+        resolve(inspect(tree));
+      })
+      .process(text);
+  });
 });
 
 // @see https://observablehq.com/@spencermountain/nouns

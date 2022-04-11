@@ -42,6 +42,13 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   }
 
   // TODO: Document
+  async fetchSyntaxTree(text) {
+    const syntaxTree = await this._rpcWorker.call("fetchSyntaxTree", { text });
+
+    return syntaxTree;
+  }
+
+  // TODO: Document
   async fetchNouns(text) {
     const nouns = await this._rpcWorker.call("fetchNouns", { text });
 

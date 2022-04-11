@@ -8,6 +8,7 @@ import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledToggle from "@components/labeled/LabeledToggle";
 import ButtonGroup from "@components/ButtonGroup";
+import AutoExpandingTextArea from "@components/AutoExpandingTextArea";
 
 import ReadOnlyTextAreaButton from "./components/ReadOnlyTextAreaButton";
 
@@ -52,8 +53,12 @@ const SayItDifferentApp = {
     const hasRecognizer = stt.getHasRecognizer();
     const realTimeTranscription = stt.getRealTimeTranscription();
 
+    // TODO: useObjectState for independent text renderings
+
     const [textInputValue, setTextInputValue] = useState("");
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
+
+    const [syntaxTree, setSyntaxTree] = useState("");
 
     const [nouns, setNouns] = useState([]);
     const [verbs, setVerbs] = useState([]);
@@ -87,6 +92,10 @@ const SayItDifferentApp = {
         posAnalyzer.fetchVerbs(textInputValue).then(verbs => setVerbs(verbs));
 
         posAnalyzer
+          .fetchSyntaxTree(textInputValue)
+          .then(syntaxTree => setSyntaxTree(syntaxTree));
+
+        posAnalyzer
           .applyTransformations(textInputValue, {
             nouns: {
               toSingular: true,
@@ -117,6 +126,16 @@ const SayItDifferentApp = {
             },
           })
           .then(past => setTextInputValue_past(past));
+      } else {
+        setSyntaxTree("");
+        setNouns([]);
+        setVerbs([]);
+
+        setTextInputValue_singularized("");
+        setTextInputValue_pluralized("");
+        setTextInputValue_future("");
+        //setTextInputValue_present('')
+        setTextInputValue_past("");
       }
     }, [textInputValue, posAnalyzer]);
 
@@ -135,12 +154,12 @@ const SayItDifferentApp = {
               <Full style={{ overflowY: "auto" }}>
                 <Section>
                   <div>
-                    <textarea
+                    <AutoExpandingTextArea
                       onChange={evt => setTextInputValue(evt.target.value)}
                       value={textInputValue}
                     >
                       {textInputValue}
-                    </textarea>
+                    </AutoExpandingTextArea>
                   </div>
                   <Padding style={{ textAlign: "right" }}>
                     <ButtonGroup>
@@ -164,6 +183,12 @@ const SayItDifferentApp = {
                       </button>
                     </ButtonGroup>
                   </Padding>
+                </Section>
+                <Section>
+                  <h1>Syntax Tree</h1>
+                  <div>
+                    <AutoExpandingTextArea value={syntaxTree} readOnly />
+                  </div>
                 </Section>
                 <Section>
                   <h1>Parts of Speech</h1>

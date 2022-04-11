@@ -1,7 +1,8 @@
+// FIXME: (jh) Move to phantom-core?
 /**
  * String renderings for orders of magnitude of data.
  *
- * Using decimal bbreviations as specified in:
+ * Using decimal abbreviations as specified in:
  * @see https://en.wikipedia.org/wiki/Megabyte
  *
  * Adapted from:
