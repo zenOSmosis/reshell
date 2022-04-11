@@ -28,6 +28,8 @@ import TextToSpeechService from "@services/TextToSpeechService";
 
 export const REGISTRATION_ID = "say-it-different";
 
+// TODO: Implement ability to dynamically swap words
+
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
   title: "Say It Different",
@@ -254,10 +256,7 @@ const SayItDifferentApp = {
                           </Padding>
                         );
                       })}
-
-                      <div>[...swap words]</div>
                     </Section>
-                    <Section>[...history]</Section>
                   </Full>
                 </Content>
               </Layout>
@@ -363,7 +362,10 @@ const SayItDifferentApp = {
           </Row>
         </Content>
         <Footer>
-          <Padding>[...]</Padding>
+          <Padding className="note">
+            {textInputValue.length} character
+            {textInputValue.length !== 1 ? "s" : ""}
+          </Padding>
         </Footer>
       </Layout>
     );
