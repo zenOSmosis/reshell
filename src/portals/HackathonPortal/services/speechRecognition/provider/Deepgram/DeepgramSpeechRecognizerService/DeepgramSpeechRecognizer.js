@@ -84,10 +84,12 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
 
           const transcript = received.channel.alternatives[0].transcript;
 
-          if (transcript && received.is_final) {
-            this._setFinalizedTranscription(transcript);
-          } else {
-            this._setRealTimeTranscription(transcript);
+          if (transcript) {
+            if (received.is_final) {
+              this._setFinalizedTranscription(transcript);
+            } else {
+              this._setRealTimeTranscription(transcript);
+            }
           }
         });
       });
