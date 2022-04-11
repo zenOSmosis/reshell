@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 
 import Full from "@components/Full";
 import Padding from "@components/Padding";
-import Layout, { Content, Footer, Row, Column } from "@components/Layout";
+import Layout, {
+  Header,
+  Content,
+  Footer,
+  Row,
+  Column,
+} from "@components/Layout";
 import Section from "@components/Section";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
@@ -151,104 +157,110 @@ const SayItDifferentApp = {
         <Content>
           <Row>
             <Column>
-              <Full style={{ overflowY: "auto" }}>
-                <Section>
-                  <div>
-                    <AutoExpandingTextArea
-                      onChange={evt => setTextInputValue(evt.target.value)}
-                      value={textInputValue}
-                    >
-                      {textInputValue}
-                    </AutoExpandingTextArea>
-                  </div>
-                  <Padding style={{ textAlign: "right" }}>
-                    <ButtonGroup>
-                      <button
-                        onClick={() => setTextInputValue("")}
-                        disabled={!textInputValue}
-                      >
-                        Clear
-                      </button>
-                      <button
-                        onClick={() => tts.say(textInputValue)}
-                        disabled={!textInputValue || isSpeaking}
-                      >
-                        Say It
-                      </button>
-                      <button
-                        onClick={() => tts.cancel()}
-                        disabled={!isSpeaking}
-                      >
-                        Cancel
-                      </button>
-                    </ButtonGroup>
-                  </Padding>
-                </Section>
-                <Section>
-                  <h1>Syntax Tree</h1>
-                  <div>
-                    <AutoExpandingTextArea value={syntaxTree} readOnly />
-                  </div>
-                </Section>
-                <Section>
-                  <h1>Parts of Speech</h1>
+              <Layout>
+                <Header>
                   <Section>
-                    <h2>Nouns</h2>
-                    {nouns.map(noun => (
-                      <button key={noun} onClick={() => tts.say(noun)}>
-                        {noun}
-                      </button>
-                    ))}
+                    <div>
+                      <AutoExpandingTextArea
+                        onChange={evt => setTextInputValue(evt.target.value)}
+                        value={textInputValue}
+                      >
+                        {textInputValue}
+                      </AutoExpandingTextArea>
+                    </div>
+                    <Padding style={{ textAlign: "right" }}>
+                      <ButtonGroup>
+                        <button
+                          onClick={() => setTextInputValue("")}
+                          disabled={!textInputValue}
+                        >
+                          Clear
+                        </button>
+                        <button
+                          onClick={() => tts.say(textInputValue)}
+                          disabled={!textInputValue || isSpeaking}
+                        >
+                          Say It
+                        </button>
+                        <button
+                          onClick={() => tts.cancel()}
+                          disabled={!isSpeaking}
+                        >
+                          Cancel
+                        </button>
+                      </ButtonGroup>
+                    </Padding>
                   </Section>
-                  <Section>
-                    <h2>Verbs</h2>
-                    {verbs.map(verb => (
-                      <button key={verb} onClick={() => tts.say(verb)}>
-                        {verb}
-                      </button>
-                    ))}
-                  </Section>
-                </Section>
-                <Section>
-                  <h1>Transformations</h1>
-                  {[
-                    {
-                      title: "Past",
-                      value: textInputValue_past,
-                    },
-                    {
-                      title: "Future",
-                      value: textInputValue_future,
-                    },
-                    {
-                      title: "Singular",
-                      value: textInputValue_singularized,
-                    },
-                    {
-                      title: "Plural",
-                      value: textInputValue_pluralized,
-                    },
-                  ].map(data => {
-                    const key = data.title;
+                </Header>
+                <Content>
+                  <Full style={{ overflowY: "auto" }}>
+                    <Section>
+                      <h1>Syntax Tree</h1>
+                      <div>
+                        <AutoExpandingTextArea value={syntaxTree} readOnly />
+                      </div>
+                    </Section>
+                    <Section>
+                      <h1>Parts of Speech</h1>
+                      <Section>
+                        <h2>Nouns</h2>
+                        {nouns.map(noun => (
+                          <button key={noun} onClick={() => tts.say(noun)}>
+                            {noun}
+                          </button>
+                        ))}
+                      </Section>
+                      <Section>
+                        <h2>Verbs</h2>
+                        {verbs.map(verb => (
+                          <button key={verb} onClick={() => tts.say(verb)}>
+                            {verb}
+                          </button>
+                        ))}
+                      </Section>
+                    </Section>
+                    <Section>
+                      <h1>Transformations</h1>
+                      {[
+                        {
+                          title: "Past",
+                          value: textInputValue_past,
+                        },
+                        {
+                          title: "Future",
+                          value: textInputValue_future,
+                        },
+                        {
+                          title: "Singular",
+                          value: textInputValue_singularized,
+                        },
+                        {
+                          title: "Plural",
+                          value: textInputValue_pluralized,
+                        },
+                      ].map(data => {
+                        const key = data.title;
 
-                    return (
-                      <Padding key={key}>
-                        <ReadOnlyTextAreaButton
-                          title={data.title}
-                          value={data.value}
-                          // TODO: Refactor accordingly
-                          onClick={() => {
-                            tts.say(data.value);
-                          }}
-                        />
-                      </Padding>
-                    );
-                  })}
+                        return (
+                          <Padding key={key}>
+                            <ReadOnlyTextAreaButton
+                              title={data.title}
+                              value={data.value}
+                              // TODO: Refactor accordingly
+                              onClick={() => {
+                                tts.say(data.value);
+                              }}
+                            />
+                          </Padding>
+                        );
+                      })}
 
-                  <div>[...swap words]</div>
-                </Section>
-                <Section>[...history]</Section>
-              </Full>
+                      <div>[...swap words]</div>
+                    </Section>
+                    <Section>[...history]</Section>
+                  </Full>
+                </Content>
+              </Layout>
             </Column>
             <Column style={{ maxWidth: 210 }}>
               <Full style={{ overflowY: "auto" }}>
