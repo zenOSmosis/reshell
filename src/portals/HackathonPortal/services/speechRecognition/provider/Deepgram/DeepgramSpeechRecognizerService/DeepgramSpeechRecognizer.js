@@ -29,15 +29,23 @@ export default class DeepgramSpeechRecognizer extends SpeechRecognizerBase {
    * @return {Promise<void>}
    */
   async _stopRecognizing() {
-    if (this._mediaRecorder) {
-      this._mediaRecorder.stop();
-
+    try {
+      if (this._mediaRecorder) {
+        this._mediaRecorder.stop();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
       this._mediaRecorder = null;
     }
 
-    if (this._deepgramSocket) {
-      this._deepgramSocket.close();
-
+    try {
+      if (this._deepgramSocket) {
+        this._deepgramSocket.close();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
       this._deepgramSocket = null;
     }
   }
