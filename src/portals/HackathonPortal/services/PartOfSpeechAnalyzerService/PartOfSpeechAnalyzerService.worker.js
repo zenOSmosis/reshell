@@ -68,7 +68,8 @@ registerRPCMethod("fetchSyntaxTree", ({ text }) => {
     retext()
       .use(retextPos)
       .use(() => tree => {
-        resolve(inspect(tree));
+        // resolve(inspect(tree));
+        resolve(tree);
       })
       .process(text);
   });
