@@ -2,9 +2,22 @@ import PhantomCore from "phantom-core";
 
 const EVT_WORKER_MESSAGE = "worker-message";
 
-// TODO: Document (controller which runs on main thread)
+/**
+ * Creates and maintains an RPC-controlled web worker, bound to a PhantomCore lifecycle.
+ */
 export default class RPCPhantomWorker extends PhantomCore {
-  // TODO: Document
+  /**
+   * Retrieves whether or not web workers are supported in this browser.
+   *
+   * @return {boolean}
+   */
+  static getIsSupported() {
+    return Boolean(window.Worker);
+  }
+
+  /**
+   * @param {() => Worker} createWorker A function which returns a Worker instance
+   */
   constructor(createWorker = () => new Worker("./worker", { type: "module" })) {
     super();
 
@@ -68,6 +81,9 @@ export default class RPCPhantomWorker extends PhantomCore {
           // Unregister the event listener
           this.off(EVT_WORKER_MESSAGE, _handleWorkerMessage);
 
+          // Decrease max listeners count by one
+          this.setMaxListeners(this.getMaxListeners() - 1);
+
           if (error) {
             reject(error);
           } else {
@@ -76,7 +92,23 @@ export default class RPCPhantomWorker extends PhantomCore {
         }
       };
 
+      // Increase max listeners count by one; this fixes an issue where rapidly
+      // calling RPC methods could lead to memory leak warnings (i.e. invoking
+      // a call per keystroke)
+      this.setMaxListeners(this.getMaxListeners() + 1);
+
       this.on(EVT_WORKER_MESSAGE, _handleWorkerMessage);
     });
+  }
+
+  /**
+   * @alias this.destroy
+   *
+   * @return {Promise<void>}
+   */
+  async terminate() {
+    this._worker.terminate();
+
+    return this.destroy();
   }
 }

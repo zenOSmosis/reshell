@@ -2,6 +2,10 @@ import nlp from "compromise";
 
 import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
 
+import { retext } from "retext";
+import { inspect } from "unist-util-inspect";
+import retextPos from "retext-pos";
+
 // TODO: Also look into https://www.npmjs.com/package/retext
 
 /**
@@ -18,7 +22,7 @@ registerRPCMethod("analyze", ({ text }) => {
   let doc = nlp(text);
 
   // doc.verbs().toPastTense();
-  doc.verbs().toFutureTense();
+  // doc.verbs().toFutureTense();
 
   // TODO: Remove
   console.log(doc);
@@ -35,27 +39,55 @@ registerRPCMethod("analyze", ({ text }) => {
 });
 
 // @see https://observablehq.com/@spencermountain/nouns
-registerRPCMethod("applyModifiers", ({ text, modifiers = {} }) => {
+registerRPCMethod("applyTransformations", ({ text, transformations = {} }) => {
   let doc = nlp(text);
 
-  if (modifiers.nouns?.toPlural) {
+  if (transformations.nouns?.toPlural) {
     doc.nouns().toPlural();
   }
 
-  if (modifiers.nouns?.toSingular) {
+  if (transformations.nouns?.toSingular) {
     doc.nouns().toSingular();
   }
 
-  if (modifiers.verbs?.toPastTense) {
+  if (transformations.verbs?.toPastTense) {
     doc.verbs().toPastTense();
   }
 
-  if (modifiers.verbs?.toFutureTense) {
+  if (transformations.verbs?.toFutureTense) {
     doc.verbs().toFutureTense();
   }
 
-  return doc
-    .json()
-    .map(el => el.text)
-    .join(" ");
+  doc.normalize();
+
+  return doc.text();
+});
+
+registerRPCMethod("fetchSyntaxTree", ({ text }) => {
+  return new Promise(resolve => {
+    retext()
+      .use(retextPos)
+      .use(() => tree => {
+        resolve(inspect(tree));
+      })
+      .process(text);
+  });
+});
+
+// @see https://observablehq.com/@spencermountain/nouns
+registerRPCMethod("fetchNouns", ({ text }) => {
+  let doc = nlp(text);
+
+  const nouns = [...new Set(doc.nouns().out("array"))];
+
+  return nouns;
+});
+
+// @see https://observablehq.com/@spencermountain/verbs
+registerRPCMethod("fetchVerbs", ({ text }) => {
+  let doc = nlp(text);
+
+  const verbs = [...new Set(doc.verbs().out("array"))];
+
+  return verbs;
 });

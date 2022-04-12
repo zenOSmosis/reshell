@@ -2,11 +2,21 @@ import { useEffect, useState } from "react";
 
 import Full from "@components/Full";
 import Padding from "@components/Padding";
-import Layout, { Content, Footer, Row, Column } from "@components/Layout";
+import Layout, {
+  Header,
+  Content,
+  Footer,
+  Row,
+  Column,
+} from "@components/Layout";
 import Section from "@components/Section";
 import Center from "@components/Center";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledToggle from "@components/labeled/LabeledToggle";
+import ButtonGroup from "@components/ButtonGroup";
+import AutoExpandingTextArea from "@components/AutoExpandingTextArea";
+
+import ReadOnlyTextAreaButton from "./components/ReadOnlyTextAreaButton";
 
 import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../SpeechCommanderApp";
 
@@ -17,6 +27,8 @@ import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerServ
 import TextToSpeechService from "@services/TextToSpeechService";
 
 export const REGISTRATION_ID = "say-it-different";
+
+// TODO: Implement ability to dynamically swap words
 
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
@@ -49,8 +61,23 @@ const SayItDifferentApp = {
     const hasRecognizer = stt.getHasRecognizer();
     const realTimeTranscription = stt.getRealTimeTranscription();
 
+    // TODO: useObjectState for independent text renderings
+
     const [textInputValue, setTextInputValue] = useState("");
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
+
+    const [syntaxTree, setSyntaxTree] = useState("");
+
+    const [nouns, setNouns] = useState([]);
+    const [verbs, setVerbs] = useState([]);
+
+    const [textInputValue_singularized, setTextInputValue_singularized] =
+      useState("");
+    const [textInputValue_pluralized, setTextInputValue_pluralized] =
+      useState("");
+    const [textInputValue_future, setTextInputValue_future] = useState("");
+    // const [textInputValue_present, setTextInputValue_present] = useState("");
+    const [textInputValue_past, setTextInputValue_past] = useState("");
 
     // TODO: Document
     useEffect(() => {
@@ -62,44 +89,61 @@ const SayItDifferentApp = {
     // TODO: Document
     useEffect(() => {
       if (isTypingWithVoice) {
-        setTextInputValue(realTimeTranscription);
+        setTextInputValue(realTimeTranscription || "");
       }
     }, [isTypingWithVoice, realTimeTranscription]);
 
-    // TODO: Implement
+    // TODO: Document
     useEffect(() => {
       if (textInputValue) {
+        posAnalyzer.fetchNouns(textInputValue).then(nouns => setNouns(nouns));
+        posAnalyzer.fetchVerbs(textInputValue).then(verbs => setVerbs(verbs));
+
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .fetchSyntaxTree(textInputValue)
+          .then(syntaxTree => setSyntaxTree(syntaxTree));
+
+        posAnalyzer
+          .applyTransformations(textInputValue, {
             nouns: {
               toSingular: true,
             },
           })
-          .then(singularized => console.log({ singularized }));
+          .then(singularized => setTextInputValue_singularized(singularized));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             nouns: {
               toPlural: true,
             },
           })
-          .then(pluralized => console.log({ pluralized }));
+          .then(pluralized => setTextInputValue_pluralized(pluralized));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             verbs: {
               toFutureTense: true,
             },
           })
-          .then(future => console.log({ future }));
+          .then(future => setTextInputValue_future(future));
 
         posAnalyzer
-          .applyModifiers(textInputValue, {
+          .applyTransformations(textInputValue, {
             verbs: {
               toPastTense: true,
             },
           })
-          .then(past => console.log({ past }));
+          .then(past => setTextInputValue_past(past));
+      } else {
+        setSyntaxTree("");
+        setNouns([]);
+        setVerbs([]);
+
+        setTextInputValue_singularized("");
+        setTextInputValue_pluralized("");
+        setTextInputValue_future("");
+        //setTextInputValue_present('')
+        setTextInputValue_past("");
       }
     }, [textInputValue, posAnalyzer]);
 
@@ -108,8 +152,6 @@ const SayItDifferentApp = {
 
     // TODO: Implement close-captioned service and show caption overlays
 
-    // TODO: Allow text input as well
-
     // TODO: Show a robot?
 
     return (
@@ -117,64 +159,117 @@ const SayItDifferentApp = {
         <Content>
           <Row>
             <Column>
-              <Full style={{ overflowY: "auto" }}>
-                <Section>
-                  <div>
-                    <textarea
-                      onChange={evt => setTextInputValue(evt.target.value)}
-                      value={textInputValue}
-                    >
-                      {textInputValue}
-                    </textarea>
-                  </div>
-                  <Padding style={{ textAlign: "right" }}>
-                    <button
-                      onClick={() => setTextInputValue("")}
-                      disabled={!textInputValue}
-                    >
-                      Clear
-                    </button>
-                    <button
-                      onClick={() =>
-                        // TODO: Refactor accordingly
-                        posAnalyzer.analyze(textInputValue)
-                      }
-                      disabled={!textInputValue}
-                    >
-                      Analyze
-                    </button>
-                  </Padding>
-                </Section>
-                <Section>
-                  <h2>Modifiers</h2>
-                  <div>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="past" />{" "}
-                      <label>Past</label>
+              <Layout>
+                <Header>
+                  <Section>
+                    <div>
+                      <AutoExpandingTextArea
+                        onChange={evt => setTextInputValue(evt.target.value)}
+                        value={textInputValue}
+                      >
+                        {textInputValue}
+                      </AutoExpandingTextArea>
+                    </div>
+                    <Padding style={{ textAlign: "right" }}>
+                      <ButtonGroup>
+                        <button
+                          onClick={() => setTextInputValue("")}
+                          disabled={!textInputValue}
+                        >
+                          Clear
+                        </button>
+                        <button
+                          onClick={() => tts.say(textInputValue)}
+                          disabled={!textInputValue || isSpeaking}
+                        >
+                          Say It
+                        </button>
+                        <button
+                          onClick={() => tts.cancel()}
+                          disabled={!isSpeaking}
+                        >
+                          Cancel
+                        </button>
+                      </ButtonGroup>
                     </Padding>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="present" />{" "}
-                      <label>Present</label>
-                    </Padding>
-                    <Padding style={{ display: "inline-block" }}>
-                      <input type="radio" name="tense" value="future" />{" "}
-                      <label>Future</label>
-                    </Padding>
-                  </div>
-                  <div>[...swap words]</div>
-                </Section>
-                <Section>[...history]</Section>
-              </Full>
+                  </Section>
+                </Header>
+                <Content>
+                  <Full style={{ overflowY: "auto" }}>
+                    <Section>
+                      <h1>Syntax Tree</h1>
+                      <div>
+                        <AutoExpandingTextArea value={syntaxTree} readOnly />
+                      </div>
+                    </Section>
+                    <Section>
+                      <h1>Parts of Speech</h1>
+                      <Section>
+                        <h2>Nouns</h2>
+                        {nouns.map(noun => (
+                          <button key={noun} onClick={() => tts.say(noun)}>
+                            {noun}
+                          </button>
+                        ))}
+                      </Section>
+                      <Section>
+                        <h2>Verbs</h2>
+                        {verbs.map(verb => (
+                          <button key={verb} onClick={() => tts.say(verb)}>
+                            {verb}
+                          </button>
+                        ))}
+                      </Section>
+                    </Section>
+                    <Section>
+                      <h1>Transformations</h1>
+                      {[
+                        {
+                          title: "Past",
+                          value: textInputValue_past,
+                        },
+                        {
+                          title: "Future",
+                          value: textInputValue_future,
+                        },
+                        {
+                          title: "Singular",
+                          value: textInputValue_singularized,
+                        },
+                        {
+                          title: "Plural",
+                          value: textInputValue_pluralized,
+                        },
+                      ].map(data => {
+                        const key = data.title;
+
+                        return (
+                          <Padding key={key}>
+                            <ReadOnlyTextAreaButton
+                              title={data.title}
+                              value={data.value}
+                              // TODO: Refactor accordingly
+                              onClick={() => {
+                                tts.say(data.value);
+                              }}
+                            />
+                          </Padding>
+                        );
+                      })}
+                    </Section>
+                  </Full>
+                </Content>
+              </Layout>
             </Column>
             <Column style={{ maxWidth: 210 }}>
               <Full style={{ overflowY: "auto" }}>
                 <Section>
-                  <h2>Voice Input</h2>
+                  <h1>Voice Input</h1>
                   <Padding>
                     <Center>
                       <Padding>
                         <AppLinkButton
-                          title="Speech Input"
+                          title="Recognizers"
                           id={SPEECH_COMMANDER_REGISTRATION_ID}
                         />
                       </Padding>
@@ -188,7 +283,7 @@ const SayItDifferentApp = {
                   </Padding>
                 </Section>
                 <Section>
-                  <h2>Voice Output</h2>
+                  <h1>Voice Output</h1>
                   <Padding>
                     <Center>
                       <Padding>
@@ -210,29 +305,32 @@ const SayItDifferentApp = {
                         </select>
                       </Padding>
                       <Padding>
-                        <button
-                          onClick={() => tts.say(textInputValue)}
-                          disabled={!textInputValue || isSpeaking}
-                        >
-                          Say It
-                        </button>
-                        <button
-                          onClick={() => tts.cancel()}
-                          disabled={!isSpeaking}
-                        >
-                          Cancel
-                        </button>
+                        <ButtonGroup>
+                          <button
+                            onClick={() => tts.say(textInputValue)}
+                            disabled={!textInputValue || isSpeaking}
+                          >
+                            Say It
+                          </button>
+                          <button
+                            onClick={() => tts.cancel()}
+                            disabled={!isSpeaking}
+                          >
+                            Cancel
+                          </button>
+                        </ButtonGroup>
                         <Padding>
                           <label>Pitch</label>
                           <div>
                             <input
                               type="range"
-                              min="0"
+                              min="0.01"
                               max="1"
                               step=".05"
                               value={tts.getDefaultPitch().toString()}
                               onChange={evt =>
                                 tts.setDefaultPitch(
+                                  // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
                                   parseFloat(evt.target.value)
                                 )
                               }
@@ -249,6 +347,7 @@ const SayItDifferentApp = {
                               step=".05"
                               value={tts.getDefaultRate().toString()}
                               onChange={evt =>
+                                // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
                                 tts.setDefaultRate(parseFloat(evt.target.value))
                               }
                             />
@@ -263,7 +362,10 @@ const SayItDifferentApp = {
           </Row>
         </Content>
         <Footer>
-          <Padding>[...]</Padding>
+          <Padding className="note">
+            {textInputValue.length} character
+            {textInputValue.length !== 1 ? "s" : ""}
+          </Padding>
         </Footer>
       </Layout>
     );

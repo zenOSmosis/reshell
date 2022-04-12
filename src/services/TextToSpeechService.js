@@ -1,4 +1,4 @@
-import UIServiceCore from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
 
 import LocaleService from "./LocaleService";
 
@@ -59,10 +59,12 @@ export default class TextToSpeechService extends UIServiceCore {
 
   /**
    * @param {SpeechSynthesisVoice} defaultVoice
-   * @return {void}
+   * @return {TextToSpeechService}
    */
   setDefaultVoice(defaultVoice) {
     this.setState({ defaultVoice });
+
+    return this;
   }
 
   /**
@@ -76,9 +78,12 @@ export default class TextToSpeechService extends UIServiceCore {
    * Sets the default pitch for speech utterance.
    *
    * @param {number} defaultPitch A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
    */
   setDefaultPitch(defaultPitch) {
     this.setState({ defaultPitch });
+
+    return this;
   }
 
   /**
@@ -94,9 +99,12 @@ export default class TextToSpeechService extends UIServiceCore {
    * Sets the default rate for speech utterance.
    *
    * @param {number} defaultRate A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
    */
   setDefaultRate(defaultRate) {
     this.setState({ defaultRate });
+
+    return this;
   }
 
   /**
@@ -140,24 +148,44 @@ export default class TextToSpeechService extends UIServiceCore {
    *
    * @param {string} text
    * @param {Object} options? // TODO: Document
-   * @return {Promise<void>}
+   * @return {Promise<TextToSpeechService>}
    */
   async say(text, options = {}) {
     try {
       await this.onceReady();
+
+      // Wait until current utterance has ended before trying to speak again
+      //
+      // This fixes an issue where Chrome (tested 100.0.4896.75 / Mac Monterey)
+      // could crash if concurrent utterances are invoked
+      if (this.getIsSpeaking()) {
+        await new Promise(resolve => {
+          this.cancel();
+
+          const _handleStateChange = () => {
+            if (!this.getIsSpeaking()) {
+              this.off(EVT_UPDATED, _handleStateChange);
+
+              setImmediate(() => {
+                resolve();
+              });
+            }
+          };
+
+          this.on(EVT_UPDATED, _handleStateChange);
+        });
+      }
+
+      // State is set prior to the utterance to fix an issue in Chrome where
+      // rapidly invoking "say" could still cause browser to crash (note: this
+      // might be resolved but is not causing any harm here)
+      this.setState({ isSpeaking: true });
 
       const rate =
         options.rate !== undefined ? options.rate : this.getDefaultRate();
       const pitch =
         options.pitch !== undefined ? options.pitch : this.getDefaultPitch();
       const voice = options.voice || this.getDefaultVoice();
-
-      // TODO: Integrate
-      //
-      // TODO: Listen for speech end event before resolving
-      // https://wicg.github.io/speech-api/#dom-speechsynthesisutterance-speechsynthesisutterance
-      //
-      // TODO: Automatically reject if the queue has been canceled
 
       const utterance = new SpeechSynthesisUtterance(text);
 
@@ -168,6 +196,8 @@ export default class TextToSpeechService extends UIServiceCore {
       utterance.voice = voice;
       utterance.volume = 1; // 0 - 1
 
+      // TODO: Automatically reject if the queue has been canceled
+
       await new Promise((resolve, reject) => {
         // FIXME: Ensure this is properly ended if externally canceled
 
@@ -176,14 +206,14 @@ export default class TextToSpeechService extends UIServiceCore {
         utterance.onerror = () => reject();
 
         this._synth.speak(utterance);
-
-        this.setState({ isSpeaking: true });
       });
     } catch (err) {
       // TODO: Handle accordingly
       console.error(err);
     } finally {
       this.setState({ isSpeaking: false });
+
+      return this;
     }
   }
 
@@ -200,9 +230,14 @@ export default class TextToSpeechService extends UIServiceCore {
    * Stops words from being spoken immediately and removes remaining words from
    * the queue.
    *
-   * @return {void}
+   * @return {TextToSpeechService}
    */
   cancel() {
     this._synth?.cancel();
+
+    // Safari might not emit onend on the current utterance
+    this.setState({ isSpeaking: false });
+
+    return this;
   }
 }

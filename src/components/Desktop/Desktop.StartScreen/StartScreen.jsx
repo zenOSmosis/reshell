@@ -5,6 +5,7 @@ import Center from "@components/Center";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Animation from "@components/Animation";
+import LoadingSpinner from "@components/LoadingSpinner";
 
 import zenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
@@ -59,7 +60,12 @@ export default function StartScreen({ onExit }) {
                     </div>
                   </Animation>
                 ) : (
-                  <span style={{ fontWeight: "bold" }}>Starting</span>
+                  <>
+                    <div>
+                      <LoadingSpinner />
+                    </div>
+                    <div>Starting</div>
+                  </>
                 )}
               </Center>
             </Content>

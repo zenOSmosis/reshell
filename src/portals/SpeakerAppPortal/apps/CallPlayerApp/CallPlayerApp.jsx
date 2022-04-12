@@ -6,7 +6,7 @@ import Cover from "@components/Cover";
 import AppLinkButton from "@components/AppLinkButton";
 import LabeledLED from "@components/labeled/LabeledLED";
 import NoWrap from "@components/NoWrap";
-import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
+import LoadingSpinner from "@components/LoadingSpinner";
 import Timer from "@components/Timer";
 
 import MicrophoneIcon from "@icons/MicrophoneIcon";
@@ -227,7 +227,7 @@ const CallPlayerApp = {
           {isZenRTCConnecting && (
             <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
               <Center>
-                <StaggeredWaveLoading />
+                <LoadingSpinner />
               </Center>
             </Cover>
           )}
