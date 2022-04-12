@@ -2,6 +2,8 @@ import PhantomCore from "phantom-core";
 
 const EVT_WORKER_MESSAGE = "worker-message";
 
+// TODO: Emit EVT_READY once worker is ready
+
 /**
  * Creates and maintains an RPC-controlled web worker, bound to a PhantomCore lifecycle.
  */

@@ -1,3 +1,7 @@
+// TODO: Integrate
+// - https://github.com/kylestetz/Sentencer
+// - https://www.ibm.com/docs/en/wca/3.5.0?topic=analytics-part-speech-tag-sets
+
 import { useEffect, useState } from "react";
 
 import Full from "@components/Full";
@@ -99,9 +103,12 @@ const SayItDifferentApp = {
         posAnalyzer.fetchNouns(textInputValue).then(nouns => setNouns(nouns));
         posAnalyzer.fetchVerbs(textInputValue).then(verbs => setVerbs(verbs));
 
-        posAnalyzer
-          .fetchSyntaxTree(textInputValue)
-          .then(syntaxTree => setSyntaxTree(syntaxTree));
+        posAnalyzer.fetchSyntaxTree(textInputValue).then(syntaxTree => {
+          // TODO: Remove
+          console.log({ syntaxTree });
+
+          setSyntaxTree(syntaxTree);
+        });
 
         posAnalyzer
           .applyTransformations(textInputValue, {
