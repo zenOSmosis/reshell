@@ -47,7 +47,18 @@ const SENTIMENTS = [
 export default function PolaritySection({ polarity }) {
   const sentiment = useMemo(() => {
     const polePercent = (polarity.polarity + 10) * 5;
-    const idx = Math.floor(SENTIMENTS.length * (polePercent / 100));
+
+    const lenSentiments = SENTIMENTS.length;
+
+    let idx = Math.floor(lenSentiments * (polePercent / 100));
+
+    // Keep idx within constraints
+    if (idx < 0) {
+      idx = 0;
+    }
+    if (idx >= lenSentiments) {
+      idx = lenSentiments - 1;
+    }
 
     return SENTIMENTS[idx];
   }, [polarity]);
