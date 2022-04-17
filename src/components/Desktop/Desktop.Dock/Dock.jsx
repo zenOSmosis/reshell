@@ -8,6 +8,7 @@ import useOverflowDetection from "@hooks/useOverflowDetection";
 import styles from "./Dock.module.css";
 import classNames from "classnames";
 
+// FIXME: (jh) Borrow ideas from: https://github.com/lukehorvat/react-osx-dock
 /**
  * Application selection Dock component.
  */
