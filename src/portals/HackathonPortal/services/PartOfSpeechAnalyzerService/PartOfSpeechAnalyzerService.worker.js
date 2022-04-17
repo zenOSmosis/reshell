@@ -1,94 +1,52 @@
-import nlp from "compromise";
+// TODO: Integrate
+// - https://github.com/kylestetz/Sentencer
 
 import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
-
-import { retext } from "retext";
-import { inspect } from "unist-util-inspect";
+import retextStringify from "retext-stringify";
 import retextPos from "retext-pos";
+import { unified } from "unified";
+import retextEnglish from "retext-english";
+import { visit } from "unist-util-visit";
+import partOfSpeechTags from "./partOfSpeechTags";
 
-// TODO: Also look into https://www.npmjs.com/package/retext
-
-/**
- * TODO: Some documentation:
- *
- * - https://www.npmjs.com/package/compromise
- * - https://observablehq.com/@spencermountain/compromise-internals?collection=@spencermountain/nlp-compromise
- * - https://www.npmjs.com/package/worker-plugin
- */
-
-// TODO: Remove?
-registerRPCMethod("analyze", ({ text }) => {
-  // TODO: Implement accordingly
-  let doc = nlp(text);
-
-  // doc.verbs().toPastTense();
-  // doc.verbs().toFutureTense();
-
-  // TODO: Remove
-  console.log(doc);
-
-  // TODO: Remove
-  return {
-    verbs: doc.verbs().json(),
-    // syllables: doc.syllables().json(),
-    nouns: doc.nouns().json(),
-    // pronouns: doc.pronouns.json(),
-    // prepositions: doc.prepositions.json(),
-    doc: doc.json(),
-  };
-});
-
-// @see https://observablehq.com/@spencermountain/nouns
-registerRPCMethod("applyTransformations", ({ text, transformations = {} }) => {
-  let doc = nlp(text);
-
-  if (transformations.nouns?.toPlural) {
-    doc.nouns().toPlural();
-  }
-
-  if (transformations.nouns?.toSingular) {
-    doc.nouns().toSingular();
-  }
-
-  if (transformations.verbs?.toPastTense) {
-    doc.verbs().toPastTense();
-  }
-
-  if (transformations.verbs?.toFutureTense) {
-    doc.verbs().toFutureTense();
-  }
-
-  doc.normalize();
-
-  return doc.text();
-});
-
-registerRPCMethod("fetchSyntaxTree", ({ text }) => {
+async function fetchSyntaxTree(text) {
   return new Promise(resolve => {
-    retext()
+    unified()
+      // TODO: Make the language dynamic
+      .use(retextEnglish)
+
+      .use(retextStringify)
       .use(retextPos)
       .use(() => tree => {
-        // resolve(inspect(tree));
+        // nlcst syntax tree https://github.com/syntax-tree/nlcst
         resolve(tree);
       })
       .process(text);
   });
-});
+}
 
-// @see https://observablehq.com/@spencermountain/nouns
-registerRPCMethod("fetchNouns", ({ text }) => {
-  let doc = nlp(text);
+registerRPCMethod("fetchSyntaxTree", ({ text }) => fetchSyntaxTree(text));
 
-  const nouns = [...new Set(doc.nouns().out("array"))];
+async function fetchPartsOfSpeech(text) {
+  const syntaxTree = await fetchSyntaxTree(text);
 
-  return nouns;
-});
+  const partsOfSpeech = [];
 
-// @see https://observablehq.com/@spencermountain/verbs
-registerRPCMethod("fetchVerbs", ({ text }) => {
-  let doc = nlp(text);
+  visit(syntaxTree, node => {
+    if (node.type === "WordNode") {
+      const { partOfSpeech } = node.data;
+      const word = node.children[0].value;
+      partsOfSpeech.push({
+        word,
+        partOfSpeech: {
+          tag: partOfSpeech,
+          description: partOfSpeechTags[partOfSpeech],
+        },
+      });
+    }
+  });
 
-  const verbs = [...new Set(doc.verbs().out("array"))];
+  return partsOfSpeech;
+}
 
-  return verbs;
-});
+registerRPCMethod("fetchPartsOfSpeech", ({ text }) => fetchPartsOfSpeech(text));

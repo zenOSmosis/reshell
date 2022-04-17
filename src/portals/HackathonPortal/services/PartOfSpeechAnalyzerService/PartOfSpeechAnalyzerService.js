@@ -17,48 +17,13 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
     this.registerCleanupHandler(() => this._rpcWorker.destroy());
   }
 
-  // TODO: Handle
-  async analyze(text) {
-    const result = await this._rpcWorker.call("analyze", { text });
-
-    // TODO: Handle
-    console.log({ result });
-  }
-
-  /**
-   * Applies one or more transformations to the given text.
-   *
-   * @param {string} text
-   * @param {Object} transformations // TODO: Document
-   * @return {Promise<string>}
-   */
-  async applyTransformations(text, transformations) {
-    const outputText = await this._rpcWorker.call("applyTransformations", {
-      text,
-      transformations,
-    });
-
-    return outputText;
-  }
-
   // TODO: Document
   async fetchSyntaxTree(text) {
-    const syntaxTree = await this._rpcWorker.call("fetchSyntaxTree", { text });
-
-    return syntaxTree;
+    return this._rpcWorker.call("fetchSyntaxTree", { text });
   }
 
   // TODO: Document
-  async fetchNouns(text) {
-    const nouns = await this._rpcWorker.call("fetchNouns", { text });
-
-    return nouns;
-  }
-
-  // TODO: Document
-  async fetchVerbs(text) {
-    const verbs = await this._rpcWorker.call("fetchVerbs", { text });
-
-    return verbs;
+  async fetchPartsOfSpeech(text) {
+    return this._rpcWorker.call("fetchPartsOfSpeech", { text });
   }
 }
