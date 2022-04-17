@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Layout, { Header, Content } from "@components/Layout";
 import ButtonPanel from "@components/ButtonPanel";
 import Padding from "@components/Padding";
-import Section from "@components/Section";
 import ObjectViewer from "@components/ObjectViewer";
 import Full from "@components/Full";
 
@@ -31,7 +30,6 @@ export default function PartOfSpeechAnalysis({ posAnalyzer, text }) {
     <Layout>
       <Header>
         <Padding style={{ textAlign: "center" }}>
-          <span className="note">View mode:</span>{" "}
           <ButtonPanel
             buttons={[
               {

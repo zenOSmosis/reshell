@@ -7,10 +7,14 @@ import AppLinkButton from "@components/AppLinkButton";
 import LabeledToggle from "@components/labeled/LabeledToggle";
 import ButtonGroup from "@components/ButtonGroup";
 
+import PolaritySection from "./PolaritySection";
+import ShifterSection from "./ShifterSection";
+
 import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../../../SpeechCommanderApp";
 
 export default function RightSidebar({
   text,
+  polarity,
   hasSpeechRecognizer,
   ttsService,
   localeVoices,
@@ -21,6 +25,7 @@ export default function RightSidebar({
   return (
     <Column style={{ maxWidth: 210 }}>
       <Full style={{ overflowY: "auto" }}>
+        <PolaritySection polarity={polarity} />
         <Section>
           <h1>Voice Input</h1>
           <Padding>
@@ -115,6 +120,7 @@ export default function RightSidebar({
             </Center>
           </Padding>
         </Section>
+        <ShifterSection />
       </Full>
     </Column>
   );

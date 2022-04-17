@@ -14,6 +14,7 @@ import { polarity } from "polarity";
 
 import partOfSpeechTags from "./partOfSpeechTags";
 
+// TODO: Document
 async function fetchSyntaxTree(text, outputProcessor = inspect) {
   return new Promise(resolve => {
     unified()
@@ -36,6 +37,7 @@ async function fetchSyntaxTree(text, outputProcessor = inspect) {
 
 registerRPCMethod("fetchSyntaxTree", ({ text }) => fetchSyntaxTree(text));
 
+// TODO: Document
 async function fetchPartsOfSpeech(text) {
   const syntaxTree = await fetchSyntaxTree(text, null);
 
@@ -60,6 +62,7 @@ async function fetchPartsOfSpeech(text) {
 
 registerRPCMethod("fetchPartsOfSpeech", ({ text }) => fetchPartsOfSpeech(text));
 
+// TODO: Document
 async function fetchPolarity(text) {
   const words = await fetchWords(text);
 
@@ -68,6 +71,7 @@ async function fetchPolarity(text) {
 
 registerRPCMethod("fetchPolarity", ({ text }) => fetchPolarity(text));
 
+// TODO: Document
 async function fetchWords(text) {
   const syntaxTree = await fetchSyntaxTree(text, null);
 

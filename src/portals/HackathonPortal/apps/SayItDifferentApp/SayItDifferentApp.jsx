@@ -29,14 +29,14 @@ const DATA_VIEW_PART_OF_SPEECH = "partOfSpeech";
 const DATA_VIEW_SYNTAX_TREE = "syntaxTree";
 const DATA_VIEW_POLARITY = "polarity";
 
-const DEFAULT_TEXT_INPUT_VALUE = "Welcome to ReShell.";
+const DEFAULT_TEXT_INPUT_VALUE = "A fantastic welcome to ReShell!";
 
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
   title: "Say It Different",
   style: {
-    width: 640,
-    height: 480,
+    width: 640 * 1.2,
+    height: 480 * 1.5,
   },
   serviceClasses: [
     SpeechRecognizerCollectionService,
@@ -144,11 +144,11 @@ const SayItDifferentApp = {
                 <Content>
                   <Layout>
                     <Header>
-                      <Padding>
+                      <Padding style={{ textAlign: "center" }}>
                         <ButtonPanel
                           buttons={[
                             {
-                              content: "Part Of Speech",
+                              content: "Speech Tags",
                               disabled: isEmpty,
                               onClick: () =>
                                 setDataView(DATA_VIEW_PART_OF_SPEECH),
@@ -159,7 +159,7 @@ const SayItDifferentApp = {
                               onClick: () => setDataView(DATA_VIEW_SYNTAX_TREE),
                             },
                             {
-                              content: "Sentiment",
+                              content: "Polarity",
                               disabled: isEmpty,
                               onClick: () => setDataView(DATA_VIEW_POLARITY),
                             },
@@ -171,7 +171,7 @@ const SayItDifferentApp = {
                       <Padding>
                         <Full
                           style={{
-                            border: "1px #999 solid",
+                            border: "1px rgba(255,255,255,.2) solid",
                             borderRadius: "8px",
                             backgroundColor: "rgba(0,0,0,.2)",
                           }}
@@ -219,6 +219,7 @@ const SayItDifferentApp = {
             </Column>
             <RightSidebar
               text={textInputValue}
+              polarity={polarity}
               ttsService={tts}
               hasSpeechRecognizer={hasSpeechRecognizer}
               localeVoices={localeVoices}
