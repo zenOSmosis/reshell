@@ -94,9 +94,6 @@ export default function Desktop({
                     // most) other components without interfering with their
                     // handling (thanks to "pointer-events: none")
                     pointerEvents: "none",
-                    // FIXME: (jh) Is there a way to do this overlawy w/o using
-                    // z-index?
-                    zIndex: 2147483647,
                   }}
                 >
                   <AutoScaler style={{ whiteSpace: "nowrap" }}>
