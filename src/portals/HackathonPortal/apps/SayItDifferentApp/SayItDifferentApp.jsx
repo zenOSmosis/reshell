@@ -10,6 +10,7 @@ import Full from "@components/Full";
 import RightSidebar from "./views/RightSidebar";
 import PartOfSpeechAnalysis from "./views/PartOfSpeechAnalysis";
 import SyntaxTree from "./views/SyntaxTree";
+import Polarity from "./views/Polarity";
 import NoData from "./views/NoData";
 
 // Local services
@@ -26,6 +27,7 @@ export const REGISTRATION_ID = "say-it-different";
 
 const DATA_VIEW_PART_OF_SPEECH = "partOfSpeech";
 const DATA_VIEW_SYNTAX_TREE = "syntaxTree";
+const DATA_VIEW_POLARITY = "polarity";
 
 const DEFAULT_TEXT_INPUT_VALUE = "Welcome to ReShell.";
 
@@ -65,6 +67,17 @@ const SayItDifferentApp = {
     );
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
+    const [polarity, setPolarity] = useState({});
+
+    // TODO: Document
+    useEffect(() => {
+      if (!textInputValue) {
+        setPolarity({});
+      } else {
+        posAnalyzer.fetchPolarity(textInputValue).then(setPolarity);
+      }
+    }, [posAnalyzer, textInputValue]);
+
     const isEmpty = !textInputValue.length;
 
     // TODO: Document
@@ -80,6 +93,9 @@ const SayItDifferentApp = {
         setTextInputValue(realTimeTranscription || "");
       }
     }, [isTypingWithVoice, realTimeTranscription]);
+
+    // TODO: Remove
+    console.log({ polarity });
 
     return (
       <Layout>
@@ -142,6 +158,11 @@ const SayItDifferentApp = {
                               disabled: isEmpty,
                               onClick: () => setDataView(DATA_VIEW_SYNTAX_TREE),
                             },
+                            {
+                              content: "Sentiment",
+                              disabled: isEmpty,
+                              onClick: () => setDataView(DATA_VIEW_POLARITY),
+                            },
                           ]}
                         />
                       </Padding>
@@ -159,6 +180,9 @@ const SayItDifferentApp = {
                             <NoData />
                           ) : (
                             <>
+                              {
+                                // FIXME: Add transition view here
+                              }
                               {(() => {
                                 switch (dataView) {
                                   case DATA_VIEW_PART_OF_SPEECH:
@@ -176,6 +200,9 @@ const SayItDifferentApp = {
                                         text={textInputValue}
                                       />
                                     );
+
+                                  case DATA_VIEW_POLARITY:
+                                    return <Polarity polarity={polarity} />;
 
                                   default:
                                     return null;

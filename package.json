@@ -29,6 +29,7 @@
     "microsoft-cognitiveservices-speech-sdk": "^1.20.0",
     "object-hash": "^2.2.0",
     "phantom-core": "github:zenosmosis/phantom-core#v2.7.3",
+    "polarity": "^4.0.0",
     "preload-it": "^1.4.0",
     "query-string": "^7.0.1",
     "react": "^17.0.2",

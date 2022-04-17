@@ -1,6 +1,8 @@
 // TODO: Integrate
 // - https://github.com/kylestetz/Sentencer
 
+// FIXME: (jh) Utilize internal caching
+
 import { registerRPCMethod } from "@utils/classes/RPCPhantomWorker/worker";
 import retextStringify from "retext-stringify";
 import retextPos from "retext-pos";
@@ -8,6 +10,8 @@ import { unified } from "unified";
 import retextEnglish from "retext-english";
 import { inspect } from "unist-util-inspect";
 import { visit } from "unist-util-visit";
+import { polarity } from "polarity";
+
 import partOfSpeechTags from "./partOfSpeechTags";
 
 async function fetchSyntaxTree(text, outputProcessor = inspect) {
@@ -55,3 +59,28 @@ async function fetchPartsOfSpeech(text) {
 }
 
 registerRPCMethod("fetchPartsOfSpeech", ({ text }) => fetchPartsOfSpeech(text));
+
+async function fetchPolarity(text) {
+  const words = await fetchWords(text);
+
+  return polarity(words);
+}
+
+registerRPCMethod("fetchPolarity", ({ text }) => fetchPolarity(text));
+
+async function fetchWords(text) {
+  const syntaxTree = await fetchSyntaxTree(text, null);
+
+  const words = [];
+
+  visit(syntaxTree, node => {
+    if (node.type === "WordNode") {
+      const word = node.children[0].value;
+      words.push(word);
+    }
+  });
+
+  return words;
+}
+
+registerRPCMethod("fetchWords", ({ text }) => fetchWords(text));

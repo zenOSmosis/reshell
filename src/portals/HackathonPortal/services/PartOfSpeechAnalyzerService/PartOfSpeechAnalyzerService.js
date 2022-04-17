@@ -26,4 +26,8 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   async fetchPartsOfSpeech(text) {
     return this._rpcWorker.call("fetchPartsOfSpeech", { text });
   }
+
+  async fetchPolarity(text) {
+    return this._rpcWorker.call("fetchPolarity", { text });
+  }
 }
