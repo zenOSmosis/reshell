@@ -79,6 +79,7 @@ export default function ButtonPanel({ buttons, ...rest }) {
           idx
         ) => {
           return (
+            // FIXME: (jh) Include support for ContentButton?
             <button
               {...args}
               key={idx}
@@ -96,7 +97,7 @@ export default function ButtonPanel({ buttons, ...rest }) {
               ])}
             >
               {
-                // TODO: Refactor
+                // FIXME: (jh) Refactor
                 typeof Content === "string" ? (
                   Content
                 ) : typeof Content === "function" ? (
