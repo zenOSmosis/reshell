@@ -54,7 +54,11 @@ export default function ButtonPanel({ buttons, ...rest }) {
     const defaultButton = refButtons.current[refSelectedIdx.current];
 
     if (defaultButton) {
-      defaultButton.onClick();
+      if (typeof defaultButton.onClick !== "function") {
+        console.error("All buttons should have onClick handlers");
+      } else {
+        defaultButton.onClick();
+      }
     }
   }, []);
 
