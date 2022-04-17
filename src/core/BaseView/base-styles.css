@@ -330,8 +330,8 @@ table:not(.layout) tbody tr:nth-child(even) {
 }
 
 .section {
-  margin: 8px;
-  padding: 8px;
+  margin: 4px;
+  padding: 4px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
 
