@@ -1,11 +1,12 @@
 import Full from "../Full";
 import ReactJson from "react-json-view";
 import classNames from "classnames";
+
 import styles from "./ObjectViewer.module.css";
 import PropTypes from "prop-types";
 
 ObjectViewer.propTypes = {
-  src: PropTypes.object.isRequired,
+  src: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 };
 
 export default function ObjectViewer({ className, src, ...rest }) {
