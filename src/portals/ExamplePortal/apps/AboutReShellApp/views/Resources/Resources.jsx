@@ -27,7 +27,7 @@ export default function Resources() {
 
       <p>
         <ExternalLinkButton href={getContactURL()}>
-          Contact Us
+          Contact zenOSmosis
         </ExternalLinkButton>
       </p>
     </Center>

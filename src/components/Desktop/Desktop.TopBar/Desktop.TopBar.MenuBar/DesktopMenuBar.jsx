@@ -167,7 +167,7 @@ export default function DesktopMenuBar() {
       {
         label: () => (
           <ExternalLinkButton href={getContactURL()}>
-            Contact Us
+            Contact zenOSmosis
           </ExternalLinkButton>
         ),
       },

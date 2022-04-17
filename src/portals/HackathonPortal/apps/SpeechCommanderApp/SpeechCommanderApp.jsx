@@ -99,7 +99,7 @@ const SpeechCommanderApp = {
                   </Padding>
                   <Padding>
                     <ExternalLinkButton href={getContactURL()}>
-                      Contact Us
+                      Contact zenOSmosis
                     </ExternalLinkButton>
                   </Padding>
                 </Center>
