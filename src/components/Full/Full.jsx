@@ -3,6 +3,8 @@ import StackingContext from "../StackingContext";
 import classNames from "classnames";
 import styles from "./Full.module.css";
 
+// FIXME: Convert to function-based component (special note: may need to
+// preserve refs for some other components)
 class Full extends Component {
   render() {
     const { children, className, ...rest } = this.props;
