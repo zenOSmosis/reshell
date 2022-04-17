@@ -6,10 +6,11 @@ import retextStringify from "retext-stringify";
 import retextPos from "retext-pos";
 import { unified } from "unified";
 import retextEnglish from "retext-english";
+import { inspect } from "unist-util-inspect";
 import { visit } from "unist-util-visit";
 import partOfSpeechTags from "./partOfSpeechTags";
 
-async function fetchSyntaxTree(text) {
+async function fetchSyntaxTree(text, outputProcessor = inspect) {
   return new Promise(resolve => {
     unified()
       // TODO: Make the language dynamic
@@ -18,8 +19,12 @@ async function fetchSyntaxTree(text) {
       .use(retextStringify)
       .use(retextPos)
       .use(() => tree => {
-        // nlcst syntax tree https://github.com/syntax-tree/nlcst
-        resolve(tree);
+        if (outputProcessor) {
+          resolve(outputProcessor(tree));
+        } else {
+          // nlcst syntax tree https://github.com/syntax-tree/nlcst
+          resolve(tree);
+        }
       })
       .process(text);
   });
@@ -28,7 +33,7 @@ async function fetchSyntaxTree(text) {
 registerRPCMethod("fetchSyntaxTree", ({ text }) => fetchSyntaxTree(text));
 
 async function fetchPartsOfSpeech(text) {
-  const syntaxTree = await fetchSyntaxTree(text);
+  const syntaxTree = await fetchSyntaxTree(text, null);
 
   const partsOfSpeech = [];
 

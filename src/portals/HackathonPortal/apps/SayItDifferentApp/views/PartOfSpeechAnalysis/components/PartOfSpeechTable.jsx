@@ -11,8 +11,8 @@ export default function PartOfSpeechTable({ partsOfSpeech }) {
         </tr>
       </thead>
       <tbody>
-        {partsOfSpeech.map(({ word, partOfSpeech }) => (
-          <tr>
+        {partsOfSpeech.map(({ word, partOfSpeech }, idx) => (
+          <tr key={idx}>
             <td>{word}</td>
             <td>{partOfSpeech.tag}</td>
             <td>{partOfSpeech.description}</td>

@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 
-import Full from "@components/Full";
 import Padding from "@components/Padding";
-import Layout, {
-  Header,
-  Content,
-  Footer,
-  Row,
-  Column,
-} from "@components/Layout";
+import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Section from "@components/Section";
-import Center from "@components/Center";
-import AppLinkButton from "@components/AppLinkButton";
-import LabeledToggle from "@components/labeled/LabeledToggle";
 import ButtonGroup from "@components/ButtonGroup";
-import AutoExpandingTextArea from "@components/AutoExpandingTextArea";
+import ButtonPanel from "@components/ButtonPanel";
+import Full from "@components/Full";
 
+import RightSidebar from "./views/RightSidebar";
 import PartOfSpeechAnalysis from "./views/PartOfSpeechAnalysis";
-
-import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../SpeechCommanderApp";
+import SyntaxTree from "./views/SyntaxTree";
+import NoData from "./views/NoData";
 
 // Local services
 import SpeechRecognizerCollectionService from "../../services/speechRecognition/SpeechRecognizerCollectionService";
@@ -29,6 +21,13 @@ import TextToSpeechService from "@services/TextToSpeechService";
 export const REGISTRATION_ID = "say-it-different";
 
 // TODO: Implement ability to dynamically swap words
+// TODO: Include load screen?
+// TODO: useObjectState for independent text renderings
+
+const DATA_VIEW_PART_OF_SPEECH = "partOfSpeech";
+const DATA_VIEW_SYNTAX_TREE = "syntaxTree";
+
+const DEFAULT_TEXT_INPUT_VALUE = "Welcome to ReShell.";
 
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
@@ -43,9 +42,9 @@ const SayItDifferentApp = {
     PartOfSpeechAnalyzerService,
   ],
 
-  // TODO: Include load screen?
-
   view: function View({ appServices }) {
+    const [dataView, setDataView] = useState(DATA_VIEW_PART_OF_SPEECH);
+
     /** @type {TextToSpeechService} */
     const tts = appServices[TextToSpeechService];
 
@@ -58,22 +57,22 @@ const SayItDifferentApp = {
     const isSpeaking = tts.getIsSpeaking();
     const localeVoices = tts.getLocaleVoices();
 
-    const hasRecognizer = stt.getHasRecognizer();
+    const hasSpeechRecognizer = stt.getHasRecognizer();
     const realTimeTranscription = stt.getRealTimeTranscription();
 
-    // TODO: useObjectState for independent text renderings
-
-    const [textInputValue, setTextInputValue] = useState("");
+    const [textInputValue, setTextInputValue] = useState(
+      DEFAULT_TEXT_INPUT_VALUE
+    );
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
-    const [partsOfSpeech, setPartsOfSpeech] = useState([]);
+    const isEmpty = !textInputValue.length;
 
     // TODO: Document
     useEffect(() => {
-      if (!hasRecognizer) {
+      if (!hasSpeechRecognizer) {
         setIsTypingWithVoice(false);
       }
-    }, [hasRecognizer]);
+    }, [hasSpeechRecognizer]);
 
     // TODO: Document
     useEffect(() => {
@@ -81,17 +80,6 @@ const SayItDifferentApp = {
         setTextInputValue(realTimeTranscription || "");
       }
     }, [isTypingWithVoice, realTimeTranscription]);
-
-    // TODO: Document
-    useEffect(() => {
-      if (textInputValue) {
-        posAnalyzer.fetchPartsOfSpeech(textInputValue).then(partsOfSpeech => {
-          setPartsOfSpeech(partsOfSpeech);
-        });
-      } else {
-        setPartsOfSpeech([]);
-      }
-    }, [textInputValue, posAnalyzer]);
 
     return (
       <Layout>
@@ -102,14 +90,18 @@ const SayItDifferentApp = {
                 <Header>
                   <Section>
                     <div>
-                      <AutoExpandingTextArea
+                      <textarea
                         onChange={evt => setTextInputValue(evt.target.value)}
                         value={textInputValue}
                       >
                         {textInputValue}
-                      </AutoExpandingTextArea>
+                      </textarea>
                     </div>
-                    <Padding style={{ textAlign: "right" }}>
+                    <Padding style={{ float: "left" }} className="note">
+                      {textInputValue.length} character
+                      {textInputValue.length !== 1 ? "s" : ""}
+                    </Padding>
+                    <Padding style={{ float: "right" }}>
                       <ButtonGroup>
                         <button
                           onClick={() => setTextInputValue("")}
@@ -134,122 +126,81 @@ const SayItDifferentApp = {
                   </Section>
                 </Header>
                 <Content>
-                  <PartOfSpeechAnalysis partsOfSpeech={partsOfSpeech} />
+                  <Layout>
+                    <Header>
+                      <Padding>
+                        <ButtonPanel
+                          buttons={[
+                            {
+                              content: "Part Of Speech",
+                              disabled: isEmpty,
+                              onClick: () =>
+                                setDataView(DATA_VIEW_PART_OF_SPEECH),
+                            },
+                            {
+                              content: "Syntax Tree",
+                              disabled: isEmpty,
+                              onClick: () => setDataView(DATA_VIEW_SYNTAX_TREE),
+                            },
+                          ]}
+                        />
+                      </Padding>
+                    </Header>
+                    <Content>
+                      <Padding>
+                        <Full
+                          style={{
+                            border: "1px #999 solid",
+                            borderRadius: "8px",
+                            backgroundColor: "rgba(0,0,0,.2)",
+                          }}
+                        >
+                          {isEmpty ? (
+                            <NoData />
+                          ) : (
+                            <>
+                              {(() => {
+                                switch (dataView) {
+                                  case DATA_VIEW_PART_OF_SPEECH:
+                                    return (
+                                      <PartOfSpeechAnalysis
+                                        posAnalyzer={posAnalyzer}
+                                        text={textInputValue}
+                                      />
+                                    );
+
+                                  case DATA_VIEW_SYNTAX_TREE:
+                                    return (
+                                      <SyntaxTree
+                                        posAnalyzer={posAnalyzer}
+                                        text={textInputValue}
+                                      />
+                                    );
+
+                                  default:
+                                    return null;
+                                }
+                              })()}
+                            </>
+                          )}
+                        </Full>
+                      </Padding>
+                    </Content>
+                  </Layout>
                 </Content>
               </Layout>
             </Column>
-            <Column style={{ maxWidth: 210 }}>
-              <Full style={{ overflowY: "auto" }}>
-                <Section>
-                  <h1>Voice Input</h1>
-                  <Padding>
-                    <Center>
-                      <Padding>
-                        <AppLinkButton
-                          title="Recognizers"
-                          id={SPEECH_COMMANDER_REGISTRATION_ID}
-                        />
-                      </Padding>
-                      <LabeledToggle
-                        masterLabel="Type w/ Voice"
-                        onChange={setIsTypingWithVoice}
-                        isOn={isTypingWithVoice}
-                        disabled={!hasRecognizer}
-                      />
-                    </Center>
-                  </Padding>
-                </Section>
-                <Section>
-                  <h1>Voice Output</h1>
-                  <Padding>
-                    <Center>
-                      <Padding>
-                        <select
-                          // TODO: Refactor
-                          value={tts.getDefaultVoice()?.voiceURI}
-                          onChange={evt =>
-                            // TODO: Refactor
-                            tts.setDefaultVoice(
-                              tts.getVoiceWithURI(evt.target.value)
-                            )
-                          }
-                        >
-                          {localeVoices.map(voice => (
-                            <option key={voice.voiceURI} value={voice.voiceURI}>
-                              {voice.name}
-                            </option>
-                          ))}
-                        </select>
-                      </Padding>
-                      <Padding>
-                        <ButtonGroup>
-                          <button
-                            onClick={() => tts.say(textInputValue)}
-                            disabled={!textInputValue || isSpeaking}
-                          >
-                            Say It
-                          </button>
-                          <button
-                            onClick={() => tts.cancel()}
-                            disabled={!isSpeaking}
-                          >
-                            Cancel
-                          </button>
-                        </ButtonGroup>
-                        <Padding>
-                          <label>Pitch</label>
-                          <div>
-                            <input
-                              type="range"
-                              min="0.01"
-                              max="1"
-                              step=".05"
-                              value={tts.getDefaultPitch().toString()}
-                              onChange={evt =>
-                                tts.setDefaultPitch(
-                                  // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
-                                  parseFloat(evt.target.value)
-                                )
-                              }
-                            />
-                          </div>
-                        </Padding>
-                        <Padding>
-                          <label>Rate</label>
-                          <div>
-                            <input
-                              type="range"
-                              min="0"
-                              max="1"
-                              step=".05"
-                              value={tts.getDefaultRate().toString()}
-                              onChange={evt =>
-                                // TODO: If currently speaking, repeat current phrase (is it possible to adjust w/o restarting?)
-                                tts.setDefaultRate(parseFloat(evt.target.value))
-                              }
-                            />
-                          </div>
-                        </Padding>
-                      </Padding>
-                    </Center>
-                  </Padding>
-                </Section>
-              </Full>
-            </Column>
+            <RightSidebar
+              text={textInputValue}
+              ttsService={tts}
+              hasSpeechRecognizer={hasSpeechRecognizer}
+              localeVoices={localeVoices}
+              isTypingWithVoice={isTypingWithVoice}
+              onIsTypingWithVoiceChange={setIsTypingWithVoice}
+              isSpeaking={isSpeaking}
+            />
           </Row>
         </Content>
-        <Footer>
-          <Padding className="note">
-            {textInputValue.length} character
-            {textInputValue.length !== 1 ? "s" : ""}
-          </Padding>
-          {
-            // TODO: Include navigation here
-            //  - Part Of Speech
-            //  - Syntax Tree
-            //  - Sentiment Analysis
-          }
-        </Footer>
       </Layout>
     );
   },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout, { Header, Content } from "@components/Layout";
 import ButtonPanel from "@components/ButtonPanel";
 import Padding from "@components/Padding";
@@ -8,11 +8,24 @@ import Full from "@components/Full";
 
 import PartOfSpeechTable from "./components/PartOfSpeechTable";
 
-const VIEW_MODE_OBJECT = "object";
 const VIEW_MODE_TABLE = "table";
+const VIEW_MODE_OBJECT = "object";
 
-export default function PartOfSpeechAnalysis({ text, partsOfSpeech }) {
-  const [viewType, setViewType] = useState(VIEW_MODE_OBJECT);
+export default function PartOfSpeechAnalysis({ posAnalyzer, text }) {
+  const [viewType, setViewType] = useState(VIEW_MODE_TABLE);
+
+  const [partsOfSpeech, setPartsOfSpeech] = useState([]);
+
+  // Fetch part of speech analysis as text changes
+  useEffect(() => {
+    if (text) {
+      posAnalyzer.fetchPartsOfSpeech(text).then(partsOfSpeech => {
+        setPartsOfSpeech(partsOfSpeech);
+      });
+    } else {
+      setPartsOfSpeech([]);
+    }
+  }, [text, posAnalyzer]);
 
   return (
     <Layout>
@@ -22,27 +35,25 @@ export default function PartOfSpeechAnalysis({ text, partsOfSpeech }) {
           <ButtonPanel
             buttons={[
               {
-                content: "Object",
-                onClick: () => setViewType(VIEW_MODE_OBJECT),
-              },
-              {
                 content: "Table",
                 onClick: () => setViewType(VIEW_MODE_TABLE),
+              },
+              {
+                content: "Object",
+                onClick: () => setViewType(VIEW_MODE_OBJECT),
               },
             ]}
           />
         </Padding>
       </Header>
       <Content>
-        <Section style={{ width: "100%", height: "100%" }}>
-          {viewType === "object" ? (
-            <ObjectViewer src={partsOfSpeech} />
-          ) : (
-            <Full style={{ overflowY: "auto" }}>
-              <PartOfSpeechTable partsOfSpeech={partsOfSpeech} />
-            </Full>
-          )}
-        </Section>
+        {viewType === "object" ? (
+          <ObjectViewer src={partsOfSpeech} />
+        ) : (
+          <Full style={{ overflowY: "auto" }}>
+            <PartOfSpeechTable partsOfSpeech={partsOfSpeech} />
+          </Full>
+        )}
       </Content>
     </Layout>
   );
