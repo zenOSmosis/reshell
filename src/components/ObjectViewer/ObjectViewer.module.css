@@ -1,3 +1,6 @@
 .object-viewer {
   overflow-y: auto;
+
+  /* Fixes issue where theme background is smaller than scrolled content */
+  background-color: #272822;
 }
