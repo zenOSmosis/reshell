@@ -135,7 +135,12 @@ async function fetchRandomizedTemplate(text) {
       const { partOfSpeech } = node.data;
 
       switch (partOfSpeech) {
-        case "NN":
+        // Note: Some of the following conditions might be technically
+        // incorrect for this, but help to give more results
+        case "NN": // Noun, singular
+        case "NNS": // Noun, plural
+        case "MD": // Modal
+        case "VBN": // Verb, past participle (i.e. "weed")
           // Automatically handle vowels / consonants
           if (determiner) {
             tokens.push("{{ a_noun }}");
@@ -160,6 +165,14 @@ async function fetchRandomizedTemplate(text) {
           break;
 
         default:
+          // If determiner wasn't used in noun / adjective, re-add it to the
+          // sentence
+          if (determiner) {
+            tokens.push(determiner);
+            tokens.push(" ");
+            determiner = null;
+          }
+
           const word = node.children[0].value;
 
           // Note: This would only work w/ English
