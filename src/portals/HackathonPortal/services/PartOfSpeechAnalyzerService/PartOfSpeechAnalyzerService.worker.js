@@ -15,6 +15,11 @@ import { polarity } from "polarity";
 import partOfSpeechTags from "./partOfSpeechTags";
 import sentiments from "./sentiments";
 
+// Note: "FakeWindow" is needed to patch randy library in Sentencer
+// Related issue: https://github.com/kylestetz/Sentencer/issues/28
+import "./FakeWindow";
+import Sentencer from "sentencer";
+
 // TODO: Document
 async function fetchSyntaxTree(text, outputProcessor = inspect) {
   return new Promise(resolve => {
@@ -114,3 +119,14 @@ async function fetchWords(text) {
 }
 
 registerRPCMethod("fetchWords", ({ text }) => fetchWords(text));
+
+async function fetchRandomizedTemplate(text) {
+  // TODO: Wire up to text
+  return Sentencer.make(
+    "This sentence has {{ a_noun }} and {{ an_adjective }} {{ noun }} in it."
+  );
+}
+
+registerRPCMethod("fetchRandomizedTemplate", ({ text }) =>
+  fetchRandomizedTemplate(text)
+);

@@ -221,6 +221,7 @@ const SayItDifferentApp = {
               text={textInputValue}
               sentiment={sentiment}
               ttsService={tts}
+              posAnalyzer={posAnalyzer}
               hasSpeechRecognizer={hasSpeechRecognizer}
               localeVoices={localeVoices}
               isTypingWithVoice={isTypingWithVoice}

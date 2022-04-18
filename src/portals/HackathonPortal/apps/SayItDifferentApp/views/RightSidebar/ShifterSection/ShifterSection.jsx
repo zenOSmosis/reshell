@@ -1,7 +1,7 @@
 import Section from "@components/Section";
 import Padding from "@components/Padding";
 
-export default function ShifterSection() {
+export default function ShifterSection({ posAnalyzer }) {
   return (
     <Section>
       <h1>Shifter</h1>
@@ -10,7 +10,14 @@ export default function ShifterSection() {
         sentences based on the same structure.
       </p>
       <Padding style={{ textAlign: "center" }}>
-        <button>Shift It</button>
+        <button
+          onClick={() =>
+            // TODO: Wire up
+            posAnalyzer.fetchRandomizedTemplate().then(console.log)
+          }
+        >
+          Shift It
+        </button>
       </Padding>
     </Section>
   );

@@ -38,4 +38,9 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   async fetchSentimentAnalysis(text) {
     return this._rpcWorker.call("fetchSentimentAnalysis", { text });
   }
+
+  // TODO: Document
+  async fetchRandomizedTemplate(text) {
+    return this._rpcWorker.call("fetchRandomizedTemplate", { text });
+  }
 }

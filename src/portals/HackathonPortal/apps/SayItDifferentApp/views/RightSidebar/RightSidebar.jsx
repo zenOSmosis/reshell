@@ -17,6 +17,7 @@ export default function RightSidebar({
   sentiment,
   hasSpeechRecognizer,
   ttsService,
+  posAnalyzer,
   localeVoices,
   isTypingWithVoice,
   onIsTypingWithVoiceChange,
@@ -26,7 +27,7 @@ export default function RightSidebar({
     <Column style={{ maxWidth: 210 }}>
       <Full style={{ overflowY: "auto" }}>
         <SentimentSection sentiment={sentiment} />
-        <ShifterSection />
+        <ShifterSection posAnalyzer={posAnalyzer} />
         <Section>
           <h1>Voice Input</h1>
           <Padding>
