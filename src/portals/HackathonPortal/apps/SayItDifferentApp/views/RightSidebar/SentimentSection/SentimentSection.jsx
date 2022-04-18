@@ -3,12 +3,14 @@ import Padding from "@components/Padding";
 import AutoScaler from "@components/AutoScaler";
 import Center from "@components/Center";
 
+import NoData from "../../NoData";
+
 export default function SentimentSection({ sentiment }) {
   return (
     <Section>
       <h1>Sentiment</h1>
       <Padding style={{ height: 100 }}>
-        {sentiment && (
+        {sentiment.title ? (
           <AutoScaler>
             <Center>
               <div>
@@ -17,6 +19,8 @@ export default function SentimentSection({ sentiment }) {
               </div>
             </Center>
           </AutoScaler>
+        ) : (
+          <NoData />
         )}
       </Padding>
     </Section>
