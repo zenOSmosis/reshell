@@ -5,6 +5,7 @@ import Padding from "@components/Padding";
 import AutoScaler from "@components/AutoScaler";
 import Center from "@components/Center";
 
+// TODO: Refactor
 const SENTIMENTS = [
   {
     emoji: "🥳",

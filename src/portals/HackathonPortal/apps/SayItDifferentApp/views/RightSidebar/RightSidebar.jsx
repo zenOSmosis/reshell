@@ -26,6 +26,7 @@ export default function RightSidebar({
     <Column style={{ maxWidth: 210 }}>
       <Full style={{ overflowY: "auto" }}>
         <PolaritySection polarity={polarity} />
+        <ShifterSection />
         <Section>
           <h1>Voice Input</h1>
           <Padding>
@@ -36,12 +37,14 @@ export default function RightSidebar({
                   id={SPEECH_COMMANDER_REGISTRATION_ID}
                 />
               </Padding>
-              <LabeledToggle
-                masterLabel="Type w/ Voice"
-                onChange={onIsTypingWithVoiceChange}
-                isOn={isTypingWithVoice}
-                disabled={!hasSpeechRecognizer}
-              />
+              {hasSpeechRecognizer && (
+                <LabeledToggle
+                  masterLabel="Type w/ Voice"
+                  onChange={onIsTypingWithVoiceChange}
+                  isOn={isTypingWithVoice}
+                  disabled={!hasSpeechRecognizer}
+                />
+              )}
             </Center>
           </Padding>
         </Section>
@@ -120,7 +123,6 @@ export default function RightSidebar({
             </Center>
           </Padding>
         </Section>
-        <ShifterSection />
       </Full>
     </Column>
   );
