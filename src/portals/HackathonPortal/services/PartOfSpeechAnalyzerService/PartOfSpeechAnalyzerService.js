@@ -1,6 +1,8 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import RPCPhantomWorker from "@root/src/utils/classes/RPCPhantomWorker/main";
 
+// TODO: Rename
+// TODO: Document
 export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
@@ -30,5 +32,10 @@ export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   // TODO: Document
   async fetchPolarity(text) {
     return this._rpcWorker.call("fetchPolarity", { text });
+  }
+
+  // TODO: Document
+  async fetchSentimentAnalysis(text) {
+    return this._rpcWorker.call("fetchSentimentAnalysis", { text });
   }
 }

@@ -68,13 +68,16 @@ const SayItDifferentApp = {
     const [isTypingWithVoice, setIsTypingWithVoice] = useState(false);
 
     const [polarity, setPolarity] = useState({});
+    const [sentiment, setSentiment] = useState({});
 
     // TODO: Document
     useEffect(() => {
       if (!textInputValue) {
         setPolarity({});
+        setSentiment({});
       } else {
         posAnalyzer.fetchPolarity(textInputValue).then(setPolarity);
+        posAnalyzer.fetchSentimentAnalysis(textInputValue).then(setSentiment);
       }
     }, [posAnalyzer, textInputValue]);
 
@@ -93,9 +96,6 @@ const SayItDifferentApp = {
         setTextInputValue(realTimeTranscription || "");
       }
     }, [isTypingWithVoice, realTimeTranscription]);
-
-    // TODO: Remove
-    console.log({ polarity });
 
     return (
       <Layout>
@@ -219,7 +219,7 @@ const SayItDifferentApp = {
             </Column>
             <RightSidebar
               text={textInputValue}
-              polarity={polarity}
+              sentiment={sentiment}
               ttsService={tts}
               hasSpeechRecognizer={hasSpeechRecognizer}
               localeVoices={localeVoices}

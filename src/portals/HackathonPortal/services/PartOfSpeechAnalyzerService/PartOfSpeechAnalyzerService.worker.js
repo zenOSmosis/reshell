@@ -13,6 +13,7 @@ import { visit } from "unist-util-visit";
 import { polarity } from "polarity";
 
 import partOfSpeechTags from "./partOfSpeechTags";
+import sentiments from "./sentiments";
 
 // TODO: Document
 async function fetchSyntaxTree(text, outputProcessor = inspect) {
@@ -70,6 +71,31 @@ async function fetchPolarity(text) {
 }
 
 registerRPCMethod("fetchPolarity", ({ text }) => fetchPolarity(text));
+
+// TODO: Document
+async function fetchSentimentAnalysis(text) {
+  const polarity = await fetchPolarity(text);
+
+  const polePercent = (polarity.polarity + 10) * 5;
+
+  const lenSentiments = sentiments.length;
+
+  let idx = Math.floor(lenSentiments * (polePercent / 100));
+
+  // Keep idx within constraints
+  if (idx < 0) {
+    idx = 0;
+  }
+  if (idx >= lenSentiments) {
+    idx = lenSentiments - 1;
+  }
+
+  return sentiments[idx];
+}
+
+registerRPCMethod("fetchSentimentAnalysis", ({ text }) =>
+  fetchSentimentAnalysis(text)
+);
 
 // TODO: Document
 async function fetchWords(text) {
