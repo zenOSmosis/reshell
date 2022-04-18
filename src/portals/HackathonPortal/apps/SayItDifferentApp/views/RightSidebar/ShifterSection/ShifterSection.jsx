@@ -1,7 +1,7 @@
 import Section from "@components/Section";
 import Padding from "@components/Padding";
 
-export default function ShifterSection({ posAnalyzer }) {
+export default function ShifterSection({ posAnalyzer, text, onTextUpdate }) {
   return (
     <Section>
       <h1>Shifter</h1>
@@ -13,7 +13,7 @@ export default function ShifterSection({ posAnalyzer }) {
         <button
           onClick={() =>
             // TODO: Wire up
-            posAnalyzer.fetchRandomizedTemplate().then(console.log)
+            posAnalyzer.fetchRandomizedTemplate(text).then(onTextUpdate)
           }
         >
           Shift It

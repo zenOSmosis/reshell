@@ -1,4 +1,5 @@
-// TODO: Integrate
+// NOTE: This currently only works with the English language
+
 // - https://github.com/kylestetz/Sentencer
 
 // FIXME: (jh) Utilize internal caching
@@ -120,11 +121,69 @@ async function fetchWords(text) {
 
 registerRPCMethod("fetchWords", ({ text }) => fetchWords(text));
 
+// TODO: Finish implementing
+// TODO: Document
 async function fetchRandomizedTemplate(text) {
-  // TODO: Wire up to text
-  return Sentencer.make(
-    "This sentence has {{ a_noun }} and {{ an_adjective }} {{ noun }} in it."
-  );
+  const syntaxTree = await fetchSyntaxTree(text, null);
+
+  const tokens = [];
+
+  let determiner = null;
+
+  visit(syntaxTree, node => {
+    if (node.type === "WordNode") {
+      const { partOfSpeech } = node.data;
+
+      switch (partOfSpeech) {
+        case "NN":
+          // Automatically handle vowels / consonants
+          if (determiner) {
+            tokens.push("{{ a_noun }}");
+          } else {
+            tokens.push("{{ noun }}");
+          }
+
+          determiner = null;
+
+          break;
+
+        case "JJ":
+          // Automatically handle vowels / consonants
+          if (determiner) {
+            tokens.push("{{ an_adjective }}");
+          } else {
+            tokens.push("{{ adjective }}");
+          }
+
+          determiner = null;
+
+          break;
+
+        default:
+          const word = node.children[0].value;
+
+          // Note: This would only work w/ English
+          if (["a", "an"].includes(word.toLowerCase())) {
+            determiner = word;
+          } else {
+            tokens.push(word);
+          }
+
+          break;
+      }
+    } else if (node.type === "ParagraphNode" && tokens.length) {
+      tokens.push("\n\n");
+    } else if (["WhiteSpaceNode", "PunctuationNode"].includes(node.type)) {
+      tokens.push(node.value);
+    }
+  });
+
+  return Sentencer.make(tokens.join(""))
+    .trim()
+    .split("")
+    .map((char, idx) => (idx === 0 ? char.toUpperCase() : char))
+    .join("")
+    .replaceAll("  ", " ");
 }
 
 registerRPCMethod("fetchRandomizedTemplate", ({ text }) =>

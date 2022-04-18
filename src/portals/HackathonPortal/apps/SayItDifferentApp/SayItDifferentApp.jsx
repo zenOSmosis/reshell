@@ -219,6 +219,7 @@ const SayItDifferentApp = {
             </Column>
             <RightSidebar
               text={textInputValue}
+              onTextUpdate={setTextInputValue}
               sentiment={sentiment}
               ttsService={tts}
               posAnalyzer={posAnalyzer}

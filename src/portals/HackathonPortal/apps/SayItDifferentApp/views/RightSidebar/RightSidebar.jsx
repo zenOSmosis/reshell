@@ -14,6 +14,7 @@ import { REGISTRATION_ID as SPEECH_COMMANDER_REGISTRATION_ID } from "../../../Sp
 
 export default function RightSidebar({
   text,
+  onTextUpdate,
   sentiment,
   hasSpeechRecognizer,
   ttsService,
@@ -27,7 +28,11 @@ export default function RightSidebar({
     <Column style={{ maxWidth: 210 }}>
       <Full style={{ overflowY: "auto" }}>
         <SentimentSection sentiment={sentiment} />
-        <ShifterSection posAnalyzer={posAnalyzer} />
+        <ShifterSection
+          posAnalyzer={posAnalyzer}
+          text={text}
+          onTextUpdate={onTextUpdate}
+        />
         <Section>
           <h1>Voice Input</h1>
           <Padding>
