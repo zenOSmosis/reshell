@@ -1,3 +1,4 @@
+/** @type {Map<string, Function>} */
 const rpcMethodMap = new Map();
 
 /**
@@ -5,6 +6,7 @@ const rpcMethodMap = new Map();
  *
  * @param {string} method
  * @param {Function} handler
+ * @return {void}
  */
 export function registerRPCMethod(method, handler) {
   if (rpcMethodMap.get(method)) {
@@ -16,7 +18,17 @@ export function registerRPCMethod(method, handler) {
   rpcMethodMap.set(method, handler);
 }
 
-// TODO: Document
+/**
+ * Listens for messages from host process.
+ *
+ * Loosely based on JSON-RPC.
+ *
+ * @see https://en.wikipedia.org/wiki/JSON-RPC
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel/message_event
+ *
+ * @param {MessageEvent} evt
+ * @return {Promise<void>}
+ */
 global.addEventListener("message", async evt => {
   const { method, params, id } = evt.data;
 
@@ -26,7 +38,6 @@ global.addEventListener("message", async evt => {
     try {
       const result = await handler(params);
 
-      // TODO: Emulate JSON-RPC w/o non-essential data
       // TODO: Ensure same origin
       global.postMessage({ id, method, result });
     } catch (error) {
@@ -34,3 +45,5 @@ global.addEventListener("message", async evt => {
     }
   }
 });
+
+// TODO: Emit ready
