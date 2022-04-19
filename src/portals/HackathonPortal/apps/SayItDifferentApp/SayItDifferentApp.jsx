@@ -31,6 +31,8 @@ const DATA_VIEW_POLARITY = "polarity";
 
 const DEFAULT_TEXT_INPUT_VALUE = "A fantastic welcome to ReShell!";
 
+const MAX_INPUT_LENGTH = 420;
+
 const SayItDifferentApp = {
   id: REGISTRATION_ID,
   title: "Say It Different",
@@ -109,13 +111,13 @@ const SayItDifferentApp = {
                       <textarea
                         onChange={evt => setTextInputValue(evt.target.value)}
                         value={textInputValue}
+                        maxLength={MAX_INPUT_LENGTH}
                       >
                         {textInputValue}
                       </textarea>
                     </div>
                     <Padding style={{ float: "left" }} className="note">
-                      {textInputValue.length} character
-                      {textInputValue.length !== 1 ? "s" : ""}
+                      {textInputValue.length} / {MAX_INPUT_LENGTH}
                     </Padding>
                     <Padding style={{ float: "right" }}>
                       <ButtonGroup>
