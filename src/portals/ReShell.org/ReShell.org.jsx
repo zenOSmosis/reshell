@@ -20,7 +20,7 @@ import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 // Hackathon apps
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
-// import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
+import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -44,7 +44,7 @@ export default function ReShellOrgPortal() {
         KeyVaultApp,
         AppRegistrationViewerApp,
         NativeSpyAgentApp,
-        // SayItDifferentApp,
+        SayItDifferentApp,
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,

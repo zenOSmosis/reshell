@@ -51,19 +51,11 @@ export default function StartScreen({ onExit }) {
                   <Animation animationName="fadeIn" animationDuration="2s">
                     <div>
                       <div>
-                        {
-                          // FIXME: (jh) Re-enable zenOSmosis logo
-                        }
-                        {/*
-                          <img
+                        <img
                           src={zenOSmosisLogo}
                           style={{ width: "90%" }}
                           alt="zenOSmosis"
                         />
-                          */}
-                        <span style={{ fontSize: "4rem" }}>
-                          The most useless demo ever.
-                        </span>
                       </div>
                     </div>
                   </Animation>
