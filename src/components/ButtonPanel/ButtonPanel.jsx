@@ -1,4 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ButtonGroup from "../ButtonGroup";
+
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
@@ -31,7 +33,7 @@ ButtonPanel.propTypes = {
  * ButtonPanel is utilized for a set of buttons which need to maintain state
  * relative to one another, operating much like radio controls.
  */
-export default function ButtonPanel({ buttons, className, ...rest }) {
+export default function ButtonPanel({ buttons, ...rest }) {
   const [selectedIdx, setSelectedIdx] = useState(() => {
     let selectedIdx = 0;
 
@@ -44,12 +46,24 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
     return selectedIdx;
   });
 
-  // TODO: Document
-  const refRenderIdx = useRef(-1);
-  ++refRenderIdx.current;
+  const refButtons = useRef(buttons);
+  const refSelectedIdx = useRef(selectedIdx);
+
+  // If first render, and we're at the defaultSelectedIdx, call the onClick handler
+  useEffect(() => {
+    const defaultButton = refButtons.current[refSelectedIdx.current];
+
+    if (defaultButton) {
+      if (typeof defaultButton.onClick !== "function") {
+        console.error("All buttons should have onClick handlers");
+      } else {
+        defaultButton.onClick();
+      }
+    }
+  }, []);
 
   return (
-    <div className={classNames("button-group", className)} {...rest}>
+    <ButtonGroup {...rest}>
       {buttons.map(
         (
           {
@@ -64,17 +78,8 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
           },
           idx
         ) => {
-          // If first render, and we're at the defaultSelectedIdx, call the onClick handler
-          // TODO: Detect if first render of React after page updates
-          if (refRenderIdx.current === 0 && selectedIdx === idx) {
-            // Fixes issue:  Cannot update a component (`X`) while rendering a
-            // different component (`Y`).
-            setTimeout(() => {
-              onClick();
-            });
-          }
-
           return (
+            // FIXME: (jh) Include support for ContentButton?
             <button
               {...args}
               key={idx}
@@ -92,7 +97,7 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
               ])}
             >
               {
-                // TODO: Refactor
+                // FIXME: (jh) Refactor
                 typeof Content === "string" ? (
                   Content
                 ) : typeof Content === "function" ? (
@@ -105,6 +110,6 @@ export default function ButtonPanel({ buttons, className, ...rest }) {
           );
         }
       )}
-    </div>
+    </ButtonGroup>
   );
 }

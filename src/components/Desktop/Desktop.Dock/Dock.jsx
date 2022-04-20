@@ -8,6 +8,7 @@ import useOverflowDetection from "@hooks/useOverflowDetection";
 import styles from "./Dock.module.css";
 import classNames from "classnames";
 
+// FIXME: (jh) Borrow ideas from: https://github.com/lukehorvat/react-osx-dock
 /**
  * Application selection Dock component.
  */
@@ -78,6 +79,9 @@ export default function Dock() {
         styles["horizontal-orientation"],
         isOverflown && styles["overflown"]
       )}
+      // TODO: Implement ability to scroll dock by dragging mouse cursor (it
+      // should already be working with mouse). Perhaps this handling could be
+      // factored into a useDockGestures hook
       onWheel={handleDockScroll}
     >
       {

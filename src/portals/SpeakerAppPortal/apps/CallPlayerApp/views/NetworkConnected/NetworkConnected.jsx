@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Center from "@components/Center";
-import StaggeredWaveLoading from "@components/StaggeredWaveLoading";
+import LoadingSpinner from "@components/LoadingSpinner";
 import CanvasMicAudioMeter from "@components/audioMeters/CanvasMicAudioMeter";
 import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
 import Layout, { Content, Footer } from "@components/Layout";
@@ -24,7 +24,7 @@ export default function NetworkConnected({
             <div>
               <div>Performing initial sync...</div>
               <div style={{ marginTop: 20 }}>
-                <StaggeredWaveLoading />
+                <LoadingSpinner />
               </div>
             </div>
           ) : (
@@ -69,7 +69,7 @@ export default function NetworkConnected({
             title={profileDescription}
           >
             {!deviceAddress ? (
-              <StaggeredWaveLoading />
+              <LoadingSpinner />
             ) : (
               <Layout>
                 <Content>

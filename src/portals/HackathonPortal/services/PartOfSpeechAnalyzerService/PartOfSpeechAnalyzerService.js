@@ -1,27 +1,46 @@
-// import {EVT_READY} from 'phantom-core'
 import UIServiceCore from "@core/classes/UIServiceCore";
+import RPCPhantomWorker from "@root/src/utils/classes/RPCPhantomWorker/main";
 
+// TODO: Rename
+// TODO: Document
 export default class PartOfSpeechAnalyzerService extends UIServiceCore {
   constructor(...args) {
     super(...args);
 
     this.setTitle("Part of Speech Analyzer Service");
 
-    // TODO: Implement accordingly
-    //
-    // TODO: Check for worker feature detection before trying to use: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#worker_feature_detection
-    //
-    // @see https://www.npmjs.com/package/worker-plugin
-    this._worker = new Worker("./PartOfSpeechAnalyzerService.worker", {
-      // IMPORTANT: Use of "module" is important here
-      type: "module",
-    });
-    this._worker.onmessage = evt => {
-      // TODO: Listen for remote READY event before trying to continue
+    // FIXME: (jh) Implement direct worker support w/ UIService?
+    this._rpcWorker = new RPCPhantomWorker(
+      () =>
+        new Worker("./PartOfSpeechAnalyzerService.worker", { type: "module" })
+    );
 
-      console.log("received message event", evt);
-    };
+    // Terminate worker when service destructs
+    this.registerCleanupHandler(() => this._rpcWorker.destroy());
+  }
 
-    // TODO: Terminate worker once this class destructs: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#terminating_a_worker
+  // TODO: Document
+  async fetchSyntaxTree(text) {
+    return this._rpcWorker.call("fetchSyntaxTree", { text });
+  }
+
+  // TODO: Document
+  async fetchPartsOfSpeech(text) {
+    return this._rpcWorker.call("fetchPartsOfSpeech", { text });
+  }
+
+  // TODO: Document
+  async fetchPolarity(text) {
+    return this._rpcWorker.call("fetchPolarity", { text });
+  }
+
+  // TODO: Document
+  async fetchSentimentAnalysis(text) {
+    return this._rpcWorker.call("fetchSentimentAnalysis", { text });
+  }
+
+  // TODO: Document
+  async fetchRandomizedTemplate(text) {
+    return this._rpcWorker.call("fetchRandomizedTemplate", { text });
   }
 }

@@ -5,6 +5,7 @@ import Center from "@components/Center";
 import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import Animation from "@components/Animation";
+import LoadingSpinner from "@components/LoadingSpinner";
 
 import zenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
@@ -50,16 +51,29 @@ export default function StartScreen({ onExit }) {
                   <Animation animationName="fadeIn" animationDuration="2s">
                     <div>
                       <div>
-                        <img
+                        {
+                          // FIXME: (jh) Re-enable zenOSmosis logo
+                        }
+                        {/*
+                          <img
                           src={zenOSmosisLogo}
                           style={{ width: "90%" }}
                           alt="zenOSmosis"
                         />
+                          */}
+                        <span style={{ fontSize: "4rem" }}>
+                          The most useless demo ever.
+                        </span>
                       </div>
                     </div>
                   </Animation>
                 ) : (
-                  <span style={{ fontWeight: "bold" }}>Starting</span>
+                  <>
+                    <div>
+                      <LoadingSpinner />
+                    </div>
+                    <div>Starting</div>
+                  </>
                 )}
               </Center>
             </Content>

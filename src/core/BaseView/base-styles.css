@@ -131,11 +131,6 @@ label {
   font-weight: bold;
 }
 
-label:not(:only-child) {
-  display: block;
-  margin: 0.25em rem;
-}
-
 select,
 button,
 input,
@@ -153,6 +148,13 @@ textarea {
 
   /** TODO: Use color variable for highlighted elements */
   accent-color: #347fe8;
+
+  max-width: 100%;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+textarea {
+  width: 100%;
 }
 
 ::placeholder {
@@ -269,11 +271,6 @@ select:disabled {
   background-image: inherit;
 }
 
-input:not([type="checkbox"]):not([type="submit"]),
-textarea {
-  width: 100%;
-}
-
 ul {
   list-style: none;
   padding: 0;
@@ -300,7 +297,7 @@ table {
 
 table,
 table tr td {
-  padding: 0px;
+  padding: 0px 0.2em;
   margin: 0px;
 }
 
@@ -333,8 +330,8 @@ table:not(.layout) tbody tr:nth-child(even) {
 }
 
 .section {
-  margin: 8px;
-  padding: 8px;
+  margin: 4px;
+  padding: 4px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
 

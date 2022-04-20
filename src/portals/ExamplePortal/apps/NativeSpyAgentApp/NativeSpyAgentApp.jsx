@@ -8,6 +8,8 @@ import NativeSpyService from "@services/NativeSpyService";
 
 export const REGISTRATION_ID = "native-spy-agent";
 
+// TODO: Include note how this only "spies" on objects in the main thread
+
 const NativeSpyAgentApp = {
   id: "native-spy-agent",
   title: "Native Spy Agent",

@@ -7,6 +7,8 @@ import ConfirmModal from "@components/modals/ConfirmModal";
 import InputDeviceSelectorModal from "@components/modals/InputDeviceSelectorModal";
 import TextInputModal from "@components/modals/TextInputModal";
 
+// TODO: Use dialog for modal views: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog
+
 // TODO: Rename to UIModalDialogHelperService?
 /**
  * An assortment of modals designed for async programmatic usage.

@@ -1,6 +1,9 @@
 import Center from "@components/Center";
 import Padding from "@components/Padding";
 import ExternalLink from "@components/ExternalLink";
+import ExternalLinkButton from "@components/ExternalLinkButton";
+
+import getContactURL from "@utils/getContactURL";
 
 const LINKS = {
   zenOSmosis: "https://zenOSmosis.com",
@@ -15,11 +18,7 @@ export default function Resources() {
       <div style={{ display: "inline-block", textAlign: "left" }}>
         {Object.entries(LINKS).map(([name, url], idx) => (
           <Padding key={idx}>
-            {name}:{" "}
-            {
-              // TODO: Use ExternalLink component for this
-            }
-            <ExternalLink href={url}>{url}</ExternalLink>
+            {name}: <ExternalLink href={url}>{url}</ExternalLink>
           </Padding>
         ))}
       </div>
@@ -27,11 +26,9 @@ export default function Resources() {
       <hr />
 
       <p>
-        To contact us directly, email:{" "}
-        <ExternalLink href="mailto:info@zenosmosis.com">
-          info@zenosmosis.com
-        </ExternalLink>
-        .
+        <ExternalLinkButton href={getContactURL()}>
+          Contact zenOSmosis
+        </ExternalLinkButton>
       </p>
     </Center>
   );

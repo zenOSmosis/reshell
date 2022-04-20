@@ -1,4 +1,6 @@
-import UIServiceCore from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+
+import LocaleService from "./LocaleService";
 
 /**
  * Manages speech-to-text servicing.
@@ -9,13 +11,33 @@ export default class TextToSpeechService extends UIServiceCore {
 
     this.setTitle("Text to Speech Service");
 
+    this.setState({
+      isSpeaking: false,
+
+      defaultVoice: null,
+
+      defaultPitch: 1,
+
+      defaultRate: 1,
+    });
+
+    /** @type {LocaleService} */
+    this._localeService = this.useServiceClass(LocaleService);
+
+    /** @type {SpeechSynthesis} */
     this._synth = null;
+
+    /** @type {SpeechSynthesisVoice[]} */
+    this._voices = [];
+
+    /** @type {SpeechSynthesisVoice[]} */
+    this._localeVoices = [];
   }
 
   /**
    * Initialize speech synthesis.
    *
-   * @return {void}
+   * @return {Promise<void>}
    */
   async _init() {
     // @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
@@ -24,12 +46,98 @@ export default class TextToSpeechService extends UIServiceCore {
     return super._init();
   }
 
-  // TODO: This is not a stable reference; it should be memoized
   /**
    * @return {SpeechSynthesisVoice[]}
    */
   getVoices() {
-    return this._synth?.getVoices() || [];
+    if (!this._voices.length) {
+      this._voices = this._synth?.getVoices() || [];
+    }
+
+    return this._voices;
+  }
+
+  /**
+   * @param {SpeechSynthesisVoice} defaultVoice
+   * @return {TextToSpeechService}
+   */
+  setDefaultVoice(defaultVoice) {
+    this.setState({ defaultVoice });
+
+    return this;
+  }
+
+  /**
+   * @return {SpeechSynthesisVoice | null}
+   */
+  getDefaultVoice() {
+    return this.getState().defaultVoice;
+  }
+
+  /**
+   * Sets the default pitch for speech utterance.
+   *
+   * @param {number} defaultPitch A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
+   */
+  setDefaultPitch(defaultPitch) {
+    this.setState({ defaultPitch });
+
+    return this;
+  }
+
+  /**
+   * Retrieves the default pitch for speech utterance.
+   *
+   * @return {number} A floating point number from 0.0 - 1.0
+   */
+  getDefaultPitch(defaultPitch) {
+    return this.getState().defaultPitch;
+  }
+
+  /**
+   * Sets the default rate for speech utterance.
+   *
+   * @param {number} defaultRate A floating point number from 0.0 - 1.0
+   * @return {TextToSpeechService}
+   */
+  setDefaultRate(defaultRate) {
+    this.setState({ defaultRate });
+
+    return this;
+  }
+
+  /**
+   * Retrieves the default rate for speech utterance.
+   *
+   * @return {number} A floating point number from 0.0 - 1.0
+   */
+  getDefaultRate(defaultRate) {
+    return this.getState().defaultRate;
+  }
+
+  /**
+   * @param {string} voiceURI
+   * @return {SpeechSynthesisVoice | void}
+   */
+  getVoiceWithURI(voiceURI) {
+    return this.getVoices().find(voice => voice.voiceURI === voiceURI);
+  }
+
+  /**
+   * @return {SpeechSynthesisVoice[]}
+   */
+  getLocaleVoices() {
+    // FIXME: Bust this cache if the locale changes
+    if (!this._localeVoices.length) {
+      const languageCode = this._localeService.getLanguageCode();
+
+      this._localeVoices = this.getVoices().filter(
+        voice => voice.lang === languageCode
+      );
+    }
+
+    return this._localeVoices;
   }
 
   /**
@@ -39,38 +147,97 @@ export default class TextToSpeechService extends UIServiceCore {
    * @see https://caniuse.com/speech-synthesis
    *
    * @param {string} text
-   * @return {Promise<void>}
+   * @param {Object} options? // TODO: Document
+   * @return {Promise<TextToSpeechService>}
    */
-  async say(text) {
-    await this.onceReady();
-
+  async say(text, options = {}) {
     try {
-      // TODO: Integrate
+      await this.onceReady();
+
+      // Wait until current utterance has ended before trying to speak again
       //
-      // TODO: Listen for speech end event before resolving
-      // https://wicg.github.io/speech-api/#dom-speechsynthesisutterance-speechsynthesisutterance
-      //
-      // TODO: Automatically reject if the queue has been canceled
+      // This fixes an issue where Chrome (tested 100.0.4896.75 / Mac Monterey)
+      // could crash if concurrent utterances are invoked
+      if (this.getIsSpeaking()) {
+        await new Promise(resolve => {
+          this.cancel();
+
+          const _handleStateChange = () => {
+            if (!this.getIsSpeaking()) {
+              this.off(EVT_UPDATED, _handleStateChange);
+
+              setImmediate(() => {
+                resolve();
+              });
+            }
+          };
+
+          this.on(EVT_UPDATED, _handleStateChange);
+        });
+      }
+
+      // State is set prior to the utterance to fix an issue in Chrome where
+      // rapidly invoking "say" could still cause browser to crash (note: this
+      // might be resolved but is not causing any harm here)
+      this.setState({ isSpeaking: true });
+
+      const rate =
+        options.rate !== undefined ? options.rate : this.getDefaultRate();
+      const pitch =
+        options.pitch !== undefined ? options.pitch : this.getDefaultPitch();
+      const voice = options.voice || this.getDefaultVoice();
 
       const utterance = new SpeechSynthesisUtterance(text);
 
       // TODO: Dynamically set
-      utterance.lang = "en-US";
-      utterance.pitch = 0.5;
-      utterance.rate = 0.8;
-      // utterance.voice = ...
+      utterance.lang = this._localeService.getLanguageCode();
+      utterance.pitch = pitch;
+      utterance.rate = rate;
+      utterance.voice = voice;
       utterance.volume = 1; // 0 - 1
 
-      this._synth.speak(utterance);
+      // TODO: Automatically reject if the queue has been canceled
+
+      await new Promise((resolve, reject) => {
+        // FIXME: Ensure this is properly ended if externally canceled
+
+        utterance.onend = () => resolve();
+
+        utterance.onerror = () => reject();
+
+        this._synth.speak(utterance);
+      });
     } catch (err) {
+      // TODO: Handle accordingly
       console.error(err);
+    } finally {
+      this.setState({ isSpeaking: false });
+
+      return this;
     }
   }
 
   /**
-   * Stops words from being spoken immediately and removes remaining words from queue.
+   * Retrieves whether or not the TTS engine is currently speaking.
+   *
+   * @return {boolean}
+   */
+  getIsSpeaking() {
+    return this.getState().isSpeaking;
+  }
+
+  /**
+   * Stops words from being spoken immediately and removes remaining words from
+   * the queue.
+   *
+   * @return {TextToSpeechService}
    */
   cancel() {
     this._synth?.cancel();
+
+    // Safari might not emit onend on the current utterance
+    this.setState({ isSpeaking: false });
+
+    return this;
   }
 }
