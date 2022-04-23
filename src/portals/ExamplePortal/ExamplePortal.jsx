@@ -28,6 +28,7 @@ import ModalsPrototypeApp from "./apps/ModalsPrototypeApp";
 import SystemInformationApp from "./apps/SystemInformationApp";
 import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 import NativeSpyAgentApp from "./apps/NativeSpyAgentApp";
+import HelloWorldApp from "./apps/HelloWorldApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -63,6 +64,7 @@ export default function ExamplePortal() {
         SystemInformationApp,
         DesktopCommanderDebuggerApp,
         NativeSpyAgentApp,
+        HelloWorldApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
