@@ -13,8 +13,8 @@ import {
   EVT_DATA_RECEIVED,
 } from "./constants";
 
-const MARSHALL_PREFIX = "<z:";
-const MARSHALL_SUFFIX = "/>";
+const MARSHAL_PREFIX = "<z:";
+const MARSHAL_SUFFIX = "/>";
 
 export const SERIAL_TYPE_STRING = "s";
 export const SERIAL_TYPE_OBJECT = "o";
@@ -109,7 +109,7 @@ export default class DataChannelManagerModule extends BaseModule {
     const serialType = DataChannelManagerModule.getSerialType(data);
 
     // If data is larger than maxChunkSize, break into array of chunks, then
-    // recursively return the packed (marshalled) string as an array
+    // recursively return the packed (marshaled) string as an array
     if (
       areSubChunksAllowed &&
       DataChannelChunkBatchSender.getShouldBeChunked(data)
@@ -137,15 +137,15 @@ export default class DataChannelManagerModule extends BaseModule {
         data = JSON.stringify(data);
       }
 
-      // Return the marshalled string
-      return `${MARSHALL_PREFIX}${channelName},${serialType},${data}${MARSHALL_SUFFIX}`;
+      // Return the marshaled string
+      return `${MARSHAL_PREFIX}${channelName},${serialType},${data}${MARSHAL_SUFFIX}`;
     }
   }
 
   /**
-   * Unmarshalls channel data received from other peer.
+   * Unmarshals channel data received from other peer.
    *
-   * If not able to unmarshall data, it will return void.
+   * If not able to unmarshal data, it will return void.
    *
    * @param {string} rawData
    * @return {Promise<Array[channelName: string, channelData: number | string | Object | Array] | void>}
@@ -166,14 +166,14 @@ export default class DataChannelManagerModule extends BaseModule {
       rawData = rawData.toString();
     }
 
-    // Only handle data that has been marshalled by this class on the other end
+    // Only handle data that has been marshaled by this class on the other end
     // of the wire.
     if (
-      rawData.startsWith(MARSHALL_PREFIX) &&
-      rawData.endsWith(MARSHALL_SUFFIX)
+      rawData.startsWith(MARSHAL_PREFIX) &&
+      rawData.endsWith(MARSHAL_SUFFIX)
     ) {
-      rawData = rawData.substr(MARSHALL_PREFIX.length);
-      rawData = rawData.substr(0, rawData.length - MARSHALL_SUFFIX.length);
+      rawData = rawData.substr(MARSHAL_PREFIX.length);
+      rawData = rawData.substr(0, rawData.length - MARSHAL_SUFFIX.length);
 
       let channelName = "";
       let serialType = null;

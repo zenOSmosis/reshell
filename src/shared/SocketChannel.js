@@ -28,7 +28,7 @@ export default class SocketChannel extends PhantomCore {
    * @param {number | string | boolean | Object | ArrayBuffer} eventData
    * @return {void}
    */
-  static marshallEventData(eventName, eventData) {
+  static marshalEventData(eventName, eventData) {
     return [eventName, eventData];
   }
 
@@ -39,7 +39,7 @@ export default class SocketChannel extends PhantomCore {
    * @param {any} socketData
    * @return {Object<{eventName: string, eventData: any}>}
    */
-  static unmarshallEventData(socketData) {
+  static unmarshalEventData(socketData) {
     const [eventName, eventData] = socketData;
 
     return { eventName, eventData };
@@ -165,7 +165,7 @@ export default class SocketChannel extends PhantomCore {
     // Send arbitrary event data over Socket.io
     this._socket.emit(
       this._channelId,
-      SocketChannel.marshallEventData(eventName, eventData)
+      SocketChannel.marshalEventData(eventName, eventData)
     );
   }
 
@@ -180,7 +180,7 @@ export default class SocketChannel extends PhantomCore {
   }
 
   /**
-   * Receives socket data captured from Socket.io event handler, unmarshalls
+   * Receives socket data captured from Socket.io event handler, unmarshals
    * it, and re-emits it out the socket channel.
    *
    * @param {any} socketData
@@ -188,7 +188,7 @@ export default class SocketChannel extends PhantomCore {
    */
   _receiveSocketData(socketData) {
     const { eventName, eventData } =
-      SocketChannel.unmarshallEventData(socketData);
+      SocketChannel.unmarshalEventData(socketData);
 
     if (eventName === EVT_BEFORE_REMOTE_DISCONNECT) {
       this.disconnect();
