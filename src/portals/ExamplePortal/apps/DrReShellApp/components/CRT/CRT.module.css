@@ -9,7 +9,7 @@
   font-size: 18px;
 }
 
-#crt:before {
+.crt:before {
   content: " ";
   display: block;
   position: absolute;
@@ -67,7 +67,7 @@
   }
 }
 
-#screen {
+.screen {
   position: relative;
   width: 100%;
   height: 67.5vmin;
@@ -78,19 +78,19 @@
   overflow: hidden;
 }
 
-#input {
+input {
   position: relative;
   caret-color: transparent;
 }
 /* Puts a blinking square after the content as replacement for caret */
-#input[contenteditable="true"]:after {
+input[contenteditable="true"]:after {
   content: "■";
   animation: cursor 1s infinite;
   animation-timing-function: step-end;
   margin-left: 1px;
 }
 /* Inserts the > before terminal input */
-#input:before {
+input:before {
   content: ">";
   position: absolute;
   padding-left: 1.5rem;

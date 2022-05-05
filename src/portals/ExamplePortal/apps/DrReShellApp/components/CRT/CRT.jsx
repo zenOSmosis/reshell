@@ -1,4 +1,5 @@
-import "./CRT.css";
+import styles from "./CRT.module.css";
+import classNames from "classnames";
 
 // TODO: Borrow ideas from:
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
@@ -7,28 +8,27 @@ import "./CRT.css";
 export default function CRT() {
   return (
     // the actual device
-    <div id="monitor">
+    <div className={styles["monitor"]}>
       {
         // the rounded edge near the glass
       }
 
-      <div id="bezel">
+      <div className={styles["bezel"]}>
         {
           // the overlay and horizontal pattern
         }
         <div
-          id="crt"
-          className="off"
+          className={classNames(styles["crt"], styles["off"])}
           // onClick="handleClick(event)"
         >
           {
             // slowly moving scanline
           }
-          <div className="scanline"></div>
+          <div className={styles["scanline"]}></div>
           {
             // the input and output
           }
-          <div className="terminal">This is a terminal</div>
+          <div className={styles["terminal"]}>This is a terminal</div>
         </div>
       </div>
     </div>
