@@ -1,12 +1,3 @@
-.button-transparent,
-.button-transparent:active,
-.button-transparent:disabled {
-  all: unset;
-  background-color: transparent !important;
-  border: 0px !important;
-  outline: none !important;
-}
-
 .button-transparent {
   cursor: pointer;
 }

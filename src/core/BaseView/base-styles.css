@@ -398,3 +398,10 @@ Not supported in and IE.
 .right {
   text-align: right;
 }
+
+.unstyled {
+  all: unset;
+  background-color: transparent !important;
+  border: 0px !important;
+  outline: none !important;
+}

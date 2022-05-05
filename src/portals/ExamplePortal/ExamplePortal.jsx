@@ -29,6 +29,7 @@ import SystemInformationApp from "./apps/SystemInformationApp";
 import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 import NativeSpyAgentApp from "./apps/NativeSpyAgentApp";
 import HelloWorldApp from "./apps/HelloWorldApp";
+import DrReShellApp from "./apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -65,6 +66,7 @@ export default function ExamplePortal() {
         DesktopCommanderDebuggerApp,
         NativeSpyAgentApp,
         HelloWorldApp,
+        DrReShellApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
