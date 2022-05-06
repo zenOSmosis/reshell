@@ -3,6 +3,7 @@ import Layout, { Content, Footer } from "@components/Layout";
 import Padding from "@components/Padding";
 import CRT from "@components/CRT";
 
+// TODO: Refactor as necessary
 export default function ConversationView() {
   const [value, setValue] = useState("Hello");
 
