@@ -5,11 +5,6 @@ import Padding from "@components/Padding";
 
 import CRT from "./components/CRT";
 
-// TODO: Preload
-import keySound from "./sounds/zNBy-key4.mp3";
-
-import useKeyboardEvents from "@hooks/useKeyboardEvents";
-
 import TextToSpeechService from "@services/TextToSpeechService";
 
 // TODO: Borrow ideas from:
@@ -28,20 +23,6 @@ const DrReShellApp = {
   serviceClasses: [TextToSpeechService],
   view: function View({ appServices }) {
     const ttsService = appServices[TextToSpeechService];
-
-    // Handle keyboard typing effect
-    useKeyboardEvents(window, {
-      onKeyDown: () => {
-        // TODO: Don't send if not the active window (OR) bind to CRT display itself
-        // TODO: Incorporate additional audio
-        const s = new Audio(keySound);
-        s.play();
-      },
-    });
-
-    // TODO: Use "press key [or touch] to continue" to start system sounds
-
-    // TODO: Use CRT effect
 
     // return <Center>Press any key to continue</Center>;
     return <CRT />;
