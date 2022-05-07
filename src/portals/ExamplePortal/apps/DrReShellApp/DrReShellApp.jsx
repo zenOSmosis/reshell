@@ -1,12 +1,10 @@
 import { useState } from "react";
-import Layout, { Content, Footer } from "@components/Layout";
-import Center from "@components/Center";
-import Padding from "@components/Padding";
-// import ConversationView from "./views/ConversationView";
 
 import CRT from "./components/CRT";
 import InputWithCustomCaret from "./components/InputWithCustomCaret";
 import SimulatedTyper from "./components/SimulatedTyper";
+
+import IntroView from "./views/IntroView";
 
 import TextToSpeechService from "@services/TextToSpeechService";
 
@@ -30,28 +28,26 @@ const DrReShellApp = {
 
     const [inputValue, setInputValue] = useState("> ");
 
+    const [hasEntroEnded, setHasIntroEnded] = useState(false);
+
     // return <Center>Press any key to continue</Center>;
     return (
       <CRT
         inputValue={inputValue}
         onInputValueChange={evt => setInputValue(evt.target.value)}
       >
-        {/*
-           <Center>
-          <div>Dr. ReShell</div>
-          <div>Copyright (c) 1984 Fake Company. All rights reserved.</div>
-        </Center>
-          */}
+        {!hasEntroEnded ? (
+          <IntroView onEnd={() => setHasIntroEnded(true)} />
+        ) : (
+          <>
+            <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
 
-        <SimulatedTyper
-          text="I would like to understand how and why you think this is necessary."
-          // onEnd={() => alert("whoohoo")}
-        />
-
-        <InputWithCustomCaret
-          value={inputValue}
-          onChange={evt => setInputValue(evt.target.value)}
-        />
+            <InputWithCustomCaret
+              value={inputValue}
+              onChange={evt => setInputValue(evt.target.value)}
+            />
+          </>
+        )}
       </CRT>
     );
   },

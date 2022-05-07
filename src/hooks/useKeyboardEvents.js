@@ -8,6 +8,7 @@ const DEFAULT_PROPS = {
   isEnabled: true,
 };
 
+// TODO: Optionally grab from domNode from context
 /**
  * Binds keyboard event handlers to the given DOM element.
  *

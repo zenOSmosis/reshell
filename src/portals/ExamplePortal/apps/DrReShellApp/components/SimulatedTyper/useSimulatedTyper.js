@@ -1,5 +1,7 @@
-import { consume } from "phantom-core";
+import { consume, sleep } from "phantom-core";
 import { useEffect, useState } from "react";
+
+import useAsyncEffect from "@hooks/useAsyncEffect";
 
 // TODO: Document
 function calcWPMTimeout(wpm) {
@@ -14,7 +16,12 @@ function calcWPMTimeout(wpm) {
 
 // TODO: Simulate optional variable-rate WPM
 // TODO: Simulate optional typos(?)
-export default function useSimulatedTyper({ text, onEnd, wpm = 140 }) {
+export default function useSimulatedTyper({
+  text,
+  onEnd,
+  wpm = 140,
+  leadingEdgeTimeout = 1000,
+}) {
   const [isTyping, setIsTyping] = useState(true);
 
   const [outputText, setOutputText] = useState("");
@@ -26,31 +33,41 @@ export default function useSimulatedTyper({ text, onEnd, wpm = 140 }) {
     setOutputText("");
   }, [text]);
 
-  useEffect(() => {
-    if (text === outputText) {
-      if (typeof onEnd === "function") {
-        window.setTimeout(onEnd, 100);
+  useAsyncEffect(
+    async abortController => {
+      // Determine if finished typing
+      if (text === outputText) {
+        if (typeof onEnd === "function") {
+          window.setTimeout(onEnd, 100);
+        }
+
+        setIsTyping(false);
+
+        return;
       }
 
-      setIsTyping(false);
+      if (!isTyping) {
+        setIsTyping(true);
+      }
 
-      return;
-    }
+      const lenOutputText = outputText.length;
 
-    if (!isTyping) {
-      setIsTyping(true);
-    }
+      if (!lenOutputText) {
+        await sleep(leadingEdgeTimeout);
+      }
 
-    const lenOutputText = outputText.length;
+      const next = outputText + text[lenOutputText];
 
-    const next = outputText + text[lenOutputText];
+      const to = window.setTimeout(() => {
+        if (!abortController?.signal?.aborted) {
+          setOutputText(next);
+        }
+      }, calcWPMTimeout(wpm));
 
-    const to = window.setTimeout(() => {
-      setOutputText(next);
-    }, calcWPMTimeout(wpm));
-
-    return () => window.clearTimeout(to);
-  }, [text, outputText, isTyping, onEnd, wpm]);
+      return () => window.clearTimeout(to);
+    },
+    [text, outputText, isTyping, onEnd, wpm, leadingEdgeTimeout]
+  );
 
   return {
     outputText,
