@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Layout, { Content, Footer } from "@components/Layout";
 import Center from "@components/Center";
 import Padding from "@components/Padding";
@@ -24,10 +25,18 @@ const DrReShellApp = {
   view: function View({ appServices }) {
     const ttsService = appServices[TextToSpeechService];
 
+    const [inputValue, setInputValue] = useState(">");
+
     // return <Center>Press any key to continue</Center>;
     return (
-      <CRT>
+      <CRT
+        inputValue={inputValue}
+        onInputValueChange={evt => setInputValue(evt.target.value)}
+      >
         <div>What is your name?</div>
+        <div>
+          I would like to understand how and why you think this is necessary.
+        </div>
       </CRT>
     );
   },

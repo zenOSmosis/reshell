@@ -13,7 +13,7 @@ import useKeyboardEvents from "@hooks/useKeyboardEvents";
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
 //  - https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
 
-export default function CRT({ children }) {
+export default function CRT({ children, inputValue, onInputValueChange }) {
   // Handle keyboard typing effect
   useKeyboardEvents(window, {
     onKeyDown: () => {
@@ -49,7 +49,12 @@ export default function CRT({ children }) {
           }
           <div className={styles["terminal"]}>
             {children}
-            <InputWithCustomCaret value="> " />
+            {inputValue && (
+              <InputWithCustomCaret
+                value={inputValue}
+                onChange={onInputValueChange}
+              />
+            )}
             {/*
             async function input(pw) {
             return new Promise(resolve => {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Caret from "./Caret";
 
 export default function InputWithCustomCaret({
@@ -7,6 +7,14 @@ export default function InputWithCustomCaret({
   value,
   ...rest
 }) {
+  const refInput = useRef(null);
+
+  useEffect(() => {
+    if (refInput.current) {
+      refInput.current.focus();
+    }
+  }, []);
+
   const [caretPosition, setCaretPosition] = useState(value?.length || 0);
 
   // TODO: Handle and document
@@ -36,6 +44,7 @@ export default function InputWithCustomCaret({
   return (
     <div style={{ position: "relative" }}>
       <input
+        ref={refInput}
         style={{ caretColor: "transparent" }}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
