@@ -13,20 +13,35 @@ import useWindowController from "./useWindowController";
 export default function useWindowInputFocusLock(elInput) {
   const windowController = useWindowController();
   const isActiveWindowController = windowController.getIsActive();
+  const elWindow = windowController.getElWindow();
 
   useEffect(() => {
     if (isActiveWindowController && elInput) {
       // Note, the setImmediate fixes Firefox not focusing properly
-      //
-      // TODO: Fix issue where menu won't open when focus is locked
-      const handleFocus = () => setImmediate(() => elInput.focus());
-
-      elInput.addEventListener("blur", handleFocus);
+      const handleFocus = () =>
+        setImmediate(() => {
+          // Fix issue where menu won't open when focus is locked
+          if (
+            document.body === document.activeElement ||
+            elWindow === document.activeElement ||
+            elWindow.contains(document.activeElement)
+          ) {
+            elInput.focus();
+          }
+        });
 
       // Automatically start focusing
       handleFocus();
 
-      return () => elInput.removeEventListener("blur", handleFocus);
+      elInput.addEventListener("blur", handleFocus);
+      elWindow.addEventListener("mousedown", handleFocus);
+      elWindow.addEventListener("touchstart", handleFocus);
+
+      return () => {
+        elInput.removeEventListener("blur", handleFocus);
+        elWindow.removeEventListener("mousedown", handleFocus);
+        elWindow.removeEventListener("touchstart", handleFocus);
+      };
     }
-  }, [isActiveWindowController, elInput]);
+  }, [isActiveWindowController, windowController, elInput, elWindow]);
 }
