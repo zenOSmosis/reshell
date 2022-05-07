@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Caret from "./Caret";
 
+// TODO: Forward ref
+// TODO: Document and add prop-types
 export default function InputWithCustomCaret({
   onChange,
   onKeyDown,

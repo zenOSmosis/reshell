@@ -1,8 +1,5 @@
-import { useState } from "react";
 import styles from "./CRT.module.css";
 import classNames from "classnames";
-
-import InputWithCustomCaret from "./subComponents/InputWithCustomCaret";
 
 // TODO: Preload
 import keySound from "./sounds/zNBy-key4.mp3";
@@ -49,12 +46,6 @@ export default function CRT({ children, inputValue, onInputValueChange }) {
           }
           <div className={styles["terminal"]}>
             {children}
-            {inputValue && (
-              <InputWithCustomCaret
-                value={inputValue}
-                onChange={onInputValueChange}
-              />
-            )}
             {/*
             async function input(pw) {
             return new Promise(resolve => {

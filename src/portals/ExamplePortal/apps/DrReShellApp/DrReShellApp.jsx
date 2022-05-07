@@ -5,6 +5,7 @@ import Padding from "@components/Padding";
 // import ConversationView from "./views/ConversationView";
 
 import CRT from "./components/CRT";
+import InputWithCustomCaret from "./components/InputWithCustomCaret";
 
 import TextToSpeechService from "@services/TextToSpeechService";
 
@@ -25,7 +26,7 @@ const DrReShellApp = {
   view: function View({ appServices }) {
     const ttsService = appServices[TextToSpeechService];
 
-    const [inputValue, setInputValue] = useState(">");
+    const [inputValue, setInputValue] = useState("> ");
 
     // return <Center>Press any key to continue</Center>;
     return (
@@ -37,6 +38,10 @@ const DrReShellApp = {
         <div>
           I would like to understand how and why you think this is necessary.
         </div>
+        <InputWithCustomCaret
+          value={inputValue}
+          onChange={evt => setInputValue(evt.target.value)}
+        />
       </CRT>
     );
   },
