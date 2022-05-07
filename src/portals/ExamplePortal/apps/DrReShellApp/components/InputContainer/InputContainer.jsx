@@ -1,8 +1,8 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import InputWithCustomCaret from "../InputWithCustomCaret";
 
 import useKeyboardEvents from "@hooks/useKeyboardEvents";
-// import useWindowController from "@hooks/useWindowController";
+import useWindowController from "@hooks/useWindowController";
 
 // TODO: Rename
 export default function InputContainer({
@@ -11,11 +11,17 @@ export default function InputContainer({
   onChange,
   ...rest
 }) {
-  // const windowController = useWindowController();
-
-  // TODO: If windowController is active, focus the input element
+  const windowController = useWindowController();
+  const isActiveWindow = windowController.getIsActive();
 
   const [activeInput, setActiveInput] = useState(null);
+
+  // Automatically focus input when window is active
+  useEffect(() => {
+    if (activeInput && isActiveWindow) {
+      activeInput.focus();
+    }
+  }, [activeInput, isActiveWindow]);
 
   const refInitialValue = useRef(initialValue);
 

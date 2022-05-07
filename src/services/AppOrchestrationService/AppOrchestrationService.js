@@ -50,7 +50,7 @@ export default class AppOrchestrationService extends UIServiceCore {
 
   // TODO: Document
   getActiveAppRuntime() {
-    return this.getActiveWindowController()?.getActiveAppRuntime();
+    return this.getActiveWindowController()?.getAppRuntime();
   }
 
   // TODO: Document
@@ -127,7 +127,7 @@ export default class AppOrchestrationService extends UIServiceCore {
    * @return {AppRuntime}
    */
   _launchAppRegistration(appRegistration) {
-    const appRuntime = new AppRuntime(appRegistration);
+    const appRuntime = new AppRuntime(appRegistration, this);
 
     this._appRuntimeCollection.addAppRuntime(appRuntime);
 

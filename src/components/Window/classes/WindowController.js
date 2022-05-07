@@ -137,20 +137,9 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
-  /*
-  __INTERNAL__setIsActive(isActive) {
-    if (isActive !== this.getIsActive()) {
-      this.setState({ isActive });
-    }
-  }
-  */
-
-  // TODO: Document
-  /*
   getIsActive() {
-    return this.getState().isActive;
+    return this._appRuntime.getIsActive();
   }
-  */
 
   // TODO: Document
   // @see https://reactjs.org/docs/profiler.html
