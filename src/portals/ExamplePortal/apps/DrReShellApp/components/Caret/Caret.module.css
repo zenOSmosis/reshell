@@ -1,5 +1,5 @@
 .caret {
-  position: absolute;
+  display: inline-block;
   pointer-events: none;
 }
 

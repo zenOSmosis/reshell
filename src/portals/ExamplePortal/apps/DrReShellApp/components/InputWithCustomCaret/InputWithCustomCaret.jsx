@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import Caret from "./Caret";
+import Caret from "../Caret";
 
 // TODO: Forward ref
 // TODO: Document and add prop-types
@@ -54,7 +54,15 @@ export default function InputWithCustomCaret({
         {...rest}
       />
 
-      <Caret hPosition={caretPosition} />
+      <div
+        style={{
+          position: "absolute",
+          left: caretPosition / 2.5 + "em",
+          top: 0,
+        }}
+      >
+        <Caret hPosition={caretPosition} />
+      </div>
     </div>
   );
 }
