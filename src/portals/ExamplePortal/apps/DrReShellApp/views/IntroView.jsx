@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import Full from "@components/Full";
 import Center from "@components/Center";
@@ -19,16 +19,20 @@ export default function IntroView({ onEnd }) {
   const [idxLine, setIdxLine] = useState(0);
   const [hasEnded, setHasEnded] = useState(false);
 
+  // Determines if the onEnd callback should be called, and calls it if so
   const handleEnd = useCallback(() => {
     if (hasEnded && typeof onEnd === "function") {
       onEnd();
     }
   }, [hasEnded, onEnd]);
 
-  // TODO: Enforce this to work w/ this window
+  // TODO: Enforce this to work w/ this ReShell window (not global window)
   // TODO: Pass the window element as an optional property (OR grab from context)
   useKeyboardEvents(window, {
     onKeyDown: handleEnd,
+
+    // Directly end if escape is pressed
+    onEscape: onEnd,
   });
 
   return (
