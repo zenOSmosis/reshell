@@ -1,68 +1,59 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import Caret from "../Caret";
 
-// TODO: Forward ref
 // TODO: Document and add prop-types
-export default function InputWithCustomCaret({
-  onChange,
-  onKeyDown,
-  value,
-  ...rest
-}) {
-  const refInput = useRef(null);
+const InputWithCustomCaret = React.forwardRef(
+  ({ onChange, onKeyDown, value, ...rest }, refInput) => {
+    const [caretPosition, setCaretPosition] = useState(value?.length || 0);
 
-  useEffect(() => {
-    if (refInput.current) {
-      refInput.current.focus();
-    }
-  }, []);
+    // TODO: Document
+    const handleChange = useCallback(
+      evt => {
+        setCaretPosition(evt.target.selectionStart);
 
-  const [caretPosition, setCaretPosition] = useState(value?.length || 0);
+        if (typeof onChange === "function") {
+          onChange(evt);
+        }
+      },
+      [onChange]
+    );
 
-  // TODO: Handle and document
-  const handleChange = useCallback(
-    evt => {
-      setCaretPosition(evt.target.selectionStart);
+    // TODO: Document
+    const handleKeyDown = useCallback(
+      evt => {
+        setCaretPosition(evt.target.selectionStart);
 
-      if (typeof onChange === "function") {
-        onChange(evt);
-      }
-    },
-    [onChange]
-  );
+        if (typeof onKeyDown === "function") {
+          onKeyDown(evt);
+        }
+      },
+      [onKeyDown]
+    );
 
-  // TODO: Handle and document
-  const handleKeyDown = useCallback(
-    evt => {
-      setCaretPosition(evt.target.selectionStart);
+    return (
+      // TODO: Use module styling
+      <div style={{ position: "relative" }}>
+        <input
+          ref={refInput}
+          style={{ caretColor: "transparent" }}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          value={value}
+          {...rest}
+        />
 
-      if (typeof onKeyDown === "function") {
-        onKeyDown(evt);
-      }
-    },
-    [onKeyDown]
-  );
-
-  return (
-    <div style={{ position: "relative" }}>
-      <input
-        ref={refInput}
-        style={{ caretColor: "transparent" }}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        value={value}
-        {...rest}
-      />
-
-      <div
-        style={{
-          position: "absolute",
-          left: caretPosition / 2.5 + "em",
-          top: 0,
-        }}
-      >
-        <Caret hPosition={caretPosition} />
+        <div
+          style={{
+            position: "absolute",
+            left: caretPosition / 2.5 + "em",
+            top: 0,
+          }}
+        >
+          <Caret hPosition={caretPosition} />
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
+
+export default InputWithCustomCaret;

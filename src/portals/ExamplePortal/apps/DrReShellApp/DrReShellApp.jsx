@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import CRT from "./components/CRT";
-import InputWithCustomCaret from "./components/InputWithCustomCaret";
+// import InputWithCustomCaret from "./components/InputWithCustomCaret";
+import InputContainer from "./components/InputContainer";
 import SimulatedTyper from "./components/SimulatedTyper";
 
 import IntroView from "./views/IntroView";
@@ -26,26 +27,18 @@ const DrReShellApp = {
     // TODO: Integrate TTS processing
     const ttsService = appServices[TextToSpeechService];
 
-    const [inputValue, setInputValue] = useState("> ");
-
     const [hasEntroEnded, setHasIntroEnded] = useState(false);
 
     // return <Center>Press any key to continue</Center>;
     return (
-      <CRT
-        inputValue={inputValue}
-        onInputValueChange={evt => setInputValue(evt.target.value)}
-      >
+      <CRT>
         {!hasEntroEnded ? (
           <IntroView onEnd={() => setHasIntroEnded(true)} />
         ) : (
           <>
             <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
 
-            <InputWithCustomCaret
-              value={inputValue}
-              onChange={evt => setInputValue(evt.target.value)}
-            />
+            <InputContainer initialValue="> " />
           </>
         )}
       </CRT>

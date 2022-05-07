@@ -233,7 +233,11 @@ function WindowManagerView({ children }) {
 
       // TODO: Memoize this component, when refactoring outer map
       return (
-        <WindowProvider key={key} initialSharedState={initialSharedState}>
+        <WindowProvider
+          key={key}
+          initialSharedState={initialSharedState}
+          windowController={windowController}
+        >
           <Window
             {...windowProps}
             elWindowManager={elBase}
