@@ -15,7 +15,7 @@ import AutoScaler from "../AutoScaler";
 import NotificationProvider from "./providers/NotificationProvider";
 import ModalProvider from "./providers/ModalProvider";
 
-import StartScreen from "./Desktop.StartScreen";
+// import StartScreen from "./Desktop.StartScreen";
 
 import useDesktopAppConfiguration from "./hooks/useDesktopAppConfiguration";
 
@@ -37,11 +37,13 @@ export default function Desktop({
     defaultAppAutoStartConfigs,
   });
 
+  /*
   const [isShowingStartScreen, setIsShowingStartScreen] = useState(true);
 
   const handleStartScreenExit = useCallback(() => {
     setIsShowingStartScreen(false);
   }, []);
+  */
 
   return (
     <FullViewport>
@@ -127,11 +129,13 @@ export default function Desktop({
         </NotificationProvider>
       </ModalProvider>
 
-      {isShowingStartScreen && (
+      {/*
+      isShowingStartScreen && (
         <Cover>
           <StartScreen onExit={handleStartScreenExit} />
         </Cover>
-      )}
+      )
+      */}
     </FullViewport>
   );
 }
