@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import InputWithCustomCaret from "../InputWithCustomCaret";
 
 import useKeyboardEvents from "@hooks/useKeyboardEvents";

@@ -33,14 +33,26 @@ export default function useWindowInputFocusLock(elInput) {
       // Automatically start focusing
       handleFocus();
 
-      elInput.addEventListener("blur", handleFocus);
-      elWindow.addEventListener("mousedown", handleFocus);
-      elWindow.addEventListener("touchstart", handleFocus);
+      elInput.addEventListener("blur", handleFocus, {
+        passive: true,
+      });
+      elWindow.addEventListener("mousedown", handleFocus, {
+        passive: true,
+      });
+      elWindow.addEventListener("touchstart", handleFocus, {
+        passive: true,
+      });
 
       return () => {
-        elInput.removeEventListener("blur", handleFocus);
-        elWindow.removeEventListener("mousedown", handleFocus);
-        elWindow.removeEventListener("touchstart", handleFocus);
+        elInput.removeEventListener("blur", handleFocus, {
+          passive: true,
+        });
+        elWindow.removeEventListener("mousedown", handleFocus, {
+          passive: true,
+        });
+        elWindow.removeEventListener("touchstart", handleFocus, {
+          passive: true,
+        });
       };
     }
   }, [isActiveWindowController, windowController, elInput, elWindow]);
