@@ -2,6 +2,13 @@
 @import url("https://fonts.googleapis.com/css?family=VT323&display=swap");
 
 .terminal,
+.bezel,
+.crt {
+  width: 100%;
+  height: 100%;
+}
+
+.terminal,
 .terminal input {
   font-family: "VT323", monospace;
   text-transform: uppercase;

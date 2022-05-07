@@ -6,6 +6,7 @@ import Padding from "@components/Padding";
 
 import CRT from "./components/CRT";
 import InputWithCustomCaret from "./components/InputWithCustomCaret";
+import SimulatedTyper from "./components/SimulatedTyper";
 
 import TextToSpeechService from "@services/TextToSpeechService";
 
@@ -24,6 +25,7 @@ const DrReShellApp = {
   },
   serviceClasses: [TextToSpeechService],
   view: function View({ appServices }) {
+    // TODO: Integrate TTS processing
     const ttsService = appServices[TextToSpeechService];
 
     const [inputValue, setInputValue] = useState("> ");
@@ -34,10 +36,18 @@ const DrReShellApp = {
         inputValue={inputValue}
         onInputValueChange={evt => setInputValue(evt.target.value)}
       >
-        <div>What is your name?</div>
-        <div>
-          I would like to understand how and why you think this is necessary.
-        </div>
+        {/*
+           <Center>
+          <div>Dr. ReShell</div>
+          <div>Copyright (c) 1984 Fake Company. All rights reserved.</div>
+        </Center>
+          */}
+
+        <SimulatedTyper
+          text="I would like to understand how and why you think this is necessary."
+          // onEnd={() => alert("whoohoo")}
+        />
+
         <InputWithCustomCaret
           value={inputValue}
           onChange={evt => setInputValue(evt.target.value)}

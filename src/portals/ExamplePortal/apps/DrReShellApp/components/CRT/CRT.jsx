@@ -1,3 +1,5 @@
+import Full from "@components/Full";
+
 import styles from "./CRT.module.css";
 import classNames from "classnames";
 
@@ -24,7 +26,7 @@ export default function CRT({ children, inputValue, onInputValueChange }) {
 
   return (
     // the actual device
-    <div className={styles["monitor"]}>
+    <Full className={styles["monitor"]}>
       {
         // the rounded edge near the glass
       }
@@ -70,6 +72,6 @@ export default function CRT({ children, inputValue, onInputValueChange }) {
           </div>
         </div>
       </div>
-    </div>
+    </Full>
   );
 }
