@@ -6,7 +6,7 @@ import classNames from "classnames";
 // TODO: Preload
 import keySound from "./sounds/zNBy-key4.mp3";
 
-import useKeyboardEvents from "@hooks/useKeyboardEvents";
+import useWindowKeyboardEvents from "@hooks/useWindowKeyboardEvents";
 
 // TODO: Borrow ideas from:
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
@@ -14,7 +14,7 @@ import useKeyboardEvents from "@hooks/useKeyboardEvents";
 
 export default function CRT({ children, inputValue, onInputValueChange }) {
   // Handle keyboard typing effect
-  useKeyboardEvents(window, {
+  useWindowKeyboardEvents({
     onKeyDown: () => {
       // Bind to an input
       //

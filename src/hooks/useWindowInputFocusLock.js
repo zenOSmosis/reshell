@@ -17,6 +17,8 @@ export default function useWindowInputFocusLock(elInput) {
   useEffect(() => {
     if (isActiveWindowController && elInput) {
       // Note, the setImmediate fixes Firefox not focusing properly
+      //
+      // TODO: Fix issue where menu won't open when focus is locked
       const handleFocus = () => setImmediate(() => elInput.focus());
 
       elInput.addEventListener("blur", handleFocus);

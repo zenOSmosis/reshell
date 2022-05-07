@@ -153,6 +153,11 @@ export default class WindowController extends PhantomState {
   }
 
   // TODO: Document
+  getElWindow() {
+    return this._elWindow;
+  }
+
+  // TODO: Document
   __INTERNAL__attachWindowManagerElement(el) {
     this._elWindowManager = el;
   }
