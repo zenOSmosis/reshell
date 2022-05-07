@@ -1,5 +1,8 @@
+import { useState } from "react";
 import styles from "./CRT.module.css";
 import classNames from "classnames";
+
+import InputWithCustomCaret from "./subComponents/InputWithCustomCaret";
 
 // TODO: Preload
 import keySound from "./sounds/zNBy-key4.mp3";
@@ -10,7 +13,7 @@ import useKeyboardEvents from "@hooks/useKeyboardEvents";
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
 //  - https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
 
-export default function CRT() {
+export default function CRT({ children }) {
   // Handle keyboard typing effect
   useKeyboardEvents(window, {
     onKeyDown: () => {
@@ -45,10 +48,8 @@ export default function CRT() {
             // the input and output
           }
           <div className={styles["terminal"]}>
-            What is your name?
-            <div className={styles["input"]} contentEditable={true}>
-              test
-            </div>
+            {children}
+            <InputWithCustomCaret value="> " />
             {/*
             async function input(pw) {
             return new Promise(resolve => {

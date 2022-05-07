@@ -1,13 +1,22 @@
 /** TODO: Add fonts locally */
 @import url("https://fonts.googleapis.com/css?family=VT323&display=swap");
 
-.terminal {
+.terminal,
+.terminal input {
   font-family: "VT323", monospace;
   text-transform: uppercase;
 
   color: #00b800;
   font-weight: bold;
   font-size: 18px;
+}
+
+.terminal input {
+  background-color: transparent;
+  outline-style: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .crt {

@@ -25,7 +25,11 @@ const DrReShellApp = {
     const ttsService = appServices[TextToSpeechService];
 
     // return <Center>Press any key to continue</Center>;
-    return <CRT />;
+    return (
+      <CRT>
+        <div>What is your name?</div>
+      </CRT>
+    );
   },
 };
 
