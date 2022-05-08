@@ -26,7 +26,7 @@
   margin: 0;
 }
 
-.crt {
+.terminal {
   padding: 10px;
 }
 
@@ -97,28 +97,4 @@
   border-image-slice: 30 fill;
   border-image-outset: 0;
   overflow: hidden;
-}
-
-.input {
-  position: relative;
-  caret-color: transparent;
-
-  outline-style: none;
-
-  padding-left: 1rem;
-}
-
-/* Puts a blinking square after the content as replacement for caret */
-.input[contenteditable="true"]:after {
-  content: "■";
-  animation: cursor 1s infinite;
-  animation-timing-function: step-end;
-  margin-left: -1rem;
-  line-height: 1rem;
-}
-/* Inserts the > before terminal input */
-.input:before {
-  content: ">";
-  position: absolute;
-  left: 0;
 }
