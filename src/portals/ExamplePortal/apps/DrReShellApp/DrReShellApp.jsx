@@ -1,15 +1,11 @@
 import { useState } from "react";
 
 import CRT from "./components/CRT";
-// import InputWithCustomCaret from "./components/InputWithCustomCaret";
-import InputContainer from "./components/InputContainer";
-import SimulatedTyper from "./components/SimulatedTyper";
 
 import IntroView from "./views/IntroView";
+import ConversationView from "./views/ConversationView";
 
 import TextToSpeechService from "@services/TextToSpeechService";
-
-import Layout, { Content, Footer } from "@components/Layout";
 
 // TODO: Borrow ideas from:
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
@@ -42,19 +38,7 @@ const DrReShellApp = {
         {!hasEntroEnded ? (
           <IntroView onEnd={() => setHasIntroEnded(true)} />
         ) : (
-          <Layout>
-            <Content>
-              <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
-
-              <InputContainer initialValue="> " />
-            </Content>
-            {
-              // TODO: Show timer?
-            }
-            <Footer>
-              <button>Reset</button>
-            </Footer>
-          </Layout>
+          <ConversationView />
         )}
       </CRT>
     );
