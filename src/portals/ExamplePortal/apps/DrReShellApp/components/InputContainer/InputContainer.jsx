@@ -9,6 +9,7 @@ export default function InputContainer({
   initialValue,
   value,
   onChange,
+  onSubmit,
   ...rest
 }) {
   const [activeInput, setActiveInput] = useState(null);
@@ -20,8 +21,15 @@ export default function InputContainer({
   const [inputValue, setInputValue] = useState(initialValue);
 
   useKeyboardEvents(activeInput, {
-    onEnter: () =>
-      typeof onChange === "function" && onChange(activeInput.value),
+    onEnter: () => {
+      if (typeof onChange === "function") {
+        onChange(activeInput.value);
+      }
+
+      if (typeof onSubmit === "function") {
+        onSubmit(activeInput.value);
+      }
+    },
     onEscape: () => setInputValue(refInitialValue.current),
   });
 
