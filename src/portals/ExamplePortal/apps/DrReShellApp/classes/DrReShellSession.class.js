@@ -1,5 +1,7 @@
 import PhantomCore, { EVT_UPDATED, getUnixTime } from "phantom-core";
 
+import { RANDOM_LEADING_EDGE } from "../phrases";
+
 export { EVT_UPDATED };
 
 const EVT_TEXT_INPUT = "text-input";
@@ -31,8 +33,20 @@ export default class DrReShellSession extends PhantomCore {
     this.emit(EVT_UPDATED);
   }
 
+  // TODO: Document
   getHistory() {
     return this._history;
+  }
+
+  // TODO: Implement
+  // TODO: Document
+  getResponse() {
+    const response =
+      RANDOM_LEADING_EDGE[
+        Math.floor(Math.random() * RANDOM_LEADING_EDGE.length)
+      ];
+
+    return response;
   }
 
   // TODO: Gather data structure for rendering

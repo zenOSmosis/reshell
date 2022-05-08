@@ -5,6 +5,7 @@ import InputContainer from "../../components/InputContainer";
 import SimulatedTyper from "../../components/SimulatedTyper";
 
 import Layout, { Content, Footer } from "@components/Layout";
+import Timer from "@components/Timer";
 
 import DrReShellSession, {
   EVT_UPDATED,
@@ -25,7 +26,7 @@ export default function ConversationView() {
     _setSession(session);
 
     return () => session.destroy();
-  }, []);
+  }, [forceUpdate]);
 
   if (!session) {
     return null;
@@ -34,9 +35,10 @@ export default function ConversationView() {
   return (
     <Layout>
       <Content>
-        {/*
-           <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
-          */}
+        {
+          // TODO: Only show if responding
+        }
+        <SimulatedTyper text={session.getResponse()} />
 
         {session.getHistory().map((line, idx) => (
           <div idx={idx}>{line}</div>
@@ -53,6 +55,8 @@ export default function ConversationView() {
       }
       <Footer>
         <button>Reset</button>
+
+        <Timer onTick={session.getInstanceUptime} style={{ float: "right" }} />
       </Footer>
     </Layout>
   );
