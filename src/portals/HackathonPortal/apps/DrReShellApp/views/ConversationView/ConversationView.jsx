@@ -13,20 +13,20 @@ import DrReShellSession, {
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
-export default function ConversationView() {
+export default function ConversationView({ posSpeechAnalyzer }) {
   const [session, _setSession] = useState(null);
 
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    const session = new DrReShellSession();
+    const session = new DrReShellSession({ posSpeechAnalyzer });
 
     session.on(EVT_UPDATED, forceUpdate);
 
     _setSession(session);
 
     return () => session.destroy();
-  }, [forceUpdate]);
+  }, [forceUpdate, posSpeechAnalyzer]);
 
   if (!session) {
     return null;

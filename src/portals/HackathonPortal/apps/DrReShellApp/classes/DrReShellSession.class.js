@@ -8,7 +8,7 @@ const EVT_CHAR_INPUT = "text-input";
 
 // TODO: Document
 export default class DrReShellSession extends PhantomCore {
-  constructor() {
+  constructor({ posSpeechAnalyzer }) {
     super();
 
     this._lastTextInputTime = null;
@@ -16,6 +16,9 @@ export default class DrReShellSession extends PhantomCore {
     // TODO: Handle text input timeout
 
     this._history = [];
+
+    this._posSpeechAnalyzer = posSpeechAnalyzer;
+    this.registerCleanupHandler(() => (this._posSpeechAnalyzer = null));
   }
 
   // TODO: Process input
@@ -27,12 +30,20 @@ export default class DrReShellSession extends PhantomCore {
   }
 
   // TODO: Document
-  processText(textInput) {
+  async processText(textInput) {
     // TODO: Only push if finalized
     this._history.push(textInput);
 
     // Update the UI
     this.emit(EVT_UPDATED);
+
+    const [sentiment, partsOfSpeech] = await Promise.all([
+      this._posSpeechAnalyzer.fetchSentimentAnalysis(textInput),
+      this._posSpeechAnalyzer.fetchPartsOfSpeech(textInput),
+    ]);
+
+    // TODO: Remove
+    console.log({ sentiment, partsOfSpeech });
 
     // TODO: Handle text input
   }

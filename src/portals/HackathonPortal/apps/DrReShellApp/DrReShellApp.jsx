@@ -5,7 +5,11 @@ import CRT from "./components/CRT";
 import IntroView from "./views/IntroView";
 import ConversationView from "./views/ConversationView";
 
+// Global services
 import TextToSpeechService from "@services/TextToSpeechService";
+
+// Local services (to this portal)
+import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerService";
 
 // TODO: Borrow ideas from:
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
@@ -27,10 +31,11 @@ const DrReShellApp = {
     width: 640,
     height: 480,
   },
-  serviceClasses: [TextToSpeechService],
+  serviceClasses: [TextToSpeechService, PartOfSpeechAnalyzerService],
   view: function View({ appServices }) {
     // TODO: Integrate TTS processing
     const ttsService = appServices[TextToSpeechService];
+    const posSpeechAnalyzer = appServices[PartOfSpeechAnalyzerService];
 
     const [hasEntroEnded, setHasIntroEnded] = useState(false);
 
@@ -40,7 +45,7 @@ const DrReShellApp = {
         {!hasEntroEnded ? (
           <IntroView onEnd={() => setHasIntroEnded(true)} />
         ) : (
-          <ConversationView />
+          <ConversationView posSpeechAnalyzer={posSpeechAnalyzer} />
         )}
       </CRT>
     );

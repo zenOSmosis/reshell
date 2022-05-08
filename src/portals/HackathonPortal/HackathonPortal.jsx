@@ -19,11 +19,12 @@ import ColorAdjusterApp from "../ExamplePortal/apps/ColorAdjusterApp";
 import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
+import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 import SayItDifferentApp from "./apps/SayItDifferentApp";
-import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
+import DrReShellApp from "./apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -54,6 +55,7 @@ export default function HackathonPortal() {
         DesktopCommanderDebuggerApp,
         SayItDifferentApp,
         NativeSpyAgentApp,
+        DrReShellApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />
