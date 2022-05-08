@@ -4,7 +4,7 @@ import { RANDOM_LEADING_EDGE } from "../phrases";
 
 export { EVT_UPDATED };
 
-const EVT_TEXT_INPUT = "text-input";
+const EVT_CHAR_INPUT = "text-input";
 
 // TODO: Document
 export default class DrReShellSession extends PhantomCore {
@@ -20,17 +20,21 @@ export default class DrReShellSession extends PhantomCore {
 
   // TODO: Process input
   // TODO: Don't just accept finalized input so that we can determine if the user is asleep
-  processTextInput(textInput) {
-    // TODO: Handle
-    console.log({ textInput });
-
+  processCharInput(char) {
     this._lastTextInputTime = getUnixTime();
 
-    this.emit(EVT_TEXT_INPUT, textInput);
+    this.emit(EVT_CHAR_INPUT, char);
+  }
 
+  // TODO: Document
+  processText(textInput) {
     // TODO: Only push if finalized
     this._history.push(textInput);
+
+    // Update the UI
     this.emit(EVT_UPDATED);
+
+    // TODO: Handle text input
   }
 
   // TODO: Document

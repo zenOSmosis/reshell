@@ -15,6 +15,8 @@ import TextToSpeechService from "@services/TextToSpeechService";
 // [source code examples]
 //  - https://everything2.com/title/ELIZA+source+code+in+BASIC
 //  - https://github.com/codeanticode/eliza
+//
+//  - TODO: Mix in sentiment detection
 
 export const REGISTRATION_ID = "dr-reshell";
 

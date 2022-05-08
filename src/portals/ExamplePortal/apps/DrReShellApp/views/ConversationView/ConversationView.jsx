@@ -41,18 +41,16 @@ export default function ConversationView() {
         <SimulatedTyper text={session.getResponse()} />
 
         {session.getHistory().map((line, idx) => (
-          <div idx={idx}>{line}</div>
+          <div key={idx}>{line}</div>
         ))}
 
         <InputContainer
+          key={session.getHistory().length}
           initialValue="> "
-          // onChange={session.processTextInput}
-          onSubmit={session.processTextInput}
+          onChange={session.processCharInput}
+          onSubmit={session.processText}
         />
       </Content>
-      {
-        // TODO: Show timer?
-      }
       <Footer>
         <button>Reset</button>
 
