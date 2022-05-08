@@ -9,13 +9,21 @@
 }
 
 .terminal,
-.terminal input {
+.terminal input,
+.terminal button {
   font-family: "VT323", monospace;
   text-transform: uppercase;
 
   color: #00b800;
   font-weight: bold;
   font-size: 18px;
+}
+
+.terminal button {
+  background-color: transparent;
+  border: 1px #00b800 dashed;
+  border-radius: 0;
+  font-weight: normal;
 }
 
 .terminal input {

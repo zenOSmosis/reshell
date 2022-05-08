@@ -9,6 +9,8 @@ import IntroView from "./views/IntroView";
 
 import TextToSpeechService from "@services/TextToSpeechService";
 
+import Layout, { Content, Footer } from "@components/Layout";
+
 // TODO: Borrow ideas from:
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
 //  - https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
@@ -40,11 +42,19 @@ const DrReShellApp = {
         {!hasEntroEnded ? (
           <IntroView onEnd={() => setHasIntroEnded(true)} />
         ) : (
-          <>
-            <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
+          <Layout>
+            <Content>
+              <SimulatedTyper text="I would like to understand how and why you think this is necessary." />
 
-            <InputContainer initialValue="> " />
-          </>
+              <InputContainer initialValue="> " />
+            </Content>
+            {
+              // TODO: Show timer?
+            }
+            <Footer>
+              <button>Reset</button>
+            </Footer>
+          </Layout>
         )}
       </CRT>
     );
