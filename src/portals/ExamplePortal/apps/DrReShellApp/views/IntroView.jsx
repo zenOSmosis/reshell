@@ -7,6 +7,8 @@ import SimulatedTyper from "../components/SimulatedTyper";
 
 import useKeyboardEvents from "@root/src/hooks/useKeyboardEvents";
 
+import beep from "@utils/beep";
+
 const LINES = [
   "DR. RESHELL",
   "COPYRIGHT (C) 1984 FAKE COMPANY.",
@@ -20,11 +22,16 @@ export default function IntroView({ onEnd }) {
   const [hasEnded, setHasEnded] = useState(false);
 
   // Determines if the onEnd callback should be called, and calls it if so
-  const handleEnd = useCallback(() => {
-    if (hasEnded && typeof onEnd === "function") {
-      onEnd();
-    }
-  }, [hasEnded, onEnd]);
+  const handleEnd = useCallback(
+    (evt, isForced = false) => {
+      if (isForced || (hasEnded && typeof onEnd === "function")) {
+        beep();
+
+        onEnd();
+      }
+    },
+    [hasEnded, onEnd]
+  );
 
   // TODO: Enforce this to work w/ this ReShell window (not global window)
   // TODO: Pass the window element as an optional property (OR grab from context)
@@ -32,7 +39,7 @@ export default function IntroView({ onEnd }) {
     onKeyDown: handleEnd,
 
     // Directly end if escape is pressed
-    onEscape: onEnd,
+    onEscape: () => handleEnd(null, true),
   });
 
   return (
