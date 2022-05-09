@@ -10,6 +10,9 @@ export { EVT_UPDATED, EVT_DESTROYED };
 
 const EVT_CHAR_INPUT = "text-input";
 
+export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
+export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
+
 // TODO: Document
 export default class DrReShellSession extends PhantomCore {
   constructor({ posSpeechAnalyzer }) {
@@ -23,6 +26,9 @@ export default class DrReShellSession extends PhantomCore {
 
     this._posSpeechAnalyzer = posSpeechAnalyzer;
     this.registerCleanupHandler(() => (this._posSpeechAnalyzer = null));
+
+    // Initial phase
+    this._phase = PHASE_AUTO_RESPONSE_TYPING;
   }
 
   // TODO: Process input
@@ -37,6 +43,7 @@ export default class DrReShellSession extends PhantomCore {
   async processText(textInput) {
     // TODO: Only push if finalized
     this._history.push(textInput);
+    this._history.push("");
 
     // Update the UI
     this.emit(EVT_UPDATED);
@@ -50,6 +57,8 @@ export default class DrReShellSession extends PhantomCore {
     console.log({ sentiment, partsOfSpeech });
 
     // TODO: Handle text input
+
+    this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }
 
   // TODO: Document
@@ -57,15 +66,33 @@ export default class DrReShellSession extends PhantomCore {
     return this._history;
   }
 
-  // TODO: Implement
   // TODO: Document
   getResponse() {
+    // TODO: Implement
     const response =
       RANDOM_LEADING_EDGE[
         Math.floor(Math.random() * RANDOM_LEADING_EDGE.length)
       ];
 
     return response;
+  }
+
+  // TODO: Document
+  addResponseToHistory(responseText) {
+    this._history.push(responseText);
+
+    this.switchPhase(PHASE_AWAITING_USER_INPUT);
+  }
+
+  // TODO: Document
+  switchPhase(phase) {
+    this._phase = phase;
+    this.emit(EVT_UPDATED);
+  }
+
+  // TODO: Document
+  getPhase() {
+    return this._phase;
   }
 
   // TODO: Gather data structure for rendering

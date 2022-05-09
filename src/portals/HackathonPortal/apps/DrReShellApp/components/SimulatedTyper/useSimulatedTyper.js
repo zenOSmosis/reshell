@@ -33,14 +33,11 @@ export default function useSimulatedTyper({
     setOutputText("");
   }, [text]);
 
+  // Handle automatic typing
   useAsyncEffect(
     async abortController => {
       // Determine if finished typing
       if (text === outputText) {
-        if (typeof onEnd === "function") {
-          window.setTimeout(onEnd, 100);
-        }
-
         setIsTyping(false);
 
         return;
@@ -66,8 +63,18 @@ export default function useSimulatedTyper({
 
       return () => window.clearTimeout(to);
     },
-    [text, outputText, isTyping, onEnd, wpm, leadingEdgeTimeout]
+    [text, outputText, isTyping, wpm, leadingEdgeTimeout]
   );
+
+  // Handle onEnd detection
+  //
+  // Note: This isn't included in the previous useEffect to the the potential
+  // of this being called more than necessary
+  useEffect(() => {
+    if (text === outputText && typeof onEnd === "function") {
+      onEnd();
+    }
+  }, [text, outputText, onEnd]);
 
   return {
     outputText,

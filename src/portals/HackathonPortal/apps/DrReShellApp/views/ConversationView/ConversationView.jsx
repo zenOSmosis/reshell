@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 // import InputWithCustomCaret from "./components/InputWithCustomCaret";
 import InputContainer from "../../components/InputContainer";
@@ -10,6 +10,8 @@ import Timer from "@components/Timer";
 import DrReShellSession, {
   EVT_UPDATED,
   EVT_DESTROYED,
+  PHASE_AUTO_RESPONSE_TYPING,
+  PHASE_AWAITING_USER_INPUT,
 } from "../../classes/DrReShellSession.class";
 
 import useForceUpdate from "@hooks/useForceUpdate";
@@ -42,6 +44,17 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
     }
   }, [session, onSessionEnd]);
 
+  const phase = session?.getPhase();
+
+  const sessionResponse = useMemo(
+    () => phase === PHASE_AUTO_RESPONSE_TYPING && session?.getResponse(),
+    [session, phase]
+  );
+
+  const handleAddAResponseToHistory = useCallback(() => {
+    session?.addResponseToHistory(sessionResponse);
+  }, [session, sessionResponse]);
+
   if (!session) {
     return null;
   }
@@ -49,21 +62,25 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
   return (
     <Layout>
       <Content>
-        {
-          // TODO: Only show if responding
-        }
-        <SimulatedTyper text={session.getResponse()} />
-
         {session.getHistory().map((line, idx) => (
-          <div key={idx}>{line}</div>
+          <div key={idx}>{line || <span>&nbsp;</span>}</div>
         ))}
 
-        <InputContainer
-          key={session.getHistory().length}
-          initialValue="> "
-          onChange={session.processCharInput}
-          onSubmit={session.processText}
-        />
+        {sessionResponse && phase === PHASE_AUTO_RESPONSE_TYPING && (
+          <SimulatedTyper
+            text={sessionResponse}
+            onEnd={handleAddAResponseToHistory}
+          />
+        )}
+
+        {phase === PHASE_AWAITING_USER_INPUT && (
+          <InputContainer
+            key={session.getHistory().length}
+            initialValue="> "
+            onChange={session.processCharInput}
+            onSubmit={session.processText}
+          />
+        )}
       </Content>
       <Footer>
         <button>Reset</button>
