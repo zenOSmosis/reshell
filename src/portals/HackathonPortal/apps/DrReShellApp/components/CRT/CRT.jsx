@@ -12,7 +12,8 @@ import useWindowKeyboardEvents from "@hooks/useWindowKeyboardEvents";
 //  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
 //  - https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
 
-export default function CRT({ children, inputValue, onInputValueChange }) {
+export default function CRT({ children }) {
+  // TODO: Move
   // Handle keyboard typing effect
   useWindowKeyboardEvents({
     onKeyDown: () => {
