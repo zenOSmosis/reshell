@@ -953,9 +953,10 @@ ElizaBot.prototype.reset = function () {
 
 ElizaBot.prototype._init = function () {
   // install ref to global object
-  var global = this;
+  // var global = this;
+
   // parse data and convert it from canonical form to internal use
-  // prodoce synonym list
+  // produce synonym list
   var synPatterns = {};
 
   if (this.elizaSynons && typeof this.elizaSynons == "object") {
@@ -980,9 +981,9 @@ ElizaBot.prototype._init = function () {
     for (var i = 0; i < rules.length; i++) {
       var r = rules[i];
       // check mem flag and store it as decomp's element 2
-      if (r[0].charAt(0) == "$") {
+      if (r[0].charAt(0) === "$") {
         var ofs = 1;
-        while (r[0].charAt[ofs] == " ") ofs++;
+        while (r[0].charAt[ofs] === " ") ofs++;
         r[0] = r[0].substring(ofs);
         r[2] = true;
       } else {
@@ -1008,9 +1009,9 @@ ElizaBot.prototype._init = function () {
           var rp = r[0];
           while (m) {
             lp += rp.substring(0, m.index + 1);
-            if (m[1] != ")") lp += "\\b";
+            if (m[1] !== ")") lp += "\\b";
             lp += "\\s*(.*)\\s*";
-            if (m[2] != "(" && m[2] != "\\") lp += "\\b";
+            if (m[2] !== "(" && m[2] !== "\\") lp += "\\b";
             lp += m[2];
             rp = rp.substring(m.index + m[0].length);
             m = are.exec(rp);
@@ -1020,13 +1021,13 @@ ElizaBot.prototype._init = function () {
         m = are1.exec(r[0]);
         if (m) {
           var lp = "\\s*(.*)\\s*";
-          if (m[1] != ")" && m[1] != "\\") lp += "\\b";
+          if (m[1] !== ")" && m[1] !== "\\") lp += "\\b";
           r[0] = lp + r[0].substring(m.index - 1 + m[0].length);
         }
         m = are2.exec(r[0]);
         if (m) {
           var lp = r[0].substring(0, m.index + 1);
-          if (m[1] != "(") lp += "\\b";
+          if (m[1] !== "(") lp += "\\b";
           r[0] = lp + "\\s*(.*)\\s*";
         }
       }
@@ -1098,10 +1099,10 @@ ElizaBot.prototype.transform = function (text) {
   var parts = text.split(".");
   for (var i = 0; i < parts.length; i++) {
     var part = parts[i];
-    if (part != "") {
+    if (part !== "") {
       // check for quit expression
       for (var q = 0; q < this.elizaQuits.length; q++) {
-        if (this.elizaQuits[q] == part) {
+        if (this.elizaQuits[q] === part) {
           this.quit = true;
           return this.getFinal();
         }
@@ -1128,20 +1129,20 @@ ElizaBot.prototype.transform = function (text) {
         ) {
           rpl = this._execRule(k);
         }
-        if (rpl != "") return rpl;
+        if (rpl !== "") return rpl;
       }
     }
   }
   // nothing matched try mem
   rpl = this._memGet();
   // if nothing in mem, so try xnone
-  if (rpl == "") {
+  if (rpl === "") {
     this.sentence = " ";
     var k = this._getRuleIndexByKey("xnone");
     if (k >= 0) rpl = this._execRule(k);
   }
   // return reply or default string
-  return rpl != "" ? rpl : "I am at a loss for words.";
+  return rpl !== "" ? rpl : "I am at a loss for words.";
 };
 
 ElizaBot.prototype._execRule = function (k) {
@@ -1156,7 +1157,7 @@ ElizaBot.prototype._execRule = function (k) {
       var ri = this.noRandom ? 0 : Math.floor(Math.random() * reasmbs.length);
       if (
         (this.noRandom && this.lastchoice[k][i] > ri) ||
-        this.lastchoice[k][i] == ri
+        this.lastchoice[k][i] === ri
       ) {
         ri = ++this.lastchoice[k][i];
         if (ri >= reasmbs.length) {
@@ -1180,7 +1181,7 @@ ElizaBot.prototype._execRule = function (k) {
             "\nmemflag: " +
             memflag
         );
-      if (rpl.search("^goto ", "i") == 0) {
+      if (rpl.search("^goto ", "i") === 0) {
         const ki = this._getRuleIndexByKey(rpl.substring(5));
         if (ki >= 0) return this._execRule(ki);
       }
@@ -1241,7 +1242,7 @@ ElizaBot.prototype._postTransform = function (s) {
 
 ElizaBot.prototype._getRuleIndexByKey = function (key) {
   for (var k = 0; k < this.elizaKeywords.length; k++) {
-    if (this.elizaKeywords[k][0] == key) return k;
+    if (this.elizaKeywords[k][0] === key) return k;
   }
   return -1;
 };
@@ -1287,19 +1288,21 @@ var elizaFinals = [
 ];
 
 // fix array.prototype methods (push, shift) if not implemented (MSIE fix)
-if (typeof Array.prototype.push == "undefined") {
+/*
+if (typeof Array.prototype.push === "undefined") {
   Array.prototype.push = function (v) {
     return (this[this.length] = v);
   };
 }
-if (typeof Array.prototype.shift == "undefined") {
+if (typeof Array.prototype.shift === "undefined") {
   Array.prototype.shift = function () {
-    if (this.length == 0) return null;
+    if (this.length === 0) return null;
     var e0 = this[0];
     for (var i = 1; i < this.length; i++) this[i - 1] = this[i];
     this.length--;
     return e0;
   };
 }
+*/
 
 // eof
