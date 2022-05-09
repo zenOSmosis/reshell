@@ -19,6 +19,7 @@ import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerServ
 // [source code examples]
 //  - https://everything2.com/title/ELIZA+source+code+in+BASIC
 //  - https://github.com/codeanticode/eliza
+//  - [JS] https://github.com/oren/eliza-bot
 //
 //  - TODO: Mix in sentiment detection
 

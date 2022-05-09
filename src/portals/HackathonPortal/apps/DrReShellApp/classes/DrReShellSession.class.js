@@ -6,6 +6,8 @@ import PhantomCore, {
 
 import { RANDOM_LEADING_EDGE } from "../phrases";
 
+const elizaBot = require("./ElizaBot");
+
 export { EVT_UPDATED, EVT_DESTROYED };
 
 const EVT_CHAR_INPUT = "text-input";
@@ -29,6 +31,8 @@ export default class DrReShellSession extends PhantomCore {
 
     // Initial phase
     this._phase = PHASE_AUTO_RESPONSE_TYPING;
+
+    this._response = elizaBot.start();
   }
 
   // TODO: Process input
@@ -56,7 +60,7 @@ export default class DrReShellSession extends PhantomCore {
     // TODO: Remove
     console.log({ sentiment, partsOfSpeech });
 
-    // TODO: Handle text input
+    this._response = elizaBot.reply(textInput.replace("> ", ""));
 
     this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }
@@ -68,13 +72,7 @@ export default class DrReShellSession extends PhantomCore {
 
   // TODO: Document
   getResponse() {
-    // TODO: Implement
-    const response =
-      RANDOM_LEADING_EDGE[
-        Math.floor(Math.random() * RANDOM_LEADING_EDGE.length)
-      ];
-
-    return response;
+    return this._response;
   }
 
   // TODO: Document
