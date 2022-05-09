@@ -1,8 +1,12 @@
-import PhantomCore, { EVT_UPDATED, getUnixTime } from "phantom-core";
+import PhantomCore, {
+  EVT_UPDATED,
+  EVT_DESTROYED,
+  getUnixTime,
+} from "phantom-core";
 
 import { RANDOM_LEADING_EDGE } from "../phrases";
 
-export { EVT_UPDATED };
+export { EVT_UPDATED, EVT_DESTROYED };
 
 const EVT_CHAR_INPUT = "text-input";
 

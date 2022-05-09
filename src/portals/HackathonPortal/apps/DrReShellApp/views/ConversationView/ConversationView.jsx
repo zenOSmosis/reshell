@@ -9,15 +9,19 @@ import Timer from "@components/Timer";
 
 import DrReShellSession, {
   EVT_UPDATED,
+  EVT_DESTROYED,
 } from "../../classes/DrReShellSession.class";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
-export default function ConversationView({ posSpeechAnalyzer }) {
+// TODO: Document
+// TODO: Add prop-types
+export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
   const [session, _setSession] = useState(null);
 
   const forceUpdate = useForceUpdate();
 
+  // Instantiate session
   useEffect(() => {
     const session = new DrReShellSession({ posSpeechAnalyzer });
 
@@ -25,8 +29,18 @@ export default function ConversationView({ posSpeechAnalyzer }) {
 
     _setSession(session);
 
+    // Destruct session on unmount
     return () => session.destroy();
   }, [forceUpdate, posSpeechAnalyzer]);
+
+  // Bind session termination handling
+  useEffect(() => {
+    if (session && typeof onSessionEnd === "function") {
+      session.once(EVT_DESTROYED, onSessionEnd);
+
+      return () => session.off(EVT_DESTROYED, onSessionEnd);
+    }
+  }, [session, onSessionEnd]);
 
   if (!session) {
     return null;
