@@ -1077,7 +1077,7 @@ ElizaBot.prototype._init = function () {
   ElizaBot.prototype.posts = {};
 
   if (this.elizaPres && this.elizaPres.length) {
-    let a = new Array();
+    let a = [];
     for (let i = 0; i < this.elizaPres.length; i += 2) {
       a.push(this.elizaPres[i]);
       ElizaBot.prototype.pres[this.elizaPres[i]] = this.elizaPres[i + 1];
@@ -1090,7 +1090,7 @@ ElizaBot.prototype._init = function () {
   }
 
   if (this.elizaPosts && this.elizaPosts.length) {
-    let a = new Array();
+    let a = [];
     for (let i = 0; i < this.elizaPosts.length; i += 2) {
       a.push(this.elizaPosts[i]);
       ElizaBot.prototype.posts[this.elizaPosts[i]] = this.elizaPosts[i + 1];
@@ -1126,7 +1126,7 @@ ElizaBot.prototype.transform = function (text) {
   text = text.toLowerCase();
   text = text.replace(/@#\$%\^&\*\(\)_\+=~`\{\[\}\]\|:;<>\/\\\t/g, " ");
   text = text.replace(/\s+-+\s+/g, ".");
-  text = text.replace(/\s*[,\.\?!;]+\s*/g, ".");
+  text = text.replace(/\s*[,.?!;]+\s*/g, ".");
   text = text.replace(/\s*\bbut\b\s*/g, ".");
   text = text.replace(/\s{2,}/g, " ");
   // split text in part sentences and loop through them
@@ -1311,32 +1311,3 @@ ElizaBot.prototype.getInitial = function () {
     Math.floor(Math.random() * this.elizaInitials.length)
   ];
 };
-
-var elizaFinals = [
-  "Goodbye.  It was nice talking to you.",
-  // additions (not original)
-  "Goodbye.  This was really a nice talk.",
-  "Goodbye.  I'm looking forward to our next session.",
-  "This was a good session, wasn't it -- but time is over now.   Goodbye.",
-  "Maybe we could discuss this moreover in our next session ?   Goodbye.",
-];
-
-// fix array.prototype methods (push, shift) if not implemented (MSIE fix)
-/*
-if (typeof Array.prototype.push === "undefined") {
-  Array.prototype.push = function (v) {
-    return (this[this.length] = v);
-  };
-}
-if (typeof Array.prototype.shift === "undefined") {
-  Array.prototype.shift = function () {
-    if (this.length === 0) return null;
-    let e0 = this[0];
-    for (let i = 1; i < this.length; i++) this[i - 1] = this[i];
-    this.length--;
-    return e0;
-  };
-}
-*/
-
-// eof
