@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import InputContainer from "../../components/InputContainer";
 import SimulatedTyper from "../../components/SimulatedTyper";
 
-import Layout, { Content, Footer } from "@components/Layout";
+import Layout, { Header, Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
 
 import DrReShellSession, {
@@ -61,6 +61,15 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
 
   return (
     <Layout>
+      <Header
+        style={{ textAlign: "right", borderBottom: "1px #00b800 dashed" }}
+      >
+        {
+          // TODO: Handle this
+        }
+        Interactions: {session.getTotalInteractions()} | Overall Sentiment:
+        Neutral
+      </Header>
       <Content>
         {session.getHistory().map((line, idx) => (
           <div key={idx}>{line || <span>&nbsp;</span>}</div>

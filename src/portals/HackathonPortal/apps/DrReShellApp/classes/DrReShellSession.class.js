@@ -33,6 +33,8 @@ export default class DrReShellSession extends PhantomCore {
     this._phase = PHASE_AUTO_RESPONSE_TYPING;
 
     this._response = elizaBot.start();
+
+    this._totalInteractions = 0;
   }
 
   // TODO: Process input
@@ -48,6 +50,9 @@ export default class DrReShellSession extends PhantomCore {
     // TODO: Only push if finalized
     this._history.push(textInput);
     this._history.push("");
+
+    // Increment the interactions
+    ++this._totalInteractions;
 
     // Update the UI
     this.emit(EVT_UPDATED);
@@ -68,6 +73,11 @@ export default class DrReShellSession extends PhantomCore {
   // TODO: Document
   getHistory() {
     return this._history;
+  }
+
+  // TODO: Document
+  getTotalInteractions() {
+    return this._totalInteractions;
   }
 
   // TODO: Document

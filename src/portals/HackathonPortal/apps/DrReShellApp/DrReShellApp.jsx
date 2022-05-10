@@ -22,6 +22,8 @@ import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerServ
 //  - [JS] https://github.com/oren/eliza-bot
 //
 //  - TODO: Mix in sentiment detection
+//
+//  TODO: Take a que from: https://archive.org/details/msdos_Planetfall_1983
 
 export const REGISTRATION_ID = "dr-reshell";
 
