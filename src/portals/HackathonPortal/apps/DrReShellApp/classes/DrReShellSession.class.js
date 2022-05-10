@@ -4,8 +4,6 @@ import PhantomCore, {
   getUnixTime,
 } from "phantom-core";
 
-import { RANDOM_LEADING_EDGE } from "../phrases";
-
 const elizaBot = require("./ElizaBot");
 
 export { EVT_UPDATED, EVT_DESTROYED };
