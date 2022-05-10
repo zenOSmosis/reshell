@@ -8,30 +8,6 @@ import {
   elizaSynons,
 } from "./phrases";
 
-// TODO: Refactor
-export const reply = function (r) {
-  if (this.bot == null) {
-    this.bot = new ElizaBot(false);
-  }
-  return this.bot.transform(r);
-};
-
-// TODO: Refactor
-export const start = function () {
-  if (this.bot == null) {
-    this.bot = new ElizaBot(false);
-  }
-  return this.bot.getInitial();
-};
-
-// TODO: Refactor
-export const bye = function () {
-  if (this.bot == null) {
-    this.bot = new ElizaBot(false);
-  }
-  return this.bot.getFinal();
-};
-
 export default class ElizaBot {
   constructor(noRandomFlag = false) {
     this.elizaInitials = elizaInitials;

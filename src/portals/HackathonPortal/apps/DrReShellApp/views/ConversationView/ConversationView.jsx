@@ -7,12 +7,12 @@ import SimulatedTyper from "../../components/SimulatedTyper";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
 
-import DrReShellSession, {
+import DrReShellSessionEngine, {
   EVT_UPDATED,
   EVT_DESTROYED,
   PHASE_AUTO_RESPONSE_TYPING,
   PHASE_AWAITING_USER_INPUT,
-} from "../../classes/DrReShellSession.class";
+} from "../../engine/DrReShellSessionEngine";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
@@ -25,7 +25,7 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
 
   // Instantiate session
   useEffect(() => {
-    const session = new DrReShellSession({ posSpeechAnalyzer });
+    const session = new DrReShellSessionEngine({ posSpeechAnalyzer });
 
     session.on(EVT_UPDATED, forceUpdate);
 

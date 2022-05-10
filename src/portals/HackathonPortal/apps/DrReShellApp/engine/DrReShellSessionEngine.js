@@ -3,8 +3,7 @@ import PhantomCore, {
   EVT_DESTROYED,
   getUnixTime,
 } from "phantom-core";
-
-const elizaBot = require("./ElizaBot");
+import ElizaBot from "./ElizaBotController";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 
@@ -14,7 +13,7 @@ export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
 export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
 
 // TODO: Document
-export default class DrReShellSession extends PhantomCore {
+export default class DrReShellSessionEngine extends PhantomCore {
   constructor({ posSpeechAnalyzer }) {
     super();
 
@@ -30,7 +29,9 @@ export default class DrReShellSession extends PhantomCore {
     // Initial phase
     this._phase = PHASE_AUTO_RESPONSE_TYPING;
 
-    this._response = elizaBot.start();
+    this._elizaBot = new ElizaBot();
+    this._response = this._elizaBot.start();
+    this.registerCleanupHandler(() => (this._elizaBot = null));
 
     this._totalInteractions = 0;
   }
@@ -63,7 +64,7 @@ export default class DrReShellSession extends PhantomCore {
     // TODO: Remove
     console.log({ sentiment, partsOfSpeech });
 
-    this._response = elizaBot.reply(textInput.replace("> ", ""));
+    this._response = this._elizaBot.reply(textInput.replace("> ", ""));
 
     this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }
