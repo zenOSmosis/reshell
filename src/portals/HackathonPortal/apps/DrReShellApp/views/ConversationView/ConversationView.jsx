@@ -18,7 +18,11 @@ import useForceUpdate from "@hooks/useForceUpdate";
 
 // TODO: Document
 // TODO: Add prop-types
-export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
+export default function ConversationView({
+  posSpeechAnalyzer,
+  onSessionEnd,
+  onReset,
+}) {
   const [session, _setSession] = useState(null);
 
   const forceUpdate = useForceUpdate();
@@ -101,7 +105,7 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
         </div>
       </Content>
       <Footer>
-        <button>Reset</button>
+        <button onClick={onReset}>Reset</button>
 
         <Timer onTick={session.getInstanceUptime} style={{ float: "right" }} />
       </Footer>

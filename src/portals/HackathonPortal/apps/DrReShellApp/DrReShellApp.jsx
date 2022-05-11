@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import CRT from "./components/CRT";
 
@@ -42,13 +42,18 @@ const DrReShellApp = {
 
     const [hasEntroEnded, setHasIntroEnded] = useState(false);
 
+    const handleReset = useCallback(() => setHasIntroEnded(false), []);
+
     // return <Center>Press any key to continue</Center>;
     return (
       <CRT>
         {!hasEntroEnded ? (
           <IntroView onEnd={() => setHasIntroEnded(true)} />
         ) : (
-          <ConversationView posSpeechAnalyzer={posSpeechAnalyzer} />
+          <ConversationView
+            posSpeechAnalyzer={posSpeechAnalyzer}
+            onReset={handleReset}
+          />
         )}
       </CRT>
     );
