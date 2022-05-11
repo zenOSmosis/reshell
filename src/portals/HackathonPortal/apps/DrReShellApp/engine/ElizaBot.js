@@ -48,9 +48,6 @@ export default class ElizaBot {
   }
 
   _init() {
-    // install ref to global object
-    // let global = this;
-
     // parse data and convert it from canonical form to internal use
     // produce synonym list
     let synPatterns = {};
