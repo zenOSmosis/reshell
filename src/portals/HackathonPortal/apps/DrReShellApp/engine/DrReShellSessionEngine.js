@@ -48,6 +48,13 @@ export default class DrReShellSessionEngine extends PhantomCore {
 
   // TODO: Document
   async processText(textInput) {
+    // TODO: Move character stripping to text input
+    const text = textInput.replace("> ", "").trim();
+
+    if (!text.length) {
+      return;
+    }
+
     // TODO: Only push if finalized
     this._history.push(textInput);
     this._history.push("");
@@ -65,7 +72,7 @@ export default class DrReShellSessionEngine extends PhantomCore {
     // Update the UI
     this.emit(EVT_UPDATED);
 
-    this._response = this._elizaBot.reply(textInput.replace("> ", ""));
+    this._response = this._elizaBot.reply(text);
 
     this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }
