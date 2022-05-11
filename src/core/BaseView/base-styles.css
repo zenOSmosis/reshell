@@ -402,6 +402,6 @@ Not supported in and IE.
 .unstyled {
   all: unset;
   background-color: transparent !important;
-  border: 0px !important;
+  border: 0 !important;
   outline: none !important;
 }
