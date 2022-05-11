@@ -36,7 +36,6 @@ const DrReShellApp = {
   },
   serviceClasses: [TextToSpeechService, PartOfSpeechAnalyzerService],
   view: function View({ appServices }) {
-    // TODO: Integrate TTS processing
     const ttsService = appServices[TextToSpeechService];
     const posSpeechAnalyzer = appServices[PartOfSpeechAnalyzerService];
 
@@ -53,6 +52,7 @@ const DrReShellApp = {
           <ConversationView
             posSpeechAnalyzer={posSpeechAnalyzer}
             onReset={handleReset}
+            ttsService={ttsService}
           />
         )}
       </CRT>

@@ -22,6 +22,7 @@ export default function ConversationView({
   posSpeechAnalyzer,
   onSessionEnd,
   onReset,
+  ttsService,
 }) {
   const [session, _setSession] = useState(null);
 
@@ -60,6 +61,12 @@ export default function ConversationView({
   }, [session, sessionResponse]);
 
   const refElScroller = useRef(null);
+
+  useEffect(() => {
+    if (sessionResponse && ttsService) {
+      ttsService.say(sessionResponse);
+    }
+  }, [sessionResponse, ttsService]);
 
   if (!session) {
     return null;
