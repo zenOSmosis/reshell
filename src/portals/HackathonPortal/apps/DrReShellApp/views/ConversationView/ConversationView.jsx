@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // import InputWithCustomCaret from "./components/InputWithCustomCaret";
 import InputContainer from "../../components/InputContainer";
@@ -55,8 +55,15 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
     session?.addResponseToHistory(sessionResponse);
   }, [session, sessionResponse]);
 
+  const refElScroller = useRef(null);
+
   if (!session) {
     return null;
+  }
+
+  // Automatically scroll thread to bottom
+  if (refElScroller.current) {
+    refElScroller.current.scrollTop = refElScroller.current.scrollHeight;
   }
 
   return (
@@ -68,25 +75,30 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
         {session.getSentiment()}
       </Header>
       <Content>
-        {session.getHistory().map((line, idx) => (
-          <div key={idx}>{line || <span>&nbsp;</span>}</div>
-        ))}
+        <div
+          ref={refElScroller}
+          style={{ width: "100%", height: "100%", overflowY: "auto" }}
+        >
+          {session.getHistory().map((line, idx) => (
+            <div key={idx}>{line || <span>&nbsp;</span>}</div>
+          ))}
 
-        {sessionResponse && phase === PHASE_AUTO_RESPONSE_TYPING && (
-          <SimulatedTyper
-            text={sessionResponse}
-            onEnd={handleAddAResponseToHistory}
-          />
-        )}
+          {sessionResponse && phase === PHASE_AUTO_RESPONSE_TYPING && (
+            <SimulatedTyper
+              text={sessionResponse}
+              onEnd={handleAddAResponseToHistory}
+            />
+          )}
 
-        {phase === PHASE_AWAITING_USER_INPUT && (
-          <InputContainer
-            key={session.getHistory().length}
-            initialValue="> "
-            onChange={session.processCharInput}
-            onSubmit={session.processText}
-          />
-        )}
+          {phase === PHASE_AWAITING_USER_INPUT && (
+            <InputContainer
+              key={session.getHistory().length}
+              initialValue="> "
+              onChange={session.processCharInput}
+              onSubmit={session.processText}
+            />
+          )}
+        </div>
       </Content>
       <Footer>
         <button>Reset</button>
