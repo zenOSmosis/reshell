@@ -21,9 +21,9 @@ import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerServ
 //  - https://github.com/codeanticode/eliza
 //  - [JS] https://github.com/oren/eliza-bot
 //
-//  - TODO: Mix in sentiment detection
+// [possibly] Take a que from: https://archive.org/details/msdos_Planetfall_1983
 //
-//  TODO: Take a que from: https://archive.org/details/msdos_Planetfall_1983
+// TODO: Use built-in TRS-80 fonts?
 
 export const REGISTRATION_ID = "dr-reshell";
 
