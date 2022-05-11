@@ -8,7 +8,7 @@ const LINKS = {
   PhantomCollection:
     "https://github.com/zenOSmosis/phantom-core/tree/main/src/PhantomCollection",
 
-  ReShellCore: "https://github.com/zenOSmosis/reshell.org-static",
+  ReShellCore: "https://github.com/zenOSmosis/reshell",
 
   SyncObject: "https://github.com/zenOSmosis/sync-object",
   MediaStreamController:
