@@ -42,6 +42,8 @@ export default class AppRuntime extends PhantomCore {
         this._windowController.destroy();
       }
 
+      this._appRegistration = null;
+      this._appOrchestrationService = null;
       this._windowController = null;
 
       // IMPORTANT: We only want to remove the registration, but don't want to
