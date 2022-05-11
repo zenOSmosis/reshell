@@ -47,6 +47,7 @@ export default class ElizaBot {
     }
   }
 
+  // FIXME: (jh) This has been flagged as a complex method and should be refactored
   _init() {
     // parse data and convert it from canonical form to internal use
     // produce synonym list
@@ -241,6 +242,7 @@ export default class ElizaBot {
     return rpl !== "" ? rpl : "I am at a loss for words.";
   }
 
+  // FIXME: (jh) This has been flagged as a complex method and should be refactored
   _execRule(k) {
     let rule = this.elizaKeywords[k];
     let decomps = rule[2];
