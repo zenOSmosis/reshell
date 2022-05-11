@@ -8,6 +8,9 @@ import {
   elizaSynons,
 } from "./phrases";
 
+/**
+ * Adapted from: https://github.com/oren/eliza-bot
+ */
 export default class ElizaBot {
   constructor(noRandomFlag = false) {
     this.elizaInitials = elizaInitials;
@@ -164,7 +167,7 @@ export default class ElizaBot {
       this.posts["####"] = "####";
     }
     // check for elizaQuits and install default if missing
-    if (!this.elizaQuits || typeof this.elizaQuits.length == "undefined") {
+    if (!this.elizaQuits || typeof this.elizaQuits.length === "undefined") {
       this.elizaQuits = [];
     }
     // done
