@@ -62,7 +62,7 @@ export default function ConversationView({
 
   const refElScroller = useRef(null);
 
-  useEffect(() => {
+  const handleResponseTypingStart = useCallback(() => {
     if (sessionResponse && ttsService) {
       ttsService.say(sessionResponse);
     }
@@ -97,6 +97,7 @@ export default function ConversationView({
           {sessionResponse && phase === PHASE_AUTO_RESPONSE_TYPING && (
             <SimulatedTyper
               text={sessionResponse}
+              onStart={handleResponseTypingStart}
               onEnd={handleAddAResponseToHistory}
             />
           )}

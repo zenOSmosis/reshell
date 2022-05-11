@@ -18,11 +18,12 @@ function calcWPMTimeout(wpm) {
 // TODO: Simulate optional typos(?)
 export default function useSimulatedTyper({
   text,
+  onStart,
   onEnd,
   wpm = 140,
   leadingEdgeTimeout = 1000,
 }) {
-  const [isTyping, setIsTyping] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
 
   const [outputText, setOutputText] = useState("");
 
@@ -43,10 +44,6 @@ export default function useSimulatedTyper({
         return;
       }
 
-      if (!isTyping) {
-        setIsTyping(true);
-      }
-
       const lenOutputText = outputText.length;
 
       if (!lenOutputText) {
@@ -57,6 +54,10 @@ export default function useSimulatedTyper({
 
       const to = window.setTimeout(() => {
         if (!abortController?.signal?.aborted) {
+          if (!isTyping) {
+            setIsTyping(true);
+          }
+
           setOutputText(next);
         }
       }, calcWPMTimeout(wpm));
@@ -75,6 +76,12 @@ export default function useSimulatedTyper({
       onEnd();
     }
   }, [text, outputText, onEnd]);
+
+  useEffect(() => {
+    if (isTyping && typeof onStart === "function") {
+      onStart();
+    }
+  }, [onStart, isTyping]);
 
   return {
     outputText,
