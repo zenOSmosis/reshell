@@ -2,8 +2,14 @@ import Caret from "../Caret";
 
 import useSimulatedTyper from "./useSimulatedTyper";
 
-export default function SimulatedTyper({ text, onStart, onEnd }) {
-  const { outputText } = useSimulatedTyper({ text, onStart, onEnd });
+// TODO: Document
+// TODO: Add prop-types
+export default function SimulatedTyper({ text, onTypingStart, onTypingEnd }) {
+  const { outputText } = useSimulatedTyper({
+    text,
+    onTypingStart,
+    onTypingEnd,
+  });
 
   return (
     <div>

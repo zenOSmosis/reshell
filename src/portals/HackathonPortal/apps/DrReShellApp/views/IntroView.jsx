@@ -51,7 +51,7 @@ export default function IntroView({ onEnd }) {
               <SimulatedTyper
                 key={idx}
                 text={line}
-                onEnd={() => {
+                onTypingEnd={() => {
                   if (idxLine < LINES.length - 1) {
                     setIdxLine(idx + 1);
                   } else {

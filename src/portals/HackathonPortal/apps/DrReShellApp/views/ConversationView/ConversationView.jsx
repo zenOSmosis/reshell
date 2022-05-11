@@ -97,8 +97,8 @@ export default function ConversationView({
           {sessionResponse && phase === PHASE_AUTO_RESPONSE_TYPING && (
             <SimulatedTyper
               text={sessionResponse}
-              onStart={handleResponseTypingStart}
-              onEnd={handleAddAResponseToHistory}
+              onTypingStart={handleResponseTypingStart}
+              onTypingEnd={handleAddAResponseToHistory}
             />
           )}
 

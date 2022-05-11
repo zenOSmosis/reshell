@@ -18,8 +18,8 @@ function calcWPMTimeout(wpm) {
 // TODO: Simulate optional typos(?)
 export default function useSimulatedTyper({
   text,
-  onStart,
-  onEnd,
+  onTypingStart,
+  onTypingEnd,
   wpm = 140,
   leadingEdgeTimeout = 1000,
 }) {
@@ -67,21 +67,28 @@ export default function useSimulatedTyper({
     [text, outputText, isTyping, wpm, leadingEdgeTimeout]
   );
 
-  // Handle onEnd detection
+  // Handle onTypingStart detection
+  useEffect(() => {
+    if (isTyping && typeof onTypingStart === "function") {
+      onTypingStart();
+    }
+  }, [onTypingStart, isTyping]);
+
+  // Handle onTypingEnd detection
   //
   // Note: This isn't included in the previous useEffect to the the potential
   // of this being called more than necessary
   useEffect(() => {
-    if (text === outputText && typeof onEnd === "function") {
-      onEnd();
+    if (text === outputText && typeof onTypingEnd === "function") {
+      onTypingEnd();
     }
-  }, [text, outputText, onEnd]);
+  }, [text, outputText, onTypingEnd]);
 
   useEffect(() => {
-    if (isTyping && typeof onStart === "function") {
-      onStart();
+    if (isTyping && typeof onTypingStart === "function") {
+      onTypingStart();
     }
-  }, [onStart, isTyping]);
+  }, [onTypingStart, isTyping]);
 
   return {
     outputText,
