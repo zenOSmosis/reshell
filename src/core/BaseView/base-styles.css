@@ -64,32 +64,6 @@ body {
   overscroll-behavior: none;
 }
 
-h1 {
-  font-size: 1.4rem;
-}
-
-h2 {
-  font-size: 1.2rem;
-}
-
-h3 {
-  font-size: 1.1rem;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  text-align: left;
-
-  margin: 0.2rem;
-}
-
-hr {
-  opacity: 0.2;
-}
-
 html {
   /* Universal box sizing w/ inheritance */
   box-sizing: border-box;
@@ -119,8 +93,12 @@ h3 {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5 {
   text-align: left;
+
+  margin: 0.2rem;
 }
 
 hr {
