@@ -20,7 +20,7 @@ export default function useSimulatedTyper({
   text,
   onTypingStart,
   onTypingEnd,
-  wpm = 140,
+  wpm = 160,
   leadingEdgeTimeout = 1000,
 }) {
   const [isTyping, setIsTyping] = useState(false);
