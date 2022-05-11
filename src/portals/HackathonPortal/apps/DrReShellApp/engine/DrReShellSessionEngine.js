@@ -29,11 +29,13 @@ export default class DrReShellSessionEngine extends PhantomCore {
     // Initial phase
     this._phase = PHASE_AUTO_RESPONSE_TYPING;
 
+    this._totalInteractions = 0;
+
+    this._sentiment = "Unknown";
+
     this._elizaBot = new ElizaBot();
     this._response = this._elizaBot.start();
     this.registerCleanupHandler(() => (this._elizaBot = null));
-
-    this._totalInteractions = 0;
   }
 
   // TODO: Process input
@@ -53,16 +55,15 @@ export default class DrReShellSessionEngine extends PhantomCore {
     // Increment the interactions
     ++this._totalInteractions;
 
+    const { title: sentiment } =
+      (await this._posSpeechAnalyzer.fetchSentimentAnalysis(textInput)) || {
+        title: "Neutral",
+      };
+
+    this._sentiment = sentiment;
+
     // Update the UI
     this.emit(EVT_UPDATED);
-
-    const [sentiment, partsOfSpeech] = await Promise.all([
-      this._posSpeechAnalyzer.fetchSentimentAnalysis(textInput),
-      this._posSpeechAnalyzer.fetchPartsOfSpeech(textInput),
-    ]);
-
-    // TODO: Remove
-    console.log({ sentiment, partsOfSpeech });
 
     this._response = this._elizaBot.reply(textInput.replace("> ", ""));
 
@@ -72,11 +73,6 @@ export default class DrReShellSessionEngine extends PhantomCore {
   // TODO: Document
   getHistory() {
     return this._history;
-  }
-
-  // TODO: Document
-  getTotalInteractions() {
-    return this._totalInteractions;
   }
 
   // TODO: Document
@@ -100,6 +96,16 @@ export default class DrReShellSessionEngine extends PhantomCore {
   // TODO: Document
   getPhase() {
     return this._phase;
+  }
+
+  // TODO: Document
+  getTotalInteractions() {
+    return this._totalInteractions;
+  }
+
+  // TODO: Document
+  getSentiment() {
+    return this._sentiment;
   }
 
   // TODO: Gather data structure for rendering

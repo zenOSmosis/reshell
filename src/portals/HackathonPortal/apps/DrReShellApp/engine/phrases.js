@@ -1,5 +1,5 @@
 export const elizaInitials = [
-  "How do you do.?  Please tell me your problem.",
+  "How do you do?  Please tell me your problem.",
   "Please tell me what's been bothering you.",
   "Is something troubling you?",
   "I'm here. Talk to me.",

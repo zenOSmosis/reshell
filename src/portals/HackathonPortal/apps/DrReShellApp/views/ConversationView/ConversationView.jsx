@@ -64,11 +64,8 @@ export default function ConversationView({ posSpeechAnalyzer, onSessionEnd }) {
       <Header
         style={{ textAlign: "right", borderBottom: "1px #00b800 dashed" }}
       >
-        {
-          // TODO: Handle this
-        }
-        Interactions: {session.getTotalInteractions()} | Overall Sentiment:
-        Neutral
+        Interactions: {session.getTotalInteractions()} | Overall Sentiment:{" "}
+        {session.getSentiment()}
       </Header>
       <Content>
         {session.getHistory().map((line, idx) => (
