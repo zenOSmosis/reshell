@@ -8,6 +8,7 @@ import Layout, { Header, Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
 
 import DrReShellSessionEngine, {
+  EVT_READY,
   EVT_UPDATED,
   EVT_DESTROYED,
   PHASE_AUTO_RESPONSE_TYPING,
@@ -32,6 +33,7 @@ export default function ConversationView({
   useEffect(() => {
     const session = new DrReShellSessionEngine({ posSpeechAnalyzer });
 
+    session.once(EVT_READY, forceUpdate);
     session.on(EVT_UPDATED, forceUpdate);
 
     _setSession(session);
@@ -68,7 +70,7 @@ export default function ConversationView({
     }
   }, [sessionResponse, ttsService]);
 
-  if (!session) {
+  if (!session?.getIsReady()) {
     return null;
   }
 

@@ -1,11 +1,12 @@
 import PhantomCore, {
+  EVT_READY,
   EVT_UPDATED,
   EVT_DESTROYED,
   getUnixTime,
 } from "phantom-core";
 import ElizaBot from "./ElizaBotController";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
 
 const EVT_CHAR_INPUT = "text-input";
 
@@ -15,7 +16,7 @@ export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
 // TODO: Document
 export default class DrReShellSessionEngine extends PhantomCore {
   constructor({ posSpeechAnalyzer }) {
-    super();
+    super({ isAsync: true });
 
     this._lastTextInputTime = null;
 
@@ -27,15 +28,25 @@ export default class DrReShellSessionEngine extends PhantomCore {
     this.registerCleanupHandler(() => (this._posSpeechAnalyzer = null));
 
     // Initial phase
-    this._phase = PHASE_AUTO_RESPONSE_TYPING;
+    this._phase = null;
 
     this._totalInteractions = 0;
 
     this._sentiment = "Unknown";
 
     this._elizaBot = new ElizaBot();
-    this._response = this._elizaBot.start();
-    this.registerCleanupHandler(() => (this._elizaBot = null));
+    this.registerCleanupHandler(() => this._elizaBot.destroy());
+
+    this._response = null;
+
+    this._init();
+  }
+
+  async _init() {
+    this._response = await this._elizaBot.start();
+    this._phase = PHASE_AUTO_RESPONSE_TYPING;
+
+    return super._init();
   }
 
   // TODO: Process input
@@ -72,7 +83,7 @@ export default class DrReShellSessionEngine extends PhantomCore {
     // Update the UI
     this.emit(EVT_UPDATED);
 
-    this._response = this._elizaBot.reply(text);
+    this._response = await this._elizaBot.reply(text);
 
     this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }

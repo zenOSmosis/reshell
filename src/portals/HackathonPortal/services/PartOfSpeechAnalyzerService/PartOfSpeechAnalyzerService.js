@@ -1,5 +1,5 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
-import RPCPhantomWorker from "@root/src/utils/classes/RPCPhantomWorker/main";
+import RPCPhantomWorker from "@utils/classes/RPCPhantomWorker/main";
 
 // TODO: Rename
 // TODO: Document
