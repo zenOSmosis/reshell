@@ -84,8 +84,8 @@ export default function ConversationView({
       <Header
         style={{ textAlign: "right", borderBottom: "1px #00b800 dashed" }}
       >
-        Interactions: {session.getTotalInteractions()} | Overall Sentiment:{" "}
-        {session.getSentiment()}
+        Interactions: {session.getTotalInteractions()} | Score:{" "}
+        {session.getScore()} | Overall Sentiment: {session.getSentiment()}
       </Header>
       <Content>
         <div

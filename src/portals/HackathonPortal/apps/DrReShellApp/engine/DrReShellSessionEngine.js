@@ -10,6 +10,8 @@ export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
 export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
 export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
 
+const DEFAULT_SENTIMENT = "Unknown";
+
 // TODO: Handle text input timeout (i.e. "are you there?")
 
 /**
@@ -31,7 +33,8 @@ export default class DrReShellSessionEngine extends PhantomCore {
 
     this._totalInteractions = 0;
 
-    this._sentiment = "Unknown";
+    this._sentiment = DEFAULT_SENTIMENT;
+    this._score = 0;
 
     this._elizaBot = new ElizaBotController();
     this.registerCleanupHandler(() => this._elizaBot.destroy());
@@ -68,18 +71,28 @@ export default class DrReShellSessionEngine extends PhantomCore {
     }
 
     this._history.push(textInput);
-    // Add intentional empty line
-    this._history.push("");
 
     // Increment the interactions
     ++this._totalInteractions;
 
-    const { title: sentiment } =
+    const { title: sentiment, score } =
       (await this._posSpeechAnalyzer.fetchSentimentAnalysis(textInput)) || {
         title: "Neutral",
       };
 
-    this._sentiment = sentiment;
+    if (score !== 0 || this._sentiment === DEFAULT_SENTIMENT) {
+      this._sentiment = sentiment;
+    }
+
+    const scoreAddend = score * 1000;
+    if (scoreAddend) {
+      this._history.push(`${scoreAddend > 0 ? "+" : ""}${scoreAddend}`);
+    }
+
+    this._score += scoreAddend;
+
+    // Add intentional empty line
+    this._history.push("");
 
     // Update the UI
     this.emit(EVT_UPDATED);
@@ -156,5 +169,12 @@ export default class DrReShellSessionEngine extends PhantomCore {
    */
   getSentiment() {
     return this._sentiment;
+  }
+
+  /**
+   * @return {number}
+   */
+  getScore() {
+    return this._score;
   }
 }
