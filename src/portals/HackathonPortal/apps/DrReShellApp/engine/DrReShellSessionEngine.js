@@ -4,7 +4,7 @@ import PhantomCore, {
   EVT_DESTROYED,
   getUnixTime,
 } from "phantom-core";
-import ElizaBot from "./ElizaBotController";
+import ElizaBotController from "./ElizaBot";
 
 export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
 
@@ -34,7 +34,7 @@ export default class DrReShellSessionEngine extends PhantomCore {
 
     this._sentiment = "Unknown";
 
-    this._elizaBot = new ElizaBot();
+    this._elizaBot = new ElizaBotController();
     this.registerCleanupHandler(() => this._elizaBot.destroy());
 
     this._response = null;
