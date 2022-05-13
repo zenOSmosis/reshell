@@ -42,7 +42,12 @@ export default class DrReShellSessionEngine extends PhantomCore {
   }
 
   async _init() {
+    await this._elizaBot.onceReady();
+
+    // Create initiating conversation
     this._response = await this._elizaBot.start();
+
+    // Simulate auto-typing phase
     this._phase = PHASE_AUTO_RESPONSE_TYPING;
 
     return super._init();
