@@ -86,6 +86,8 @@ export default class DrReShellSessionEngine extends PhantomCore {
 
     const scoreAddend = score * 1000;
     if (scoreAddend) {
+      // If score is positive, add "+" (plus) sign
+      // A negative score will already include the "-" (minus) sign
       this._history.push(`${scoreAddend > 0 ? "+" : ""}${scoreAddend}`);
     }
 
@@ -172,6 +174,8 @@ export default class DrReShellSessionEngine extends PhantomCore {
   }
 
   /**
+   * Retrieves the overall score.
+   *
    * @return {number}
    */
   getScore() {
