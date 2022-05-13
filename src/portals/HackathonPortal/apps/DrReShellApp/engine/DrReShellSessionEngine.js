@@ -2,25 +2,24 @@ import PhantomCore, {
   EVT_READY,
   EVT_UPDATED,
   EVT_DESTROYED,
-  getUnixTime,
 } from "phantom-core";
 import ElizaBotController from "./ElizaBot";
 
 export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
 
-const EVT_CHAR_INPUT = "text-input";
-
 export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
 export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
 
-// TODO: Document
+// TODO: Handle text input timeout (i.e. "are you there?")
+
+/**
+ * Input / Output phase-switching engine for ElizaBot service.
+ */
 export default class DrReShellSessionEngine extends PhantomCore {
   constructor({ posSpeechAnalyzer }) {
     super({ isAsync: true });
 
     this._lastTextInputTime = null;
-
-    // TODO: Handle text input timeout
 
     this._history = [];
 
@@ -49,15 +48,12 @@ export default class DrReShellSessionEngine extends PhantomCore {
     return super._init();
   }
 
-  // TODO: Process input
-  // TODO: Don't just accept finalized input so that we can determine if the user is asleep
-  processCharInput(char) {
-    this._lastTextInputTime = getUnixTime();
-
-    this.emit(EVT_CHAR_INPUT, char);
-  }
-
-  // TODO: Document
+  /**
+   * Processes input text.
+   *
+   * @param {string} textInput
+   * @return {Promise<void>}
+   */
   async processText(textInput) {
     // TODO: Move character stripping to text input
     const text = textInput.replace("> ", "").trim();
@@ -66,8 +62,8 @@ export default class DrReShellSessionEngine extends PhantomCore {
       return;
     }
 
-    // TODO: Only push if finalized
     this._history.push(textInput);
+    // Add intentional empty line
     this._history.push("");
 
     // Increment the interactions
@@ -88,43 +84,72 @@ export default class DrReShellSessionEngine extends PhantomCore {
     this.switchPhase(PHASE_AUTO_RESPONSE_TYPING);
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the text history string array.
+   *
+   * @return {string[]}
+   */
   getHistory() {
     return this._history;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the bot's most recent response.
+   *
+   * @return {string}
+   */
   getResponse() {
     return this._response;
   }
 
-  // TODO: Document
+  /**
+   * Adds the bot's most recent response to history.
+   *
+   * This is a public method to help facilitate the UI's typing effect.
+   *
+   * @param {string} responseText
+   */
   addResponseToHistory(responseText) {
     this._history.push(responseText);
 
     this.switchPhase(PHASE_AWAITING_USER_INPUT);
   }
 
-  // TODO: Document
+  /**
+   * Switches the input / output phase.
+   *
+   * @param {PHASE_AUTO_RESPONSE_TYPING | PHASE_AWAITING_USER_INPUT} phase
+   * @return {void}
+   */
   switchPhase(phase) {
     this._phase = phase;
     this.emit(EVT_UPDATED);
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the current phase.
+   *
+   * @return {PHASE_AUTO_RESPONSE_TYPING | PHASE_AWAITING_USER_INPUT}
+   */
   getPhase() {
     return this._phase;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the current number of interactions.
+   *
+   * @return {number}
+   */
   getTotalInteractions() {
     return this._totalInteractions;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the current sentiment.
+   *
+   * @return {string}
+   */
   getSentiment() {
     return this._sentiment;
   }
-
-  // TODO: Gather data structure for rendering
 }

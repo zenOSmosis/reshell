@@ -108,7 +108,6 @@ export default function ConversationView({
             <InputContainer
               key={session.getHistory().length}
               initialValue="> "
-              onChange={session.processCharInput}
               onSubmit={session.processText}
             />
           )}

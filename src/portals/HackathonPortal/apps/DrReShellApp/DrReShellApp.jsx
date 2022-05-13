@@ -11,20 +11,6 @@ import TextToSpeechService from "@services/TextToSpeechService";
 // Local services (to this portal)
 import PartOfSpeechAnalyzerService from "../../services/PartOfSpeechAnalyzerService";
 
-// TODO: Borrow ideas from:
-//  - https://codesandbox.io/s/crt-terminal-in-css-js-tlijm
-//  - https://dev.to/ekeijl/retro-crt-terminal-screen-in-css-js-4afh
-//  - https://github.com/zenOSmosis/reshell/issues/78
-//
-// [source code examples]
-//  - https://everything2.com/title/ELIZA+source+code+in+BASIC
-//  - https://github.com/codeanticode/eliza
-//  - [JS] https://github.com/oren/eliza-bot
-//
-// [possibly] Take a que from: https://archive.org/details/msdos_Planetfall_1983
-//
-// TODO: Use built-in TRS-80 fonts?
-
 export const REGISTRATION_ID = "dr-reshell";
 
 const DrReShellApp = {
