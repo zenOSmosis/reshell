@@ -1,3 +1,5 @@
+import { EVT_READY } from "phantom-core";
+
 /** @type {Map<string, Function>} */
 const rpcMethodMap = new Map();
 
@@ -46,4 +48,5 @@ global.addEventListener("message", async evt => {
   }
 });
 
-// TODO: Emit ready
+// Emit that we're ready
+global.postMessage(EVT_READY);
