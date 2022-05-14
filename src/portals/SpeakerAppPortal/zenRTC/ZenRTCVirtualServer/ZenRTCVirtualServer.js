@@ -164,6 +164,12 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         // TODO: Remove
         console.log("zenRTCPeer destructed", zenRTCPeer);
 
+        // TODO: Fix issue where this can leave remote peers hanging (it is
+        // likely due to issue in ZenRTCVirtualServer)
+        // (to reproduce, connect remote mobile client connection then close
+        // all mobile windows)
+        // See accompanying TODO in HeartbeatModule.js
+
         // TODO: Re-emit
       });
 
