@@ -45,6 +45,7 @@ const InputWithCustomCaret = React.forwardRef(
         <div
           style={{
             position: "absolute",
+            // FIXME: Fix issue w/ Safari where this is not correct
             left: caretPosition / 2.5 + "em",
             top: 0,
           }}

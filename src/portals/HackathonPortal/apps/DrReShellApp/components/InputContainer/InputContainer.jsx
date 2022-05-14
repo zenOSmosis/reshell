@@ -3,8 +3,13 @@ import InputWithCustomCaret from "../InputWithCustomCaret";
 
 import useKeyboardEvents from "@hooks/useKeyboardEvents";
 import useWindowInputFocusLock from "@hooks/useWindowInputFocusLock";
+import useAudio from "@hooks/useAudio";
 
-// TODO: Rename
+import keySound from "../../sounds/zNBy-key4.mp3";
+
+/**
+ * Wraps InputWithCustomCaret with controller logic.
+ */
 export default function InputContainer({
   initialValue,
   value,
@@ -14,13 +19,17 @@ export default function InputContainer({
 }) {
   const [activeInput, setActiveInput] = useState(null);
 
+  // Give active input focus whenever its active ReShell window is in focus
   useWindowInputFocusLock(activeInput);
 
   const refInitialValue = useRef(initialValue);
 
   const [inputValue, setInputValue] = useState(initialValue);
 
+  const keyboardAudio = useAudio(keySound);
+
   useKeyboardEvents(activeInput, {
+    onKeyDown: keyboardAudio.play,
     onEnter: () => {
       if (typeof onChange === "function") {
         onChange(activeInput.value);
@@ -46,7 +55,11 @@ export default function InputContainer({
     [onChange]
   );
 
-  // TODO: Show other lines
+  if (!keyboardAudio.isPreloaded) {
+    return null;
+  }
+
+  // FIXME: (jh) Implement optional multi-line handling
   return (
     <InputWithCustomCaret
       ref={setActiveInput}
