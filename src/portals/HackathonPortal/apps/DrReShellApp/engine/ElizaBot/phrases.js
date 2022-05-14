@@ -556,7 +556,7 @@ export const elizaKeywords = [
         ],
       ],
       [
-        "* you* me *",
+        "* you * me *",
         [
           "Why do you think I (2) you?",
           "You like to think I (2) you -- don't you?",
@@ -565,6 +565,18 @@ export const elizaKeywords = [
           "Do you wish to believe I (2) you?",
           "Suppose I did (2) you -- what would that mean?",
           "Does someone else believe I (2) you?",
+        ],
+      ],
+      [
+        "* you @desire *",
+        [
+          "What would it mean to you if I got (3)?",
+          "Why do you think that I want (3)?",
+          "Suppose that I got (3) soon. How would that make you feel?",
+          "Maybe I already have (3). However, this conversation is about you.",
+          "What if I never got (3)?",
+          "What would me getting (3) mean to you?",
+          "What does wanting (3) have to do with this discussion?",
         ],
       ],
       [
@@ -791,10 +803,10 @@ export const elizaKeywords = [
         "*",
         [
           "In what way?",
-          "What resemblence do you see?",
+          "What resemblance do you see?",
           "What does that similarity suggest to you?",
           "What other connections do you see?",
-          "What do you suppose that resemblence means?",
+          "What do you suppose that resemblance means?",
           "What is the connection, do you suppose?",
           "Could there really be some connection?",
           "How?",
