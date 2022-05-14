@@ -267,6 +267,7 @@ export default class ElizaBot {
         }
         let rpl = reasmbs[ri];
         if (this.debug)
+          // TODO: Handle this different
           alert(
             "match:\nkey: " +
               this.elizaKeywords[k][0] +
