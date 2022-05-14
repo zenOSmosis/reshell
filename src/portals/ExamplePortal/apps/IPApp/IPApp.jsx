@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import Layout, { Content, Footer } from "@components/Layout";
@@ -15,13 +15,24 @@ const HelloWorldApp = {
     height: 480,
   },
   view: function View() {
-    useEffect(() => {
+    const [isFetching, setIsFetching] = useState(false);
+
+    const handleFetchIPInfo = useCallback(() => {
+      setIsFetching(true);
+
+      // FIXME: Cancel if unmounting
       axios
         .get("https://www.cloudflare.com/cdn-cgi/trace")
         .then(resp => resp.data)
         // TODO: Parse this and display in UI
-        .then(data => console.log(data.split("\n")));
+        .then(data => console.log(data.split("\n")))
+        .finally(() => setIsFetching(false));
     }, []);
+
+    // Automatically fetch when mounted
+    useEffect(() => {
+      handleFetchIPInfo();
+    }, [handleFetchIPInfo]);
 
     return (
       <Layout>
@@ -33,10 +44,7 @@ const HelloWorldApp = {
 
         <Footer>
           <Padding>
-            <button
-            // onClick={() => ttsService.say(text)}
-            // disabled={ttsService.getIsSpeaking()}
-            >
+            <button onClick={handleFetchIPInfo} disabled={isFetching}>
               Refetch
             </button>
           </Padding>
