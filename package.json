@@ -25,6 +25,7 @@
     "debounce": "^1.2.1",
     "deep-object-diff": "^1.1.7",
     "eth-crypto": "^2.1.0",
+    "howler": "^2.2.3",
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v4.0.5",
     "microsoft-cognitiveservices-speech-sdk": "^1.20.0",
     "object-hash": "^2.2.0",
