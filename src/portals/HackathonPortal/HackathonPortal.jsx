@@ -20,6 +20,7 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
+import IPApp from "../ExamplePortal/apps/IPApp";
 
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
@@ -50,6 +51,7 @@ export default function HackathonPortal() {
         MemoryInfoApp,
         AppRegistrationViewerApp,
         EnvironmentApp,
+        IPApp,
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,

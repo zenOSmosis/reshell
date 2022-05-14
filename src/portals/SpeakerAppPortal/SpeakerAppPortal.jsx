@@ -18,6 +18,7 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
+import IPApp from "../ExamplePortal/apps/IPApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -57,6 +58,7 @@ export default function SpeakerAppPortal() {
         SoftwareInfoApp,
         AppRegistrationViewerApp,
         NativeSpyAgentApp,
+        IPApp,
 
         // Speaker.app-specific apps
         CallPlayerApp,
