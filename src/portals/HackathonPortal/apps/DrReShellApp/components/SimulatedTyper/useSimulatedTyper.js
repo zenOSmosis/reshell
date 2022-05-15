@@ -84,12 +84,6 @@ export default function useSimulatedTyper({
     }
   }, [text, outputText, onTypingEnd]);
 
-  useEffect(() => {
-    if (isTyping && typeof onTypingStart === "function") {
-      onTypingStart();
-    }
-  }, [onTypingStart, isTyping]);
-
   return {
     outputText,
     isTyping,

@@ -54,7 +54,8 @@ export default function ConversationView({
   const phase = session?.getPhase();
 
   const sessionResponse = useMemo(
-    () => phase === PHASE_AUTO_RESPONSE_TYPING && session?.getResponse(),
+    () =>
+      phase === PHASE_AUTO_RESPONSE_TYPING ? session?.getResponse() : null,
     [session, phase]
   );
 
