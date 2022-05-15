@@ -9,7 +9,18 @@ import {
 } from "./phrases";
 
 /**
- * Adapted from: https://github.com/oren/eliza-bot
+ * This is a port of ELIZA, an early natural language processing computer
+ * program created from 1964 to 1966 at the MIT Artificial Intelligence
+ * Laboratory by Joseph Weizenbaum.
+ *
+ * @see https://en.wikipedia.org/wiki/ELIZA
+ *
+ * Adapted from:
+ * @see https://github.com/oren/eliza-bot
+ *
+ * Other resources include:
+ *  - https://everything2.com/title/ELIZA+source+code+in+BASIC
+ *  - https://github.com/codeanticode/eliza
  */
 export default class ElizaBot {
   constructor(noRandomFlag = false) {
