@@ -5,6 +5,8 @@ import PhantomCore, {
 } from "phantom-core";
 import ElizaBotController from "./ElizaBot";
 
+import { INPUT_PROMPT } from "../constants";
+
 export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
 
 export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
@@ -59,24 +61,27 @@ export default class DrReShellSessionEngine extends PhantomCore {
   /**
    * Processes input text.
    *
-   * @param {string} textInput
+   * @param {string} text
    * @return {Promise<void>}
    */
-  async processText(textInput) {
-    // TODO: Move character stripping to text input
-    const text = textInput.replace("> ", "").trim();
+  async processText(text) {
+    text = text.trim();
 
     if (!text.length) {
       return;
     }
 
-    this._history.push(textInput);
+    // Concatenate the input prompt with the text
+    //
+    // FIXME: This could use some additional refactoring to not need to include
+    // the input prompt at all in this class
+    this._history.push(`${INPUT_PROMPT}${text}`);
 
     // Increment the interactions
     ++this._totalInteractions;
 
     const { title: sentiment, score } =
-      (await this._posSpeechAnalyzer.fetchSentimentAnalysis(textInput)) || {
+      (await this._posSpeechAnalyzer.fetchSentimentAnalysis(text)) || {
         title: "Neutral",
       };
 

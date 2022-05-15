@@ -107,7 +107,6 @@ export default function ConversationView({
           {phase === PHASE_AWAITING_USER_INPUT && (
             <InputContainer
               key={session.getHistory().length}
-              initialValue="> "
               onSubmit={session.processText}
             />
           )}
