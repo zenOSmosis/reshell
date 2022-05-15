@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Full from "../Full";
 
 import styles from "./Padding.module.css";
 import classNames from "classnames";
@@ -26,7 +27,11 @@ export default function Padding({ children, className, ...rest }) {
         className
       )}
     >
-      {children}
+      {
+        // Note: The Full inner component is so that absolute positioned items
+        // are padded appropriately
+      }
+      <Full>{children}</Full>
     </div>
   );
 }

@@ -114,16 +114,14 @@ const ServiceMonitorApp = {
         <Footer>
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
-            <Full>
-              <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-                PhantomCore uptime:{" "}
-                <Timer onTick={() => PhantomCore.getUptime()} />
-              </div>
-              <AppLinkButton
-                id={APPLICATION_MONITOR_REGISTRATION_ID}
-                style={{ float: "right", verticalAlign: "bottom" }}
-              />
-            </Full>
+            <div style={{ position: "absolute", bottom: 0, left: 0 }}>
+              PhantomCore uptime:{" "}
+              <Timer onTick={() => PhantomCore.getUptime()} />
+            </div>
+            <AppLinkButton
+              id={APPLICATION_MONITOR_REGISTRATION_ID}
+              style={{ float: "right", verticalAlign: "bottom" }}
+            />
           </Padding>
         </Footer>
       </Layout>
