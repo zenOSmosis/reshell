@@ -4,7 +4,8 @@ const { EVT_UPDATED, EVT_DESTROYED } = PhantomServiceCore;
 export { EVT_UPDATED, EVT_DESTROYED };
 
 /**
- * TODO: Add main caption line
+ * PhantomServiceCore extension which is meant to operate in a browser or
+ * Electron process.
  *
  * ReShell uses services extended by UIServiceCore to share state across
  * applications which use the same services. Windows which are bound to a
