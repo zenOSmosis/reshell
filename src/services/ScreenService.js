@@ -29,12 +29,7 @@ export default class ScreenService extends UIServiceCore {
         });
       };
 
-      // TODO: Use common handler instead
-      window.addEventListener("resize", _handleViewportResize);
-
-      this.registerCleanupHandler(() => {
-        window.removeEventListener("resize", _handleViewportResize);
-      });
+      this.addNativeEventListener("resize", _handleViewportResize);
 
       // Capture initial size
       _handleViewportResize();

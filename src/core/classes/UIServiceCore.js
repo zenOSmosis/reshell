@@ -21,4 +21,44 @@ export default class UIServiceCore extends PhantomServiceCore {
 
     super(...args);
   }
+
+  /**
+   * Binds an event handler to the browser's window object.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+   *
+   * @param {event} eventName
+   * @param {Function} eventHandler
+   * @param {Object | boolean} eventOptions? [default = {}]
+   */
+  addNativeEventListener(eventName, eventHandler, eventOptions = {}) {
+    window.addEventListener(eventName, eventHandler, eventOptions);
+
+    this.registerCleanupHandler(() =>
+      window.removeEventListener(eventName, eventHandler, eventOptions)
+    );
+
+    return {
+      eventName,
+      eventHandler,
+      eventOptions,
+    };
+  }
+
+  /**
+   * Note: While addEventListener() will let you add the same listener more
+   * than once for the same type if the options are different, the only
+   * option removeEventListener() checks is the capture/useCapture flag. Its
+   * value must match for removeEventListener() to match, but the other values
+   * don't.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener
+   *
+   * @param {event} eventName
+   * @param {Function} eventHandler
+   * @param {Object | boolean} eventOptions? [default = {}]
+   */
+  removeNativeEventListener(eventName, eventHandler, eventOptions = {}) {
+    window.removeEventListener(eventName, eventHandler, eventOptions);
+  }
 }
