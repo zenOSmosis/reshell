@@ -25,10 +25,11 @@ const ApplicationMonitorApp = {
     height: 480,
   },
   isPinned: true,
-  view: function View({ windowController }) {
+  view: function View() {
     const { appRuntimes } = useAppOrchestrationContext();
     const { isProfiling, setIsProfiling } = useDesktopContext();
 
+    // Automatically disable profiling when unmounting
     useEffect(() => {
       if (isProfiling) {
         return () => setIsProfiling(false);
