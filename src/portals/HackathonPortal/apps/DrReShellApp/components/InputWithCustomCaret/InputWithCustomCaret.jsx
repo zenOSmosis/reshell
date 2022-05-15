@@ -44,6 +44,7 @@ const InputWithCustomCaret = React.forwardRef(
       >
         <input
           ref={refInput}
+          className={styles["input-with-custom-caret"]}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={value}
