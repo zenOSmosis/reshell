@@ -1,5 +1,6 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 
+// FIXME: Rename to SystemLocaleService?
 export default class LocaleService extends UIServiceCore {
   constructor(...args) {
     super(...args);
@@ -7,6 +8,7 @@ export default class LocaleService extends UIServiceCore {
     this.setTitle("Locale Service");
 
     this.setState({
+      // FIXME: Make this dynamic
       languageCode: "en-US",
     });
   }
