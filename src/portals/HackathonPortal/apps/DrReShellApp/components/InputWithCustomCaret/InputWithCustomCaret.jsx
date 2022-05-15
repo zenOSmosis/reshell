@@ -1,12 +1,18 @@
 import React, { useState, useCallback } from "react";
 import Caret from "../Caret";
 
-// TODO: Document and add prop-types
+import classNames from "classnames";
+import styles from "./InputWithCustomCaret.module.css";
+
+import PropTypes from "prop-types";
+
+/**
+ * An HTML text input w/ a custom input.
+ */
 const InputWithCustomCaret = React.forwardRef(
   ({ onChange, onKeyDown, value, ...rest }, refInput) => {
     const [caretPosition, setCaretPosition] = useState(value?.length || 0);
 
-    // TODO: Document
     const handleChange = useCallback(
       evt => {
         setCaretPosition(evt.target.selectionStart);
@@ -18,7 +24,6 @@ const InputWithCustomCaret = React.forwardRef(
       [onChange]
     );
 
-    // TODO: Document
     const handleKeyDown = useCallback(
       evt => {
         setCaretPosition(evt.target.selectionStart);
@@ -31,11 +36,14 @@ const InputWithCustomCaret = React.forwardRef(
     );
 
     return (
-      // TODO: Use module styling
-      <div style={{ position: "relative" }}>
+      <div
+        className={classNames(
+          styles["input-with-custom-caret"],
+          styles["wrapper"]
+        )}
+      >
         <input
           ref={refInput}
-          style={{ caretColor: "transparent" }}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={value}
@@ -43,8 +51,8 @@ const InputWithCustomCaret = React.forwardRef(
         />
 
         <div
+          className={styles["caret-wrapper"]}
           style={{
-            position: "absolute",
             // FIXME: Fix issue w/ Safari where this is not correct
             left: caretPosition / 2.5 + "em",
             top: 0,
@@ -58,3 +66,9 @@ const InputWithCustomCaret = React.forwardRef(
 );
 
 export default InputWithCustomCaret;
+
+InputWithCustomCaret.propTypes = {
+  onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  value: PropTypes.string,
+};
