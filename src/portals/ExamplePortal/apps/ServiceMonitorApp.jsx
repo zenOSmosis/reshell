@@ -2,8 +2,6 @@
 // make it easy to expose services to windows which don't directly use said
 // service
 
-import PhantomCore from "phantom-core";
-
 import { useContext } from "react";
 import StickyTable from "@components/StickyTable";
 import Layout, { Content, Footer } from "@components/Layout";
@@ -115,8 +113,8 @@ const ServiceMonitorApp = {
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
             <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-              PhantomCore uptime:{" "}
-              <Timer onTick={() => PhantomCore.getUptime()} />
+              {services.length} running service
+              {services.length !== 1 ? "s" : ""}
             </div>
             <AppLinkButton
               id={APPLICATION_MONITOR_REGISTRATION_ID}
