@@ -4,6 +4,8 @@ import PhantomCore from "phantom-core";
 import React from "react";
 import ReactDOM from "react-dom";
 
+import TearDownView from "../TearDownView";
+
 import UIServiceManager from "../classes/UIServiceManager";
 import BrowserShutdownInterceptorService from "@services/BrowserShutdownInterceptorService";
 import KeyVaultService from "@services/KeyVaultService";
@@ -199,7 +201,10 @@ export default class ReShellCore extends PhantomCore {
 
     // Unrender DOM
     // Stop the current UI
-    ReactDOM.render(<div>[Tear down]</div>, this._elBase);
+    ReactDOM.render(
+      <TearDownView onForceReload={ReShellCore.forceReload} />,
+      this._elBase
+    );
 
     return super.destroy(async () => {
       await this._uiServiceManager.destroy();
@@ -216,10 +221,19 @@ export default class ReShellCore extends PhantomCore {
   }
 
   // TODO: Document
-  static async reload() {
-    await _instance?.destroy();
+  static async reload(isForced = false) {
+    if (!isForced) {
+      await _instance?.destroy();
+    } else {
+      document.body.innerHTML = "";
+      document.write("[Force reload operation proceeding]");
+    }
 
-    window.location.reload();
+    // Note: The boolean flag is not part of the reload specification, and is
+    // used for legacy purposes. It likely has no effect whatsoever. Read
+    // more about it here:
+    // https://developer.mozilla.org/en-US/docs/Web/API/Location/reload
+    window.location.reload(isForced);
   }
 
   // TODO: Document
@@ -239,6 +253,13 @@ export default class ReShellCore extends PhantomCore {
     const urlQuery = queryString.stringify({ portalName });
 
     window.location.href = `${process.env.PUBLIC_URL || ""}?${urlQuery}`;
+  }
+
+  /**
+   * Forces a reload of ReShell core without properly shutting down.
+   */
+  static async forceReload() {
+    return ReShellCore.reload(true);
   }
 
   // TODO: Document
