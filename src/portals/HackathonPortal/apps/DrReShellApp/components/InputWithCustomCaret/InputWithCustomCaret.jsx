@@ -54,7 +54,11 @@ const InputWithCustomCaret = React.forwardRef(
         <div
           className={styles["caret-wrapper"]}
           style={{
-            // FIXME: Fix issue w/ Safari where this is not correct
+            // TODO: Fix issue w/ Safari where this is not correct
+            //
+            // TODO: This might work better if hiding the actual input,
+            // rendering the text state, and concatenating the caret on the
+            // end
             left: caretPosition / 2.5 + "em",
             top: 0,
           }}
