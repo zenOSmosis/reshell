@@ -21,27 +21,23 @@ const HelloWorldApp = {
       appServices[NetworkStatusMonitorService];
 
     const isOnline = networkStatusMonitorService.getIsOnline();
-    const isFetchingIPInfo = networkStatusMonitorService.getIsFetchingIPInfo();
+    // const isFetchingIPInfo = networkStatusMonitorService.getIsFetchingIPInfo();
     const ipAddress = networkStatusMonitorService.getIPAddress();
 
     return (
       <Layout>
         <Content>
           <Center>
-            <div>IP Address: {ipAddress || "N/A"}</div>
+            {isOnline ? (
+              <div>IP Address: {ipAddress || "N/A"}</div>
+            ) : (
+              <div style={{ fontWeight: "bold" }}>Not online</div>
+            )}
           </Center>
         </Content>
 
         <Footer>
           <Padding>
-            <button
-              onClick={networkStatusMonitorService.fetchIPInfo}
-              disabled={!isOnline || isFetchingIPInfo}
-              style={{ position: "absolute", left: 0, bottom: 0 }}
-            >
-              Refetch
-            </button>
-
             <LabeledLED
               style={{ float: "right" }}
               color={isOnline ? "green" : "red"}
