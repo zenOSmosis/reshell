@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Preload from "preload-it";
 
 /**
@@ -46,11 +46,8 @@ export default function usePreload(srcList) {
     }
   }, []);
 
-  return useMemo(
-    () => ({
-      isPreloaded,
-      progress,
-    }),
-    [isPreloaded, progress]
-  );
+  return {
+    isPreloaded,
+    progress,
+  };
 }

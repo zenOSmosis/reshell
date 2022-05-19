@@ -42,11 +42,8 @@ export default function useAudio(srcOrSrcList, format = null) {
 
   const play = useCallback(() => sound?.play(), [sound]);
 
-  return useMemo(
-    () => ({
-      play,
-      isPreloaded,
-    }),
-    [play, isPreloaded]
-  );
+  return {
+    play,
+    isPreloaded,
+  };
 }
