@@ -19,6 +19,7 @@ import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
+import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -59,6 +60,7 @@ export default function SpeakerAppPortal() {
         AppRegistrationViewerApp,
         NativeSpyAgentApp,
         IPApp,
+        TTSConfigurerApp,
 
         // Speaker.app-specific apps
         CallPlayerApp,

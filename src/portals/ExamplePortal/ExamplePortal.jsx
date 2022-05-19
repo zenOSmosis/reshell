@@ -30,6 +30,7 @@ import DesktopCommanderDebuggerApp from "./apps/DesktopCommanderDebuggerApp";
 import NativeSpyAgentApp from "./apps/NativeSpyAgentApp";
 import HelloWorldApp from "./apps/HelloWorldApp";
 import IPApp from "./apps/IPApp";
+import TTSConfigurerApp from "./apps/TTSConfigurerApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -67,6 +68,7 @@ export default function ExamplePortal() {
         NativeSpyAgentApp,
         HelloWorldApp,
         IPApp,
+        TTSConfigurerApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

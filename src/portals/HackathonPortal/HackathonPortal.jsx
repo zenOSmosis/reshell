@@ -21,6 +21,7 @@ import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewe
 import EnvironmentApp from "../ExamplePortal/apps/EnvironmentApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
+import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 
 import SpeechCommanderApp from "./apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
@@ -52,6 +53,7 @@ export default function HackathonPortal() {
         AppRegistrationViewerApp,
         EnvironmentApp,
         IPApp,
+        TTSConfigurerApp,
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
