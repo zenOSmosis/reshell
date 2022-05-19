@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import Caret from "../Caret";
 
 import classNames from "classnames";
@@ -11,30 +11,6 @@ import PropTypes from "prop-types";
  */
 const InputWithCustomCaret = React.forwardRef(
   ({ onChange, onKeyDown, value, ...rest }, refInput) => {
-    const [caretPosition, setCaretPosition] = useState(value?.length || 0);
-
-    const handleChange = useCallback(
-      evt => {
-        setCaretPosition(evt.target.selectionStart);
-
-        if (typeof onChange === "function") {
-          onChange(evt);
-        }
-      },
-      [onChange]
-    );
-
-    const handleKeyDown = useCallback(
-      evt => {
-        setCaretPosition(evt.target.selectionStart);
-
-        if (typeof onKeyDown === "function") {
-          onKeyDown(evt);
-        }
-      },
-      [onKeyDown]
-    );
-
     return (
       <div
         className={classNames(
@@ -42,29 +18,17 @@ const InputWithCustomCaret = React.forwardRef(
           styles["wrapper"]
         )}
       >
+        <div>
+          <span>{value}</span>
+          <Caret />
+        </div>
         <input
           ref={refInput}
-          className={styles["input-with-custom-caret"]}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
           value={value}
           {...rest}
         />
-
-        <div
-          className={styles["caret-wrapper"]}
-          style={{
-            // TODO: Fix issue w/ Safari where this is not correct
-            //
-            // TODO: This might work better if hiding the actual input,
-            // rendering the text state, and concatenating the caret on the
-            // end
-            left: caretPosition / 2.5 + "em",
-            top: 0,
-          }}
-        >
-          <Caret hPosition={caretPosition} />
-        </div>
       </div>
     );
   }

@@ -2,10 +2,6 @@
   position: relative;
 }
 
-input.input-with-custom-caret {
-  caret-color: transparent;
-}
-
-.input-with-custom-caret.wrapper .caret-wrapper {
-  position: absolute;
+input {
+  opacity: 0;
 }
