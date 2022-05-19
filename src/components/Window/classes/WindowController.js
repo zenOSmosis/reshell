@@ -152,7 +152,12 @@ export default class WindowController extends PhantomState {
     this._elWindow = el;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the DOM element which contains the ReShell window this
+   * controller is attached to.
+   *
+   * @return {HTMLDivElement}
+   */
   getElWindow() {
     return this._elWindow;
   }

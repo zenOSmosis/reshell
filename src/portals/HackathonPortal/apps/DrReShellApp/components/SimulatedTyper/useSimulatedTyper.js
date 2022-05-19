@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 
 import useAsyncEffect from "@hooks/useAsyncEffect";
 
-// TODO: Document
+/**
+ * Determines the number of milliseconds between character presses to achieve
+ * the desired words per minute.
+ *
+ * @param {number} wpm
+ * @return {number}
+ */
 function calcWPMTimeout(wpm) {
+  // Average English word length
   const avgWordLength = 4.7;
 
   const lettersPerMinute = wpm * avgWordLength;
@@ -18,8 +25,8 @@ function calcWPMTimeout(wpm) {
 // TODO: Simulate optional typos(?)
 export default function useSimulatedTyper({
   text,
-  onTypingStart,
-  onTypingEnd,
+  onTypingStart = null,
+  onTypingEnd = null,
   wpm = 160,
   leadingEdgeTimeout = 1000,
 }) {

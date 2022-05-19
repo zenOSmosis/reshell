@@ -7,6 +7,12 @@ import SimulatedTyper from "../../components/SimulatedTyper";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
 
+import PartOfSpeechAnalyzerService from "../../../../services/PartOfSpeechAnalyzerService";
+
+import TTSService from "@services/TextToSpeechService";
+
+import PropTypes from "prop-types";
+
 import DrReShellSessionEngine, {
   EVT_READY,
   EVT_UPDATED,
@@ -17,8 +23,17 @@ import DrReShellSessionEngine, {
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
-// TODO: Document
-// TODO: Add prop-types
+ConversationView.propTypes = {
+  posSpeechAnalyzer: PropTypes.instanceOf(PartOfSpeechAnalyzerService)
+    .isRequired,
+  ttsService: PropTypes.instanceOf(TTSService).isRequired,
+  onSessionEnd: PropTypes.func,
+  onReset: PropTypes.func,
+};
+
+/**
+ * Dr. ReShell conversation view.
+ */
 export default function ConversationView({
   posSpeechAnalyzer,
   onSessionEnd,

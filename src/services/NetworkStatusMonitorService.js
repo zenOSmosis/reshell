@@ -1,6 +1,9 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import axios from "axios";
 
+/**
+ * Maintains internet connection information.
+ */
 export default class NetworkStatusMonitorService extends UIServiceCore {
   constructor(...args) {
     super(...args);
@@ -11,7 +14,6 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
       isOnline: false,
       isFetchingIPInfo: false,
       data: null,
-      // ...
     });
 
     (() => {
@@ -38,14 +40,17 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
     })();
   }
 
-  // TODO: Document
+  /**
+   * Retrieves network IP info.
+   *
+   * @return {Promise<Object>} // TODO: Document structure
+   */
   async fetchIPInfo() {
     this.setState({ isFetchingIPInfo: true });
 
     axios
       .get("https://www.cloudflare.com/cdn-cgi/trace")
       .then(resp => resp.data)
-      // TODO: Parse this and display in UI
       .then(data => {
         const lines = Object.fromEntries(
           data
@@ -116,12 +121,20 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
     return this.getState().isOnline;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves the client IP address.
+   *
+   * @return {string}
+   */
   getIPAddress() {
     return this.getState().data?.ip;
   }
 
-  // TODO: Document
+  /**
+   * Retrieves all of the IP info.
+   *
+   * @return {Object} // TODO: Document structure
+   */
   getData() {
     return this.getState().data;
   }

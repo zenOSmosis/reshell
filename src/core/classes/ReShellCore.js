@@ -220,7 +220,13 @@ export default class ReShellCore extends PhantomCore {
     return _instance?.destroy();
   }
 
-  // TODO: Document
+  /**
+   * Reloads the ReShell system.
+   *
+   * @param {boolean} isForced? [default = false] If set to true it will bypass
+   * the normal shutdown process.
+   * @return {Promise<void>}
+   */
   static async reload(isForced = false) {
     if (!isForced) {
       await _instance?.destroy();
