@@ -10,7 +10,7 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
     this.setState({
       isOnline: false,
       isFetchingIPInfo: false,
-      ipAddress: null,
+      data: null,
       // ...
     });
 
@@ -22,7 +22,7 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
       };
 
       const _handleNetworkOffline = () => {
-        this.setState({ isOnline: false, ipAddress: null });
+        this.setState({ isOnline: false, data: null });
       };
 
       this.addNativeEventListener("online", _handleNetworkOnline);
@@ -89,8 +89,8 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
         warp: "off";
         */
 
-        if (lines.ip) {
-          this.setState({ ipAddress: lines.ip });
+        if (lines) {
+          this.setState({ data: lines });
         }
       })
       .finally(() => this.setState({ isFetchingIPInfo: false }));
@@ -118,6 +118,11 @@ export default class NetworkStatusMonitorService extends UIServiceCore {
 
   // TODO: Document
   getIPAddress() {
-    return this.getState().ipAddress;
+    return this.getState().data?.ip;
+  }
+
+  // TODO: Document
+  getData() {
+    return this.getState().data;
   }
 }
