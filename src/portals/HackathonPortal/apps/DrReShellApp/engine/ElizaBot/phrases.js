@@ -1,3 +1,13 @@
+// TODO: Add more interrogatives (some of these are already included)
+//  - what
+//  - do
+//  - how
+//  - is
+//  - are
+//  - why
+//  - where
+// https://www.researchgate.net/figure/Interrogative-frequency-use-of-Telecommunications-knowledge_tbl3_224597258
+
 export const elizaInitials = [
   "How do you do?  Please tell me your problem.",
   "Please tell me what's been bothering you.",
