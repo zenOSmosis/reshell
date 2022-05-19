@@ -2,6 +2,9 @@ import SpeechRecognizerBase from "../../../__common__/SpeechRecognizerBase";
 
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
+// disable telemetry data
+sdk.Recognizer.enableTelemetry(false);
+
 /**
  * Handles direct communication with Azure CognitiveService backend using the
  * microsoft-cognitiveservices-speech-sdk.

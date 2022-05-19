@@ -18,6 +18,8 @@ import MemoryInfoApp from "../ExamplePortal/apps/MemoryInfoApp";
 import SoftwareInfoApp from "../ExamplePortal/apps/SoftwareInfoApp";
 import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewerApp";
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
+import IPApp from "../ExamplePortal/apps/IPApp";
+import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 //
 import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
@@ -29,6 +31,7 @@ import ChatApp from "./apps/ChatApp";
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
 import DesktopCommanderDebuggerApp from "../ExamplePortal/apps/DesktopCommanderDebuggerApp";
 import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
+import DrReShellApp from "../HackathonPortal/apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -56,6 +59,8 @@ export default function SpeakerAppPortal() {
         SoftwareInfoApp,
         AppRegistrationViewerApp,
         NativeSpyAgentApp,
+        IPApp,
+        TTSConfigurerApp,
 
         // Speaker.app-specific apps
         CallPlayerApp,
@@ -66,6 +71,7 @@ export default function SpeakerAppPortal() {
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,
         SayItDifferentApp,
+        DrReShellApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

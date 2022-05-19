@@ -13,7 +13,7 @@ export default class AppRuntime extends PhantomCore {
   // TODO: Implement ability to set initial environment
 
   // TODO: Document
-  constructor(appRegistration) {
+  constructor(appRegistration, appOrchestrationService) {
     if (!(appRegistration instanceof AppRegistration)) {
       throw new TypeError("appRegistration is not an AppRegistration");
     }
@@ -21,6 +21,7 @@ export default class AppRuntime extends PhantomCore {
     super();
 
     this._appRegistration = appRegistration;
+    this._appOrchestrationService = appOrchestrationService;
 
     // Emit EVT_UPDATED out runtime when the registration updates
     this.proxyOn(this._appRegistration, EVT_UPDATED, data => {
@@ -41,6 +42,8 @@ export default class AppRuntime extends PhantomCore {
         this._windowController.destroy();
       }
 
+      this._appRegistration = null;
+      this._appOrchestrationService = null;
       this._windowController = null;
 
       // IMPORTANT: We only want to remove the registration, but don't want to
@@ -54,6 +57,11 @@ export default class AppRuntime extends PhantomCore {
     if (this._windowController) {
       return this._windowController.bringToTop();
     }
+  }
+
+  // TODO: Document
+  getIsActive() {
+    return this === this._appOrchestrationService.getActiveAppRuntime();
   }
 
   // TODO: Document

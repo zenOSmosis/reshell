@@ -2,8 +2,6 @@
 // make it easy to expose services to windows which don't directly use said
 // service
 
-import PhantomCore from "phantom-core";
-
 import { useContext } from "react";
 import StickyTable from "@components/StickyTable";
 import Layout, { Content, Footer } from "@components/Layout";
@@ -20,7 +18,7 @@ import { REGISTRATION_ID as APPLICATION_MONITOR_REGISTRATION_ID } from "./Applic
 // TODO: Include (either here, or elsewhere,) ability to monitor running
 // PhantomCore instances (use WeakRef here or there, as well)?
 
-// TODO: Include links to apps which are using this service
+// TODO: Include links to apps which are using each respective service
 
 // TODO: Show last update time, state, etc.
 
@@ -114,16 +112,14 @@ const ServiceMonitorApp = {
         <Footer>
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
-            <Full>
-              <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-                PhantomCore uptime:{" "}
-                <Timer onTick={() => PhantomCore.getUptime()} />
-              </div>
-              <AppLinkButton
-                id={APPLICATION_MONITOR_REGISTRATION_ID}
-                style={{ float: "right", verticalAlign: "bottom" }}
-              />
-            </Full>
+            <div style={{ position: "absolute", bottom: 0, left: 0 }}>
+              {services.length} running service
+              {services.length !== 1 ? "s" : ""}
+            </div>
+            <AppLinkButton
+              id={APPLICATION_MONITOR_REGISTRATION_ID}
+              style={{ float: "right", verticalAlign: "bottom" }}
+            />
           </Padding>
         </Footer>
       </Layout>

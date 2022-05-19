@@ -8,6 +8,7 @@ const DEFAULT_PROPS = {
   isEnabled: true,
 };
 
+// TODO: Optionally grab from domNode from context
 /**
  * Binds keyboard event handlers to the given DOM element.
  *
@@ -59,12 +60,12 @@ export default function useKeyboardEvents(domNode, props = {}) {
       onKeyUp(evt.which);
     };
 
-    domNode.addEventListener("keydown", _handleKeyDown);
-    domNode.addEventListener("keyup", _handleKeyUp);
+    domNode.addEventListener("keydown", _handleKeyDown, true);
+    domNode.addEventListener("keyup", _handleKeyUp, true);
 
     return () => {
-      domNode.removeEventListener("keydown", _handleKeyDown);
-      domNode.removeEventListener("keyup", _handleKeyUp);
+      domNode.removeEventListener("keydown", _handleKeyDown, true);
+      domNode.removeEventListener("keyup", _handleKeyUp, true);
     };
   }, [domNode, onKeyDown, onKeyUp, onEnter, onEscape, isEnabled]);
 }

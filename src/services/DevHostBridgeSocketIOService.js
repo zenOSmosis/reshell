@@ -1,5 +1,6 @@
 import SocketIOService from "@services/SocketIOService";
 
+// TODO: Rename w/ PROTO_ prefix?
 export default class DevHostBridgeSocketIOService extends SocketIOService {
   constructor(...args) {
     super(...args);

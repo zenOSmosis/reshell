@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import AppRuntimeTable from "./AppRuntime.Table";
 
 import Center from "@components/Center";
-import Full from "@components/Full";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
@@ -26,10 +25,11 @@ const ApplicationMonitorApp = {
     height: 480,
   },
   isPinned: true,
-  view: function View({ windowController }) {
+  view: function View() {
     const { appRuntimes } = useAppOrchestrationContext();
     const { isProfiling, setIsProfiling } = useDesktopContext();
 
+    // Automatically disable profiling when unmounting
     useEffect(() => {
       if (isProfiling) {
         return () => setIsProfiling(false);
@@ -97,16 +97,14 @@ const ApplicationMonitorApp = {
         <Footer style={{ fontSize: ".8rem" }}>
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
-            <Full>
-              <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-                PhantomCore uptime:{" "}
-                <Timer onTick={() => PhantomCore.getUptime()} />
-              </div>
-              <AppLinkButton
-                id={SERVICE_MONITOR_REGISTRATION_ID}
-                style={{ float: "right", verticalAlign: "bottom" }}
-              />
-            </Full>
+            <div style={{ position: "absolute", bottom: 0, left: 0 }}>
+              PhantomCore uptime:{" "}
+              <Timer onTick={() => PhantomCore.getUptime()} />
+            </div>
+            <AppLinkButton
+              id={SERVICE_MONITOR_REGISTRATION_ID}
+              style={{ float: "right", verticalAlign: "bottom" }}
+            />
           </Padding>
         </Footer>
       </Layout>

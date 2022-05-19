@@ -176,7 +176,7 @@ const WindowView = ({
   return (
     // TODO: Wrap with ErrorBoundary and React.Suspense
     <StackingContext
-      onMount={_setElWindow}
+      ref={_setElWindow}
       {...rest}
       style={{ ...outerBorderStyle, zIndex }}
       className={classNames(

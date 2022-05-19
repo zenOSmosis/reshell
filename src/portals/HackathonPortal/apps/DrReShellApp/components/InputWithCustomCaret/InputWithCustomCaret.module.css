@@ -1,0 +1,7 @@
+.input-with-custom-caret.wrapper {
+  position: relative;
+}
+
+.input-with-custom-caret input {
+  opacity: 0;
+}

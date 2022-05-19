@@ -21,7 +21,7 @@ const ApplicationsApp = {
   title: "Applications",
   style: {
     width: 640 * 1.2,
-    height: 400 * 1.2,
+    height: 480 * 1.2,
   },
   isPinnedToDock: true,
   initialSharedState: {

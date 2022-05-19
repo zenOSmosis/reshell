@@ -6,7 +6,11 @@ import styles from "./ButtonTransparent.module.css";
 function ButtonTransparent({ children, className, ...rest }) {
   return (
     <button
-      className={classNames(styles["button-transparent"], className)}
+      className={classNames(
+        styles["button-transparent"],
+        "unstyled",
+        className
+      )}
       {...rest}
     >
       {children}

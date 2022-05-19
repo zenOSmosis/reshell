@@ -43,13 +43,17 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
    */
   async ping() {
     if (!this._zenRTCPeer.getIsConnected()) {
-      console.warn("Skipping ping because peer is not connected");
+      this.log.warn("Skipping ping because peer is not connected");
 
       return;
     }
 
     return this._zenRTCPeer.ping().catch(err => {
-      console.error("Heartbeat failed", err);
+      this.log.error("Heartbeat failed", err);
+
+      // TODO: Fix issue where this can leave remote peers hanging (it is
+      // likely due to issue in ZenRTCVirtualServer)
+      // (to reproduce, connect remote mobile client connection then close all mobile windows)
 
       if (this._zenRTCPeer && !this._zenRTCPeer.getIsDestroying()) {
         this._zenRTCPeer.destroy();

@@ -1,0 +1,18 @@
+.caret {
+  display: inline-block;
+  pointer-events: none;
+}
+
+.caret.blinking {
+  animation: blinking 1s infinite;
+  animation-timing-function: step-end;
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

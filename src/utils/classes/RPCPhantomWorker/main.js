@@ -1,11 +1,13 @@
-import PhantomCore from "phantom-core";
+import PhantomCore, { EVT_READY } from "phantom-core";
 
 const EVT_WORKER_MESSAGE = "worker-message";
-
-// TODO: Emit EVT_READY once worker is ready
+const EVT_PRE_READY = "pre-ready";
 
 /**
- * Creates and maintains an RPC-controlled web worker, bound to a PhantomCore lifecycle.
+ * Creates and maintains an RPC-controlled web worker, bound to a PhantomCore
+ * lifecycle.
+ *
+ * IMPORTANT: This is the CONTROLLER script (i.e. can run on the main thread)
  */
 export default class RPCPhantomWorker extends PhantomCore {
   /**
@@ -21,13 +23,15 @@ export default class RPCPhantomWorker extends PhantomCore {
    * @param {() => Worker} createWorker A function which returns a Worker instance
    */
   constructor(createWorker = () => new Worker("./worker", { type: "module" })) {
-    super();
+    super({ isAsync: true });
 
     /** @type {() => Worker} */
     this._createWorker = createWorker;
 
     /** @type {Worker} */
     this._worker = this._createWorker();
+
+    // Automatically terminate the worker once this class is destructed
     this.registerCleanupHandler(() => {
       if (this._worker) {
         this._worker.terminate();
@@ -39,10 +43,26 @@ export default class RPCPhantomWorker extends PhantomCore {
       this._worker.removeEventListener("message", this._handleWorkerMessage);
     });
 
+    // Utilized for correlating responses with replies
     this._callIdx = -1;
 
     // TODO: Listen for worker to terminate and invoke destruct handler
     // (use ping events)
+
+    this._init();
+  }
+
+  async _init() {
+    // Wait for worker to signal it is ready
+    //
+    // Note: I guess that I could have used an internal onload event for this,
+    // but this should ensure that it is actually ready to go.
+    //
+    // FIXME: (jh) Handle condition where this class could possibly be
+    // destructed before the worker is ready
+    await new Promise(resolve => this.once(EVT_PRE_READY, resolve));
+
+    return super._init();
   }
 
   /**
@@ -53,6 +73,12 @@ export default class RPCPhantomWorker extends PhantomCore {
    * @return {void}
    */
   _handleWorkerMessage(evt) {
+    if (!this._isReady && evt.data === EVT_READY) {
+      this.emit(EVT_PRE_READY);
+
+      return;
+    }
+
     if (evt.data.id !== undefined) {
       this.emit(EVT_WORKER_MESSAGE, evt.data);
     }

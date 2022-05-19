@@ -43,6 +43,16 @@ export default class TextToSpeechService extends UIServiceCore {
     // @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
     this._synth = window.speechSynthesis;
 
+    // Fixes issue where voices might not be immediately available to a
+    // connected app if its auto-loaded at startup.  Note: I started to bake
+    // this functionality into UIService itself but ran into startup problems
+    // so left it alone.
+    //
+    // FIXME: (jh) This MAY require user interaction in a new session
+    setImmediate(() => {
+      this.emit(EVT_UPDATED);
+    });
+
     return super._init();
   }
 
@@ -71,7 +81,10 @@ export default class TextToSpeechService extends UIServiceCore {
    * @return {SpeechSynthesisVoice | null}
    */
   getDefaultVoice() {
-    return this.getState().defaultVoice;
+    return (
+      this.getState().defaultVoice ||
+      this.getVoices().find(voice => voice.default === true)
+    );
   }
 
   /**
@@ -91,7 +104,7 @@ export default class TextToSpeechService extends UIServiceCore {
    *
    * @return {number} A floating point number from 0.0 - 1.0
    */
-  getDefaultPitch(defaultPitch) {
+  getDefaultPitch() {
     return this.getState().defaultPitch;
   }
 
@@ -112,7 +125,7 @@ export default class TextToSpeechService extends UIServiceCore {
    *
    * @return {number} A floating point number from 0.0 - 1.0
    */
-  getDefaultRate(defaultRate) {
+  getDefaultRate() {
     return this.getState().defaultRate;
   }
 
@@ -125,6 +138,8 @@ export default class TextToSpeechService extends UIServiceCore {
   }
 
   /**
+   * Retrieves the voices which match the system's locale.
+   *
    * @return {SpeechSynthesisVoice[]}
    */
   getLocaleVoices() {
@@ -201,7 +216,15 @@ export default class TextToSpeechService extends UIServiceCore {
       await new Promise((resolve, reject) => {
         // FIXME: Ensure this is properly ended if externally canceled
 
+        // FIXME: The doubled-up usage of onend and addEventListener helps
+        // resolve an issue in Safari 15.3 where the end handler is not
+        // called. However, this is still not always reliable.
         utterance.onend = () => resolve();
+        utterance.addEventListener("ended", function handleEnd() {
+          resolve();
+
+          utterance.removeEventListener("ended", handleEnd);
+        });
 
         utterance.onerror = () => reject();
 
@@ -209,7 +232,7 @@ export default class TextToSpeechService extends UIServiceCore {
       });
     } catch (err) {
       // TODO: Handle accordingly
-      console.error(err);
+      this.log.error(err);
     } finally {
       this.setState({ isSpeaking: false });
 
