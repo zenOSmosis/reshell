@@ -2,6 +2,6 @@
   position: relative;
 }
 
-input {
+.input-with-custom-caret input {
   opacity: 0;
 }
