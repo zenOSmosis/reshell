@@ -44,6 +44,7 @@ const HelloWorldApp = {
                         ([key]) =>
                           ![
                             "uag",
+                            "ts",
                             "fl",
                             "h",
                             "visit_scheme",
