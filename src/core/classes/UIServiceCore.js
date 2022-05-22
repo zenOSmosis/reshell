@@ -1,5 +1,4 @@
-import { PhantomServiceCore } from "phantom-core";
-const { EVT_UPDATED, EVT_DESTROYED } = PhantomServiceCore;
+import { PhantomServiceCore, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
 
 export { EVT_UPDATED, EVT_DESTROYED };
 

@@ -1,4 +1,4 @@
-import PhantomCore from "phantom-core";
+import { getUptime } from "phantom-core";
 
 import { useEffect } from "react";
 
@@ -98,8 +98,7 @@ const ApplicationMonitorApp = {
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
             <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-              PhantomCore uptime:{" "}
-              <Timer onTick={() => PhantomCore.getUptime()} />
+              PhantomCore uptime: <Timer onTick={() => getUptime()} />
             </div>
             <AppLinkButton
               id={SERVICE_MONITOR_REGISTRATION_ID}
