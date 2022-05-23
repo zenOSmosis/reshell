@@ -53,7 +53,7 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
     _setMediaStreamMonitor(mediaStreamMonitor);
 
     return function unmount() {
-      if (!mediaStreamMonitor.getIsDestroying()) {
+      if (!mediaStreamMonitor.UNSAFE_getIsDestroying()) {
         mediaStreamMonitor.destroy();
       }
     };

@@ -38,7 +38,7 @@ export default function useWindowControls({ windowController }) {
    * @return {void}
    */
   const handleClose = useCallback(() => {
-    if (!windowController.getIsDestroying()) {
+    if (!windowController.UNSAFE_getIsDestroying()) {
       windowController.destroy();
     }
   }, [windowController]);

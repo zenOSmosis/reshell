@@ -232,21 +232,21 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._dataChannelManagerModule.getIsDestroying()) {
+        if (!this._dataChannelManagerModule.UNSAFE_getIsDestroying()) {
           await this._dataChannelManagerModule.destroy();
         }
       });
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._syncEventDataChannelModule.getIsDestroying()) {
+        if (!this._syncEventDataChannelModule.UNSAFE_getIsDestroying()) {
           await this._syncEventDataChannelModule.destroy();
         }
       });
 
       this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._mediaStreamManagerModule.getIsDestroying()) {
+        if (!this._mediaStreamManagerModule.UNSAFE_getIsDestroying()) {
           await this._mediaStreamManagerModule.destroy();
         }
       });
@@ -368,7 +368,7 @@ export default class ZenRTCPeer extends PhantomCore {
     // Pause for message to be delivered
     await sleep(100);
 
-    if (!this.getIsDestroying()) {
+    if (!this.UNSAFE_getIsDestroying()) {
       this.destroy();
     }
   }
@@ -653,7 +653,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
         this.log.debug("webrtc-peer disconnected");
 
-        if (!this.getIsDestroying()) {
+        if (!this.UNSAFE_getIsDestroying()) {
           this.destroy();
         }
       });
@@ -906,7 +906,7 @@ export default class ZenRTCPeer extends PhantomCore {
         break;
 
       case SYNC_EVT_BYE:
-        if (!this.getIsDestroying) {
+        if (!this.UNSAFE_getIsDestroying) {
           this.destroy();
         }
         break;
@@ -975,7 +975,7 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    if (!this.getIsDestroying()) {
+    if (!this.UNSAFE_getIsDestroying()) {
       return this.destroy();
     }
   }

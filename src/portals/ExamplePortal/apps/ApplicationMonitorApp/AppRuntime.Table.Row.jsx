@@ -132,7 +132,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
           <span> | </span>
           <button
             onClick={() => {
-              if (!appRuntime.getIsDestroying()) {
+              if (!appRuntime.UNSAFE_getIsDestroying()) {
                 appRuntime.destroy();
               }
             }}

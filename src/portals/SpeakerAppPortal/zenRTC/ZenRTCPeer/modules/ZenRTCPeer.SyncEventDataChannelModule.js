@@ -22,7 +22,7 @@ export default class SyncEventDataChannelModule extends BaseModule {
     });
 
     this.registerCleanupHandler(async () => {
-      if (!this._dataChannel.getIsDestroying()) {
+      if (!this._dataChannel.UNSAFE_getIsDestroying()) {
         await this._dataChannel.destroy();
       }
     });
