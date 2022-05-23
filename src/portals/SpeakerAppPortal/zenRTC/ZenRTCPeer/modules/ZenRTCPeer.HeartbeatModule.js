@@ -51,10 +51,6 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
     return this._zenRTCPeer.ping().catch(err => {
       this.log.error("Heartbeat failed", err);
 
-      // TODO: Fix issue where this can leave remote peers hanging (it is
-      // likely due to issue in ZenRTCVirtualServer)
-      // (to reproduce, connect remote mobile client connection then close all mobile windows)
-
       if (this._zenRTCPeer && !this._zenRTCPeer.getIsDestroying()) {
         this._zenRTCPeer.destroy();
       }
