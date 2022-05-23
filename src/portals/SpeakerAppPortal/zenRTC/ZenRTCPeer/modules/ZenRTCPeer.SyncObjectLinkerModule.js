@@ -155,7 +155,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
    */
   async destroy() {
     return super.destroy(async () => {
-      if (!this._bidirectionalSyncObject.UNSAFE_getIsDestroying()) {
+      if (!this._bidirectionalSyncObject.getHasDestroyStarted()) {
         await this._bidirectionalSyncObject.destroy();
       }
     });

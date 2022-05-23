@@ -78,7 +78,7 @@ export default class WindowController extends PhantomState {
       // Clear any currently scheduled resize executions
       this._emitDebouncedResized.clear();
 
-      if (this._appRuntime && !this._appRuntime.UNSAFE_getIsDestroying()) {
+      if (this._appRuntime && !this._appRuntime.getHasDestroyStarted()) {
         await this._appRuntime.destroy();
       }
 
@@ -105,7 +105,7 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    if (!this.UNSAFE_getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this._centerHandler();
     }
   }
@@ -125,7 +125,7 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    if (!this.UNSAFE_getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this._scatterHandler();
     }
   }

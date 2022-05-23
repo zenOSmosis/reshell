@@ -72,7 +72,7 @@ export default class SocketChannel extends PhantomCore {
     // Handle channel auto-destruct when socket disconnects
     (() => {
       const _handleSocketDisconnected = () => {
-        if (!this.UNSAFE_getIsDestroying()) {
+        if (!this.getHasDestroyStarted()) {
           this.destroy();
         }
       };
@@ -135,7 +135,7 @@ export default class SocketChannel extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    if (!this.UNSAFE_getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       return this.destroy();
     }
   }

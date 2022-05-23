@@ -18,8 +18,8 @@ export default class SpyAgent extends PhantomState {
 
       if (
         !spyAgent ||
-        spyAgent.UNSAFE_getIsDestroying() ||
-        spyAgent.UNSAFE_getIsDestroyed()
+        spyAgent.getHasDestroyStarted() ||
+        spyAgent.getIsDestroyed()
       ) {
         spyAgent = new SpyAgent(spiesOn, initialState);
 

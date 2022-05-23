@@ -91,7 +91,7 @@ const ScreenCaptureApp = {
     useEffect(() => {
       if (screenCaptureFactory) {
         return () => {
-          if (!screenCaptureFactory.UNSAFE_getIsDestroying()) {
+          if (!screenCaptureFactory.getHasDestroyStarted()) {
             screenCaptureFactory.destroy();
           }
         };
@@ -188,7 +188,7 @@ const ScreenCaptureApp = {
                     onClick={() => {
                       if (
                         screenCaptureFactory &&
-                        !screenCaptureFactory.UNSAFE_getIsDestroying()
+                        !screenCaptureFactory.getHasDestroyStarted()
                       ) {
                         screenCaptureFactory.destroy();
                       } else {

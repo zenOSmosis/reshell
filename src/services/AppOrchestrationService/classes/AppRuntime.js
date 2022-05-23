@@ -30,7 +30,7 @@ export default class AppRuntime extends PhantomCore {
 
     // Destruct runtime when registration destructs
     this.proxyOnce(this._appRegistration, EVT_DESTROY, () => {
-      if (!this.UNSAFE_getIsDestroying()) {
+      if (!this.getHasDestroyStarted()) {
         this.destroy();
       }
     });
@@ -38,7 +38,7 @@ export default class AppRuntime extends PhantomCore {
     this._windowController = null;
 
     this.registerCleanupHandler(async () => {
-      if (!this.UNSAFE_getIsDestroying()) {
+      if (!this.getHasDestroyStarted()) {
         this._windowController.destroy();
       }
 

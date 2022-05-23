@@ -231,21 +231,21 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._dataChannelManagerModule.UNSAFE_getIsDestroying()) {
+        if (!this._dataChannelManagerModule.getHasDestroyStarted()) {
           await this._dataChannelManagerModule.destroy();
         }
       });
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._syncEventDataChannelModule.UNSAFE_getIsDestroying()) {
+        if (!this._syncEventDataChannelModule.getHasDestroyStarted()) {
           await this._syncEventDataChannelModule.destroy();
         }
       });
 
       this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._mediaStreamManagerModule.UNSAFE_getIsDestroying()) {
+        if (!this._mediaStreamManagerModule.getHasDestroyStarted()) {
           await this._mediaStreamManagerModule.destroy();
         }
       });
@@ -367,7 +367,7 @@ export default class ZenRTCPeer extends PhantomCore {
     // Pause for message to be delivered
     await sleep(100);
 
-    if (!this.UNSAFE_getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this.destroy();
     }
   }
@@ -652,7 +652,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
         this.log.debug("webrtc-peer disconnected");
 
-        if (!this.UNSAFE_getIsDestroying()) {
+        if (!this.getHasDestroyStarted()) {
           this.destroy();
         }
       });
@@ -905,7 +905,7 @@ export default class ZenRTCPeer extends PhantomCore {
         break;
 
       case SYNC_EVT_BYE:
-        if (!this.UNSAFE_getIsDestroying) {
+        if (!this.getHasDestroyStarted) {
           this.destroy();
         }
         break;
@@ -974,7 +974,7 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    if (!this.UNSAFE_getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       return this.destroy();
     }
   }

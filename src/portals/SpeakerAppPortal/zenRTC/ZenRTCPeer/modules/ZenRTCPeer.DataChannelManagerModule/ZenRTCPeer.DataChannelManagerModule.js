@@ -331,7 +331,7 @@ export default class DataChannelManagerModule extends BaseModule {
       });
 
       this.once(EVT_DESTROY, () => {
-        if (!dataChannel.UNSAFE_getIsDestroying()) {
+        if (!dataChannel.getHasDestroyStarted()) {
           dataChannel.destroy();
         }
       });
