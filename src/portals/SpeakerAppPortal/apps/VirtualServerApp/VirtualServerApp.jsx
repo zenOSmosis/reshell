@@ -23,7 +23,7 @@ const VirtualServerApp = {
   title: "Virtual Server",
   style: {
     width: 640,
-    height: 620,
+    height: 720,
   },
   serviceClasses: [
     SpeakerAppSocketAuthenticationService,

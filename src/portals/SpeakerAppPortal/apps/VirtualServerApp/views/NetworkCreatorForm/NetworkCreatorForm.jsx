@@ -4,6 +4,7 @@ import Center from "@components/Center";
 import Section from "@components/Section";
 import ButtonPanel from "@components/ButtonPanel";
 import Form from "@components/Form";
+import Padding from "@components/Padding";
 
 import styles from "./NetworkCreatorForm.module.css";
 
@@ -154,37 +155,39 @@ export default function CreateNetwork({
                   </p>
                 </div>
 
-                <ButtonPanel
-                  buttons={[
-                    {
-                      content: () => (
-                        <span>
-                          Simple{" "}
-                          <SimpleIcon
-                            style={{ marginLeft: 4, fontSize: "1.2em" }}
-                          />
-                        </span>
-                      ),
-                      onClick: () =>
-                        setState({
-                          isShowingAdvanced: false,
-                        }),
-                      isSelected: !isShowingAdvanced,
-                    },
-                    {
-                      content: () => (
-                        <span>
-                          Advanced{" "}
-                          <AdvancedIcon
-                            style={{ marginLeft: 4, fontSize: "1.2em" }}
-                          />
-                        </span>
-                      ),
-                      onClick: () => setState({ isShowingAdvanced: true }),
-                      isSelected: isShowingAdvanced,
-                    },
-                  ]}
-                />
+                <Padding>
+                  <ButtonPanel
+                    buttons={[
+                      {
+                        content: () => (
+                          <span>
+                            Simple{" "}
+                            <SimpleIcon
+                              style={{ marginLeft: 4, fontSize: "1.2em" }}
+                            />
+                          </span>
+                        ),
+                        onClick: () =>
+                          setState({
+                            isShowingAdvanced: false,
+                          }),
+                        isSelected: !isShowingAdvanced,
+                      },
+                      {
+                        content: () => (
+                          <span>
+                            Advanced{" "}
+                            <AdvancedIcon
+                              style={{ marginLeft: 4, fontSize: "1.2em" }}
+                            />
+                          </span>
+                        ),
+                        onClick: () => setState({ isShowingAdvanced: true }),
+                        isSelected: isShowingAdvanced,
+                      },
+                    ]}
+                  />
+                </Padding>
               </Section>
 
               <div
@@ -201,17 +204,19 @@ export default function CreateNetwork({
                     // TODO: Add error handling / messages
                   }
                   <label>Network Name</label>
-                  <input
-                    ref={setElInputNetworkName}
-                    type="text"
-                    name="networkName"
-                    value={networkName}
-                    onChange={evt =>
-                      setState({
-                        networkName: evt.target.value,
-                      })
-                    }
-                  />
+                  <Padding>
+                    <input
+                      ref={setElInputNetworkName}
+                      type="text"
+                      name="networkName"
+                      value={networkName}
+                      onChange={evt =>
+                        setState({
+                          networkName: evt.target.value,
+                        })
+                      }
+                    />
+                  </Padding>
                 </Section>
 
                 <Section>
@@ -223,52 +228,62 @@ export default function CreateNetwork({
 
                   <div style={{ textAlign: "center" }}>
                     <div className="note">Select network type:</div>
-                    <ButtonPanel
-                      buttons={[
-                        {
-                          content: () => (
-                            <span>
-                              Public{" "}
-                              <PadlockOpenIcon style={{ fontSize: "1.2em" }} />
-                            </span>
-                          ),
-                          onClick: () => setState({ isPublic: true }),
-                          isSelected: isPublic,
-                        },
-                        {
-                          content: () => (
-                            <span>
-                              Private{" "}
-                              <PadlockCloseIcon style={{ fontSize: "1.2em" }} />
-                            </span>
-                          ),
-                          onClick: () => setState({ isPublic: false }),
-                          isSelected: !isPublic,
+                    <Padding>
+                      <ButtonPanel
+                        buttons={[
+                          {
+                            content: () => (
+                              <span>
+                                Public{" "}
+                                <PadlockOpenIcon
+                                  style={{ fontSize: "1.2em" }}
+                                />
+                              </span>
+                            ),
+                            onClick: () => setState({ isPublic: true }),
+                            isSelected: isPublic,
+                          },
+                          {
+                            content: () => (
+                              <span>
+                                Private{" "}
+                                <PadlockCloseIcon
+                                  style={{ fontSize: "1.2em" }}
+                                />
+                              </span>
+                            ),
+                            onClick: () => setState({ isPublic: false }),
+                            isSelected: !isPublic,
 
-                          // TODO: Enable private network selection
-                          disabled: true,
-                        },
-                      ]}
-                    />
+                            // TODO: Enable private network selection
+                            disabled: true,
+                          },
+                        ]}
+                      />
+                    </Padding>
                   </div>
-                  <div className="note" style={{ marginTop: 10 }}>
-                    Public networks can be seen by everyone and are displayed
-                    within the "Networks" tab.
-                  </div>
+                  <Padding>
+                    <div className="note">
+                      Public networks can be seen by everyone and are displayed
+                      within the "Networks" tab.
+                    </div>
+                  </Padding>
                 </Section>
 
                 <Section>
                   <label>Description (optional)</label>
-                  <textarea
-                    name="networkDescription"
-                    value={networkDescription}
-                    onChange={evt =>
-                      setState({
-                        networkDescription: evt.target.value,
-                      })
-                    }
-                    placeholder="The topic or some other interesting detail to let others know what this network is about"
-                  ></textarea>
+                  <Padding>
+                    <textarea
+                      name="networkDescription"
+                      value={networkDescription}
+                      onChange={evt =>
+                        setState({
+                          networkDescription: evt.target.value,
+                        })
+                      }
+                      placeholder="The topic or some other interesting detail to let others know what this network is about"
+                    ></textarea>
+                  </Padding>
                 </Section>
 
                 {isShowingAdvanced && (
