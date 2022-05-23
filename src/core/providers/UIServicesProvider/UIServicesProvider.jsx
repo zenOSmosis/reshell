@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import ReShellCore from "@core/classes/ReShellCore";
+
+// TODO: Change to namespaced export once PhantomCore supports package.json exports
+// @see https://github.com/zenOSmosis/phantom-core/issues/98
 import {
   EVT_CHILD_INSTANCE_ADDED,
   EVT_CHILD_INSTANCE_REMOVED,
-} from "@core/classes/UIServiceManager";
+} from "phantom-core";
 
 import useUIServicesAutoStart from "./hooks/useUIServicesAutoStart";
 

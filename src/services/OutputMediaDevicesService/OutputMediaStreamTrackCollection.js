@@ -1,9 +1,11 @@
 import { ArbitraryPhantomWrapper, PhantomCollection } from "phantom-core";
 
-// TODO: Change to ES6 imports once PhantomCore supports package.json exports
+// TODO: Change to namespaced export once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
-const { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED } =
-  PhantomCollection;
+import {
+  EVT_CHILD_INSTANCE_ADDED,
+  EVT_CHILD_INSTANCE_REMOVED,
+} from "phantom-core";
 
 export { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
 

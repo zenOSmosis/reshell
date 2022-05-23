@@ -1,11 +1,15 @@
-import { PhantomServiceManager } from "phantom-core";
-
-const {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
+import {
+  PhantomServiceManager,
   EVT_UPDATED,
   EVT_DESTROYED,
-} = PhantomServiceManager;
+} from "phantom-core";
+
+// TODO: Change to namespaced export once PhantomCore supports package.json exports
+// @see https://github.com/zenOSmosis/phantom-core/issues/98
+import {
+  EVT_CHILD_INSTANCE_ADDED,
+  EVT_CHILD_INSTANCE_REMOVED,
+} from "phantom-core";
 
 export {
   EVT_CHILD_INSTANCE_ADDED,
