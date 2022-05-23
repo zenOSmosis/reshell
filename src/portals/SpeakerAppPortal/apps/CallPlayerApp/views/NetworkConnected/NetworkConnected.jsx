@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 
 import Center from "@components/Center";
 import LoadingSpinner from "@components/LoadingSpinner";
-import CanvasMicAudioMeter from "@components/audioMeters/CanvasMicAudioMeter";
-import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
-import Layout, { Content, Footer } from "@components/Layout";
-import Padding from "@components/Padding";
+
+import ParticipantList from "./ParticipantList";
 
 import { Video } from "@components/audioVideoRenderers";
 
@@ -40,76 +38,7 @@ export default function NetworkConnected({
     return <Video mediaStreamTrack={latestOutputVideoTrack} />;
   }
 
-  return (
-    <Center canOverflow={true}>
-      {remotePhantomPeers.map((phantomPeer, idx) => {
-        const deviceAddress = phantomPeer.getDeviceAddress();
-        const avatarURL = phantomPeer.getAvatarURL();
-        const profileName = phantomPeer.getProfileName();
-        const profileDescription = phantomPeer.getProfileDescription();
-        const outgoingAudioMediaStreamTracks =
-          phantomPeer.getOutgoingAudioMediaStreamTracks();
-
-        const lenOutgoingAudioMediaStreamTracks =
-          outgoingAudioMediaStreamTracks.length;
-
-        return (
-          <div
-            key={idx}
-            style={{
-              display: "inline-block",
-              width: 200,
-              height: 200,
-              border: "1px #ccc solid",
-              backgroundColor: "rgba(255,255,255,.4)",
-              color: "#000",
-              borderRadius: 4,
-              overflow: "hidden",
-            }}
-            title={profileDescription}
-          >
-            {!deviceAddress ? (
-              <LoadingSpinner />
-            ) : (
-              <Layout>
-                <Content>
-                  <Center>
-                    <div>
-                      <AudioBorderAvatar
-                        src={avatarURL}
-                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
-                      />
-                    </div>
-                    <div style={{ marginTop: 10, fontWeight: "bold" }}>
-                      {profileName}
-                    </div>
-                  </Center>
-                </Content>
-                <Footer style={{ textAlign: "right" }}>
-                  <Padding>
-                    {
-                      // FIXME: Provide ability to show independent audio
-                      // streams vs single (uses more CPU)
-                    }
-                    <div
-                      title={`${lenOutgoingAudioMediaStreamTracks} audio stream${
-                        lenOutgoingAudioMediaStreamTracks !== 1 ? "s" : ""
-                      } received from ${profileName}`}
-                    >
-                      <CanvasMicAudioMeter
-                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
-                        size={48}
-                      />
-                    </div>
-                  </Padding>
-                </Footer>
-              </Layout>
-            )}
-          </div>
-        );
-      })}
-    </Center>
-  );
+  return <ParticipantList remotePhantomPeers={remotePhantomPeers} />;
 }
 
 /**
