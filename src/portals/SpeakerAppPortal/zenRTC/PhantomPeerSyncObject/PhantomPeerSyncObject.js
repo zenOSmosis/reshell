@@ -69,6 +69,13 @@ export default class PhantomPeerSyncObject extends SyncObject {
   }
 
   /**
+   * @return {boolean}
+   */
+  getIsAudioMuted() {
+    return this.getState()[STATE_KEY_IS_AUDIO_MUTED];
+  }
+
+  /**
    * MediaStream IDs which the peer is sending.
    *
    * IMPORTANT: If this is a remote peer, this represents the MediaStream IDs

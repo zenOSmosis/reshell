@@ -21,6 +21,7 @@ import LocalPhantomPeerSyncObject, {
   STATE_KEY_DESCRIPTION as PHANTOM_PEER_STATE_KEY_DESCRIPTION,
   STATE_KEY_IS_TYPING_CHAT_MESSAGE as PHANTOM_PEER_STATE_KEY_IS_TYPING_CHAT_MESSAGE,
   STATE_KEY_LAST_CHAT_MESSAGE as PHANTOM_PEER_STATE_KEY_LAST_CHAT_MESSAGE,
+  STATE_KEY_IS_AUDIO_MUTED as PHANTOM_PEER_STATE_KEY_IS_AUDIO_MUTED,
 } from "./LocalPhantomPeerSyncObject";
 import SyncObject from "sync-object";
 
@@ -30,6 +31,7 @@ import Center from "@components/Center";
 import SystemModal from "@components/modals/SystemModal";
 
 // TODO: Refactor
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import AppOrchestrationService from "@services/AppOrchestrationService";
 import UINotificationService from "@services/UINotificationService";
 import TextToSpeechService from "@services/TextToSpeechService";
@@ -166,6 +168,31 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
       // Sync profile on service updates
       writableSyncObject.proxyOn(profileService, EVT_UPDATED, syncProfile);
+    })();
+
+    // Handle mute state broadcast
+    (() => {
+      const inputMediaDevicesService = this.useServiceClass(
+        InputMediaDevicesService
+      );
+
+      const handleMediaDeviceUpdate = () => {
+        const isMuted = inputMediaDevicesService.getIsAllAudioMuted();
+
+        writableSyncObject.setState({
+          [PHANTOM_PEER_STATE_KEY_IS_AUDIO_MUTED]: isMuted,
+        });
+      };
+
+      // Perform initial sync
+      handleMediaDeviceUpdate();
+
+      // Sync profile on service updates
+      writableSyncObject.proxyOn(
+        inputMediaDevicesService,
+        EVT_UPDATED,
+        handleMediaDeviceUpdate
+      );
     })();
 
     const readOnlySyncObject = new SyncObject();

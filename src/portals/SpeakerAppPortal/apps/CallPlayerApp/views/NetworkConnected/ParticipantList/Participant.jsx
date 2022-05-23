@@ -8,6 +8,7 @@ export default function Participant({ phantomPeer }) {
   const avatarURL = phantomPeer.getAvatarURL();
   const profileName = phantomPeer.getProfileName();
   const profileDescription = phantomPeer.getProfileDescription();
+  const isAudioMuted = phantomPeer.getIsAudioMuted();
   const outgoingAudioMediaStreamTracks =
     phantomPeer.getOutgoingAudioMediaStreamTracks();
   const outgoingVideoMediaStreamTracks =
@@ -15,10 +16,12 @@ export default function Participant({ phantomPeer }) {
 
   if (!deviceAddress) {
     return (
-      <>
+      <div style={{ textAlign: "center" }}>
         <LoadingSpinner />
-        New user connecting...
-      </>
+        <div style={{ fontWeight: "bold", margin: 8 }}>
+          New user connecting...
+        </div>
+      </div>
     );
   }
 
@@ -47,7 +50,8 @@ export default function Participant({ phantomPeer }) {
       {profileDescription}
       <div style={{ position: "absolute", bottom: 4, right: 4 }}>
         A: {outgoingAudioMediaStreamTracks.length} / V:{" "}
-        {outgoingVideoMediaStreamTracks.length}
+        {outgoingVideoMediaStreamTracks.length}{" "}
+        {isAudioMuted ? "muted" : "unmuted"}
       </div>
     </div>
   );

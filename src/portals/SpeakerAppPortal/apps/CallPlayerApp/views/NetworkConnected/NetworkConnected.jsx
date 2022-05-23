@@ -20,10 +20,10 @@ export default function NetworkConnected({
         <div style={{ fontWeight: "bold" }}>
           {!isInSync ? (
             <div>
-              <div>Performing initial sync...</div>
-              <div style={{ marginTop: 20 }}>
+              <div style={{ marginBottom: 20 }}>
                 <LoadingSpinner />
               </div>
+              <div>Performing initial sync...</div>
             </div>
           ) : (
             "No remote peers are connected. You are the only one here."
