@@ -125,9 +125,6 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       }
     }
 
-    // TODO: Remove
-    console.log({ batchPeersUpdate });
-
     this._sharedWritableSyncObject.setState({
       peers: batchPeersUpdate,
       chatMessages: this._chatMessages,
