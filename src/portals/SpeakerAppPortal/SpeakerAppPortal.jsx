@@ -2,6 +2,7 @@ import Desktop from "@components/Desktop";
 import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
+import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
 import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
 import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
 // import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
@@ -21,7 +22,6 @@ import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 //
-import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
 import VirtualServerApp from "./apps/VirtualServerApp";
 import LocalUserProfileApp from "./apps/LocalUserProfileApp";
