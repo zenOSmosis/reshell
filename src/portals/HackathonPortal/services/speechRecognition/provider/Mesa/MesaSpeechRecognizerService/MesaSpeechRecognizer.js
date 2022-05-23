@@ -101,7 +101,7 @@ export default class MesaSpeechRecognizer extends SpeechRecognizerBase {
         if (!this._isConnected) {
           this._isConnected = true;
 
-          this.emit(EVT_CONNECTED);
+          this.emit(EVT_CONNECT);
         }
         */
 

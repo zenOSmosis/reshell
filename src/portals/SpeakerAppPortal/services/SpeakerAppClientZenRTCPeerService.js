@@ -1,10 +1,10 @@
 import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import LocalZenRTCPeer, {
   EVT_CONNECTING,
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
 } from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
@@ -190,7 +190,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
         }
       });
 
-      this.proxyOn(localZenRTCPeer, EVT_CONNECTED, () => {
+      this.proxyOn(localZenRTCPeer, EVT_CONNECT, () => {
         this.setState({ isConnecting: false, isConnected: true });
 
         // Show UI notification
@@ -200,7 +200,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
         });
       });
 
-      this.proxyOn(localZenRTCPeer, EVT_DISCONNECTED, () => {
+      this.proxyOn(localZenRTCPeer, EVT_DISCONNECT, () => {
         this.setState({
           isConnecting: false,
           isConnected: false,
@@ -215,7 +215,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
 
       this.proxyOn(
         localZenRTCPeer,
-        EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
@@ -229,7 +229,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
 
       this.proxyOn(
         localZenRTCPeer,
-        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 

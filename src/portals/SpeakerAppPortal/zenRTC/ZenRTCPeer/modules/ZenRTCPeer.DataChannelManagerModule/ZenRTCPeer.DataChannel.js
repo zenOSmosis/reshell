@@ -1,6 +1,6 @@
 import PhantomCore from "phantom-core";
 
-import { EVT_DATA_RECEIVED } from "./constants";
+import { EVT_DATA } from "./constants";
 
 /**
  * NOTE: At the time of writing, simple-peer does not support multiple data
@@ -49,12 +49,12 @@ export default class DataChannel extends PhantomCore {
   /**
    * Internally called when there is received data.
    *
-   * This can be completely overridden or listened to via EVT_DATA_RECEIVED
+   * This can be completely overridden or listened to via EVT_DATA
    * event.
    *
    * @param {string | ArrayBufferLike | Blob | ArrayBufferView} data
    */
   receive(data) {
-    this.emit(EVT_DATA_RECEIVED, data);
+    this.emit(EVT_DATA, data);
   }
 }

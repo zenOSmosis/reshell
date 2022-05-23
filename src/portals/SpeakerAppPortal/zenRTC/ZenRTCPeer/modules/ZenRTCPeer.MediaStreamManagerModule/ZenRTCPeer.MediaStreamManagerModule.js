@@ -1,6 +1,6 @@
-import { EVT_DISCONNECTED, EVT_UPDATE } from "../../ZenRTCPeer";
+import { EVT_DISCONNECT, EVT_UPDATE } from "../../ZenRTCPeer";
 
-import { SYNC_EVT_TRACK_REMOVED } from "../../syncEvents";
+import { SYNC_EVT_TRACK_REMOVE } from "../../syncEvents";
 
 import BaseModule from "../ZenRTCPeer.BaseModule";
 import ZenRTCPeerMediaStreamCollection, {
@@ -9,17 +9,17 @@ import ZenRTCPeerMediaStreamCollection, {
 } from "./ZenRTCPeerMediaStreamCollection";
 
 // TODO: Document
-export const EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED =
+export const EVT_INCOMING_MEDIA_STREAM_TRACK_ADD =
   "incoming-media-stream-track-added";
 // TODO: Document
-export const EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED =
+export const EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE =
   "incoming-media-stream-track-removed";
 
 // TODO: Document
-export const EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED =
+export const EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD =
   "outgoing-media-stream-track-added";
 // TODO: Document
-export const EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED =
+export const EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE =
   "outgoing-media-stream-track-removed";
 
 /**
@@ -67,7 +67,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
         let _trackClones = {};
 
         // Empty track clones on disconnect
-        this.proxyOn(zenRTCPeer, EVT_DISCONNECTED, () => {
+        this.proxyOn(zenRTCPeer, EVT_DISCONNECT, () => {
           _trackClones = {};
         });
 
@@ -89,7 +89,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
         MEDIA_STREAM_TRACK_ADDED,
         data => {
           // Emit track information to output device handlers, etc.
-          zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, data);
+          zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADD, data);
 
           // Emit UI updates, etc.
           zenRTCPeer.emit(EVT_UPDATE);
@@ -101,7 +101,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
         MEDIA_STREAM_TRACK_REMOVED,
         data => {
           // Emit track information to output device handlers, etc.
-          zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, data);
+          zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE, data);
 
           // Emit UI updates, etc.
           zenRTCPeer.emit(EVT_UPDATE);
@@ -125,7 +125,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           }
 
           // Emit track information to output device handlers, etc.
-          zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, data);
+          zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD, data);
 
           // Emit UI updates, etc.
           zenRTCPeer.emit(EVT_UPDATE);
@@ -161,13 +161,13 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           //
           // NOTE (jh): This is a workaround since WebRTCPeer does not emit track
           // removed events directly
-          zenRTCPeer.emitSyncEvent(SYNC_EVT_TRACK_REMOVED, {
+          zenRTCPeer.emitSyncEvent(SYNC_EVT_TRACK_REMOVE, {
             msid: mediaStream.id,
             kind: mediaStreamTrack.kind,
           });
 
           // Emit track information to output device handlers, etc.
-          zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, data);
+          zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE, data);
 
           // Emit UI updates, etc.
           zenRTCPeer.emit(EVT_UPDATE);

@@ -1,16 +1,16 @@
 import PhantomCore, { EVT_DESTROY } from "phantom-core";
 
-const EVT_CONNECTED = "connect";
+const EVT_CONNECT = "connect";
 const EVT_DATA = "data";
 const EVT_BEFORE_REMOTE_DISCONNECT = "beforeRemoteDisconnect";
-const EVT_DISCONNECTED = "disconnect";
+const EVT_DISCONNECT = "disconnect";
 
 export {
   EVT_DESTROY,
-  EVT_CONNECTED,
+  EVT_CONNECT,
   EVT_DATA,
   EVT_BEFORE_REMOTE_DISCONNECT,
-  EVT_DISCONNECTED,
+  EVT_DISCONNECT,
 };
 
 /**
@@ -64,7 +64,7 @@ export default class SocketChannel extends PhantomCore {
     // TODO: Replace setTimeout w/ setImmediate:
     // @see https://github.com/zenOSmosis/phantom-core/issues/76
     setTimeout(() => {
-      this.emit(EVT_CONNECTED);
+      this.emit(EVT_CONNECT);
 
       this.log(`Created data channel with id: ${this._channelId}`);
     }, 1);
@@ -77,10 +77,10 @@ export default class SocketChannel extends PhantomCore {
         }
       };
 
-      this._socket.once(EVT_DISCONNECTED, _handleSocketDisconnected);
+      this._socket.once(EVT_DISCONNECT, _handleSocketDisconnected);
 
       this.once(EVT_DESTROY, () => {
-        this._socket.off(EVT_DISCONNECTED, _handleSocketDisconnected);
+        this._socket.off(EVT_DISCONNECT, _handleSocketDisconnected);
       });
     })();
   }
@@ -125,7 +125,7 @@ export default class SocketChannel extends PhantomCore {
       this.emit = super.emit;
 
       // Emits locally
-      this.emit(EVT_DISCONNECTED);
+      this.emit(EVT_DISCONNECT);
     });
   }
 

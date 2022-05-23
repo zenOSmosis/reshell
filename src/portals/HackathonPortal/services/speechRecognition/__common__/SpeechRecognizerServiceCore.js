@@ -3,8 +3,8 @@ import ExternalAPIKeyManagementServiceCore from "@service.cores/ExternalAPIKeyMa
 
 import {
   EVT_CONNECTING,
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
   EVT_BEGIN_RECOGNIZE,
   EVT_REAL_TIME_TRANSCRIPTION,
   EVT_END_RECOGNIZE,
@@ -92,14 +92,10 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
           EVT_CONNECTING,
           _handleConnectStateChange
         );
+        this.proxyOn(this._recognizer, EVT_CONNECT, _handleConnectStateChange);
         this.proxyOn(
           this._recognizer,
-          EVT_CONNECTED,
-          _handleConnectStateChange
-        );
-        this.proxyOn(
-          this._recognizer,
-          EVT_DISCONNECTED,
+          EVT_DISCONNECT,
           _handleConnectStateChange
         );
 

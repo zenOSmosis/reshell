@@ -1,5 +1,5 @@
 import BaseModule from "./ZenRTCPeer.BaseModule";
-import { EVT_CONNECTED, EVT_SYNC_EVT_RECEIVED } from "../ZenRTCPeer";
+import { EVT_CONNECT, EVT_SYNC } from "../ZenRTCPeer";
 import {
   SYNC_EVT_SYNC_OBJECT_PARTIAL_SYNC,
   SYNC_EVT_SYNC_OBJECT_FULL_SYNC,
@@ -49,7 +49,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
     );
 
     // Perform full sync once connected
-    zenRTCPeer.on(EVT_CONNECTED, () => {
+    zenRTCPeer.on(EVT_CONNECT, () => {
       this._bidirectionalSyncObject.forceFullSync("Initial full sync");
     });
 
@@ -135,7 +135,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
         }
       };
 
-      this._zenRTCPeer.on(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
+      this._zenRTCPeer.on(EVT_SYNC, _handleSyncEventReceived);
       this.registerCleanupHandler(() => {
         // FIXME (jh): This check fixes issue where _zenRTCPeer may be null
         // after stopping a virtual server with connected clients, but it
@@ -144,7 +144,7 @@ export default class ZenRTCPeerSyncObjectLinkerModule extends BaseModule {
         // but I am not entirely sure why it is being set to null before this
         // has a chance to run.
         if (this._zenRTCPeer) {
-          this._zenRTCPeer.off(EVT_SYNC_EVT_RECEIVED, _handleSyncEventReceived);
+          this._zenRTCPeer.off(EVT_SYNC, _handleSyncEventReceived);
         }
       });
     })();

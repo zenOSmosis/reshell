@@ -1,6 +1,6 @@
 import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService, {
-  EVT_CONNECTED,
+  EVT_CONNECT,
 } from "./SpeakerAppSocketAuthenticationService";
 
 import {
@@ -27,7 +27,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
     );
 
     // Set up network fetching once socket is ready
-    this.proxyOnce(this._socketService, EVT_CONNECTED, () => {
+    this.proxyOnce(this._socketService, EVT_CONNECT, () => {
       const socket = this._socketService.getSocket();
 
       const handleNetworksUpdated = () => this.fetchNetworks();

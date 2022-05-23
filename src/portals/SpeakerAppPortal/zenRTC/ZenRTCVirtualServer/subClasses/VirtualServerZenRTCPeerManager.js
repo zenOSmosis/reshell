@@ -1,24 +1,24 @@
 import { PhantomCollection, EVT_DESTROY } from "phantom-core";
 import SyncObject, { EVT_UPDATE } from "sync-object";
 import VirtualServerZenRTCPeer, {
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
 } from "./VirtualServerZenRTCPeer";
 
 export { EVT_DESTROY };
 
-export const EVT_PEER_CONNECTED = "peer-connected";
-export const EVT_PEER_SHARED_STATE_UPDATED = "peer-shared-state-updated";
-export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED}`;
-export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED}`;
-export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED}`;
-export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED}`;
-export const EVT_PEER_DISCONNECTED = "peer-disconnected";
-export const EVT_PEER_DESTROYED = "peer-destroyed";
+export const EVT_PEER_CONNECT = "peer-connect";
+export const EVT_PEER_SHARED_STATE_UPDATE = "peer-shared-state-update";
+export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADD = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD}`;
+export const EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVE = `peer-${EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE}`;
+export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADD = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_ADD}`;
+export const EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVE = `peer-${EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE}`;
+export const EVT_PEER_DISCONNECT = "peer-disconnect";
+export const EVT_PEER_DESTROY = "peer-destroy";
 
 /**
  * Manages the creation, initial event routing, and destruction of
@@ -117,22 +117,22 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         readOnlySyncObject.destroy();
       });
 
-      virtualServerZenRTCPeer.on(EVT_CONNECTED, () => {
-        this.emit(EVT_PEER_CONNECTED, virtualServerZenRTCPeer);
+      virtualServerZenRTCPeer.on(EVT_CONNECT, () => {
+        this.emit(EVT_PEER_CONNECT, virtualServerZenRTCPeer);
       });
 
       // IMPORTANT: Listening to readOnlySyncObject, not the peer, here
       readOnlySyncObject.on(EVT_UPDATE, updatedState => {
-        this.emit(EVT_PEER_SHARED_STATE_UPDATED, [
+        this.emit(EVT_PEER_SHARED_STATE_UPDATE, [
           virtualServerZenRTCPeer,
           updatedState,
         ]);
       });
 
       virtualServerZenRTCPeer.on(
-        EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
         mediaStreamTrack => {
-          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED, [
+          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADD, [
             virtualServerZenRTCPeer,
             mediaStreamTrack,
           ]);
@@ -140,9 +140,9 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       );
 
       virtualServerZenRTCPeer.on(
-        EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
         mediaStreamTrack => {
-          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, [
+          this.emit(EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVE, [
             virtualServerZenRTCPeer,
             mediaStreamTrack,
           ]);
@@ -150,9 +150,9 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       );
 
       virtualServerZenRTCPeer.on(
-        EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
         mediaStreamTrack => {
-          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED, [
+          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADD, [
             virtualServerZenRTCPeer,
             mediaStreamTrack,
           ]);
@@ -160,21 +160,21 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       );
 
       virtualServerZenRTCPeer.on(
-        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
         mediaStreamTrack => {
-          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED, [
+          this.emit(EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVE, [
             virtualServerZenRTCPeer,
             mediaStreamTrack,
           ]);
         }
       );
 
-      virtualServerZenRTCPeer.on(EVT_DISCONNECTED, () => {
-        this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
+      virtualServerZenRTCPeer.on(EVT_DISCONNECT, () => {
+        this.emit(EVT_PEER_DISCONNECT, virtualServerZenRTCPeer);
       });
 
       virtualServerZenRTCPeer.on(EVT_DESTROY, () => {
-        this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
+        this.emit(EVT_PEER_DESTROY, virtualServerZenRTCPeer);
       });
 
       // Register the peer in the collection

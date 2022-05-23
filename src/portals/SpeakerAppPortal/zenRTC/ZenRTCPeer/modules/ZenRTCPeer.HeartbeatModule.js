@@ -1,5 +1,5 @@
 import BaseModule from "./ZenRTCPeer.BaseModule";
-import { EVT_CONNECTED } from "../ZenRTCPeer";
+import { EVT_CONNECT } from "../ZenRTCPeer";
 
 // In milliseconds
 const HEARTBEAT_INTERVAL_TIME = 5000;
@@ -13,7 +13,7 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
     this._heartbeatInterval = null;
 
     // Perform initial ping on connect
-    zenRTCPeer.on(EVT_CONNECTED, () => {
+    zenRTCPeer.on(EVT_CONNECT, () => {
       // Perform initial ping
       this.ping();
 

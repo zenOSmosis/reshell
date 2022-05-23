@@ -10,7 +10,7 @@ import {
 import {
   EVT_DATA_CHANNEL_OPENED,
   EVT_DATA_CHANNEL_CLOSED,
-  EVT_DATA_RECEIVED,
+  EVT_DATA,
 } from "./constants";
 
 const MARSHAL_PREFIX = "<z:";
@@ -262,10 +262,10 @@ export default class DataChannelManagerModule extends BaseModule {
         }
       };
 
-      zenRTCPeer.on(EVT_DATA_RECEIVED, _handleDataReceived);
+      zenRTCPeer.on(EVT_DATA, _handleDataReceived);
 
       this.once(EVT_DESTROY, () =>
-        zenRTCPeer.off(EVT_DATA_RECEIVED, _handleDataReceived)
+        zenRTCPeer.off(EVT_DATA, _handleDataReceived)
       );
     })();
   }

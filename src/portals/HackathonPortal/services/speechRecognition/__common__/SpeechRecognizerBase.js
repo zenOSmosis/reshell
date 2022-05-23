@@ -1,8 +1,8 @@
 import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROY } from "phantom-core";
 
 export const EVT_CONNECTING = "connecting";
-export const EVT_CONNECTED = "connected";
-export const EVT_DISCONNECTED = "disconnected";
+export const EVT_CONNECT = "connect";
+export const EVT_DISCONNECT = "disconnect";
 
 export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
 export const EVT_END_RECOGNIZE = "end-recognize";
@@ -116,8 +116,8 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * Sets whether or not the speech recognizer is connected.
    *
    * @param {boolean} isConnected
-   * @emits EVT_CONNECTED
-   * @emits EVT_DISCONNECTED
+   * @emits EVT_CONNECT
+   * @emits EVT_DISCONNECT
    * @return {void}
    */
   _setIsConnected(isConnected) {
@@ -129,9 +129,9 @@ export default class SpeechRecognizerBase extends PhantomCore {
       this._isConnected = isConnected;
 
       if (isConnected) {
-        this.emit(EVT_CONNECTED);
+        this.emit(EVT_CONNECT);
       } else {
-        this.emit(EVT_DISCONNECTED);
+        this.emit(EVT_DISCONNECT);
       }
     }
   }
