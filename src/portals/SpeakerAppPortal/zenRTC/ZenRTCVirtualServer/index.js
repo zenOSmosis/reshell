@@ -4,8 +4,8 @@ export default VirtualServer;
 
 /*
 import VirtualServerZenRTCPeerManager, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   EVT_PEER_CONNECTED,
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,
@@ -14,8 +14,8 @@ import VirtualServerZenRTCPeerManager, {
 
 export default VirtualServerZenRTCPeerManager;
 export {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   EVT_PEER_CONNECTED,
   EVT_PEER_DISCONNECTED,
   EVT_PEER_DESTROYED,

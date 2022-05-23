@@ -1,13 +1,9 @@
-import PhantomCore, {
-  EVT_READY,
-  EVT_UPDATED,
-  EVT_DESTROYED,
-} from "phantom-core";
+import PhantomCore, { EVT_READY, EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 import ElizaBotController from "./ElizaBot";
 
 import { INPUT_PROMPT } from "../constants";
 
-export { EVT_READY, EVT_UPDATED, EVT_DESTROYED };
+export { EVT_READY, EVT_UPDATE, EVT_DESTROY };
 
 export const PHASE_AUTO_RESPONSE_TYPING = "auto-response-typing";
 export const PHASE_AWAITING_USER_INPUT = "awaiting-user-input";
@@ -102,7 +98,7 @@ export default class DrReShellSessionEngine extends PhantomCore {
     this._history.push("");
 
     // Update the UI
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
 
     this._response = await this._elizaBot.reply(text);
 
@@ -148,7 +144,7 @@ export default class DrReShellSessionEngine extends PhantomCore {
    */
   switchPhase(phase) {
     this._phase = phase;
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 
   /**

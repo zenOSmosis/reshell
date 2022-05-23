@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import ExternalAPIKeyManagementServiceCore from "@service.cores/ExternalAPIKeyManagementServiceCore";
 
 import {
@@ -14,11 +14,7 @@ import {
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import UIModalWidgetService from "@services/UIModalWidgetService";
 
-export {
-  EVT_UPDATED,
-  EVT_REAL_TIME_TRANSCRIPTION,
-  EVT_FINALIZED_TRANSCRIPTION,
-};
+export { EVT_UPDATE, EVT_REAL_TIME_TRANSCRIPTION, EVT_FINALIZED_TRANSCRIPTION };
 
 // TODO: Auto-destruct after a certain amount of time after not retrieving
 // a finalized transcription
@@ -44,10 +40,10 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
       ExternalAPIKeyManagementServiceClass
     );
 
-    // Emit EVT_UPDATED when API Key Management Service updates
+    // Emit EVT_UPDATE when API Key Management Service updates
     // FIXME: (jh) See relevant issue: https://github.com/zenOSmosis/phantom-core/issues/152
-    this.proxyOn(this._apiKeyManagementService, EVT_UPDATED, data =>
-      this.emit(EVT_UPDATED, data)
+    this.proxyOn(this._apiKeyManagementService, EVT_UPDATE, data =>
+      this.emit(EVT_UPDATE, data)
     );
 
     // FIXME: (jh) Validate type before instantiation
@@ -82,7 +78,7 @@ export default class SpeechRecognizerServiceCore extends UIServiceCore {
     });
 
     // Handle recognizer event binding
-    this.on(EVT_UPDATED, (updatedState = {}) => {
+    this.on(EVT_UPDATE, (updatedState = {}) => {
       if (updatedState.hasRecognizer) {
         const _handleConnectStateChange = () => {
           this.setState({

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import LocalChatMessageState, { EVT_UPDATED } from "./LocalChatMessageState";
+import LocalChatMessageState, { EVT_UPDATE } from "./LocalChatMessageState";
 
 import useForceUpdate from "@hooks/useForceUpdate";
 
@@ -32,10 +32,10 @@ export default function useLocalChatMessageState(onIsTypingChange) {
         forceUpdate();
       };
 
-      localChatMessage.on(EVT_UPDATED, _handleUpdate);
+      localChatMessage.on(EVT_UPDATE, _handleUpdate);
 
       return () => {
-        localChatMessage.off(EVT_UPDATED, _handleUpdate);
+        localChatMessage.off(EVT_UPDATE, _handleUpdate);
       };
     }
   }, [localChatMessage, forceUpdate, onIsTypingChange]);

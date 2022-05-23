@@ -1,5 +1,5 @@
 import PhantomCore from "phantom-core";
-import BaseStorageEngine, { EVT_UPDATED } from "./_BaseStorageEngine";
+import BaseStorageEngine, { EVT_UPDATE } from "./_BaseStorageEngine";
 import SecureLS from "secure-ls";
 
 // TODO: Document
@@ -21,14 +21,14 @@ export default class SecureLocalStorageEngine extends BaseStorageEngine {
   async setItem(key, value) {
     this._ls.set(key, value);
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 
   // TODO: Document
   async removeItem(key) {
     this._ls.remove(key);
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 
   // TODO: Document
@@ -55,6 +55,6 @@ export default class SecureLocalStorageEngine extends BaseStorageEngine {
   async clear() {
     this._ls.clear();
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 }

@@ -1,12 +1,12 @@
 import { getUnixTime } from "phantom-core";
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 
 import AppOrchestrationService from "@services/AppOrchestrationService";
 import UIParadigmService from "@services/UIParadigmService";
 
 import * as COMMANDS from "./commands";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 // TODO: Document
 // TODO: Rename

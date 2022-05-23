@@ -1,4 +1,4 @@
-import { EVT_DISCONNECTED, EVT_UPDATED } from "../../ZenRTCPeer";
+import { EVT_DISCONNECTED, EVT_UPDATE } from "../../ZenRTCPeer";
 
 import { SYNC_EVT_TRACK_REMOVED } from "../../syncEvents";
 
@@ -92,7 +92,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED, data);
 
           // Emit UI updates, etc.
-          zenRTCPeer.emit(EVT_UPDATED);
+          zenRTCPeer.emit(EVT_UPDATE);
         }
       );
 
@@ -104,7 +104,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           zenRTCPeer.emit(EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED, data);
 
           // Emit UI updates, etc.
-          zenRTCPeer.emit(EVT_UPDATED);
+          zenRTCPeer.emit(EVT_UPDATE);
         }
       );
 
@@ -128,7 +128,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED, data);
 
           // Emit UI updates, etc.
-          zenRTCPeer.emit(EVT_UPDATED);
+          zenRTCPeer.emit(EVT_UPDATE);
         }
       );
 
@@ -170,7 +170,7 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
           zenRTCPeer.emit(EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED, data);
 
           // Emit UI updates, etc.
-          zenRTCPeer.emit(EVT_UPDATED);
+          zenRTCPeer.emit(EVT_UPDATE);
         }
       );
     })();

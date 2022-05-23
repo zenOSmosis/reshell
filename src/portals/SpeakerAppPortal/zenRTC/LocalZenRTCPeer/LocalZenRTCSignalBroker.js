@@ -1,10 +1,10 @@
 import ZenRTCSignalBroker, {
-  EVT_DESTROYED,
+  EVT_DESTROY,
   EVT_ZENRTC_SIGNAL,
   SOCKET_EVT_ZENRTC_SIGNAL,
 } from "../../shared/ZenRTCSignalBroker";
 
-export { EVT_ZENRTC_SIGNAL, EVT_DESTROYED, SOCKET_EVT_ZENRTC_SIGNAL };
+export { EVT_ZENRTC_SIGNAL, EVT_DESTROY, SOCKET_EVT_ZENRTC_SIGNAL };
 
 // TODO: Document
 export default class LocalZenRTCSignalBroker extends ZenRTCSignalBroker {

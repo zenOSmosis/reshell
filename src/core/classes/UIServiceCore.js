@@ -1,6 +1,6 @@
-import { PhantomServiceCore, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomServiceCore, EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 /**
  * PhantomServiceCore extension which is meant to operate in a browser or
@@ -8,7 +8,7 @@ export { EVT_UPDATED, EVT_DESTROYED };
  *
  * ReShell uses services extended by UIServiceCore to share state across
  * applications which use the same services. Windows which are bound to a
- * particular service are automatically re-rendered whenever EVT_UPDATED is
+ * particular service are automatically re-rendered whenever EVT_UPDATE is
  * emit from the service.
  */
 export default class UIServiceCore extends PhantomServiceCore {

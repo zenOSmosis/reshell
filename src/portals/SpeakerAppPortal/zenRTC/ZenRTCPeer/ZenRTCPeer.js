@@ -1,6 +1,6 @@
 import PhantomCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   getUnixTime,
   sleep,
 } from "phantom-core";
@@ -35,7 +35,7 @@ import MediaStreamManagerModule, {
 // keys
 const _instances = {};
 
-export { EVT_DESTROYED, EVT_UPDATED };
+export { EVT_DESTROY, EVT_UPDATE };
 export const EVT_CONNECTING = "connecting";
 export const EVT_RECONNECTING = "reconnecting";
 export const EVT_CONNECTED = "connected";

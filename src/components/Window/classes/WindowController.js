@@ -1,4 +1,4 @@
-import { PhantomState, EVT_UPDATED, EVT_DESTROYED, sleep } from "phantom-core";
+import { PhantomState, EVT_UPDATE, EVT_DESTROY, sleep } from "phantom-core";
 import { debounce } from "debounce";
 
 import getElPosition from "@utils/getElPosition";
@@ -6,7 +6,7 @@ import getElSize from "@utils/getElSize";
 
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // @see https://reactjs.org/docs/profiler.html
 export const EVT_RENDER_PROFILED = "render-profile";
@@ -342,7 +342,7 @@ export default class WindowController extends PhantomState {
    * instead.
    *
    * @param {Object} partialNextState
-   * @emits EVT_UPDATED
+   * @emits EVT_UPDATE
    * @return {void}
    */
   setState(partialNextState) {

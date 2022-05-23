@@ -1,4 +1,4 @@
-import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROY } from "phantom-core";
 
 export const EVT_CONNECTING = "connecting";
 export const EVT_CONNECTED = "connected";
@@ -14,7 +14,7 @@ export const EVT_REAL_TIME_TRANSCRIPTION = "real-time-transcription";
 // TODO: Document that this emits with text
 export const EVT_FINALIZED_TRANSCRIPTION = "finalized-transcription";
 
-export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
+export { EVT_BEFORE_DESTROY, EVT_DESTROY };
 
 // TODO: Ensure this automatically stops when the input stops or after a
 // certain amount of time

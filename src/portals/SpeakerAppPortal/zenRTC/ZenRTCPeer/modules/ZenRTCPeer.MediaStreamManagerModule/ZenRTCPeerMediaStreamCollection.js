@@ -1,14 +1,14 @@
-import { PhantomCollection, EVT_DESTROYED } from "phantom-core";
+import { PhantomCollection, EVT_DESTROY } from "phantom-core";
 import ZenRTCPeerMediaStreamWrapper from "./ZenRTCPeerMediaStreamWrapper";
 
 // TODO: Change to namespaced export once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
 import {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
+  EVT_CHILD_INSTANCE_ADD,
+  EVT_CHILD_INSTANCE_REMOVE,
 } from "phantom-core";
 
-export { EVT_DESTROYED, EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
+export { EVT_DESTROY, EVT_CHILD_INSTANCE_ADD, EVT_CHILD_INSTANCE_REMOVE };
 
 export const MEDIA_STREAM_TRACK_ADDED = "media-stream-track-added";
 export const MEDIA_STREAM_TRACK_REMOVED = "media-stream-track-removed";

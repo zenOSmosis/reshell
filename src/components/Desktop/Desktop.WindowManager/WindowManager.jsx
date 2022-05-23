@@ -1,4 +1,4 @@
-import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
@@ -290,7 +290,7 @@ function WindowManagerView({ children }) {
                   return next;
                 });
 
-                windowController.once(EVT_DESTROYED, () => {
+                windowController.once(EVT_DESTROY, () => {
                   setWindowControllerMaps(prev => {
                     const next = { ...prev };
 
@@ -395,13 +395,13 @@ function WrappedWindowView({
 
     for (const service of Object.values(appServices)) {
       // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
-      service.on(EVT_UPDATED, _handleServiceUpdate);
+      service.on(EVT_UPDATE, _handleServiceUpdate);
     }
 
     return function unmount() {
       for (const service of Object.values(appServices)) {
         // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
-        service.off(EVT_UPDATED, _handleServiceUpdate);
+        service.off(EVT_UPDATE, _handleServiceUpdate);
       }
     };
   }, [appServices, forceUpdate]);

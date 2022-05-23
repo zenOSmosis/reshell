@@ -1,6 +1,6 @@
 import UIServiceCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
 } from "@core/classes/UIServiceCore";
 
 import { debounce } from "debounce";
@@ -40,7 +40,7 @@ import AppLinkButton from "@components/AppLinkButton";
 
 import RemotePhantomPeerCollection from "./RemotePhantomPeerCollection";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // TODO: Add events for when remote peers connect / disconnect; add UI notifications
 
@@ -167,7 +167,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       syncProfile();
 
       // Sync profile on service updates
-      writableSyncObject.proxyOn(profileService, EVT_UPDATED, syncProfile);
+      writableSyncObject.proxyOn(profileService, EVT_UPDATE, syncProfile);
     })();
 
     // Handle mute state broadcast
@@ -190,7 +190,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       // Sync profile on service updates
       writableSyncObject.proxyOn(
         inputMediaDevicesService,
-        EVT_UPDATED,
+        EVT_UPDATE,
         handleMediaDeviceUpdate
       );
     })();
@@ -272,16 +272,16 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
                   );
 
                 if (remotePhantomPeer) {
-                  // Emit EVT_UPDATED on remotePhantomPeer so that any track
+                  // Emit EVT_UPDATE on remotePhantomPeer so that any track
                   // listeners can know to update
                   //
                   // NOTE: This also emits when localZenRTCPeer has updates (i.e.
                   // changed tracks, etc)
-                  remotePhantomPeer.emit(EVT_UPDATED);
+                  remotePhantomPeer.emit(EVT_UPDATE);
                 }
               } else {
                 // TODO: Map localZenRTCPeer outgoing tracks to local phantom peer
-                // TODO: Emit EVT_UPDATED on localPhantomPeer
+                // TODO: Emit EVT_UPDATE on localPhantomPeer
               }
             }
           }
@@ -361,8 +361,8 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
         false
       );
 
-      this.proxyOn(readOnlySyncObject, EVT_UPDATED, handleUpdate);
-      this.proxyOn(localZenRTCPeer, EVT_UPDATED, handleUpdate);
+      this.proxyOn(readOnlySyncObject, EVT_UPDATE, handleUpdate);
+      this.proxyOn(localZenRTCPeer, EVT_UPDATE, handleUpdate);
 
       this.registerCleanupHandler(() => {
         handleUpdate.clear();

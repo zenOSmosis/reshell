@@ -1,4 +1,4 @@
-import BaseModule, { EVT_DESTROYED } from "../ZenRTCPeer.BaseModule";
+import BaseModule, { EVT_DESTROY } from "../ZenRTCPeer.BaseModule";
 import DataChannel from "./ZenRTCPeer.DataChannel";
 import { logger } from "phantom-core";
 
@@ -264,7 +264,7 @@ export default class DataChannelManagerModule extends BaseModule {
 
       zenRTCPeer.on(EVT_DATA_RECEIVED, _handleDataReceived);
 
-      this.once(EVT_DESTROYED, () =>
+      this.once(EVT_DESTROY, () =>
         zenRTCPeer.off(EVT_DATA_RECEIVED, _handleDataReceived)
       );
     })();
@@ -324,13 +324,13 @@ export default class DataChannelManagerModule extends BaseModule {
 
       this._dataChannels[dataChannelName] = dataChannel;
 
-      dataChannel.once(EVT_DESTROYED, () => {
+      dataChannel.once(EVT_DESTROY, () => {
         delete this._dataChannels[dataChannelName];
 
         this.emit(EVT_DATA_CHANNEL_CLOSED, dataChannel);
       });
 
-      this.once(EVT_DESTROYED, () => {
+      this.once(EVT_DESTROY, () => {
         if (!dataChannel.UNSAFE_getIsDestroying()) {
           dataChannel.destroy();
         }

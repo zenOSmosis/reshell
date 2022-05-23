@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import AppRegistration from "./AppOrchestrationService/classes/AppRegistration";
 
 import KeyVaultService from "@services/KeyVaultService";
@@ -35,7 +35,7 @@ export default class AppAutoStartService extends UIServiceCore {
     this.registerCleanupHandler(() => (this._localStorageEngine = null));
 
     // Auto-cache auto start configs
-    this.on(EVT_UPDATED, updatedState => {
+    this.on(EVT_UPDATE, updatedState => {
       const nextAutoStartConfigs = updatedState.appAutoStartConfigs;
 
       if (nextAutoStartConfigs !== undefined) {

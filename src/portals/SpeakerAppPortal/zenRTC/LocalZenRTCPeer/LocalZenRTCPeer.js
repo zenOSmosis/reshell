@@ -1,10 +1,10 @@
 import ZenRTCPeer, {
-  EVT_UPDATED,
+  EVT_UPDATE,
   EVT_CONNECTING,
   EVT_RECONNECTING,
   EVT_CONNECTED,
   EVT_DISCONNECTED,
-  EVT_DESTROYED,
+  EVT_DESTROY,
   EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
   EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
   EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
@@ -20,12 +20,12 @@ import LocalZenRTCSignalBroker, {
 } from "./LocalZenRTCSignalBroker";
 
 export {
-  EVT_UPDATED,
+  EVT_UPDATE,
   EVT_CONNECTING,
   EVT_RECONNECTING,
   EVT_CONNECTED,
   EVT_DISCONNECTED,
-  EVT_DESTROYED,
+  EVT_DESTROY,
   EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
   EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
   EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
@@ -132,7 +132,7 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     // Handle dynamic media capture factory publishing
     (() => {
       this._mediaCaptureServices.forEach(mediaCaptureService => {
-        this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
+        this.proxyOn(mediaCaptureService, EVT_UPDATE, () => {
           if (this.getIsConnected()) {
             this._publishMediaCaptureFactories();
           }

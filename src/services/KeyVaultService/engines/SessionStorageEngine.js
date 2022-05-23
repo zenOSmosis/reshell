@@ -1,4 +1,4 @@
-import BaseStorageEngine, { EVT_UPDATED } from "./_BaseStorageEngine";
+import BaseStorageEngine, { EVT_UPDATE } from "./_BaseStorageEngine";
 
 export default class SessionStorageEngine extends BaseStorageEngine {
   constructor(...args) {
@@ -15,14 +15,14 @@ export default class SessionStorageEngine extends BaseStorageEngine {
   async setItem(key, value) {
     window.sessionStorage.setItem(key, value);
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 
   // TODO: Document
   async removeItem(key) {
     window.sessionStorage.removeItem(key);
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 
   // TODO: Document
@@ -39,6 +39,6 @@ export default class SessionStorageEngine extends BaseStorageEngine {
   async clear() {
     window.sessionStorage.clear();
 
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 }

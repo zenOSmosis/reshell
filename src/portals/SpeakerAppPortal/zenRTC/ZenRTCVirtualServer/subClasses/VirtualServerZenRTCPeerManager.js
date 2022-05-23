@@ -1,5 +1,5 @@
-import { PhantomCollection, EVT_DESTROYED } from "phantom-core";
-import SyncObject, { EVT_UPDATED } from "sync-object";
+import { PhantomCollection, EVT_DESTROY } from "phantom-core";
+import SyncObject, { EVT_UPDATE } from "sync-object";
 import VirtualServerZenRTCPeer, {
   EVT_CONNECTED,
   EVT_DISCONNECTED,
@@ -9,7 +9,7 @@ import VirtualServerZenRTCPeer, {
   EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
 } from "./VirtualServerZenRTCPeer";
 
-export { EVT_DESTROYED };
+export { EVT_DESTROY };
 
 export const EVT_PEER_CONNECTED = "peer-connected";
 export const EVT_PEER_SHARED_STATE_UPDATED = "peer-shared-state-updated";
@@ -122,7 +122,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
       });
 
       // IMPORTANT: Listening to readOnlySyncObject, not the peer, here
-      readOnlySyncObject.on(EVT_UPDATED, updatedState => {
+      readOnlySyncObject.on(EVT_UPDATE, updatedState => {
         this.emit(EVT_PEER_SHARED_STATE_UPDATED, [
           virtualServerZenRTCPeer,
           updatedState,
@@ -173,7 +173,7 @@ export default class VirtualServerZenRTCPeerManager extends PhantomCollection {
         this.emit(EVT_PEER_DISCONNECTED, virtualServerZenRTCPeer);
       });
 
-      virtualServerZenRTCPeer.on(EVT_DESTROYED, () => {
+      virtualServerZenRTCPeer.on(EVT_DESTROY, () => {
         this.emit(EVT_PEER_DESTROYED, virtualServerZenRTCPeer);
       });
 

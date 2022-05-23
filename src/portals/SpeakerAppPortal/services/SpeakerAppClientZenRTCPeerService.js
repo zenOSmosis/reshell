@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import LocalZenRTCPeer, {
   EVT_CONNECTING,
   EVT_CONNECTED,
@@ -21,7 +21,7 @@ import InputDeviceSelectorModal from "@components/modals/InputDeviceSelectorModa
 
 import beep from "@utils/beep";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 // FIXME: (jh) Consider renaming to non-speaker-app for more dynamic usage
 export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {

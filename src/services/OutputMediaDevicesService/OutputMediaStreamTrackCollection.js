@@ -3,11 +3,11 @@ import { ArbitraryPhantomWrapper, PhantomCollection } from "phantom-core";
 // TODO: Change to namespaced export once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
 import {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
+  EVT_CHILD_INSTANCE_ADD,
+  EVT_CHILD_INSTANCE_REMOVE,
 } from "phantom-core";
 
-export { EVT_CHILD_INSTANCE_ADDED, EVT_CHILD_INSTANCE_REMOVED };
+export { EVT_CHILD_INSTANCE_ADD, EVT_CHILD_INSTANCE_REMOVE };
 
 export default class OutputMediaStreamTrackCollection extends PhantomCollection {
   // TODO: Document

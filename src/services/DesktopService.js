@@ -1,6 +1,6 @@
 import UIServiceCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
 } from "@core/classes/UIServiceCore";
 
 import WindowController from "@components/Window/classes/WindowController";
@@ -31,7 +31,7 @@ export default class DesktopService extends UIServiceCore {
     //
     // FIXME: (jh) Perhaps get rid of UIParadigmService altogether; this
     // shouldn't need to be mirrored like this
-    this._uiParadigmService.on(EVT_UPDATED, () => {
+    this._uiParadigmService.on(EVT_UPDATE, () => {
       this.setState({
         uiParadigm: this._uiParadigmService.getUIParadigm(),
         isUIParadigmAutoSet: this._uiParadigmService.getIsAutoSet(),
@@ -51,7 +51,7 @@ export default class DesktopService extends UIServiceCore {
 
       let prevActiveWindowController = null;
 
-      this.on(EVT_UPDATED, isProfiling => {
+      this.on(EVT_UPDATE, isProfiling => {
         const activeWindowController = this.getActiveWindowController();
 
         // Only run comparison if active window controller has changed
@@ -59,7 +59,7 @@ export default class DesktopService extends UIServiceCore {
           if (prevActiveWindowController) {
             this.proxyOff(
               prevActiveWindowController,
-              EVT_DESTROYED,
+              EVT_DESTROY,
               _handleWindowControllerDestruct
             );
           }
@@ -67,7 +67,7 @@ export default class DesktopService extends UIServiceCore {
           if (activeWindowController) {
             this.proxyOnce(
               activeWindowController,
-              EVT_DESTROYED,
+              EVT_DESTROY,
               _handleWindowControllerDestruct
             );
           }

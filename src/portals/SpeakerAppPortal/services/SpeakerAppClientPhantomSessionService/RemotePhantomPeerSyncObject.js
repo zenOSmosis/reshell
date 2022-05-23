@@ -1,6 +1,6 @@
 import PhantomPeerSyncObject, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   STATE_KEY_AVATAR_URL,
   STATE_KEY_NAME,
   STATE_KEY_DESCRIPTION,
@@ -15,8 +15,8 @@ import PhantomPeerSyncObject, {
 import LocalZenRTCPeer from "../../zenRTC/LocalZenRTCPeer";
 
 export {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   STATE_KEY_AVATAR_URL,
   STATE_KEY_NAME,
   STATE_KEY_DESCRIPTION,

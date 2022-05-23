@@ -1,4 +1,4 @@
-import PhantomCore, { EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_DESTROY } from "phantom-core";
 
 const EVT_CONNECTED = "connect";
 const EVT_DATA = "data";
@@ -6,7 +6,7 @@ const EVT_BEFORE_REMOTE_DISCONNECT = "beforeRemoteDisconnect";
 const EVT_DISCONNECTED = "disconnect";
 
 export {
-  EVT_DESTROYED,
+  EVT_DESTROY,
   EVT_CONNECTED,
   EVT_DATA,
   EVT_BEFORE_REMOTE_DISCONNECT,
@@ -79,7 +79,7 @@ export default class SocketChannel extends PhantomCore {
 
       this._socket.once(EVT_DISCONNECTED, _handleSocketDisconnected);
 
-      this.once(EVT_DESTROYED, () => {
+      this.once(EVT_DESTROY, () => {
         this._socket.off(EVT_DISCONNECTED, _handleSocketDisconnected);
       });
     })();

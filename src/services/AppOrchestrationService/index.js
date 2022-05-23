@@ -1,7 +1,7 @@
 import AppOrchestrationService, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
 } from "./AppOrchestrationService";
 
 export default AppOrchestrationService;
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };

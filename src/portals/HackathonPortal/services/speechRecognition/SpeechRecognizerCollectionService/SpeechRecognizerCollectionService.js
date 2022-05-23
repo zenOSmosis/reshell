@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import SpeechRecognizerServiceCollection from "./SpeechRecognizerServiceCollection";
 
 import {
@@ -9,11 +9,7 @@ import {
 import MesaSpeechRecognizerService from "../provider/Mesa/MesaSpeechRecognizerService";
 import DeepgramSpeechRecognizerService from "../provider/Deepgram/DeepgramSpeechRecognizerService";
 
-export {
-  EVT_UPDATED,
-  EVT_REAL_TIME_TRANSCRIPTION,
-  EVT_FINALIZED_TRANSCRIPTION,
-};
+export { EVT_UPDATE, EVT_REAL_TIME_TRANSCRIPTION, EVT_FINALIZED_TRANSCRIPTION };
 
 /**
  * Maintains a collection of speech recognizer services.

@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService, {
   EVT_CONNECTED,
 } from "./SpeakerAppSocketAuthenticationService";
@@ -39,7 +39,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
       });
     });
 
-    this.proxyOn(this._socketService, EVT_UPDATED, () => {
+    this.proxyOn(this._socketService, EVT_UPDATE, () => {
       if (!this._socketService.getIsConnected()) {
         // Handle resetting of networks once socket goes offline
         this.setState({

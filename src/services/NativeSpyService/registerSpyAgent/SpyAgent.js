@@ -1,4 +1,4 @@
-import { PhantomState, EVT_UPDATED, EVT_BEFORE_DESTROY } from "phantom-core";
+import { PhantomState, EVT_UPDATE, EVT_BEFORE_DESTROY } from "phantom-core";
 import { getClassName } from "phantom-core";
 import persistentSpyAgentCollection from "../persistentSpyAgentCollection";
 
@@ -52,7 +52,7 @@ export default class SpyAgent extends PhantomState {
     persistentSpyAgentCollection.addChild(this);
 
     // Obtain agent title from state
-    this.on(EVT_UPDATED, updatedState => {
+    this.on(EVT_UPDATE, updatedState => {
       const { address, url } = updatedState || {};
 
       if (address || url) {

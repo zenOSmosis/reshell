@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 
 import KeyVaultService from "@services/KeyVaultService";
 import UIModalWidgetService from "@services/UIModalWidgetService";
@@ -51,7 +51,7 @@ export default class ExternalAPIKeyManagementServiceCore extends UIServiceCore {
     //
     // NOTE: This fixes issue where deleting store from KeyVault itself would
     // not affect "Speech Input Controller" UI state.
-    this.proxyOn(this._keyVaultService, EVT_UPDATED, () => {
+    this.proxyOn(this._keyVaultService, EVT_UPDATE, () => {
       this._fetchCachedAPIKey();
     });
   }

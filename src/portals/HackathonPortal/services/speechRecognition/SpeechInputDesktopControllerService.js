@@ -1,14 +1,14 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 
 import DesktopCommanderControllerService, {
-  EVT_UPDATED,
+  EVT_UPDATE,
 } from "@services/DesktopCommanderControllerService";
 
 import SpeechRecognizerCollectionService, {
   EVT_FINALIZED_TRANSCRIPTION,
 } from "./SpeechRecognizerCollectionService";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 // TODO: Document
 // IMPORTANT: Don't extend DesktopCommanderControllerService

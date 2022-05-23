@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Xterm from "@components/Xterm";
 import SocketIOService from "@services/SocketIOService";
 
-import { EVT_DESTROYED } from "phantom-core";
+import { EVT_DESTROY } from "phantom-core";
 
 /**
  * Also see:
@@ -38,7 +38,7 @@ const TerminalApp = {
 
             setSocketChannel(socketChannel);
 
-            socketChannel.once(EVT_DESTROYED, () => {
+            socketChannel.once(EVT_DESTROY, () => {
               xterm.writeln("");
               xterm.writeln("[Socket channel has been closed]");
 

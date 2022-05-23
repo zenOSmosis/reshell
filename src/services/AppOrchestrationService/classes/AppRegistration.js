@@ -1,6 +1,6 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // AppRegistration cache
 const _registrations = {};
@@ -168,6 +168,6 @@ export default class AppRegistration extends PhantomCore {
     this._appDescriptor = appDescriptor;
 
     // TODO: Only emit if something changed
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 }

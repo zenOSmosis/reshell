@@ -4,8 +4,8 @@ import ReShellCore from "@core/classes/ReShellCore";
 // TODO: Change to namespaced export once PhantomCore supports package.json exports
 // @see https://github.com/zenOSmosis/phantom-core/issues/98
 import {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
+  EVT_CHILD_INSTANCE_ADD,
+  EVT_CHILD_INSTANCE_REMOVE,
 } from "phantom-core";
 
 import useUIServicesAutoStart from "./hooks/useUIServicesAutoStart";
@@ -30,7 +30,7 @@ export default function UIServicesProvider({ children }) {
   useEffect(() => {
     // Force UI to update when a service has been added or removed
     //
-    // IMPORTANT: Collection EVT_UPDATED is not mapped here, and is handled
+    // IMPORTANT: Collection EVT_UPDATE is not mapped here, and is handled
     // elsewhere, as we don't want the entire UI to update every time
     const _handleServiceAddedOrRemoved = () => {
       // IMPORTANT: This fixes re-render attempts while a child component is
@@ -41,24 +41,21 @@ export default function UIServicesProvider({ children }) {
       });
     };
 
-    _uiServiceManager.on(
-      EVT_CHILD_INSTANCE_ADDED,
-      _handleServiceAddedOrRemoved
-    );
+    _uiServiceManager.on(EVT_CHILD_INSTANCE_ADD, _handleServiceAddedOrRemoved);
 
     _uiServiceManager.on(
-      EVT_CHILD_INSTANCE_REMOVED,
+      EVT_CHILD_INSTANCE_REMOVE,
       _handleServiceAddedOrRemoved
     );
 
     return function unmount() {
       _uiServiceManager.off(
-        EVT_CHILD_INSTANCE_ADDED,
+        EVT_CHILD_INSTANCE_ADD,
         _handleServiceAddedOrRemoved
       );
 
       _uiServiceManager.off(
-        EVT_CHILD_INSTANCE_REMOVED,
+        EVT_CHILD_INSTANCE_REMOVE,
         _handleServiceAddedOrRemoved
       );
     };

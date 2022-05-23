@@ -1,4 +1,4 @@
-import { EVT_DESTROYED } from "phantom-core";
+import { EVT_DESTROY } from "phantom-core";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
@@ -54,7 +54,7 @@ const ScreenCaptureApp = {
           3000
         );
 
-        windowController.once(EVT_DESTROYED, () =>
+        windowController.once(EVT_DESTROY, () =>
           window.clearTimeout(autoCloseTimeout)
         );
       }
@@ -74,7 +74,7 @@ const ScreenCaptureApp = {
 
         setScreenCaptureFactory(factory);
 
-        factory.once(EVT_DESTROYED, () => {
+        factory.once(EVT_DESTROY, () => {
           // Unmounting check fixes an issue where memory-leak error is
           // presented when closing the window with an active screen capture
           if (!getIsUnmounting()) {

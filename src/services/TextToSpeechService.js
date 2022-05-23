@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 
 import LocaleService from "./LocaleService";
 
@@ -50,7 +50,7 @@ export default class TextToSpeechService extends UIServiceCore {
     //
     // FIXME: (jh) This MAY require user interaction in a new session
     setImmediate(() => {
-      this.emit(EVT_UPDATED);
+      this.emit(EVT_UPDATE);
     });
 
     return super._init();
@@ -179,7 +179,7 @@ export default class TextToSpeechService extends UIServiceCore {
 
           const _handleStateChange = () => {
             if (!this.getIsSpeaking()) {
-              this.off(EVT_UPDATED, _handleStateChange);
+              this.off(EVT_UPDATE, _handleStateChange);
 
               setImmediate(() => {
                 resolve();
@@ -187,7 +187,7 @@ export default class TextToSpeechService extends UIServiceCore {
             }
           };
 
-          this.on(EVT_UPDATED, _handleStateChange);
+          this.on(EVT_UPDATE, _handleStateChange);
         });
       }
 

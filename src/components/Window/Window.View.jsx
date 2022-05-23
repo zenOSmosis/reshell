@@ -1,4 +1,4 @@
-import { EVT_UPDATED } from "./classes/WindowController";
+import { EVT_UPDATE } from "./classes/WindowController";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
@@ -122,10 +122,10 @@ const WindowView = ({
       // Perform initial update sync
       _handleWindowControllerUpdate();
 
-      windowController.on(EVT_UPDATED, _handleWindowControllerUpdate);
+      windowController.on(EVT_UPDATE, _handleWindowControllerUpdate);
 
       return function unmount() {
-        windowController.off(EVT_UPDATED, _handleWindowControllerUpdate);
+        windowController.off(EVT_UPDATE, _handleWindowControllerUpdate);
       };
     }
   }, [windowController, title, zIndex]);

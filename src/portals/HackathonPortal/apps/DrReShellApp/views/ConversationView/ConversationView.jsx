@@ -15,8 +15,8 @@ import PropTypes from "prop-types";
 
 import DrReShellSessionEngine, {
   EVT_READY,
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   PHASE_AUTO_RESPONSE_TYPING,
   PHASE_AWAITING_USER_INPUT,
 } from "../../engine/DrReShellSessionEngine";
@@ -49,7 +49,7 @@ export default function ConversationView({
     const session = new DrReShellSessionEngine({ posSpeechAnalyzer });
 
     session.once(EVT_READY, forceUpdate);
-    session.on(EVT_UPDATED, forceUpdate);
+    session.on(EVT_UPDATE, forceUpdate);
 
     _setSession(session);
 
@@ -60,9 +60,9 @@ export default function ConversationView({
   // Bind session termination handling
   useEffect(() => {
     if (session && typeof onSessionEnd === "function") {
-      session.once(EVT_DESTROYED, onSessionEnd);
+      session.once(EVT_DESTROY, onSessionEnd);
 
-      return () => session.off(EVT_DESTROYED, onSessionEnd);
+      return () => session.off(EVT_DESTROY, onSessionEnd);
     }
   }, [session, onSessionEnd]);
 

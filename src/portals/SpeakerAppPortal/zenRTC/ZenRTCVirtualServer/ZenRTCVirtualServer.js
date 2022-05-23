@@ -1,4 +1,4 @@
-import PhantomCore, { EVT_READY, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_READY, EVT_DESTROY } from "phantom-core";
 import VirtualServerZenRTCPeerManager, {
   EVT_PEER_CONNECTED,
   EVT_PEER_SHARED_STATE_UPDATED,
@@ -23,7 +23,7 @@ import {
   SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,
 } from "../../shared/socketAPIRoutes";
 
-export { EVT_READY, EVT_DESTROYED };
+export { EVT_READY, EVT_DESTROY };
 
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
