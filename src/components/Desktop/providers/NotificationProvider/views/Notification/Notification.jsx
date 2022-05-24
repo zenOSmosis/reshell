@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import Animation from "@components/Animation";
-import ButtonTransparent from "@components/ButtonTransparent";
+import ContentButton from "@components/ContentButton";
 import Padding from "@components/Padding";
 
 import InfoIcon from "@icons/InfoIcon";
@@ -15,7 +15,9 @@ import CloseIcon from "@icons/CloseIcon";
 import styles from "./Notification.module.css";
 
 // TODO: Add PropTypes
-// TODO: Document
+/**
+ * Desktop Notification view.
+ */
 export default function Notification({
   body,
   image,
@@ -56,7 +58,7 @@ export default function Notification({
 
   const [el, setEl] = useState(null);
 
-  // TODO: Document
+  // Auto-close handling
   useEffect(() => {
     if (el) {
       let autoCloseTimeout = null;
@@ -85,7 +87,7 @@ export default function Notification({
     }
   }, [el, autoCloseTime, handleClose]);
 
-  // TODO: Refactor into Image component?
+  // FIXME: Refactor into common Image component?
   const Image = useMemo(
     () => () => {
       switch (typeof image) {
@@ -104,25 +106,6 @@ export default function Notification({
     [image, title]
   );
 
-  /**
-   * Note: Exports a button only if an onClick handler has been defined for
-   * the notification.
-   */
-  const MessageButton = useMemo(
-    () =>
-      ({ ...rest }) =>
-        typeof onClick === "function" ? (
-          <ButtonTransparent
-            {...rest}
-            onClick={onClick}
-            className={styles["action"]}
-          />
-        ) : (
-          <React.Fragment {...rest} />
-        ),
-    [onClick]
-  );
-
   return (
     <div
       ref={setEl}
@@ -135,8 +118,12 @@ export default function Notification({
         animationName={!isClosing ? "slideInRight" : "slideOutRight"}
         animationDuration=".5s"
       >
-        <div className={styles["body-outer-wrap"]}>
-          <MessageButton>
+        <ContentButton
+          onClick={onClick}
+          disabled={!onClick}
+          className={styles["body-outer-wrap"]}
+        >
+          <div>
             <Padding>
               <div className={styles["main-image-wrap"]}>
                 <Image />
@@ -145,13 +132,13 @@ export default function Notification({
 
               <div className={styles["body"]}>{body}</div>
             </Padding>
-          </MessageButton>
-          <ButtonTransparent onClick={handleClose} className={styles["close"]}>
+          </div>
+          <ContentButton onClick={handleClose} className={styles["close"]}>
             <Padding>
               <CloseIcon />
             </Padding>
-          </ButtonTransparent>
-        </div>
+          </ContentButton>
+        </ContentButton>
       </Animation>
     </div>
   );

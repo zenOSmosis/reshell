@@ -1,5 +1,11 @@
+import Cover from "@components/Cover";
 import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
 import LoadingSpinner from "@components/LoadingSpinner";
+import ColoredSpeakerAudioLevelMeter from "@components/audioMeters/ColoredSpeakerAudioLevelMeter/ColoredSpeakerAudioLevelMeter";
+import ContentButton from "@components/ContentButton";
+
+import { REGISTRATION_ID as CHAT_APP_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/ChatApp";
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 // TODO: Document
 // TODO: Add prop-types
@@ -14,6 +20,8 @@ export default function Participant({ phantomPeer }) {
   const outgoingVideoMediaStreamTracks =
     phantomPeer.getOutgoingVideoMediaStreamTracks();
 
+  const { link: openChat } = useAppRegistrationLink(CHAT_APP_REGISTRATION_ID);
+
   if (!deviceAddress) {
     return (
       <div style={{ textAlign: "center" }}>
@@ -26,7 +34,8 @@ export default function Participant({ phantomPeer }) {
   }
 
   return (
-    <div
+    <ContentButton
+      onClick={openChat}
       style={{
         overflow: "auto",
         border: "1px #999 solid",
@@ -45,14 +54,24 @@ export default function Participant({ phantomPeer }) {
             size={120}
           />
         </div>
-        <div style={{ fontWeight: "bold" }}>{profileName}</div>
+        <div style={{ fontWeight: "bold", textAlign: "center", marginTop: 4 }}>
+          {profileName}
+        </div>
       </div>
       {profileDescription}
+
       <div style={{ position: "absolute", bottom: 4, right: 4 }}>
         A: {outgoingAudioMediaStreamTracks.length} / V:{" "}
         {outgoingVideoMediaStreamTracks.length}{" "}
         {isAudioMuted ? "muted" : "unmuted"}
       </div>
-    </div>
+
+      <Cover>
+        <ColoredSpeakerAudioLevelMeter
+          mediaStreamTracks={outgoingAudioMediaStreamTracks}
+          style={{ position: "absolute", bottom: 20, right: 0, opacity: 0.4 }}
+        />
+      </Cover>
+    </ContentButton>
   );
 }
