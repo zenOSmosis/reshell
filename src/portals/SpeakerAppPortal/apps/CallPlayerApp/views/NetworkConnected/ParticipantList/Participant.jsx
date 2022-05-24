@@ -4,12 +4,9 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import ColoredSpeakerAudioLevelMeter from "@components/audioMeters/ColoredSpeakerAudioLevelMeter/ColoredSpeakerAudioLevelMeter";
 import ContentButton from "@components/ContentButton";
 
-import { REGISTRATION_ID as CHAT_APP_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/ChatApp";
-import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
-
 // TODO: Document
 // TODO: Add prop-types
-export default function Participant({ phantomPeer }) {
+export default function Participant({ phantomPeer, onOpenChat }) {
   const deviceAddress = phantomPeer.getDeviceAddress();
   const avatarURL = phantomPeer.getAvatarURL();
   const profileName = phantomPeer.getProfileName();
@@ -19,8 +16,6 @@ export default function Participant({ phantomPeer }) {
     phantomPeer.getOutgoingAudioMediaStreamTracks();
   const outgoingVideoMediaStreamTracks =
     phantomPeer.getOutgoingVideoMediaStreamTracks();
-
-  const { link: openChat } = useAppRegistrationLink(CHAT_APP_REGISTRATION_ID);
 
   if (!deviceAddress) {
     return (
@@ -35,7 +30,7 @@ export default function Participant({ phantomPeer }) {
 
   return (
     <ContentButton
-      onClick={openChat}
+      onClick={onOpenChat}
       style={{
         overflow: "auto",
         border: "1px #999 solid",

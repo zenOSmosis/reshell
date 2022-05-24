@@ -9,8 +9,9 @@ import { Video } from "@components/audioVideoRenderers";
 
 // TODO: Document and add prop-types
 export default function NetworkConnected({
-  remotePhantomPeers = [],
   latestOutputVideoTrack,
+  onOpenChat,
+  remotePhantomPeers = [],
 }) {
   const isInSync = useFakeIsInSync();
 
@@ -38,7 +39,12 @@ export default function NetworkConnected({
     return <Video mediaStreamTrack={latestOutputVideoTrack} />;
   }
 
-  return <ParticipantList remotePhantomPeers={remotePhantomPeers} />;
+  return (
+    <ParticipantList
+      remotePhantomPeers={remotePhantomPeers}
+      onOpenChat={onOpenChat}
+    />
+  );
 }
 
 /**

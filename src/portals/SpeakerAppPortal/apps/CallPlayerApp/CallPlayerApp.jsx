@@ -21,7 +21,7 @@ import { REGISTRATION_ID as VIRTUAL_SERVER_REGISTRATION_ID } from "../VirtualSer
 import { REGISTRATION_ID as SCREEN_CAPTURE_REGISTRATION_ID } from "@portals/ExamplePortal/apps/ScreenCaptureApp";
 import { REGISTRATION_ID as CHAT_REGISTRATION_ID } from "../ChatApp";
 
-// import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppNetworkDiscoveryService from "@portals/SpeakerAppPortal/services/SpeakerAppNetworkDiscoveryService";
@@ -136,6 +136,9 @@ const CallPlayerApp = {
     }, [windowController]);
     */
 
+    const { link: handleOpenChat } =
+      useAppRegistrationLink(CHAT_REGISTRATION_ID);
+
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkDiscoveryService =
       appServices[SpeakerAppNetworkDiscoveryService];
@@ -221,6 +224,7 @@ const CallPlayerApp = {
               <NetworkConnected
                 remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
                 latestOutputVideoTrack={latestOutputVideoTrack}
+                onOpenChat={handleOpenChat}
               />
             )}
           </Padding>

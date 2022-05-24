@@ -4,11 +4,15 @@ import Participant from "./Participant";
 
 // TODO: Document
 // TODO: Add prop-types
-export default function ParticipantList({ remotePhantomPeers }) {
+export default function ParticipantList({ remotePhantomPeers, onOpenChat }) {
   return (
     <Full style={{ overflowY: "auto" }}>
       {[...remotePhantomPeers].reverse().map((phantomPeer, idx) => (
-        <Participant key={idx} phantomPeer={phantomPeer} />
+        <Participant
+          key={idx}
+          phantomPeer={phantomPeer}
+          onOpenChat={onOpenChat}
+        />
       ))}
     </Full>
   );
