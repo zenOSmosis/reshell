@@ -1,5 +1,5 @@
 import BaseModule from "./ZenRTCPeer.BaseModule";
-import { EVT_CONNECT } from "../ZenRTCPeer";
+import { EVT_CONNECT, EVT_DISCONNECT } from "../ZenRTCPeer";
 
 // In milliseconds
 const HEARTBEAT_INTERVAL_TIME = 5000;
@@ -7,8 +7,6 @@ const HEARTBEAT_INTERVAL_TIME = 5000;
 export default class ZenRTCPeerHeartbeatModule extends BaseModule {
   constructor(zenRTCPeer) {
     super(zenRTCPeer);
-
-    this.ping = this.ping.bind(this);
 
     this._heartbeatInterval = null;
 
@@ -18,17 +16,14 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
       this.ping();
 
       // Handle heartbeat ping polling
-      this._heartbeatInterval = setInterval(this.ping, HEARTBEAT_INTERVAL_TIME);
+      this._heartbeatInterval = zenRTCPeer.setInterval(
+        () => this.ping,
+        HEARTBEAT_INTERVAL_TIME
+      );
     });
-  }
 
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    return super.destroy(() => {
-      // Stop the ping polling
-      clearInterval(this._heartbeatInterval);
+    zenRTCPeer.on(EVT_DISCONNECT, () => {
+      zenRTCPeer.clearInterval(this._heartbeatInterval);
     });
   }
 
