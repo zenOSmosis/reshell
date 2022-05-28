@@ -252,7 +252,14 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
    * @return {number}
    **/
   getConnectionUptime() {
-    return this._localZenRTCPeer?.getConnectionUptime() || 0;
+    if (
+      !this._localZenRTCPeer ||
+      this._localZenRTCPeer.getHasDestroyStarted()
+    ) {
+      return 0;
+    }
+
+    return this._localZenRTCPeer.getConnectionUptime();
   }
 
   /**
