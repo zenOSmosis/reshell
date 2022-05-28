@@ -229,7 +229,12 @@ const WindowView = ({
                 />
               </Header>
               <Content className={styles["body"]} style={bodyStyle}>
-                {children}
+                {
+                  // Full wrapper fixes issue where subsequent Cover view could
+                  // adversely affect window body layouts using Layout
+                  // component
+                }
+                <Full>{children}</Full>
 
                 {
                   // Fixes issue where clicking on an IFrame in a window would
