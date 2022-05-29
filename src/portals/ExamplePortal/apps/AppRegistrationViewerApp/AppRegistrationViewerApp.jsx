@@ -68,9 +68,6 @@ const AppRegistrationViewerApp = {
 function AppRegistrationSelector({ onRegistrationChange }) {
   const { appRegistrations } = useAppOrchestrationContext();
 
-  // TODO: Remove
-  console.log({ appRegistrations });
-
   return (
     <div>
       <select onChange={evt => onRegistrationChange(evt.target.value)}>
