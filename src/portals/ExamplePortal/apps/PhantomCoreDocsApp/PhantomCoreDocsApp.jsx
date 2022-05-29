@@ -8,8 +8,8 @@ const PhantomCoreDocsApp = {
   id: REGISTRATION_ID,
   title: "PhantomCore Docs",
   style: {
-    width: 720,
-    height: 480,
+    width: 1200,
+    height: 960,
   },
   view: function View() {
     return <IFrame src={PHANTOM_CORE_DOCS_URL} />;
