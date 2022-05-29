@@ -31,8 +31,14 @@ const UptimeApp = {
         </Content>
         <Footer style={{ textAlign: "center" }}>
           <Padding>
-            <AppLinkButton id={APPLICATION_MONITOR_REGISTRATION_ID} />{" "}
-            <AppLinkButton id={SERVICE_MONITOR_REGISTRATION_ID} />
+            <AppLinkButton
+              id={APPLICATION_MONITOR_REGISTRATION_ID}
+              style={{ float: "left" }}
+            />
+            <AppLinkButton
+              id={SERVICE_MONITOR_REGISTRATION_ID}
+              style={{ float: "right" }}
+            />
           </Padding>
         </Footer>
       </Layout>
