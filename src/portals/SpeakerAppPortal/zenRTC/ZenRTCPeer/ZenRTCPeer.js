@@ -515,7 +515,7 @@ export default class ZenRTCPeer extends PhantomCore {
                 this._webrtcPeer.removeTrack(track, bootStream);
               }
             } catch (err) {
-              console.error(err);
+              this.log.error(err);
             }
           }
         };
@@ -921,8 +921,7 @@ export default class ZenRTCPeer extends PhantomCore {
           // kind = "audio" | "video"
           const { msid, kind } = eventData;
 
-          // TODO: Remove or use phantom logger
-          console.debug("SYNC_EVT_TRACK_REMOVE", { msid, kind });
+          this.log.debug("SYNC_EVT_TRACK_REMOVE", { msid, kind });
 
           const mediaStream = this.getIncomingMediaStreams().find(
             ({ id }) => id === msid

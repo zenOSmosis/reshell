@@ -94,18 +94,6 @@ export default function InputMediaDevicesSelector({
                     isCapturing &&
                     deviceCaptureFactory?.getOutputMediaStream()?.getTracks();
 
-                  // TODO: Remove
-                  /*
-                  const audioTrackController =
-                    isCapturing &&
-                    deviceCaptureFactory?.getAudioTrackControllers()[0];
-                  if (audioTrackController) {
-                    console.log({
-                      settings: audioTrackController.getSettings(),
-                    });
-                  }
-                  */
-
                   return (
                     <AudioInputDeviceTableRow
                       key={idx}

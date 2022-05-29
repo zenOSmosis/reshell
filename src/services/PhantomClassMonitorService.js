@@ -23,4 +23,25 @@ export default class PhantomClassMonitorService extends UIServiceCore {
   getPhantomClassNames() {
     return this.getState().phantomClassNames;
   }
+
+  // TODO: Document
+  setGlobalLogLevel(logLevel) {
+    return this._phantomWatcher.setGlobalLogLevel(logLevel);
+  }
+
+  // TODO: Document
+  setPhantomClassLogLevel(phantomClassName, logLevel) {
+    return this._phantomWatcher.setPhantomClassLogLevel(
+      phantomClassName,
+      logLevel
+    );
+  }
+
+  // TODO: Document
+  getPhantomClassLogLevel(phantomClassName) {
+    const level =
+      this._phantomWatcher.getPhantomClassLogLevel(phantomClassName);
+
+    return level;
+  }
 }

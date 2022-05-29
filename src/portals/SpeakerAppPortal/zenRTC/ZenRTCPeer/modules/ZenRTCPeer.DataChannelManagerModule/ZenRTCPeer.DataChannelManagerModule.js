@@ -125,8 +125,7 @@ export default class DataChannelManagerModule extends BaseModule {
       // No longer need this, as we have the meta data from the batch
       chunkBatch.destroy();
 
-      // TODO: Remove
-      console.log({
+      logger.debug({
         serialChunks,
       });
 
@@ -212,8 +211,7 @@ export default class DataChannelManagerModule extends BaseModule {
       if (DataChannelChunkBatchReceiver.getIsChunked(data)) {
         const batch = DataChannelChunkBatchReceiver.importMetaChunk(data);
 
-        // TODO: Remove
-        console.log({
+        logger.debug({
           batch,
           batchCode: batch.getBatchCode(),
           complete: batch.getIsComplete(),

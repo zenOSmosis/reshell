@@ -101,8 +101,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       // It should probably be cleaned up.
       delete readOnlyState[STATE_KEY_LAST_CHAT_MESSAGE];
 
-      // TODO: Remove
-      console.log(
+      this.log.debug(
         "length incoming media streams",
         zenRTCPeer.getIncomingMediaStreams().length
       );

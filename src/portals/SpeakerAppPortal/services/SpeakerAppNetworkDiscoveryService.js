@@ -61,8 +61,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
 
     this.setState({ networks });
 
-    // TODO: Remove
-    console.log({ networks });
+    this.log.debug("Received networks:", networks);
 
     return networks;
   }

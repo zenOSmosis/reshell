@@ -44,27 +44,46 @@ const PhantomLogLevelAdjusterApp = {
             <StickyTable>
               <thead>
                 <tr>
-                  <td>Phantom Class Name</td>
+                  <td>
+                    <Padding>Phantom Class Name</Padding>
+                  </td>
 
-                  <td>Log Level</td>
+                  <td>
+                    <Padding>Log Level</Padding>
+                  </td>
                 </tr>
               </thead>
               <tbody>
                 {phantomClassNames.map(phantomClassName => (
                   <tr key={phantomClassName}>
-                    <td>{phantomClassName}</td>
                     <td>
-                      <select>
-                        {
-                          // TODO: Dynamically populate
-                        }
-                        <option>trace</option>
-                        <option>debug</option>
-                        <option>info</option>
-                        <option>warn</option>
-                        <option>error</option>
-                        <option>silent</option>
-                      </select>
+                      <Padding>{phantomClassName}</Padding>
+                    </td>
+                    <td>
+                      <Padding>
+                        <select
+                          // TODO: Refactor value and onChange handlers
+                          value={phantomMonitor
+                            .getPhantomClassLogLevel(phantomClassName)
+                            .toString()}
+                          onChange={evt =>
+                            phantomMonitor.setPhantomClassLogLevel(
+                              phantomClassName,
+                              parseInt(evt.target.value, 10)
+                            )
+                          }
+                        >
+                          {
+                            // TODO: Dynamically populate
+                          }
+                          <option value="0">silent</option>
+                          <option value="1">error</option>
+                          <option value="2">warn</option>
+                          <option value="3">info</option>
+                          <option value="4">debug</option>
+                          <option value="5">trace</option>
+                        </select>
+                      </Padding>
                     </td>
                   </tr>
                 ))}
