@@ -18,6 +18,7 @@ import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewe
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
+import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 
 // Hackathon apps
 import SpeechCommanderApp from "../HackathonPortal/apps/SpeechCommanderApp";
@@ -50,6 +51,7 @@ export default function ReShellOrgPortal() {
         SayItDifferentApp,
         IPApp,
         TTSConfigurerApp,
+        UptimeApp,
         //
         SpeechCommanderApp,
         DesktopCommanderDebuggerApp,

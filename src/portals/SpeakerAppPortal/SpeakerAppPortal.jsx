@@ -23,6 +23,7 @@ import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 import PhantomLogLevelAdjusterApp from "../ExamplePortal/apps/PhantomLogLevelAdjusterApp";
 import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
+import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 //
 import CallPlayerApp from "./apps/CallPlayerApp";
 import VirtualServerApp from "./apps/VirtualServerApp";
@@ -65,6 +66,7 @@ export default function SpeakerAppPortal() {
         TTSConfigurerApp,
         PhantomLogLevelAdjusterApp,
         PhantomCoreDocsApp,
+        UptimeApp,
 
         // Speaker.app-specific apps
         CallPlayerApp,
