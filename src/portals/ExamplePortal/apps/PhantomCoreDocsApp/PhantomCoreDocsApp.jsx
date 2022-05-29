@@ -1,6 +1,6 @@
 import IFrame from "@components/IFrame";
 
-const PHANTOM_CORE_DOCS_URL = "https://zenosmosis.github.io/phantom-core/";
+const PHANTOM_CORE_DOCS_URL = "https://docs.phantom-core.zenosmosis.com/";
 
 export const REGISTRATION_ID = "phantom-core-docs";
 
