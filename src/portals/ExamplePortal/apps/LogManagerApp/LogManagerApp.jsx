@@ -5,11 +5,11 @@ import Layout, { Header, Content, Footer } from "@components/Layout";
 
 import PhantomClassMonitorService from "@services/PhantomClassMonitorService";
 
-export const REGISTRATION_ID = "phantom-log-level-adjuster";
+export const REGISTRATION_ID = "log-manager";
 
-const PhantomLogLevelAdjusterApp = {
+const LogManagerApp = {
   id: REGISTRATION_ID,
-  title: "Phantom Log Level Adjuster",
+  title: "Log Manager",
   style: {
     width: 640,
     height: 480,
@@ -99,4 +99,4 @@ const PhantomLogLevelAdjusterApp = {
   },
 };
 
-export default PhantomLogLevelAdjusterApp;
+export default LogManagerApp;

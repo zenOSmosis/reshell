@@ -21,7 +21,7 @@ import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewe
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
-import PhantomLogLevelAdjusterApp from "../ExamplePortal/apps/PhantomLogLevelAdjusterApp";
+import LogManagerApp from "../ExamplePortal/apps/LogManagerApp";
 import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
 import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 //
@@ -64,7 +64,7 @@ export default function SpeakerAppPortal() {
         NativeSpyAgentApp,
         IPApp,
         TTSConfigurerApp,
-        PhantomLogLevelAdjusterApp,
+        LogManagerApp,
         PhantomCoreDocsApp,
         UptimeApp,
 
