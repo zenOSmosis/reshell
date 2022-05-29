@@ -14,7 +14,9 @@ IFrame.propTypes = {
   title: PropTypes.string,
 };
 
-// TODO: Document
+/**
+ * Renders an HTML iframe element.
+ */
 export default function IFrame({
   src,
   title = null,
@@ -24,8 +26,6 @@ export default function IFrame({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleLoad = useCallback(() => setIsLoaded(true), []);
-
-  // TODO: While loading, show overlay
 
   return (
     <Full>
