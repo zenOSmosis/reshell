@@ -18,7 +18,9 @@ export default class AppRuntime extends PhantomCore {
       throw new TypeError("appRegistration is not an AppRegistration");
     }
 
-    super();
+    super({
+      title: appRegistration.getTitle(),
+    });
 
     this._appRegistration = appRegistration;
     this._appOrchestrationService = appOrchestrationService;

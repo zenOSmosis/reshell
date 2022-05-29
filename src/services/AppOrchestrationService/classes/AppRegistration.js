@@ -83,7 +83,9 @@ export default class AppRegistration extends PhantomCore {
   constructor(appDescriptor) {
     // TODO: Validate appDescriptor before trying to use
 
-    super();
+    super({
+      title: appDescriptor.title,
+    });
 
     // TODO: Document type
     this._appDescriptor = appDescriptor;
@@ -120,13 +122,6 @@ export default class AppRegistration extends PhantomCore {
    */
   getAppDescriptorID() {
     return this.getID();
-  }
-
-  /**
-   * @return {string}
-   */
-  getTitle() {
-    return this._appDescriptor.title;
   }
 
   /**
