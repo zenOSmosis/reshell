@@ -30,6 +30,11 @@ export default class PhantomClassMonitorService extends UIServiceCore {
   }
 
   // TODO: Document
+  getGlobalLogLevel() {
+    return this._phantomWatcher.getGlobalLogLevel();
+  }
+
+  // TODO: Document
   setPhantomClassLogLevel(phantomClassName, logLevel) {
     return this._phantomWatcher.setPhantomClassLogLevel(
       phantomClassName,
@@ -39,9 +44,6 @@ export default class PhantomClassMonitorService extends UIServiceCore {
 
   // TODO: Document
   getPhantomClassLogLevel(phantomClassName) {
-    const level =
-      this._phantomWatcher.getPhantomClassLogLevel(phantomClassName);
-
-    return level;
+    return this._phantomWatcher.getPhantomClassLogLevel(phantomClassName);
   }
 }

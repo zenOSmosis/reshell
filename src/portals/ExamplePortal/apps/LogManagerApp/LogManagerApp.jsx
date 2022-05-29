@@ -3,6 +3,8 @@ import StickyTable from "@components/StickyTable";
 import Padding from "@components/Padding";
 import Layout, { Header, Content, Footer } from "@components/Layout";
 
+import SelectLogLevel from "./components/SelectLogLevel";
+
 import PhantomClassMonitorService from "@services/PhantomClassMonitorService";
 
 export const REGISTRATION_ID = "log-manager";
@@ -28,14 +30,10 @@ const LogManagerApp = {
           <Padding>
             <div>
               <span>Global log level:</span>{" "}
-              <select>
-                <option>trace</option>
-                <option>debug</option>
-                <option>info</option>
-                <option>warn</option>
-                <option>error</option>
-                <option>silent</option>
-              </select>
+              <SelectLogLevel
+                value={phantomMonitor.getGlobalLogLevel()}
+                onChange={phantomMonitor.setGlobalLogLevel}
+              />
             </div>
           </Padding>
         </Header>
@@ -61,28 +59,18 @@ const LogManagerApp = {
                     </td>
                     <td>
                       <Padding>
-                        <select
+                        <SelectLogLevel
                           // TODO: Refactor value and onChange handlers
-                          value={phantomMonitor
-                            .getPhantomClassLogLevel(phantomClassName)
-                            .toString()}
-                          onChange={evt =>
+                          value={phantomMonitor.getPhantomClassLogLevel(
+                            phantomClassName
+                          )}
+                          onChange={logLevel =>
                             phantomMonitor.setPhantomClassLogLevel(
                               phantomClassName,
-                              parseInt(evt.target.value, 10)
+                              logLevel
                             )
                           }
-                        >
-                          {
-                            // TODO: Dynamically populate
-                          }
-                          <option value="0">silent</option>
-                          <option value="1">error</option>
-                          <option value="2">warn</option>
-                          <option value="3">info</option>
-                          <option value="4">debug</option>
-                          <option value="5">trace</option>
-                        </select>
+                        />
                       </Padding>
                     </td>
                   </tr>
