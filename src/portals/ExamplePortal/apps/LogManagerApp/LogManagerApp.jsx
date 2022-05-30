@@ -33,7 +33,13 @@ const LogManagerApp = {
               <SelectLogLevel
                 value={phantomMonitor.getGlobalLogLevel()}
                 onChange={phantomMonitor.setGlobalLogLevel}
-              />
+              />{" "}
+              <button
+                onClick={phantomMonitor.resetGlobalLogLevel}
+                disabled={!phantomMonitor.getHasGlobalLogLevelChanged()}
+              >
+                Reset
+              </button>
             </div>
           </Padding>
         </Header>
