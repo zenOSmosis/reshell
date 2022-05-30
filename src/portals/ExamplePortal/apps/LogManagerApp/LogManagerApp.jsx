@@ -31,7 +31,7 @@ const LogManagerApp = {
         <Header style={{ textAlign: "center" }}>
           <Padding>
             <div>
-              <span>Global log level:</span>{" "}
+              <span style={{ fontWeight: "bold" }}>Global log level:</span>{" "}
               <SelectLogLevel
                 value={phantomMonitor.getGlobalLogLevel()}
                 onChange={phantomMonitor.setGlobalLogLevel}
@@ -55,6 +55,10 @@ const LogManagerApp = {
                   </td>
 
                   <td>
+                    <Padding>Instances</Padding>
+                  </td>
+
+                  <td>
                     <Padding>Log Level</Padding>
                   </td>
                 </tr>
@@ -64,6 +68,13 @@ const LogManagerApp = {
                   <tr key={phantomClassName}>
                     <td>
                       <Padding>{phantomClassName}</Padding>
+                    </td>
+                    <td>
+                      <Padding>
+                        {phantomMonitor.getTotalPhantomInstancesWithClassName(
+                          phantomClassName
+                        )}
+                      </Padding>
                     </td>
                     <td>
                       <Padding>
@@ -88,7 +99,7 @@ const LogManagerApp = {
           </Scrollable>
         </Content>
         <Footer>
-          <Padding>{phantomClassNames.length} unique</Padding>
+          <Padding>{phantomMonitor.getTotalPhantomInstances()} unique</Padding>
         </Footer>
       </Layout>
     );

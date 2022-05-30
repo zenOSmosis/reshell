@@ -74,4 +74,16 @@ export default class PhantomClassMonitorService extends UIServiceCore {
   resetGlobalLogLevel() {
     return this._phantomWatcher.resetGlobalLogLevel();
   }
+
+  // TODO: Document
+  getTotalPhantomInstances(phantomClassName) {
+    return this._phantomWatcher.getTotalPhantomInstances();
+  }
+
+  // TODO: Document
+  getTotalPhantomInstancesWithClassName(phantomClassName) {
+    return this._phantomWatcher.getTotalPhantomInstancesWithClassName(
+      phantomClassName
+    );
+  }
 }
