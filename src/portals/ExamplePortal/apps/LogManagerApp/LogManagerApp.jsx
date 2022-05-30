@@ -9,6 +9,8 @@ import PhantomClassMonitorService from "@services/PhantomClassMonitorService";
 
 export const REGISTRATION_ID = "log-manager";
 
+// TODO: Implement ability to select by hierarchy
+
 const LogManagerApp = {
   id: REGISTRATION_ID,
   title: "Log Manager",

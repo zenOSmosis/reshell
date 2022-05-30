@@ -2,8 +2,10 @@ import UIServiceCore from "@core/classes/UIServiceCore";
 import {
   PhantomWatcher,
   EVT_UPDATE,
-  EVT_PHANTOM_WATCHER_LOG_MISS,
+  // EVT_PHANTOM_WATCHER_LOG_MISS,
 } from "phantom-core";
+
+// TODO: Implement ability to store / retrieve log settings from local storage
 
 // TODO: Document
 export default class PhantomClassMonitorService extends UIServiceCore {
@@ -23,9 +25,11 @@ export default class PhantomClassMonitorService extends UIServiceCore {
     });
 
     // TODO: Handle accordingly
+    /*
     this.proxyOn(this._phantomWatcher, EVT_PHANTOM_WATCHER_LOG_MISS, data => {
       console.log("log miss", data);
     });
+    */
   }
 
   // TODO: Document
