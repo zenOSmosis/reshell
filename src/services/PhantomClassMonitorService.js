@@ -1,5 +1,9 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
-import { PhantomWatcher, EVT_UPDATE } from "phantom-core";
+import {
+  PhantomWatcher,
+  EVT_UPDATE,
+  EVT_PHANTOM_WATCHER_LOG_MISS,
+} from "phantom-core";
 
 // TODO: Document
 export default class PhantomClassMonitorService extends UIServiceCore {
@@ -16,6 +20,11 @@ export default class PhantomClassMonitorService extends UIServiceCore {
       this.setState({
         phantomClassNames: this._phantomWatcher.getPhantomClassNames(),
       });
+    });
+
+    // TODO: Handle accordingly
+    this.proxyOn(this._phantomWatcher, EVT_PHANTOM_WATCHER_LOG_MISS, data => {
+      console.log("log miss", data);
     });
   }
 
