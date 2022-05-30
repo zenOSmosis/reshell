@@ -20,7 +20,7 @@ const ApplicationsApp = {
   id: REGISTRATION_ID,
   title: "Applications",
   style: {
-    width: 640 * 1.2,
+    width: 640 * 1.4,
     height: 480 * 1.2,
   },
   isPinnedToDock: true,

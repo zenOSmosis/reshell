@@ -31,6 +31,7 @@ import NativeSpyAgentApp from "./apps/NativeSpyAgentApp";
 import HelloWorldApp from "./apps/HelloWorldApp";
 import IPApp from "./apps/IPApp";
 import TTSConfigurerApp from "./apps/TTSConfigurerApp";
+import UptimeApp from "./apps/UptimeApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 
@@ -69,6 +70,7 @@ export default function ExamplePortal() {
         HelloWorldApp,
         IPApp,
         TTSConfigurerApp,
+        UptimeApp,
       ]}
       defaultAppAutoStartConfigs={defaultAppAutoStartConfigs}
     />

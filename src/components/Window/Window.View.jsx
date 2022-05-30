@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
+import Cover from "../Cover";
 
 import WindowBorder from "./Window.Border";
 import WindowTitleBar from "./Window.TitleBar";
@@ -228,7 +229,21 @@ const WindowView = ({
                 />
               </Header>
               <Content className={styles["body"]} style={bodyStyle}>
-                {children}
+                {
+                  // Full wrapper fixes issue where subsequent Cover view could
+                  // adversely affect window body layouts using Layout
+                  // component
+                }
+                <Full>{children}</Full>
+
+                {
+                  // Fixes issue where clicking on an IFrame in a window would
+                  // not activate the window
+                  //
+                  // FIXME: Implement optional scroll passthru (scrolling is
+                  // blocked via this overlay)
+                }
+                <Cover isVisible={!isActive} />
               </Content>
             </Layout>
           </Full>

@@ -264,6 +264,7 @@ function WindowManagerView({ children }) {
                   {},
                   {
                     onBringToTop: handleSetActiveWindow,
+                    title,
                   }
                 );
 

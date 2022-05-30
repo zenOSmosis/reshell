@@ -25,10 +25,6 @@ const AppRegistrationViewerApp = {
           predicate => predicate.getID() === registrationId
         );
 
-        console.log({
-          matchedRegistration,
-        });
-
         if (matchedRegistration) {
           setRegistration(matchedRegistration.getAppDescriptor());
         } else {
@@ -71,9 +67,6 @@ const AppRegistrationViewerApp = {
 
 function AppRegistrationSelector({ onRegistrationChange }) {
   const { appRegistrations } = useAppOrchestrationContext();
-
-  // TODO: Remove
-  console.log({ appRegistrations });
 
   return (
     <div>

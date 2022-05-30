@@ -6,6 +6,7 @@ import SpeakerLogo from "@portals/SpeakerAppPortal/assets/speaker.app.logo.svg";
 
 import styles from "./ColoredSpeakerAudioLevelMeter.module.css";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 import getPercentColor from "@utils/getPercentColor";
@@ -13,16 +14,24 @@ import getPercentColor from "@utils/getPercentColor";
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import useUUID from "@hooks/useUUID";
 
-// TODO: Document
-// TODO: Add prop-types
+ColoredSpeakerAudioLevelMeter.propTypes = {
+  /** When multiple audio tracks may be used together */
+  mediaStreamTracks: PropTypes.arrayOf(PropTypes.instanceOf(MediaStreamTrack)),
+
+  /** When only a single track is used */
+  mediaStreamTrack: PropTypes.instanceOf(MediaStreamTrack),
+};
+
+/**
+ * A colored Speaker (Speaker.app logo) which responds to audio level
+ * intensity.
+ */
 export default function ColoredSpeakerAudioLevelMeter({
   mediaStreamTrack,
   mediaStreamTracks,
   className,
   ...rest
 }) {
-  // TODO: Use preloader
-
   const [elSVG, setElSVG] = useState(null);
 
   const uuid = useUUID();
@@ -49,6 +58,7 @@ export default function ColoredSpeakerAudioLevelMeter({
     handleAudioLevelChange
   );
 
+  // TODO: Use [optional] colored background for speaker color?
   return (
     <Preload {...rest} preloadResources={[SpeakerLogo]}>
       <div {...rest} className={classNames(styles["speaker"], className)}>

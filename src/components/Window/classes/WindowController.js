@@ -26,13 +26,13 @@ const POST_RESTORE_POSITION_EFFECT_TIMEOUT = 1000;
 // TODO: Document
 export default class WindowController extends PhantomState {
   // TODO: Document
-  constructor(initialState = {}, { onBringToTop }) {
+  constructor(initialState = {}, { onBringToTop, title }) {
     const DEFAULT_STATE = {
       isMaximized: false,
       isMinimized: false,
     };
 
-    super(PhantomState.mergeOptions({ ...DEFAULT_STATE, ...initialState }));
+    super(PhantomState.mergeOptions(DEFAULT_STATE, initialState), { title });
 
     this._appRuntime = null;
 

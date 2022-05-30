@@ -46,6 +46,8 @@ export default class UIServiceCore extends PhantomServiceCore {
   }
 
   /**
+   * Unbinds an event handler from the browser's window object.
+   *
    * Note: While addEventListener() will let you add the same listener more
    * than once for the same type if the options are different, the only
    * option removeEventListener() checks is the capture/useCapture flag. Its
