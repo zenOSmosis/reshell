@@ -46,7 +46,7 @@ const LogManagerApp = {
           </Padding>
         </Header>
         <Content>
-          <Scrollable>
+          <Scrollable x={true} y={true}>
             <StickyTable>
               <thead>
                 <tr>
@@ -56,6 +56,10 @@ const LogManagerApp = {
 
                   <td>
                     <Padding>Instances</Padding>
+                  </td>
+
+                  <td>
+                    <Padding>Log Misses</Padding>
                   </td>
 
                   <td>
@@ -74,6 +78,13 @@ const LogManagerApp = {
                         {phantomMonitor.getTotalPhantomInstancesWithClassName(
                           phantomClassName
                         )}
+                      </Padding>
+                    </td>
+                    <td>
+                      <Padding>
+                        {phantomMonitor
+                          .getPhantomClassLogMisses(phantomClassName)
+                          .join(",")}
                       </Padding>
                     </td>
                     <td>

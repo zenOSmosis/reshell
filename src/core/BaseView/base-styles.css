@@ -330,7 +330,7 @@ Not supported in and IE.
 /* total width */
 *::-webkit-scrollbar {
   width: 8px;
-  height: 4px;
+  height: 8px;
 }
 
 /* background of the scrollbar except button or resizer */
