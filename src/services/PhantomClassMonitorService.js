@@ -3,6 +3,8 @@ import {
   PhantomWatcher,
   EVT_UPDATE,
   EVT_PHANTOM_WATCHER_LOG_MISS,
+  // LogLevel,
+  // TODO: Implement ability to store / retrieve log settings from local storage
 } from "phantom-core";
 
 // TODO: Document
@@ -22,9 +24,12 @@ export default class PhantomClassMonitorService extends UIServiceCore {
       });
     });
 
-    // TODO: Handle accordingly
-    this.proxyOn(this._phantomWatcher, EVT_PHANTOM_WATCHER_LOG_MISS, data => {
-      console.log("log miss", data);
+    // Force re-render on log misses as well
+    //
+    // FIXME: (jh) This may need to be reworked as necessary if it causes
+    // performance issues (maybe processed and debounced via a web worker)
+    this.proxyOn(this._phantomWatcher, EVT_PHANTOM_WATCHER_LOG_MISS, () => {
+      this.emit(EVT_UPDATE);
     });
   }
 
@@ -69,5 +74,22 @@ export default class PhantomClassMonitorService extends UIServiceCore {
   // TODO: Document
   resetGlobalLogLevel() {
     return this._phantomWatcher.resetGlobalLogLevel();
+  }
+
+  // TODO: Document
+  getTotalPhantomInstances(phantomClassName) {
+    return this._phantomWatcher.getTotalPhantomInstances();
+  }
+
+  // TODO: Document
+  getTotalPhantomInstancesWithClassName(phantomClassName) {
+    return this._phantomWatcher.getTotalPhantomInstancesWithClassName(
+      phantomClassName
+    );
+  }
+
+  // TODO: Document
+  getPhantomClassLogMisses(phantomClassName) {
+    return this._phantomWatcher.getPhantomClassLogMisses(phantomClassName);
   }
 }

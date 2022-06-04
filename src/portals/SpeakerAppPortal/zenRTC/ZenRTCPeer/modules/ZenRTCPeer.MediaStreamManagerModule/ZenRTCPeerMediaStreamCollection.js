@@ -79,12 +79,14 @@ export default class ZenRTCPeerMediaStreamCollection extends PhantomCollection {
             oEnded(...args);
           }
 
-          this.log.debug(
-            "Automatically removing ended media stream track",
-            mediaStreamTrack
-          );
+          if (!this.getHasDestroyStarted()) {
+            this.log.debug(
+              "Automatically removing ended media stream track",
+              mediaStreamTrack
+            );
 
-          await this.removeMediaStreamTrack(mediaStreamTrack, mediaStream);
+            await this.removeMediaStreamTrack(mediaStreamTrack, mediaStream);
+          }
         };
       })();
 
