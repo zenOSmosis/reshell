@@ -10,10 +10,17 @@ import Center from "@components/Center";
 import Image from "@components/Image";
 
 import Speaker from "@components/Speaker";
+import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter";
 
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
-export default function SoundSystemLayout() {
+export default function SoundSystemLayout({
+  inputAudioMediaStreamTracks = [],
+}) {
+  return (
+    <WooferAudioLevelMeter mediaStreamTracks={inputAudioMediaStreamTracks} />
+  );
+
   return (
     <Row>
       <Column>

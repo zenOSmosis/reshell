@@ -176,14 +176,26 @@ const CallTheaterApp = {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     const networkDiscoveryService =
       appServices[SpeakerAppNetworkDiscoveryService];
+
+    const networks = networkDiscoveryService.getNetworks();
+    const lenNetworks = networks.length;
+
     const localZenRTCPeerService =
       appServices[SpeakerAppClientZenRTCPeerService];
     const phantomSessionService =
       appServices[SpeakerAppClientPhantomSessionService];
     const outputMediaDevicesService = appServices[OutputMediaDevicesService];
 
-    const networks = networkDiscoveryService.getNetworks();
-    const lenNetworks = networks.length;
+    const inputMediaDevicesService = appServices[InputMediaDevicesService];
+
+    const captureFactories = inputMediaDevicesService.getCaptureFactories();
+    const inputAudioMediaStreamTracks = captureFactories
+      .map(factory =>
+        factory
+          .getAudioTrackControllers()
+          .map(controller => controller.getOutputMediaStreamTrack())
+      )
+      .flat();
 
     /*
     const { link: virtualServerLink } = useAppRegistrationLink(
@@ -225,7 +237,9 @@ const CallTheaterApp = {
           </Padding>
         </Header>
         <Content>
-          <SoundSystemLayout />
+          <SoundSystemLayout
+            inputAudioMediaStreamTracks={inputAudioMediaStreamTracks}
+          />
         </Content>
         <Footer style={{ textAlign: "center", maxHeight: "10%" }}>
           <Padding>
@@ -235,6 +249,7 @@ const CallTheaterApp = {
       </Layout>
     );
 
+    // TODO: Refactor
     return (
       <Layout>
         <Header>
