@@ -14,7 +14,48 @@ import Speaker from "@components/Speaker";
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
 export default function SoundSystemLayout() {
-  return <Speaker />;
+  return (
+    <Row>
+      <Column>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: "100%",
+            maxWidth: "100%",
+            padding: 20,
+          }}
+        >
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+        </div>
+      </Column>
+      <Column>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: "100%",
+            maxWidth: "100%",
+            padding: 20,
+          }}
+        >
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+          <Speaker />
+          <div style={{ height: 40 }}></div>
+        </div>
+      </Column>
+    </Row>
+  );
 
   return (
     <Layout>

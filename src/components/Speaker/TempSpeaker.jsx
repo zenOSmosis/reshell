@@ -1,4 +1,4 @@
-import "./Speaker.css";
+import "./TEMP_Speaker.css";
 import AutoScaler from "../AutoScaler";
 
 export default function TempSpeaker() {

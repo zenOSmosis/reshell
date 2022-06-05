@@ -15,6 +15,7 @@ import NoWrap from "@components/NoWrap";
 import LoadingSpinner from "@components/LoadingSpinner";
 import Timer from "@components/Timer";
 import Image from "@components/Image";
+import ButtonGroup from "@components/ButtonGroup";
 
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
@@ -214,12 +215,23 @@ const CallTheaterApp = {
     return (
       <Layout>
         <Header style={{ textAlign: "center" }}>
-          Chat / Audio Input / User Profile / Create Network
+          <Padding>
+            <ButtonGroup>
+              <button>Chat</button>
+              <button>Audio Input</button>
+              <button>User Profile</button>
+              <button>Create Network</button>
+            </ButtonGroup>
+          </Padding>
         </Header>
         <Content>
           <SoundSystemLayout />
         </Content>
-        <Footer></Footer>
+        <Footer style={{ textAlign: "center", maxHeight: "10%" }}>
+          <Padding>
+            <Image src={ZenOSmosisLogo} />
+          </Padding>
+        </Footer>
       </Layout>
     );
 
