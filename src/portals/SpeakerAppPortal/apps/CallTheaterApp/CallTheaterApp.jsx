@@ -1,5 +1,11 @@
 // import { useEffect } from "react";
-import Layout, { Header, Content, Footer } from "@components/Layout";
+import Layout, {
+  Header,
+  Content,
+  Footer,
+  Row,
+  Column,
+} from "@components/Layout";
 import Padding from "@components/Padding";
 import Center from "@components/Center";
 import Cover from "@components/Cover";
@@ -8,12 +14,16 @@ import LabeledLED from "@components/labeled/LabeledLED";
 import NoWrap from "@components/NoWrap";
 import LoadingSpinner from "@components/LoadingSpinner";
 import Timer from "@components/Timer";
+import Image from "@components/Image";
+
+import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
 import MicrophoneIcon from "@icons/MicrophoneIcon";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
 import NetworkConnected from "./views/NetworkConnected";
+import SoundSystemLayout from "./views/SoundSystemLayout";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfileApp";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevicesApp";
@@ -31,7 +41,7 @@ import SpeakerAppLocalUserProfileService from "@portals/SpeakerAppPortal/service
 import InputMediaDevicesService from "@services/InputMediaDevicesService";
 import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 
-export const REGISTRATION_ID = "network";
+export const REGISTRATION_ID = "call-theater";
 
 // TODO: Show current network detail
 
@@ -39,14 +49,14 @@ export const REGISTRATION_ID = "network";
 // request is similar to:
 // network/0x678308810e1087A3aED280d0feB957C9fcEd1C8B/48k-lounge
 
-// TODO: Implement footer with icons to change things (i.e. mute / unmute, show particpants [as overlay over screenshare], etc.)
+// TODO: Implement footer with icons to change things (i.e. mute / unmute, show participants [as overlay over screenshare], etc.)
 
-const CallPlayerApp = {
+const CallTheaterApp = {
   id: REGISTRATION_ID,
-  title: "Call Player",
+  title: "Call Theater",
   style: {
-    width: 640 * 1.5,
-    height: 480 * 1.5,
+    width: 640 * 2,
+    height: 480 * 1.7,
   },
   isPinned: true,
   isPinnedToDock: true,
@@ -60,11 +70,13 @@ const CallPlayerApp = {
     OutputMediaDevicesService,
   ],
   titleBarView: function View({ windowController, appServices }) {
-    const title = windowController.getTitle();
+    const socketService = appServices[SpeakerAppSocketAuthenticationService];
+    // const title = windowController.getTitle();
     const localZenRTCPeerService =
       appServices[SpeakerAppClientZenRTCPeerService];
     const inputMediaDevicesService = appServices[InputMediaDevicesService];
 
+    const isZenRTCConnecting = localZenRTCPeerService.getIsConnecting();
     const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
 
     const isCapturingAnyAudio =
@@ -87,8 +99,6 @@ const CallPlayerApp = {
           </div>
         </button>
 
-        <span style={{ fontWeight: "bold", marginLeft: 10 }}>{title}</span>
-
         <div
           style={{
             display: "inline-block",
@@ -106,14 +116,37 @@ const CallPlayerApp = {
             <div>
               <MicrophoneIcon
                 style={{
-                  fontSize: "1.7em",
+                  fontSize: "1.4em",
                 }}
               />
             </div>
-            <div style={{ fontSize: ".7em", marginTop: 2 }}>
+            <div style={{ fontSize: ".9em", marginTop: 2 }}>
               {!isCapturingAnyAudio || isAllAudioMuted ? "Off" : "On"}
             </div>
           </AppLinkButton>
+
+          <div
+            style={{
+              display: "inline-block",
+              marginLeft: 10,
+              verticalAlign: "bottom",
+            }}
+          >
+            <LabeledLED
+              label="Socket"
+              color={socketService.getIsConnected() ? "green" : "gray"}
+            />
+            <LabeledLED
+              label="zenRTC"
+              color={
+                isZenRTCConnected
+                  ? "green"
+                  : isZenRTCConnecting
+                  ? "yellow"
+                  : "gray"
+              }
+            />
+          </div>
         </div>
       </NoWrap>
     );
@@ -177,6 +210,18 @@ const CallPlayerApp = {
         return videoTracks[videoTracks.length - 1];
       }
     })();
+
+    return (
+      <Layout>
+        <Header style={{ textAlign: "center" }}>
+          Chat / Audio Input / User Profile / Create Network
+        </Header>
+        <Content>
+          <SoundSystemLayout />
+        </Content>
+        <Footer></Footer>
+      </Layout>
+    );
 
     return (
       <Layout>
@@ -268,4 +313,4 @@ const CallPlayerApp = {
   },
 };
 
-export default CallPlayerApp;
+export default CallTheaterApp;

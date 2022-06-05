@@ -25,7 +25,7 @@ import LogManagerApp from "../ExamplePortal/apps/LogManagerApp";
 import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
 import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 //
-import CallPlayerApp from "./apps/CallPlayerApp";
+import CallTheaterApp from "./apps/CallTheaterApp";
 import VirtualServerApp from "./apps/VirtualServerApp";
 import LocalUserProfileApp from "./apps/LocalUserProfileApp";
 import ChatApp from "./apps/ChatApp";
@@ -69,7 +69,7 @@ export default function SpeakerAppPortal() {
         UptimeApp,
 
         // Speaker.app-specific apps
-        CallPlayerApp,
+        CallTheaterApp,
         VirtualServerApp,
         ChatApp,
 
