@@ -7,14 +7,17 @@
   flex-direction: column;
 }
 
+/*
 .tweeters,
 .woofers {
-  width: 100%;
+   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-around;
 }
+*/
+
 /*
 @media (orientation: portrait) {
   .tweeters,
@@ -24,6 +27,7 @@
 }
 */
 
+/*
 .tweeters {
   height: 30vh;
 }
@@ -31,6 +35,7 @@
 .woofers {
   height: 64vh;
 }
+*/
 
 /*
 @media (orientation: portrait) {
@@ -179,7 +184,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #181818 url("temp-images/rough-cloth.png") repeat center center;
+  /* background: #181818 url("temp-images/rough-cloth.png") repeat center center; */
 }
 .speaker ul {
   margin: 0;
