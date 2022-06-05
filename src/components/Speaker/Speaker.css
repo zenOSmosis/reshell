@@ -1,5 +1,5 @@
 .speaker {
-  padding: 3vh;
+  /* padding: 3vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,12 +15,14 @@
   align-items: center;
   justify-content: space-around;
 }
+/*
 @media (orientation: portrait) {
   .tweeters,
   .woofers {
     flex-direction: column;
   }
 }
+*/
 
 .tweeters {
   height: 30vh;
@@ -30,30 +32,39 @@
   height: 64vh;
 }
 
+/*
 @media (orientation: portrait) {
   .tweeter {
     width: 30vw;
     height: 30vw;
   }
 }
+*/
+/*
 @media (orientation: landscape) {
-  .tweeter {
-    width: 30vh;
-    height: 30vh;
-  }
+  
+}
+*/
+.tweeter {
+  width: 30vh;
+  height: 30vh;
 }
 
+/*
 @media (orientation: portrait) {
   .woofer {
     width: 55vw;
     height: 55vw;
   }
 }
+
 @media (orientation: landscape) {
-  .woofer {
-    width: 55vh;
-    height: 55vh;
-  }
+}
+*/
+
+.woofer {
+  width: 55vh;
+  height: 55vh;
 }
 
 .tweeter {
@@ -65,11 +76,13 @@
 .tweeter:nth-child(1) {
   display: flex;
 }
+/*
 @media screen and (min-aspect-ratio: 8 / 7) {
   .tweeter:nth-child(2) {
     display: flex;
   }
 }
+*/
 
 .woofer {
   display: flex;
@@ -80,6 +93,7 @@
 .woofer:nth-child(1) {
   display: flex;
 }
+/*
 @media screen and (min-aspect-ratio: 8 / 7), (max-aspect-ratio: 16 / 32) {
   .woofer:nth-child(2) {
     display: flex;
@@ -100,6 +114,7 @@
     display: flex;
   }
 }
+*/
 
 .cursor {
   width: 4vh;
@@ -296,12 +311,14 @@
   box-shadow: 0vh -3.5vh 1vh black, -1vh -2.2vh 2.5vh black,
     1vh -2.2vh 2.5vh black;
 }
+/*
 @media (orientation: portrait) {
   .tweeter__cone-inner-shadow {
     box-shadow: 0vw -3.5vw 1vw black, -1vw -2.2vw 2.5vw black,
       1vw -2.2vw 2.5vw black;
   }
 }
+*/
 .tweeter__frame {
   border: 0.35vh solid rgba(0, 0, 0, 0.8);
   box-shadow: inset 0.5vh -0.6vh 1vh rgba(0, 0, 0, 0.4),
@@ -408,11 +425,13 @@
   box-shadow: -0.005vh -0.1vh 0.1vh rgba(200, 200, 202, 0.3),
     0.05vh 0.1vh 0.8vh rgba(0, 0, 1, 0.6);
 }
+/*
 @media (orientation: portrait) {
   .woofer__screw {
     display: none !important;
   }
 }
+*/
 .woofer__screw:nth-child(1) {
   transform: rotate(0deg) translateY(-26.85vh);
 }
