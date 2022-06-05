@@ -136,7 +136,7 @@
   top: 0;
   left: 0;
   z-index: 3;
-  box-shadow: inset 0.2vh 0.2vh 0.2vh black, inset -0.2vh 0.2vh 0.2vh black;
+  box-shadow: inset 1px 1px 1px black, inset -0.2px 0.2px 0.2px black;
   border-radius: 0 0 50% 50%;
   background: #161616 url("temp-images/rough-cloth.png") repeat center center;
 }
@@ -323,20 +323,20 @@
     rgba(100, 100, 100, 0.1) 50%,
     rgba(255, 255, 255, 0.18) 74%
   );
-  box-shadow: inset -0.5vh -0.8vh 1vh rgba(255, 255, 255, 0.1);
+  box-shadow: inset -5px -8px 1px rgba(255, 255, 255, 0.1);
 }
 .woofer__cone {
   width: 94%;
   padding-top: 94%;
   top: 3%;
   left: 3%;
-  box-shadow: 0 0 0 1vh #28282c;
+  box-shadow: 0 0 0 4px #28282c;
 }
 .woofer__cone-outer {
   width: 100%;
   height: 100%;
   margin: -50% 0 0 -50%;
-  border: 1.4vh solid #1a1a1a;
+  border: 20px solid #1a1a1a;
   background-color: #222;
   background-image: radial-gradient(
       circle at 50% 50%,
@@ -345,10 +345,10 @@
     ),
     repeating-radial-gradient(
       #202020,
-      #202020 0.3vh,
-      #777 0.5vh,
-      #777 0.6vh,
-      #444 0.62vh
+      #202020 3px,
+      #777 4px,
+      #777 5px,
+      #444 7px
     );
   will-change: transform;
 }
@@ -359,18 +359,18 @@
   background-color: #373b3e;
   background-image: repeating-radial-gradient(
     #4b4d4c,
-    #202020 0.5vh,
-    #202020 0.7vh
+    #202020 5px,
+    #202020 7px
   );
-  box-shadow: inset 0.6vh 0.6vh 0px #2e2e2e, inset -0.6vh -0.6vh 0px #2e2e2e,
-    inset -0.6vh 0.6vh 0px #2e2e2e, inset 0.6vh -0.6vh 0px #2e2e2e;
+  box-shadow: inset 6px 6px 0px #2e2e2e, inset -6px -6px 0px #2e2e2e,
+    inset -6px -px 0px #2e2e2e, inset 6px -6px 0px #2e2e2e;
   will-change: transform;
 }
 .woofer__cone-inner {
   width: 46%;
   height: 46%;
   margin: -23% 0 0 -23%;
-  border: 0.2vh solid #181818;
+  border: 2px solid #181818;
   background-color: #191919;
   background-image: radial-gradient(circle at 55% 70%, #666 0%, #1d1d1d 70%);
   will-change: transform;
@@ -388,15 +388,15 @@
       #1d1d1d 60%,
       #1d1d1d 80%
     );
-  box-shadow: inset -0.1vh -0.3vh 3vh rgba(0, 0, 0, 0.8),
+  box-shadow: inset -2px -3px 3px rgba(0, 0, 0, 0.8),
     inset 1px 1px 1px rgba(255, 255, 255, 0.3),
     inset -1px -1px 1px rgba(255, 255, 255, 0.4),
-    0vh 0vh 0vh 0.3vh rgba(0, 0, 2, 0.2);
+    0px 0px 0px 3px rgba(0, 0, 2, 0.2);
 }
 .woofer__frame {
-  border: 1.7vh solid #333;
-  box-shadow: -0.005vh -0.1vh 0.1vh rgba(200, 200, 202, 0.3),
-    0.05vh 0.1vh 0.8vh rgba(0, 0, 1, 0.6);
+  border: 20px solid #333;
+  box-shadow: -1px -1px 1px rgba(200, 200, 202, 0.3),
+    3px 3px 3px rgba(0, 0, 1, 0.6);
 }
 /*
 @media (orientation: portrait) {
