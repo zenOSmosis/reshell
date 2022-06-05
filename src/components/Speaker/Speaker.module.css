@@ -68,8 +68,8 @@
 */
 
 .woofer {
-  width: 55vh;
-  height: 55vh;
+  width: 550px;
+  height: 550px;
 }
 
 .tweeter {
@@ -121,38 +121,6 @@
 }
 */
 
-.cursor {
-  width: 4vh;
-  height: 4vh;
-  margin: -4vh 0 0 -2vh;
-  pointer-events: none;
-  position: absolute;
-  z-index: 99;
-}
-.cursor:before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  opacity: 0.2;
-  background: rgba(0, 0, 0, 0.8);
-  transform: scale(1.4);
-  transition: 1s cubic-bezier(0.6, 0.4, 0, 1);
-}
-.mouse-pause .cursor:before {
-  transform: scale(1);
-}
-.mouse-down .cursor:before {
-  background: rgba(255, 255, 255, 0.8);
-  transform: scale(1.8);
-}
-.mouse-down .cursor {
-  padding: 1vh;
-}
-
 .screws {
   width: 0;
   height: 0;
@@ -161,9 +129,9 @@
   left: 50%;
 }
 .screws .screw {
-  width: 1.6vh;
-  height: 1.4vh;
-  margin: -0.7vh 0 0 -0.8vh;
+  width: 1.6%;
+  height: 1.4%;
+  margin: -0.7% 0 0 -0.8%;
   position: absolute;
   top: 0;
   left: 0;
@@ -438,26 +406,26 @@
 }
 */
 .woofer__screw:nth-child(1) {
-  transform: rotate(0deg) translateY(-26.85vh);
+  transform: rotate(0deg) translateY(-1800%);
 }
 .woofer__screw:nth-child(2) {
-  transform: rotate(45deg) translateY(-26.85vh);
+  transform: rotate(45deg) translateY(-1720%);
 }
 .woofer__screw:nth-child(3) {
-  transform: rotate(90deg) translateY(-26.85vh);
+  transform: rotate(90deg) translateY(-1620%);
 }
 .woofer__screw:nth-child(4) {
-  transform: rotate(135deg) translateY(-26.85vh);
+  transform: rotate(135deg) translateY(-1530%);
 }
 .woofer__screw:nth-child(5) {
-  transform: rotate(180deg) translateY(-26.85vh);
+  transform: rotate(180deg) translateY(-1530%);
 }
 .woofer__screw:nth-child(6) {
-  transform: rotate(225deg) translateY(-26.85vh);
+  transform: rotate(225deg) translateY(-1620%);
 }
 .woofer__screw:nth-child(7) {
-  transform: rotate(270deg) translateY(-26.85vh);
+  transform: rotate(270deg) translateY(-1720%);
 }
 .woofer__screw:nth-child(8) {
-  transform: rotate(315deg) translateY(-26.85vh);
+  transform: rotate(315deg) translateY(-1800%);
 }
