@@ -48,7 +48,7 @@ import OutputMediaDevicesService from "@services/OutputMediaDevicesService";
 
 import { Video } from "@components/audioVideoRenderers";
 
-export const REGISTRATION_ID = "call-theater";
+export const REGISTRATION_ID = "network";
 
 // TODO: Show current network detail
 
@@ -58,9 +58,9 @@ export const REGISTRATION_ID = "call-theater";
 
 // TODO: Implement footer with icons to change things (i.e. mute / unmute, show participants [as overlay over screenshare], etc.)
 
-const CallTheaterApp = {
+const CallPlayerApp = {
   id: REGISTRATION_ID,
-  title: "Call Theater",
+  title: "Call Player",
   style: {
     width: 640 * 2,
     height: 480 * 1.5,
@@ -391,4 +391,4 @@ const CallTheaterApp = {
   },
 };
 
-export default CallTheaterApp;
+export default CallPlayerApp;

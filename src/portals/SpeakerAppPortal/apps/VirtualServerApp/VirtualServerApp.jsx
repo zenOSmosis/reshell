@@ -10,7 +10,7 @@ import Timer from "@components/Timer";
 import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import HostingView from "./views/HostingView";
 
-import { REGISTRATION_ID as CALL_THEATER_REGISTRATION_ID } from "../CallTheaterApp";
+import { REGISTRATION_ID as CALL_PLAYER_REGISTRATION_ID } from "../CallPlayerApp";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
@@ -57,7 +57,7 @@ const VirtualServerApp = {
         <Header style={{ textAlign: "center" }}>
           <Padding>
             <AppLinkButton
-              id={CALL_THEATER_REGISTRATION_ID}
+              id={CALL_PLAYER_REGISTRATION_ID}
               title="Network"
               style={{ float: "left" }}
             />

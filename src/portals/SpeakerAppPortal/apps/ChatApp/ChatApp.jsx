@@ -4,7 +4,7 @@ import Padding from "@components/Padding";
 import ChatView from "./views/ChatView";
 import AppLinkButton from "@components/AppLinkButton";
 
-import { REGISTRATION_ID as CALL_THEATER_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/CallTheaterApp";
+import { REGISTRATION_ID as CALL_PLAYER_REGISTRATION_ID } from "@portals/SpeakerAppPortal/apps/CallPlayerApp";
 
 import SpeakerAppClientZenRTCPeerService from "@portals/SpeakerAppPortal/services/SpeakerAppClientZenRTCPeerService";
 import SpeakerAppClientPhantomSessionService from "@portals/SpeakerAppPortal/services/SpeakerAppClientPhantomSessionService";
@@ -46,7 +46,7 @@ const ChatApp = {
       <Layout>
         <Header>
           <Padding>
-            <AppLinkButton id={CALL_THEATER_REGISTRATION_ID} title="Network" />
+            <AppLinkButton id={CALL_PLAYER_REGISTRATION_ID} title="Network" />
           </Padding>
         </Header>
         <Content>

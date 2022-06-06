@@ -1,7 +1,7 @@
-import { REGISTRATION_ID as CALL_THEATER_REGISTRATION_ID } from "./apps/CallTheaterApp";
+import { REGISTRATION_ID as CALL_PLAYER_REGISTRATION_ID } from "./apps/CallPlayerApp";
 
 const defaultAppAutoStartConfigs = {
-  [CALL_THEATER_REGISTRATION_ID]: {
+  [CALL_PLAYER_REGISTRATION_ID]: {
     priority: 5,
   },
 };
