@@ -22,7 +22,7 @@ import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
 import LogManagerApp from "../ExamplePortal/apps/LogManagerApp";
-import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
+// import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
 import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 //
 import CallTheaterApp from "./apps/CallTheaterApp";
@@ -65,7 +65,7 @@ export default function SpeakerAppPortal() {
         IPApp,
         TTSConfigurerApp,
         LogManagerApp,
-        PhantomCoreDocsApp,
+        // PhantomCoreDocsApp,
         UptimeApp,
 
         // Speaker.app-specific apps
