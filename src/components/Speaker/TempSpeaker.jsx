@@ -1,6 +1,7 @@
 import "./TEMP_Speaker.css";
 import AutoScaler from "../AutoScaler";
 
+// TODO: Remove
 export default function TempSpeaker() {
   return (
     <AutoScaler>
