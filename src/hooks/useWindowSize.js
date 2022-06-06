@@ -3,7 +3,7 @@ import useWindowController from "./useWindowController";
 import { EVT_RESIZE } from "@components/Window/classes/WindowController";
 
 /**
- * Monitors the size of the containing ReShell window.
+ * Monitors the size of the containing ReShell window via its React Context.
  *
  * @return {{width: number, height: number}}
  */
@@ -14,12 +14,20 @@ export default function useWindowSize() {
     height: 0,
   });
 
+  // Handle resize event binding
   useEffect(() => {
     if (windowController) {
       const _handleResize = () => {
-        const windowSize = windowController.getSize();
+        // FIXME: This setImmediate patches an issue where getSize is not
+        // immediately available on the window controller. This may need
+        // to be cleaned up.
+        setImmediate(() => {
+          if (!windowController.getHasDestroyStarted()) {
+            const windowSize = windowController.getSize();
 
-        setWindowSize(windowSize);
+            setWindowSize(windowSize);
+          }
+        });
       };
 
       // Initial sync
