@@ -33,10 +33,24 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
     this.setState({
       isConnecting: false,
       isConnected: false,
+      network: null,
     });
 
     this._localZenRTCPeer = null;
     this.registerCleanupHandler(() => this.disconnect());
+  }
+
+  /**
+   * Retrieves the current network name.
+   *
+   * @return {string | void}
+   */
+  getNetworkName() {
+    const network = this.getState().network;
+
+    if (network) {
+      return network.name;
+    }
   }
 
   /**
@@ -191,7 +205,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
       });
 
       this.proxyOn(localZenRTCPeer, EVT_CONNECT, () => {
-        this.setState({ isConnecting: false, isConnected: true });
+        this.setState({ isConnecting: false, isConnected: true, network });
 
         // Show UI notification
         this.useServiceClass(UINotificationService).showNotification({
@@ -204,6 +218,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
         this.setState({
           isConnecting: false,
           isConnected: false,
+          network: null,
         });
 
         // Show UI notification

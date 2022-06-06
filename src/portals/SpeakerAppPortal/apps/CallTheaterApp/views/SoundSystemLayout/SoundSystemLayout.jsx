@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Layout, {
   Header,
   Content,
@@ -12,9 +12,10 @@ import Padding from "@components/Padding";
 
 import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter";
 
-import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
-
 import useWindowSize from "@hooks/useWindowSize";
+
+const SMALL_WIDTH_THRESHOLD = 720;
+// const SMALL_HEIGHT_THRESHOLD =
 
 // TODO: Active measure ReShell window size to determine if content should lay inside or on top of speakers
 export default function SoundSystemLayout({
@@ -23,63 +24,106 @@ export default function SoundSystemLayout({
 }) {
   const windowSize = useWindowSize();
 
-  useEffect(() => {
-    // TODO: Remove
-    console.log({ windowSize });
-  }, [windowSize]);
-
-  return (
-    <Row>
-      <Column>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            maxHeight: "100%",
-            maxWidth: "100%",
-            padding: 20,
-          }}
-        >
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-          <div style={{ height: 40 }} />
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-          <div style={{ height: 40 }} />
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-        </div>
-      </Column>
-      <Column>{children}</Column>
-      <Column>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            maxHeight: "100%",
-            maxWidth: "100%",
-            padding: 20,
-          }}
-        >
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-          <div style={{ height: 40 }} />
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-          <div style={{ height: 40 }} />
-          <WooferAudioLevelMeter
-            mediaStreamTracks={inputAudioMediaStreamTracks}
-          />
-        </div>
-      </Column>
-    </Row>
+  const [isSmallLayout, setIsSmallLayout] = useState(
+    windowSize?.width < SMALL_WIDTH_THRESHOLD
   );
 
+  // Automatically determine if small layout
+  useEffect(() => {
+    const nextIsSmallLayout = windowSize?.width < 820;
+
+    if (isSmallLayout !== nextIsSmallLayout) {
+      setIsSmallLayout(nextIsSmallLayout);
+    }
+  }, [isSmallLayout, windowSize]);
+
+  return (
+    <Layout>
+      <Content>
+        <Row>
+          {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
+            <Column style={{ maxWidth: "20%" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                  padding: 20,
+                }}
+              >
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+                <div style={{ height: 40 }} />
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+                <div style={{ height: 40 }} />
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+              </div>
+            </Column>
+          )}
+
+          <Column>{children}</Column>
+
+          {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
+            <Column style={{ maxWidth: "20%" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  maxHeight: "100%",
+                  maxWidth: "100%",
+                  padding: 20,
+                }}
+              >
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+                <div style={{ height: 40 }} />
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+                <div style={{ height: 40 }} />
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+              </div>
+            </Column>
+          )}
+        </Row>
+      </Content>
+      {windowSize.width < SMALL_WIDTH_THRESHOLD && (
+        <Footer style={{ height: 100 }}>
+          <Padding>
+            <Row>
+              <Column>
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+              </Column>
+              <Column>
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+              </Column>
+              <Column>
+                <WooferAudioLevelMeter
+                  mediaStreamTracks={inputAudioMediaStreamTracks}
+                />
+              </Column>
+            </Row>
+          </Padding>
+        </Footer>
+      )}
+    </Layout>
+  );
+
+  // TODO: Refactor?
+  /*
   return (
     <Layout>
       <Content>
@@ -102,4 +146,5 @@ export default function SoundSystemLayout({
       </Content>
     </Layout>
   );
+  */
 }

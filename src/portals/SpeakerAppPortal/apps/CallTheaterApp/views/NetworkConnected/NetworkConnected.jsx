@@ -5,8 +5,6 @@ import LoadingSpinner from "@components/LoadingSpinner";
 
 import ParticipantList from "./ParticipantList";
 
-import { Video } from "@components/audioVideoRenderers";
-
 // TODO: Document and add prop-types
 export default function NetworkConnected({
   latestOutputVideoTrack,
@@ -32,11 +30,6 @@ export default function NetworkConnected({
         </div>
       </Center>
     );
-  }
-
-  // TODO: Refactor; make transitioning more graceful
-  if (latestOutputVideoTrack) {
-    return <Video mediaStreamTrack={latestOutputVideoTrack} />;
   }
 
   return (
