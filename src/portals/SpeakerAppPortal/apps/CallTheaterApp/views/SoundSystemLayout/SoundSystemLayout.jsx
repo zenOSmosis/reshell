@@ -1,4 +1,4 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import Layout, {
   Header,
   Content,
@@ -14,10 +14,20 @@ import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter
 
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
+import useWindowSize from "@hooks/useWindowSize";
+
+// TODO: Active measure ReShell window size to determine if content should lay inside or on top of speakers
 export default function SoundSystemLayout({
   inputAudioMediaStreamTracks = [],
   children,
 }) {
+  const windowSize = useWindowSize();
+
+  useEffect(() => {
+    // TODO: Remove
+    console.log({ windowSize });
+  }, [windowSize]);
+
   return (
     <Row>
       <Column>

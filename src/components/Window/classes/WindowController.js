@@ -365,6 +365,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMaximized(isMaximized) {
+    setImmediate(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMaximized });
   }
 
@@ -389,6 +393,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMinimized(isMinimized) {
+    setImmediate(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMinimized });
   }
 
@@ -413,6 +421,10 @@ export default class WindowController extends PhantomState {
     this.setState({
       isMaximized: false,
       isMinimized: false,
+    });
+
+    setImmediate(() => {
+      this._emitDebouncedResized();
     });
   }
 }
