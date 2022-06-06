@@ -1,3 +1,4 @@
+import { globalLogger } from "phantom-core";
 import { useEffect, useRef } from "react";
 import "animate.css";
 
@@ -17,11 +18,11 @@ export default function useAnimation({
   shouldRun = true,
 }) {
   if (typeof animationDuration !== "string") {
-    console.warn('animationDuration should be a string (i.e. "1s")');
+    globalLogger.warn('animationDuration should be a string (i.e. "1s")');
   }
 
   if (typeof animationDelay !== "string") {
-    console.warn('animationDelay should be a string (i.e. "0s")');
+    globalLogger.warn('animationDelay should be a string (i.e. "0s")');
   }
 
   const refOnAnimationEnd = useRef(onAnimationEnd);
