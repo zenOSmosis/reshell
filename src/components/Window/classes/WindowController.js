@@ -43,7 +43,7 @@ export default class WindowController extends PhantomState {
 
     this._emitDebouncedResized = debounce(
       this._emitDebouncedResized.bind(this),
-      500,
+      50,
       // Ensure runs on trailing edge
       false
     );
