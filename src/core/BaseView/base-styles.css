@@ -189,6 +189,7 @@ input[type="submit"] {
 .button-group button {
   border-radius: 0px;
   margin: 0px;
+  min-width: 100px;
 }
 
 .button-group button:first-of-type {

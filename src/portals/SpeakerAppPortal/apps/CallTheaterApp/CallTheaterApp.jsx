@@ -16,6 +16,7 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import Timer from "@components/Timer";
 import Image from "@components/Image";
 import ButtonGroup from "@components/ButtonGroup";
+import AutoScaler from "@components/AutoScaler";
 
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
@@ -70,6 +71,7 @@ const CallTheaterApp = {
     InputMediaDevicesService,
     OutputMediaDevicesService,
   ],
+  // TODO: Show network name either here or in footer...
   titleBarView: function View({ windowController, appServices }) {
     const socketService = appServices[SpeakerAppSocketAuthenticationService];
     // const title = windowController.getTitle();
@@ -229,7 +231,6 @@ const CallTheaterApp = {
         <Header style={{ textAlign: "center" }}>
           <Padding>
             <ButtonGroup>
-              <button>Chat</button>
               <button>Audio Input</button>
               <button>User Profile</button>
               <button>Create Network</button>
@@ -239,100 +240,102 @@ const CallTheaterApp = {
         <Content>
           <SoundSystemLayout
             inputAudioMediaStreamTracks={inputAudioMediaStreamTracks}
-          />
+          >
+            <Layout>
+              {/*
+                 <Padding>
+                  <AppLinkButton
+                    id={CHAT_REGISTRATION_ID}
+                    disabled={!isZenRTCConnected}
+                  />
+                  <div style={{ float: "right" }}>
+                    <NoWrap className="button-group">
+                      <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
+                      <AppLinkButton
+                        id={VIRTUAL_SERVER_REGISTRATION_ID}
+                        title="Create Network"
+                      />
+                    </NoWrap>
+                  </div>
+                  
+                  
+                </Padding>
+                */}
+              <Header></Header>
+              <Content>
+                <AutoScaler isEnlargeable={false}>
+                  <Padding>
+                    {!isZenRTCConnected ? (
+                      <Center canOverflow={true}>
+                        {lenNetworks === 0 ? (
+                          <NoNetworks />
+                        ) : (
+                          <Networks
+                            networks={networks}
+                            // isConnected,
+                            // realmId,
+                            // channelId,
+                            onConnectToNetwork={localZenRTCPeerService.connect}
+                            onDisconnectFromNetwork={
+                              localZenRTCPeerService.disconnect
+                            }
+                          />
+                        )}
+                      </Center>
+                    ) : (
+                      <NetworkConnected
+                        remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
+                        latestOutputVideoTrack={latestOutputVideoTrack}
+                        onOpenChat={handleOpenChat}
+                      />
+                    )}
+                  </Padding>
+                  {isZenRTCConnecting && (
+                    <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+                      <Center>
+                        <LoadingSpinner />
+                      </Center>
+                    </Cover>
+                  )}
+                </AutoScaler>
+              </Content>
+              {/*
+                              <Footer>
+                <Padding>
+                  <span className="button-group">
+                    <AppLinkButton
+                      id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
+                      title="Configure Audio"
+                    />
+                    <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
+                    <div style={{ float: "right" }}>
+                      <LabeledLED
+                        label="Socket"
+                        color={
+                          socketService.getIsConnected() ? "green" : "gray"
+                        }
+                      />
+                      <LabeledLED
+                        label="zenRTC"
+                        color={
+                          isZenRTCConnected
+                            ? "green"
+                            : isZenRTCConnecting
+                            ? "yellow"
+                            : "gray"
+                        }
+                      />
+                    </div>
+                  </span>
+                </Padding>
+              </Footer>
+                */}
+            </Layout>
+          </SoundSystemLayout>
         </Content>
         <Footer style={{ textAlign: "center", maxHeight: "10%" }}>
           <Padding>
             <Image src={ZenOSmosisLogo} />
-          </Padding>
-        </Footer>
-      </Layout>
-    );
-
-    // TODO: Refactor
-    return (
-      <Layout>
-        <Header>
-          <Padding>
-            <AppLinkButton
-              id={CHAT_REGISTRATION_ID}
-              disabled={!isZenRTCConnected}
-            />
-            <div style={{ float: "right" }}>
-              <NoWrap className="button-group">
-                <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-                <AppLinkButton
-                  id={VIRTUAL_SERVER_REGISTRATION_ID}
-                  title="Create Network"
-                />
-              </NoWrap>
-            </div>
-            {
-              // [networks]  [private network]
-              /*
-                <button>Search</button>
-                */
-            }
-          </Padding>
-        </Header>
-        <Content>
-          <Padding>
-            {!isZenRTCConnected ? (
-              <Center canOverflow={true}>
-                {lenNetworks === 0 ? (
-                  <NoNetworks />
-                ) : (
-                  <Networks
-                    networks={networks}
-                    // isConnected,
-                    // realmId,
-                    // channelId,
-                    onConnectToNetwork={localZenRTCPeerService.connect}
-                    onDisconnectFromNetwork={localZenRTCPeerService.disconnect}
-                  />
-                )}
-              </Center>
-            ) : (
-              <NetworkConnected
-                remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
-                latestOutputVideoTrack={latestOutputVideoTrack}
-                onOpenChat={handleOpenChat}
-              />
-            )}
-          </Padding>
-          {isZenRTCConnecting && (
-            <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
-              <Center>
-                <LoadingSpinner />
-              </Center>
-            </Cover>
-          )}
-        </Content>
-        <Footer>
-          <Padding>
-            <span className="button-group">
-              <AppLinkButton
-                id={INPUT_MEDIA_DEVICES_REGISTRATION_ID}
-                title="Configure Audio"
-              />
-              <AppLinkButton id={SCREEN_CAPTURE_REGISTRATION_ID} />
-              <div style={{ float: "right" }}>
-                <LabeledLED
-                  label="Socket"
-                  color={socketService.getIsConnected() ? "green" : "gray"}
-                />
-                <LabeledLED
-                  label="zenRTC"
-                  color={
-                    isZenRTCConnected
-                      ? "green"
-                      : isZenRTCConnecting
-                      ? "yellow"
-                      : "gray"
-                  }
-                />
-              </div>
-            </span>
           </Padding>
         </Footer>
       </Layout>

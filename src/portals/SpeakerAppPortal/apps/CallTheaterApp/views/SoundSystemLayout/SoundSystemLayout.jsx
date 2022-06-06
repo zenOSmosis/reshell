@@ -8,19 +8,16 @@ import Layout, {
 } from "@components/Layout";
 import Center from "@components/Center";
 import Image from "@components/Image";
+import Padding from "@components/Padding";
 
-import Speaker from "@components/Speaker";
 import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter";
 
 import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
 export default function SoundSystemLayout({
   inputAudioMediaStreamTracks = [],
+  children,
 }) {
-  return (
-    <WooferAudioLevelMeter mediaStreamTracks={inputAudioMediaStreamTracks} />
-  );
-
   return (
     <Row>
       <Column>
@@ -33,15 +30,20 @@ export default function SoundSystemLayout({
             padding: 20,
           }}
         >
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
+          <div style={{ height: 40 }} />
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
+          <div style={{ height: 40 }} />
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
         </div>
       </Column>
+      <Column>{children}</Column>
       <Column>
         <div
           style={{
@@ -52,13 +54,17 @@ export default function SoundSystemLayout({
             padding: 20,
           }}
         >
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
-          <Speaker />
-          <div style={{ height: 40 }}></div>
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
+          <div style={{ height: 40 }} />
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
+          <div style={{ height: 40 }} />
+          <WooferAudioLevelMeter
+            mediaStreamTracks={inputAudioMediaStreamTracks}
+          />
         </div>
       </Column>
     </Row>

@@ -33,18 +33,16 @@ export default function WooferAudioLevelMeter({
 
           // TODO: Map to frequency bin
 
-          audioLevel = audioLevel / 60;
+          audioLevel = audioLevel / 35;
 
           // bin 3 : ~86 Hz - kick drum
-          elOuterCone.style.transform = `scale(${1 + audioLevel * 0.02})`;
+          elOuterCone.style.transform = `scale(${1 + audioLevel * 0.01})`;
 
           // bin 8 : ~301 Hz - low snare
           elMidCone.style.transform = `scale(${1 + audioLevel * 0.1})`;
 
           // bin 17 : ~689 Hz - high snare
-          elInnerCone.style.transform = `scale(${1 + audioLevel * 0.1})`;
-
-          console.log(".");
+          elInnerCone.style.transform = `scale(${1 + audioLevel * 0.05})`;
         }, uuid);
       }
     },

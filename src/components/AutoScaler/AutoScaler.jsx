@@ -24,7 +24,12 @@ if (!window.ResizeObserver) {
  * Useful for videos and canvases, where the resolution is a fixed size and
  * should not change.
  */
-export default function AutoScaler({ children, className, ...rest }) {
+export default function AutoScaler({
+  children,
+  className,
+  isEnlargeable = true,
+  ...rest
+}) {
   const [elOuterWrap, setElOuterWrap] = useState(null);
   const [elInnerWrap, setElInnerWrap] = useState(null);
 
@@ -66,7 +71,11 @@ export default function AutoScaler({ children, className, ...rest }) {
           const maxScaleX = outerWrapSize.width / innerWrapSize.width;
           const maxScaleY = outerWrapSize.height / innerWrapSize.height;
 
-          const scale = Math.min(maxScaleX, maxScaleY);
+          let scale = Math.min(maxScaleX, maxScaleY);
+
+          if (!isEnlargeable && scale > 1) {
+            scale = 1;
+          }
 
           elInnerWrap.style.transform = `scale(${scale}, ${scale})`;
 

@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import useMultiAudioMediaStreamTrackLevelMonitor from "@hooks/useMultiAudioMediaStreamTrackLevelMonitor";
 
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
-import { v4 as uuidv4 } from "uuid";
+import useUUID from "@hooks/useUUID";
 
 import vuBackground from "./images/vu.png";
 import vuNeedle from "./images/needle.png";
@@ -39,8 +39,7 @@ export default function VUMeter({
   const [elVU, setElVU] = useState(null);
   const [elNeedle, setElNeedle] = useState(null);
 
-  // TODO: Replace w/ useUUID
-  const uuid = useMemo(uuidv4, []);
+  const uuid = useUUID();
 
   useEffect(() => {
     if (elVU && elNeedle) {
