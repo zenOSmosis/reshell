@@ -1,6 +1,9 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import axios from "axios";
 
+// FIXME: Integrate with HostBridge so that IP addresses can be obtained from
+// individual servers
+
 /**
  * Maintains internet connection information.
  */
