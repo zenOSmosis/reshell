@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import classNames from "classnames";
 import styles from "./AutoScaler.module.css";
+
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import { v4 as uuidv4 } from "uuid";
+
+import PropTypes from "prop-types";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -16,6 +20,12 @@ if (!window.ResizeObserver) {
 // (experienced issues on Safari 14 & 15; not tested on other versions at this
 // time)
 // Related issue: https://github.com/jzombie/pre-re-shell/issues/174
+
+AutoScaler.propTypes = {
+  // Determines if the scaled element should scale larger than 1x (otherwise it
+  // can only be shrunk and restored to its original size
+  isEnlargeable: PropTypes.bool,
+};
 
 /**
  * Automatically applies CSS transform scaling to children to fill parent node,
@@ -95,7 +105,7 @@ export default function AutoScaler({
         ro.unobserve(elInnerWrap);
       };
     }
-  }, [elOuterWrap, elInnerWrap, uuid]);
+  }, [elOuterWrap, elInnerWrap, uuid, isEnlargeable]);
 
   return (
     <div
