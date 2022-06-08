@@ -1,11 +1,13 @@
+/*
 .speaker {
-  /* padding: 3vh; */
+  padding: 3vh; 
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
 }
+*/
 
 /*
 .tweeters,

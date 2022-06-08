@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Layout, { Content, Footer, Row, Column } from "@components/Layout";
+import Full from "@components/Full";
+import Cover from "@components/Cover";
+import Animation from "@components/Animation";
 
 import Padding from "@components/Padding";
 
 import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter";
+import Speaker from "@components/Speaker";
 
 import useWindowSize from "@hooks/useWindowSize";
 
@@ -11,13 +15,21 @@ const SMALL_WIDTH_THRESHOLD = 720;
 
 export default function SoundSystemLayout({
   inputAudioMediaStreamTracks = [],
+  incomingAudioMediaStreamTracks = [],
   children,
 }) {
+  const mergedAudioMediaStreamTracks = useMemo(
+    () => [...inputAudioMediaStreamTracks, ...incomingAudioMediaStreamTracks],
+    [inputAudioMediaStreamTracks, incomingAudioMediaStreamTracks]
+  );
+
   const windowSize = useWindowSize();
 
   const [isSmallLayout, setIsSmallLayout] = useState(
     windowSize?.width < SMALL_WIDTH_THRESHOLD
   );
+
+  const [transitionPhase, setTransitionPhase] = useState(0);
 
   // Automatically determine if small layout
   useEffect(() => {
@@ -29,87 +41,105 @@ export default function SoundSystemLayout({
   }, [isSmallLayout, windowSize]);
 
   return (
-    <Layout>
-      <Content>
-        <Row>
-          {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
-            <Column style={{ maxWidth: "20%" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  maxHeight: "100%",
-                  maxWidth: "100%",
-                  padding: 20,
-                }}
-              >
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-                <div style={{ height: 40 }} />
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-                <div style={{ height: 40 }} />
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-              </div>
-            </Column>
-          )}
-
-          <Column>{children}</Column>
-
-          {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
-            <Column style={{ maxWidth: "20%" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  maxHeight: "100%",
-                  maxWidth: "100%",
-                  padding: 20,
-                }}
-              >
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-                <div style={{ height: 40 }} />
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-                <div style={{ height: 40 }} />
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-              </div>
-            </Column>
-          )}
-        </Row>
-      </Content>
-      {windowSize.width < SMALL_WIDTH_THRESHOLD && (
-        <Footer style={{ height: 100 }}>
+    <Full>
+      <Cover>
+        <Animation
+          animationName={transitionPhase === 0 ? "fadeIn" : "fadeOut"}
+          onAnimationEnd={() => setTransitionPhase(1)}
+        >
           <Padding>
-            <Row>
-              <Column>
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-              </Column>
-              <Column>
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-              </Column>
-              <Column>
-                <WooferAudioLevelMeter
-                  mediaStreamTracks={inputAudioMediaStreamTracks}
-                />
-              </Column>
-            </Row>
+            <Speaker />
           </Padding>
-        </Footer>
-      )}
-    </Layout>
+        </Animation>
+      </Cover>
+      <Cover>
+        {transitionPhase === 1 && (
+          <Animation animationName="fadeIn">
+            <Layout>
+              <Content>
+                <Row>
+                  {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
+                    <Column style={{ maxWidth: "20%" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          maxHeight: "100%",
+                          maxWidth: "100%",
+                          padding: 20,
+                        }}
+                      >
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                        <div style={{ height: 40 }} />
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                        <div style={{ height: 40 }} />
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                      </div>
+                    </Column>
+                  )}
+
+                  <Column>{children}</Column>
+
+                  {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
+                    <Column style={{ maxWidth: "20%" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          maxHeight: "100%",
+                          maxWidth: "100%",
+                          padding: 20,
+                        }}
+                      >
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                        <div style={{ height: 40 }} />
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                        <div style={{ height: 40 }} />
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                      </div>
+                    </Column>
+                  )}
+                </Row>
+              </Content>
+              {windowSize.width < SMALL_WIDTH_THRESHOLD && (
+                <Footer style={{ height: 100 }}>
+                  <Padding>
+                    <Row>
+                      <Column>
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                      </Column>
+                      <Column>
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                      </Column>
+                      <Column>
+                        <WooferAudioLevelMeter
+                          mediaStreamTracks={mergedAudioMediaStreamTracks}
+                        />
+                      </Column>
+                    </Row>
+                  </Padding>
+                </Footer>
+              )}
+            </Layout>
+          </Animation>
+        )}
+      </Cover>
+    </Full>
   );
 }

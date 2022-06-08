@@ -215,6 +215,9 @@ const CallPlayerApp = {
       )
       .flat();
 
+    const incomingAudioMediaStreamTracks =
+      outputMediaDevicesService.getOutputAudioMediaStreamTracks();
+
     const { link: handleCreateNetwork } = useAppRegistrationLink(
       VIRTUAL_SERVER_REGISTRATION_ID
     );
@@ -228,6 +231,7 @@ const CallPlayerApp = {
     const isZenRTCConnecting = localZenRTCPeerService.getIsConnecting();
     const isZenRTCConnected = localZenRTCPeerService.getIsConnected();
 
+    // FIXME: This is confusing: incoming = outgoing?  What's going on here?
     const incomingVideoTracks =
       outputMediaDevicesService.getOutputVideoMediaStreamTracks();
     const latestIncomingVideoTrack = useMemo(() => {
@@ -280,6 +284,9 @@ const CallPlayerApp = {
                 <Content>
                   <SoundSystemLayout
                     inputAudioMediaStreamTracks={inputAudioMediaStreamTracks}
+                    incomingAudioMediaStreamTracks={
+                      incomingAudioMediaStreamTracks
+                    }
                   >
                     <Layout>
                       {/*
