@@ -15,13 +15,9 @@ import LabeledLED from "@components/labeled/LabeledLED";
 import NoWrap from "@components/NoWrap";
 import LoadingSpinner from "@components/LoadingSpinner";
 import Timer from "@components/Timer";
-import Image from "@components/Image";
 import ButtonGroup from "@components/ButtonGroup";
-import AutoScaler from "@components/AutoScaler";
 import Ellipses from "@components/Ellipses";
 import Animation from "@components/Animation";
-
-import ZenOSmosisLogo from "@assets/zenOSmosis-Logo-2046x530@72.png";
 
 import MicrophoneIcon from "@icons/MicrophoneIcon";
 
@@ -267,10 +263,17 @@ const CallPlayerApp = {
                         title="Configure Audio"
                       />
                       <AppLinkButton id={LOCAL_USER_PROFILE_REGISTRATION_ID} />
-                      <AppLinkButton
-                        id={VIRTUAL_SERVER_REGISTRATION_ID}
-                        title="Create Network"
-                      />
+                      {!isZenRTCConnecting && !isZenRTCConnected ? (
+                        <AppLinkButton
+                          id={VIRTUAL_SERVER_REGISTRATION_ID}
+                          title="Create Network"
+                        />
+                      ) : (
+                        <AppLinkButton
+                          id={SCREEN_CAPTURE_REGISTRATION_ID}
+                          title="Screen Capture"
+                        />
+                      )}
                     </ButtonGroup>
                   </Padding>
                 </Header>
@@ -300,46 +303,42 @@ const CallPlayerApp = {
                   */}
                       <Header></Header>
                       <Content>
-                        <AutoScaler isEnlargeable={false}>
-                          <Padding>
-                            {!isZenRTCConnected ? (
-                              <Center canOverflow={true}>
-                                {lenNetworks === 0 ? (
-                                  <NoNetworks
-                                    onCreateNetwork={handleCreateNetwork}
-                                  />
-                                ) : (
-                                  <Networks
-                                    networks={networks}
-                                    // isConnected,
-                                    // realmId,
-                                    // channelId,
-                                    onConnectToNetwork={
-                                      localZenRTCPeerService.connect
-                                    }
-                                    onDisconnectFromNetwork={
-                                      localZenRTCPeerService.disconnect
-                                    }
-                                  />
-                                )}
-                              </Center>
-                            ) : (
-                              <NetworkConnected
-                                remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
-                                onOpenChat={handleOpenChat}
-                              />
-                            )}
-                          </Padding>
-                          {isZenRTCConnecting && (
-                            <Cover
-                              style={{ backgroundColor: "rgba(0,0,0,.5)" }}
-                            >
-                              <Center>
-                                <LoadingSpinner />
-                              </Center>
-                            </Cover>
+                        <Padding>
+                          {!isZenRTCConnected ? (
+                            <Center canOverflow={true}>
+                              {lenNetworks === 0 ? (
+                                <NoNetworks
+                                  onCreateNetwork={handleCreateNetwork}
+                                />
+                              ) : (
+                                <Networks
+                                  networks={networks}
+                                  // isConnected,
+                                  // realmId,
+                                  // channelId,
+                                  onConnectToNetwork={
+                                    localZenRTCPeerService.connect
+                                  }
+                                  onDisconnectFromNetwork={
+                                    localZenRTCPeerService.disconnect
+                                  }
+                                />
+                              )}
+                            </Center>
+                          ) : (
+                            <NetworkConnected
+                              remotePhantomPeers={phantomSessionService.getRemotePhantomPeers()}
+                              onOpenChat={handleOpenChat}
+                            />
                           )}
-                        </AutoScaler>
+                        </Padding>
+                        {isZenRTCConnecting && (
+                          <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+                            <Center>
+                              <LoadingSpinner />
+                            </Center>
+                          </Cover>
+                        )}
                       </Content>
                       {/*
                                 <Footer>
