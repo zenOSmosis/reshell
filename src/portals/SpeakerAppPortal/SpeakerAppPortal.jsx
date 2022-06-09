@@ -37,11 +37,12 @@ import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 import DrReShellApp from "../HackathonPortal/apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
+import ZenOSmosisLogoBackground from "./backgrounds/ZenOSmosisLogoBackground";
 
 export default function SpeakerAppPortal() {
   return (
     <Desktop
-      backgroundView={<SpeakerAppLogoBackground />}
+      backgroundView={<ZenOSmosisLogoBackground />}
       appDescriptors={[
         ApplicationsApp,
         BeepPrototypeApp,
