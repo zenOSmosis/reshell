@@ -1,5 +1,7 @@
 import Desktop from "@components/Desktop";
-import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
+
+import ZenOSmosisLogoBackground from "./backgrounds/ZenOSmosisLogoBackground";
+// import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
 import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
@@ -37,7 +39,6 @@ import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 import DrReShellApp from "../HackathonPortal/apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
-import ZenOSmosisLogoBackground from "./backgrounds/ZenOSmosisLogoBackground";
 
 export default function SpeakerAppPortal() {
   return (
