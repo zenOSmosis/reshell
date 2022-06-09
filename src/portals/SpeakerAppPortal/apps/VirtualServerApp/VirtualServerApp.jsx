@@ -11,6 +11,9 @@ import NetworkCreatorForm from "./views/NetworkCreatorForm";
 import HostingView from "./views/HostingView";
 
 import { REGISTRATION_ID as CALL_PLAYER_REGISTRATION_ID } from "../CallPlayerApp";
+import { REGISTRATION_ID as NETWORK_REGISTRATION_ID } from "../CallPlayerApp";
+
+import useAppRegistrationLink from "@hooks/useAppRegistrationLink";
 
 import SpeakerAppSocketAuthenticationService from "@portals/SpeakerAppPortal/services/SpeakerAppSocketAuthenticationService";
 import SpeakerAppVirtualServerService from "@portals/SpeakerAppPortal/services/SpeakerAppVirtualServerService";
@@ -47,6 +50,18 @@ const VirtualServerApp = {
         .then(setDeviceAddress)
         .catch(console.error);
     }, [localDeviceIdentificationService]);
+
+    const { link: handleSwitchToNetworks } = useAppRegistrationLink(
+      NETWORK_REGISTRATION_ID
+    );
+
+    // Automatically switch to Networks after hosting starts
+    useEffect(() => {
+      if (isHosting) {
+        // FIXME: Automatically connect as well?
+        handleSwitchToNetworks();
+      }
+    }, [isHosting, handleSwitchToNetworks]);
 
     if (!deviceAddress) {
       return <Center>Fetching device address...</Center>;
