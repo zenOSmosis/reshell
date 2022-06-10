@@ -1,4 +1,4 @@
-import PhantomCore, { logger } from "phantom-core";
+import PhantomCore, { globalLogger } from "phantom-core";
 
 // IMPORTANT: Module aliases are not currently supported w/ shared modules,
 // hence the full relative path
@@ -132,7 +132,10 @@ export default class DataChannelChunkBatchCore extends PhantomCore {
   static readMetaChunk(metaChunk) {
     // Silently ignore if not a real chunk
     if (!DataChannelChunkBatchCore.getIsChunked(metaChunk)) {
-      logger.warn("metaChunk is not a DataChannelChunkBatch chunk", metaChunk);
+      globalLogger.warn(
+        "metaChunk is not a DataChannelChunkBatch chunk",
+        metaChunk
+      );
 
       return;
     }

@@ -1,6 +1,6 @@
 import BaseModule, { EVT_DESTROY } from "../ZenRTCPeer.BaseModule";
 import DataChannel from "./ZenRTCPeer.DataChannel";
-import { logger } from "phantom-core";
+import { globalLogger } from "phantom-core";
 
 import {
   DataChannelChunkBatchSender,
@@ -53,7 +53,7 @@ export default class DataChannelManagerModule extends BaseModule {
         SERIAL_TYPE_FLOAT,
       ].includes(serialType)
     ) {
-      logger.warn(`Unknown serial type: ${serialType}`);
+      globalLogger.warn(`Unknown serial type: ${serialType}`);
     }
 
     return serialType;
@@ -125,7 +125,7 @@ export default class DataChannelManagerModule extends BaseModule {
       // No longer need this, as we have the meta data from the batch
       chunkBatch.destroy();
 
-      logger.debug({
+      globalLogger.debug({
         serialChunks,
       });
 
@@ -211,7 +211,7 @@ export default class DataChannelManagerModule extends BaseModule {
       if (DataChannelChunkBatchReceiver.getIsChunked(data)) {
         const batch = DataChannelChunkBatchReceiver.importMetaChunk(data);
 
-        logger.debug({
+        globalLogger.debug({
           batch,
           batchCode: batch.getBatchCode(),
           complete: batch.getIsComplete(),

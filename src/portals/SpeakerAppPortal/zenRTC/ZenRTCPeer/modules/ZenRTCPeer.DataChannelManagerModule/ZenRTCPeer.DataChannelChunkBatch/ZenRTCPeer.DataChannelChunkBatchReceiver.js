@@ -1,4 +1,4 @@
-import { logger } from "phantom-core";
+import { globalLogger } from "phantom-core";
 
 import DataChannelChunkBatchCore from "./_ZenRTCPeer.DataChannelChunkBatchCore";
 
@@ -22,7 +22,7 @@ export default class DataChannelChunkBatchReceiver extends DataChannelChunkBatch
     const readData = DataChannelChunkBatchCore.readMetaChunk(metaChunk);
 
     if (!readData) {
-      logger.error("Invalid read data", { readData });
+      globalLogger.error("Invalid read data", { readData });
 
       throw new Error("Could not import meta chunk");
     } else {
