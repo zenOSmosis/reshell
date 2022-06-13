@@ -74,7 +74,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
       // WindowManager itself.  Might need to circle back to the following
       // information later on for future improvements.
       //
-      // IMPORTANT: The setImmediate wrap fixes an issue where starting this
+      // IMPORTANT: The queueMicrotask wrap fixes an issue where starting this
       // service from a serviceClasses array in an app registration would
       // produce the following warning:
       //
@@ -82,7 +82,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
       // triggering nested component updates from render is not allowed. If
       // necessary, trigger nested updates in componentDidUpdate."
       //
-      setImmediate(() =>
+      queueMicrotask(() =>
         ReactDOM.render(<OutputMediaDevicesAudio />, audioDOMBase)
       );
     })();

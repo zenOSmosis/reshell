@@ -29,7 +29,7 @@
     "media-stream-track-controller": "github:zenosmosis/media-stream-track-controller#v4.1.0-alpha",
     "microsoft-cognitiveservices-speech-sdk": "^1.20.0",
     "object-hash": "^2.2.0",
-    "phantom-core": "github:zenosmosis/phantom-core#v3.0.0--adjustable-log-levels",
+    "phantom-core": "github:zenosmosis/phantom-core#v3.0.0",
     "polarity": "^4.0.0",
     "preload-it": "^1.4.0",
     "query-string": "^7.0.1",

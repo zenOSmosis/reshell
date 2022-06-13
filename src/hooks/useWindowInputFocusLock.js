@@ -17,9 +17,9 @@ export default function useWindowInputFocusLock(elInput) {
 
   useEffect(() => {
     if (isActiveWindowController && elInput) {
-      // Note, the setImmediate fixes Firefox not focusing properly
+      // Note, the queueMicrotask fixes Firefox not focusing properly
       const handleFocus = () =>
-        setImmediate(() => {
+        queueMicrotask(() => {
           // Fix issue where menu won't open when focus is locked
           if (
             document.body === document.activeElement ||

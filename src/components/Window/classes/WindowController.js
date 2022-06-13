@@ -365,7 +365,7 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMaximized(isMaximized) {
-    setImmediate(() => {
+    queueMicrotask(() => {
       this._emitDebouncedResized();
     });
 
@@ -393,7 +393,7 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMinimized(isMinimized) {
-    setImmediate(() => {
+    queueMicrotask(() => {
       this._emitDebouncedResized();
     });
 
@@ -423,7 +423,7 @@ export default class WindowController extends PhantomState {
       isMinimized: false,
     });
 
-    setImmediate(() => {
+    queueMicrotask(() => {
       this._emitDebouncedResized();
     });
   }

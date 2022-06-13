@@ -49,7 +49,7 @@ export default class TextToSpeechService extends UIServiceCore {
     // so left it alone.
     //
     // FIXME: (jh) This MAY require user interaction in a new session
-    setImmediate(() => {
+    queueMicrotask(() => {
       this.emit(EVT_UPDATE);
     });
 
@@ -181,7 +181,7 @@ export default class TextToSpeechService extends UIServiceCore {
             if (!this.getIsSpeaking()) {
               this.off(EVT_UPDATE, _handleStateChange);
 
-              setImmediate(() => {
+              queueMicrotask(() => {
                 resolve();
               });
             }

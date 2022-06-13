@@ -78,11 +78,11 @@ export default function Menu({
         // issue where onClick handling would always result in an open state,
         // never togging off
         onMouseDown={() => {
-          // NOTE: This setImmediate call fixes an issue with Firefox where
+          // NOTE: This queueMicrotask call fixes an issue with Firefox where
           // selecting a menu item in the list, then clicking on the menu
           // button again would not activate the menu button without a double-
           // click
-          setImmediate(() => {
+          queueMicrotask(() => {
             opened ? onClose() : onOpen();
           });
         }}

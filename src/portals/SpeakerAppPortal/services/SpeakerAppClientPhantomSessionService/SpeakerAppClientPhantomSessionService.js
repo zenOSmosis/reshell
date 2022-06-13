@@ -208,7 +208,7 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
     };
 
     // Set active state on next event tick
-    setImmediate(() => {
+    queueMicrotask(() => {
       this.setState({ isSessionActive: true, realmId, channelId });
     });
 

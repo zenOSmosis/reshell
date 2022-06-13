@@ -18,10 +18,10 @@ export default function useWindowSize() {
   useEffect(() => {
     if (windowController) {
       const _handleResize = () => {
-        // FIXME: This setImmediate patches an issue where getSize is not
+        // FIXME: This queueMicrotask patches an issue where getSize is not
         // immediately available on the window controller. This may need
         // to be cleaned up.
-        setImmediate(() => {
+        queueMicrotask(() => {
           if (!windowController.getHasDestroyStarted()) {
             const windowSize = windowController.getSize();
 

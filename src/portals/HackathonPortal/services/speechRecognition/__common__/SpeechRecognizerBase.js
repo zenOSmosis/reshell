@@ -59,7 +59,7 @@ export default class SpeechRecognizerBase extends PhantomCore {
     this._mediaStream = mediaStream;
 
     // Automatically start recognizing (allow events to be bound first)
-    setImmediate(() => {
+    queueMicrotask(() => {
       this._startRecognizing();
     });
 
