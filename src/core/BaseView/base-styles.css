@@ -1,5 +1,9 @@
 /* TODO: @see Using dark mode in CSS: https://paulmillr.com/posts/using-dark-mode-in-css (@media (prefers-color-scheme: dark)) */
 
+:root {
+  color-scheme: dark;
+}
+
 html {
   /* Universal box sizing w/ inheritance */
   box-sizing: border-box;
