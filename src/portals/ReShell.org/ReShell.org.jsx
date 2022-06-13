@@ -1,3 +1,21 @@
+import { useEffect } from "react";
+
+const REDIRECT_URL = "https://speaker.app";
+
+export default function TempRedirect() {
+  useEffect(() => {
+    window.location = REDIRECT_URL;
+  }, []);
+
+  return (
+    <div>
+      Content has temporarily moved to:{" "}
+      <a href={REDIRECT_URL}>{REDIRECT_URL}</a>.
+    </div>
+  );
+}
+
+/*
 import Desktop from "@components/Desktop";
 
 import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
@@ -26,7 +44,9 @@ import SayItDifferentApp from "../HackathonPortal/apps/SayItDifferentApp";
 import DrReShellApp from "../HackathonPortal/apps/DrReShellApp";
 
 import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
+*/
 
+/*
 export default function ReShellOrgPortal() {
   return (
     <Desktop
@@ -59,3 +79,4 @@ export default function ReShellOrgPortal() {
     />
   );
 }
+*/
