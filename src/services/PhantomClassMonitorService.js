@@ -89,7 +89,7 @@ export default class PhantomClassMonitorService extends UIServiceCore {
   }
 
   // TODO: Document
-  getPhantomClassLogMisses(phantomClassName) {
-    return this._phantomWatcher.getPhantomClassLogMisses(phantomClassName);
+  getPhantomClassLogMissCounts(phantomClassName) {
+    return this._phantomWatcher.getPhantomClassLogMissCounts(phantomClassName);
   }
 }

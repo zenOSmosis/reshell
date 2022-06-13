@@ -83,7 +83,7 @@ const LogManagerApp = {
                     <td>
                       <Padding>
                         {phantomMonitor
-                          .getPhantomClassLogMisses(phantomClassName)
+                          .getPhantomClassLogMissCounts(phantomClassName)
                           .join(",")}
                       </Padding>
                     </td>
