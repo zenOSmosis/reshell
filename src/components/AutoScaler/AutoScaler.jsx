@@ -90,9 +90,9 @@ export default function AutoScaler({
           elInnerWrap.style.transform = `scale(${scale}, ${scale})`;
 
           if (elInnerWrap.style.visibility === "hidden") {
-            setTimeout(() => {
+            queueMicrotask(() => {
               elInnerWrap.style.visibility = "visible";
-            }, 4);
+            });
           }
         }, uuid);
       });
