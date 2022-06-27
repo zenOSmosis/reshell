@@ -14,6 +14,9 @@
 	*/
   isolation: isolate;
 
+  /* @see https://developer.mozilla.org/en-US/docs/Web/CSS/contain */
+  contain: content;
+
   /**
   * TODO: Look into CSS contain for possible performance enhancements (not
   * available in Safari):
