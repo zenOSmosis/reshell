@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Row, Column } from "@components/Layout";
 
 import Center from "@components/Center";
 import LoadingSpinner from "@components/LoadingSpinner";
@@ -7,12 +8,26 @@ import ParticipantList from "./ParticipantList";
 
 // TODO: Document and add prop-types
 export default function NetworkConnected({
-  latestOutputVideoTrack,
   onOpenChat,
+  localPhantomPeer,
   remotePhantomPeers = [],
 }) {
-  const isInSync = useFakeIsInSync();
+  const [selectedPhantomPeer, setSelectedPhantomPeer] =
+    useState(localPhantomPeer);
 
+  // Automatically deselect disconnected peers
+  useEffect(() => {
+    if (
+      selectedPhantomPeer === null ||
+      selectedPhantomPeer === localPhantomPeer
+    ) {
+      return;
+    } else if (!remotePhantomPeers.includes(selectedPhantomPeer)) {
+      setSelectedPhantomPeer(null);
+    }
+  }, [localPhantomPeer, remotePhantomPeers, selectedPhantomPeer]);
+
+  /*
   if (!remotePhantomPeers.length) {
     return (
       <Center>
@@ -31,30 +46,32 @@ export default function NetworkConnected({
       </Center>
     );
   }
+  */
 
   return (
-    <ParticipantList
-      remotePhantomPeers={remotePhantomPeers}
-      onOpenChat={onOpenChat}
-    />
+    <Row>
+      <Column disableHorizontalFill style={{ width: 280 }}>
+        <ParticipantList
+          localPhantomPeer={localPhantomPeer}
+          remotePhantomPeers={remotePhantomPeers}
+          onClick={setSelectedPhantomPeer}
+          selectedPhantomPeer={selectedPhantomPeer}
+        />
+      </Column>
+      {
+        // TODO: Only show this column if wide enough to show
+      }
+      <Column style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+        <Center canOverflow>
+          {selectedPhantomPeer?.getProfileDescription()}
+        </Center>
+      </Column>
+    </Row>
   );
-}
 
-/**
- * Mocks in-sync state since ZenRTCPeer does not maintain a state of whether it
- * is in sync.
- *
- * @return {boolean}
- */
-function useFakeIsInSync() {
-  const [isInSync, setIsInSync] = useState(false);
-  useEffect(() => {
-    const to = window.setTimeout(() => setIsInSync(true), 1500);
+  /*
+  return (
 
-    return function unmount() {
-      window.clearTimeout(to);
-    };
-  }, []);
-
-  return isInSync;
+  );
+  */
 }

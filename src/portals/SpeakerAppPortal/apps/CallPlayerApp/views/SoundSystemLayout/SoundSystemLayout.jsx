@@ -43,6 +43,9 @@ export default function SoundSystemLayout({
   return (
     <Full>
       <Cover>
+        {
+          // Big speaker intro view
+        }
         <Animation
           animationName={transitionPhase === 0 ? "fadeIn" : "fadeOut"}
           onAnimationEnd={() => setTransitionPhase(1)}
@@ -58,62 +61,11 @@ export default function SoundSystemLayout({
             <Layout>
               <Content>
                 <Row>
-                  {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
-                    <Column style={{ maxWidth: "20%" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          maxHeight: "100%",
-                          maxWidth: "100%",
-                          padding: 20,
-                        }}
-                      >
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                        <div style={{ height: 40 }} />
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                        <div style={{ height: 40 }} />
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                      </div>
-                    </Column>
-                  )}
-
                   <Column>{children}</Column>
-
-                  {windowSize.width >= SMALL_WIDTH_THRESHOLD && (
-                    <Column style={{ maxWidth: "20%" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          maxHeight: "100%",
-                          maxWidth: "100%",
-                          padding: 20,
-                        }}
-                      >
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                        <div style={{ height: 40 }} />
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                        <div style={{ height: 40 }} />
-                        <WooferAudioLevelMeter
-                          mediaStreamTracks={mergedAudioMediaStreamTracks}
-                        />
-                      </div>
-                    </Column>
-                  )}
                 </Row>
               </Content>
-              {windowSize.width < SMALL_WIDTH_THRESHOLD && (
+              {/*
+              windowSize.width < SMALL_WIDTH_THRESHOLD && (
                 <Footer style={{ height: 100 }}>
                   <Padding>
                     <Row>
@@ -135,7 +87,8 @@ export default function SoundSystemLayout({
                     </Row>
                   </Padding>
                 </Footer>
-              )}
+              )
+              */}
             </Layout>
           </Animation>
         )}

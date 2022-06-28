@@ -6,3 +6,7 @@
   padding: 20px;
   opacity: 0.4;
 }
+
+.logo img {
+  max-width: 320px;
+}
