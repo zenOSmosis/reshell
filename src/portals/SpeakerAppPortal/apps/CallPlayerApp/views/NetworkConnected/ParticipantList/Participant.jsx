@@ -9,6 +9,8 @@ import Avatar from "@components/Avatar";
 import Padding from "@components/Padding";
 import AudioLevelMeter from "@components/audioMeters/AudioLevelMeter";
 
+import MicrophoneIcon from "@icons/MicrophoneIcon";
+
 // TODO: Document
 // TODO: Add prop-types
 export default function Participant({
@@ -25,7 +27,6 @@ export default function Participant({
   const deviceAddress = phantomPeer.getDeviceAddress();
   const avatarURL = phantomPeer.getAvatarURL();
   const profileName = phantomPeer.getProfileName();
-  const profileDescription = phantomPeer.getProfileDescription();
   const isAudioMuted = phantomPeer.getIsAudioMuted();
 
   // FIXME: "Outgoing" is in relation to the peer and is entirely confusing
@@ -61,6 +62,11 @@ export default function Participant({
                     (You)
                   </span>
                 )}
+              </div>
+              <div style={{ position: "absolute", right: 0, bottom: 0 }}>
+                <MicrophoneIcon
+                  style={{ color: isAudioMuted ? "gray" : "white" }}
+                />
               </div>
             </Padding>
           </Column>

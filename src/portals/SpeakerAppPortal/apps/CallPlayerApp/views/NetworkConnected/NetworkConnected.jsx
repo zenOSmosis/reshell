@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Row, Column } from "@components/Layout";
-
+import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
-import LoadingSpinner from "@components/LoadingSpinner";
+import Cover from "@components/Cover";
+import Padding from "@components/Padding";
+import Ellipses from "@components/Ellipses";
+import Avatar from "@components/Avatar";
 
 import ParticipantList from "./ParticipantList";
 
@@ -27,27 +29,6 @@ export default function NetworkConnected({
     }
   }, [localPhantomPeer, remotePhantomPeers, selectedPhantomPeer]);
 
-  /*
-  if (!remotePhantomPeers.length) {
-    return (
-      <Center>
-        <div style={{ fontWeight: "bold" }}>
-          {!isInSync ? (
-            <div>
-              <div style={{ marginBottom: 20 }}>
-                <LoadingSpinner />
-              </div>
-              <div>Performing initial sync...</div>
-            </div>
-          ) : (
-            "No remote peers are connected. You are the only one here."
-          )}
-        </div>
-      </Center>
-    );
-  }
-  */
-
   return (
     <Row>
       <Column disableHorizontalFill style={{ width: 280 }}>
@@ -61,17 +42,47 @@ export default function NetworkConnected({
       {
         // TODO: Only show this column if wide enough to show
       }
-      <Column style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
-        <Center canOverflow>
-          {selectedPhantomPeer?.getProfileDescription()}
-        </Center>
+      <Column style={{ backgroundColor: "rgba(0,0,0,.3)" }}>
+        <Cover>
+          <Avatar
+            src={selectedPhantomPeer?.getAvatarURL()}
+            style={{
+              position: "absolute",
+              right: 10,
+              bottom: 10,
+              opacity: 0.5,
+            }}
+            size={100}
+          />
+        </Cover>
+        <Cover>
+          <Padding>
+            <Layout>
+              <Header>
+                <Row disableVerticalFill>
+                  <Column>
+                    <h1>
+                      <Ellipses>
+                        {selectedPhantomPeer?.getProfileName()}
+                      </Ellipses>
+                    </h1>
+                  </Column>
+                  <Column disableHorizontalFill>
+                    <button onClick={onOpenChat}>Chat</button>
+                  </Column>
+                </Row>
+              </Header>
+              <Content>
+                <Center canOverflow>
+                  <div style={{ fontSize: "1.5rem" }}>
+                    {selectedPhantomPeer?.getProfileDescription()}
+                  </div>
+                </Center>
+              </Content>
+            </Layout>
+          </Padding>
+        </Cover>
       </Column>
     </Row>
   );
-
-  /*
-  return (
-
-  );
-  */
 }

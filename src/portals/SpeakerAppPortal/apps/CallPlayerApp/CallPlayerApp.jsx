@@ -18,6 +18,7 @@ import Timer from "@components/Timer";
 import ButtonGroup from "@components/ButtonGroup";
 import Ellipses from "@components/Ellipses";
 import Animation from "@components/Animation";
+import Speaker from "@components/Speaker";
 
 import MicrophoneIcon from "@icons/MicrophoneIcon";
 
@@ -270,11 +271,22 @@ const CallPlayerApp = {
           )}
         </Cover>
 
+        {!latestIncomingVideoTrack && (
+          <Cover>
+            <Speaker />
+          </Cover>
+        )}
+
         <Cover>
           {!latestIncomingVideoTrack && (
-            <Animation name="fadeIn">
-              <Layout>
-                <Header style={{ textAlign: "center" }}>
+            <Animation animationName="fadeIn" animationDuration="5s">
+              <Layout style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+                <Header
+                  style={{
+                    textAlign: "center",
+                    backgroundColor: "rgba(999,999,999,.05)",
+                  }}
+                >
                   <Padding>
                     <ButtonGroup>
                       <AppLinkButton
@@ -297,15 +309,13 @@ const CallPlayerApp = {
                   </Padding>
                 </Header>
                 <Content>
-                  <SoundSystemLayout
-                    lenPeers={lenPeers}
-                    inputAudioMediaStreamTracks={inputAudioMediaStreamTracks}
-                    incomingAudioMediaStreamTracks={
-                      incomingAudioMediaStreamTracks
-                    }
-                  >
-                    <Layout>
-                      <Content>
+                  <Layout>
+                    <Content>
+                      <Animation
+                        animationName="bounceInDown"
+                        animationDuration="2s"
+                        animationDelay="1s"
+                      >
                         {!isZenRTCConnected ? (
                           <Center canOverflow={true}>
                             {lenNetworks === 0 ? (
@@ -335,26 +345,31 @@ const CallPlayerApp = {
                           />
                         )}
                         {isZenRTCConnecting && (
-                          <Cover style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
+                          <Cover style={{ backgroundColor: "rgba(0,0,0,.2)" }}>
                             <Center>
                               <LoadingSpinner />
                             </Center>
                           </Cover>
                         )}
-                      </Content>
-                      <Footer style={{ fontSize: ".8rem" }}>
-                        <Padding>
-                          <span>{connectionStatus}</span>{" "}
-                          {isZenRTCConnected && (
-                            <span>
-                              {" "}
-                              / {`${lenPeers} peer${lenPeers !== 1 ? "s" : ""}`}
-                            </span>
-                          )}
-                        </Padding>
-                      </Footer>
-                    </Layout>
-                  </SoundSystemLayout>
+                      </Animation>
+                    </Content>
+                    <Footer
+                      style={{
+                        fontSize: ".8rem",
+                        backgroundColor: "rgba(0,0,0,.2)",
+                      }}
+                    >
+                      <Padding>
+                        <span>{connectionStatus}</span>{" "}
+                        {isZenRTCConnected && (
+                          <span>
+                            {" "}
+                            / {`${lenPeers} peer${lenPeers !== 1 ? "s" : ""}`}
+                          </span>
+                        )}
+                      </Padding>
+                    </Footer>
+                  </Layout>
                 </Content>
               </Layout>
             </Animation>
