@@ -37,7 +37,7 @@ AutoScaler.propTypes = {
 export default function AutoScaler({
   children,
   className,
-  isEnlargeable = true,
+  isEnlargeable = false,
   ...rest
 }) {
   const [elOuterWrap, setElOuterWrap] = useState(null);
