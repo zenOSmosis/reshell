@@ -64,7 +64,11 @@ export default function Participant({
                 )}
               </div>
               <div style={{ position: "absolute", right: 0, bottom: 0 }}>
+                <span style={{ marginRight: ".5rem", fontSize: ".8rem" }}>
+                  {isAudioMuted ? "Muted" : "Unmuted"}
+                </span>
                 <MicrophoneIcon
+                  title={isAudioMuted ? "Muted" : "Unmuted"}
                   style={{ color: isAudioMuted ? "gray" : "white" }}
                 />
               </div>

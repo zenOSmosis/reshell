@@ -59,7 +59,7 @@ const CallPlayerApp = {
   id: REGISTRATION_ID,
   title: "Call Player",
   style: {
-    width: 640 * 2,
+    width: 640 * 1.5,
     height: 480 * 1.5,
   },
   isPinned: true,
