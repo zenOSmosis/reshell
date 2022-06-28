@@ -8,6 +8,7 @@ import Center from "@components/Center";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
+import Scrollable from "@components/Scrollable";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "../ServiceMonitorApp";
@@ -90,9 +91,9 @@ const ApplicationMonitorApp = {
     return (
       <Layout>
         <Content>
-          <Padding style={{ overflowY: "auto" }}>
+          <Scrollable>
             <AppRuntimeTable appRuntimes={appRuntimes} />
-          </Padding>
+          </Scrollable>
         </Content>
         <Footer style={{ fontSize: ".8rem" }}>
           <hr style={{ margin: 0, padding: 0 }} />
