@@ -61,7 +61,7 @@ export default class SocketChannel extends PhantomCore {
 
     this._initSocketHandler();
 
-    // TODO: Replace setTimeout w/ setImmediate:
+    // TODO: Replace setTimeout w/ queueMicrotask:
     // @see https://github.com/zenOSmosis/phantom-core/issues/76
     setTimeout(() => {
       this.emit(EVT_CONNECT);

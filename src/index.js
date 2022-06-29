@@ -1,5 +1,5 @@
 import reportWebVitals from "./reportWebVitals";
-import { logger } from "phantom-core";
+import { globalLogger } from "phantom-core";
 
 // Load dynamically linked ReShell portal(s)
 import "./__registerPortals__";
@@ -14,7 +14,7 @@ import "./__registerPortals__";
 //  - [FID] https://web.dev/fid/
 //  - [CLS] https://web.dev/cls/
 reportWebVitals(({ id, name, value }) => {
-  logger.debug({
+  globalLogger.debug({
     webVitalsReport: {
       id,
       name,

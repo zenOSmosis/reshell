@@ -22,7 +22,7 @@ export default function ConfirmModal({
         <button
           onClick={onClose}
           style={{
-            backgroundColor: "red",
+            backgroundColor: "#CD1F2A",
           }}
         >
           Confirm

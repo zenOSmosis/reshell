@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import WindowController, {
-  EVT_RESIZED,
+  EVT_RESIZE,
 } from "@components/Window/classes/WindowController";
 
 /**
@@ -20,7 +20,7 @@ export default function useRegistrationViewOnResized(windowController) {
   const handleResized = useCallback(setResizeHandler => {
     /**
      * onResized is passed from view, and is executed by the WindowManager when
-     * the WindowController emits EVT_RESIZED event.
+     * the WindowController emits EVT_RESIZE event.
      */
     refSetResizeHandler.current = setResizeHandler;
   }, []);
@@ -40,10 +40,10 @@ export default function useRegistrationViewOnResized(windowController) {
         }
       };
 
-      windowController.on(EVT_RESIZED, _handleExecResizedCallback);
+      windowController.on(EVT_RESIZE, _handleExecResizedCallback);
 
       return function unmount() {
-        windowController.off(EVT_RESIZED, _handleExecResizedCallback);
+        windowController.off(EVT_RESIZE, _handleExecResizedCallback);
       };
     }
   }, [windowController]);

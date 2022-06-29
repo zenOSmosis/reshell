@@ -15,11 +15,11 @@ export default function FullViewport({ className, children, ...rest }) {
       document.body.classList.add(styles["body-full-viewport"]);
 
       const handleResize = () => {
-        // NOTE: The setImmediate wrap seems to help fix layout issues on iOS
+        // NOTE: The queueMicrotask wrap seems to help fix layout issues on iOS
         // 14 after screen rotation
         //
         // FIXME: (jh) Potentially don't run this if the user is typing
-        setImmediate(() => {
+        queueMicrotask(() => {
           elContainer.style.height = window.innerHeight + "px";
 
           // Fixes issue on iOS where the content may be behind the URL bar after typing

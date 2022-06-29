@@ -22,7 +22,7 @@ const TotalsApp = {
     const multiplier = appServices[MultiplicationService];
 
     // TODO: Remove?
-    // TODO: Use Phantom logger?
+    // TODO: Use Phantom globalLogger?
     /*
     useEffect(() => {
       console.log("rendered use effect");

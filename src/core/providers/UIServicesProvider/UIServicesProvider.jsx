@@ -36,7 +36,7 @@ export default function UIServicesProvider({ children }) {
       // IMPORTANT: This fixes re-render attempts while a child component is
       // being updated (i.e. WindowManager currently is instantiating services
       // during the render cycle)
-      setImmediate(() => {
+      queueMicrotask(() => {
         forceUpdate();
       });
     };

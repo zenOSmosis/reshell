@@ -1,7 +1,7 @@
 import { consume } from "phantom-core";
 import { useEffect, useState } from "react";
 import Timer from "@components/Timer";
-import { EVT_RENDER_PROFILED } from "@components/Window/classes/WindowController";
+import { EVT_RENDER_PROFILE } from "@components/Window/classes/WindowController";
 import LED from "@components/LED";
 
 import useDesktopContext from "@hooks/useDesktopContext";
@@ -56,10 +56,10 @@ export default function AppRuntimeTableRow({ appRuntime }) {
         elProfilerInteractions.innerHTML = Object.values(interactions).length;
       };
 
-      windowController.on(EVT_RENDER_PROFILED, handleRenderProfile);
+      windowController.on(EVT_RENDER_PROFILE, handleRenderProfile);
 
       return function unmount() {
-        windowController.off(EVT_RENDER_PROFILED, handleRenderProfile);
+        windowController.off(EVT_RENDER_PROFILE, handleRenderProfile);
       };
     }
   }, [
@@ -136,7 +136,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
                 appRuntime.destroy();
               }
             }}
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundColor: "#CD1F2A" }}
           >
             Close
           </button>

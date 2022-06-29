@@ -129,7 +129,7 @@ export default function useWindowAutoPositioner({
         // it may execute before the previous callback (i.e. handleCenter /
         // handleScatter)
         //
-        // FIXME: (jh) Use setImmediate instead?
+        // FIXME: (jh) Use queueMicrotask instead?
         window.requestAnimationFrame(() => {
           refOnInitialAutoPosition.current();
         });

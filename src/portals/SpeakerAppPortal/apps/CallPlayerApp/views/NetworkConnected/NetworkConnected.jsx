@@ -1,67 +1,136 @@
-import { useEffect, useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
+import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
-import LoadingSpinner from "@components/LoadingSpinner";
+import Cover from "@components/Cover";
+import Padding from "@components/Padding";
+import Ellipses from "@components/Ellipses";
+import Avatar from "@components/Avatar";
 
 import ParticipantList from "./ParticipantList";
 
-import { Video } from "@components/audioVideoRenderers";
+import useWindowSize from "@hooks/useWindowSize";
+
+const WIDE_LAYOUT_THRESHOLD_WIDTH = 512;
 
 // TODO: Document and add prop-types
 export default function NetworkConnected({
-  latestOutputVideoTrack,
   onOpenChat,
+  localPhantomPeer,
   remotePhantomPeers = [],
 }) {
-  const isInSync = useFakeIsInSync();
+  const windowSize = useWindowSize();
 
-  if (!remotePhantomPeers.length) {
-    return (
-      <Center>
-        <div style={{ fontWeight: "bold" }}>
-          {!isInSync ? (
-            <div>
-              <div style={{ marginBottom: 20 }}>
-                <LoadingSpinner />
-              </div>
-              <div>Performing initial sync...</div>
-            </div>
-          ) : (
-            "No remote peers are connected. You are the only one here."
-          )}
-        </div>
-      </Center>
-    );
-  }
+  const [selectedPhantomPeer, setSelectedPhantomPeer] =
+    useState(localPhantomPeer);
 
-  // TODO: Refactor; make transitioning more graceful
-  if (latestOutputVideoTrack) {
-    return <Video mediaStreamTrack={latestOutputVideoTrack} />;
-  }
+  const handleSelectPeer = useCallback(
+    phantomPeer => {
+      if (windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
+        if (selectedPhantomPeer !== phantomPeer) {
+          // First click on participant, set selected peer
+          setSelectedPhantomPeer(phantomPeer);
+        } else {
+          // Subsequent click on same participant, open chat
+          onOpenChat();
+        }
+      } else {
+        // Open chat if on smaller screens
+        onOpenChat();
+      }
+    },
+    [windowSize, selectedPhantomPeer, onOpenChat]
+  );
+
+  // Automatically deselect disconnected peers
+  useEffect(() => {
+    if (
+      selectedPhantomPeer === null ||
+      selectedPhantomPeer === localPhantomPeer
+    ) {
+      return;
+    } else if (!remotePhantomPeers.includes(selectedPhantomPeer)) {
+      setSelectedPhantomPeer(null);
+    }
+  }, [localPhantomPeer, remotePhantomPeers, selectedPhantomPeer]);
+
+  // Prevent selection if too small for render pane
+  useEffect(() => {
+    // Size not yet calculated
+    if (windowSize.width === null) {
+      return;
+    }
+
+    if (windowSize.width < WIDE_LAYOUT_THRESHOLD_WIDTH && selectedPhantomPeer) {
+      setSelectedPhantomPeer(null);
+    }
+  }, [windowSize, selectedPhantomPeer]);
 
   return (
-    <ParticipantList
-      remotePhantomPeers={remotePhantomPeers}
-      onOpenChat={onOpenChat}
-    />
+    <Row>
+      <Column
+        disableHorizontalFill
+        style={{
+          backgroundColor: "rgba(255,255,255,.1)",
+          width: windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH ? 280 : "100%",
+        }}
+      >
+        <ParticipantList
+          localPhantomPeer={localPhantomPeer}
+          remotePhantomPeers={remotePhantomPeers}
+          onClick={handleSelectPeer}
+          selectedPhantomPeer={selectedPhantomPeer}
+        />
+      </Column>
+
+      {windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH && (
+        <Column style={{ backgroundColor: "rgba(0,0,0,.3)" }}>
+          <Cover>
+            <Avatar
+              src={selectedPhantomPeer?.getAvatarURL()}
+              style={{
+                position: "absolute",
+                right: 10,
+                bottom: 10,
+                opacity: 0.5,
+              }}
+              size={100}
+            />
+          </Cover>
+          <Cover>
+            {selectedPhantomPeer ? (
+              <Padding>
+                <Layout>
+                  <Header>
+                    <Row disableVerticalFill>
+                      <Column>
+                        <h1>
+                          <Ellipses>
+                            {selectedPhantomPeer.getProfileName()}
+                          </Ellipses>
+                        </h1>
+                      </Column>
+                      <Column disableHorizontalFill>
+                        <button onClick={onOpenChat}>Chat</button>
+                      </Column>
+                    </Row>
+                  </Header>
+                  <Content>
+                    <Center canOverflow>
+                      <div style={{ fontSize: "1.5rem" }}>
+                        {selectedPhantomPeer.getProfileDescription()}
+                      </div>
+                    </Center>
+                  </Content>
+                </Layout>
+              </Padding>
+            ) : (
+              <Center style={{ fontWeight: "bold" }}>
+                Select a participant to view their profile
+              </Center>
+            )}
+          </Cover>
+        </Column>
+      )}
+    </Row>
   );
-}
-
-/**
- * Mocks in-sync state since ZenRTCPeer does not maintain a state of whether it
- * is in sync.
- *
- * @return {boolean}
- */
-function useFakeIsInSync() {
-  const [isInSync, setIsInSync] = useState(false);
-  useEffect(() => {
-    const to = window.setTimeout(() => setIsInSync(true), 1500);
-
-    return function unmount() {
-      window.clearTimeout(to);
-    };
-  }, []);
-
-  return isInSync;
 }

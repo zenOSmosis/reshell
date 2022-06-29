@@ -9,10 +9,10 @@ import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 export { EVT_UPDATE, EVT_DESTROY };
 
 // @see https://reactjs.org/docs/profiler.html
-export const EVT_RENDER_PROFILED = "render-profile";
+export const EVT_RENDER_PROFILE = "render-profile";
 
-export const EVT_RESIZED = "resized";
-export const EVT_MOVED = "moved";
+export const EVT_RESIZE = "resize";
+export const EVT_MOVE = "move";
 
 // Number of milliseconds to wait after a restore operation before running a
 // positioning effect such as scattering or centering. This is necessary in
@@ -43,7 +43,7 @@ export default class WindowController extends PhantomState {
 
     this._emitDebouncedResized = debounce(
       this._emitDebouncedResized.bind(this),
-      500,
+      50,
       // Ensure runs on trailing edge
       false
     );
@@ -144,7 +144,7 @@ export default class WindowController extends PhantomState {
   // TODO: Document
   // @see https://reactjs.org/docs/profiler.html
   captureRenderProfile(arrRenderProfile) {
-    this.emit(EVT_RENDER_PROFILED, arrRenderProfile);
+    this.emit(EVT_RENDER_PROFILE, arrRenderProfile);
   }
 
   // TODO: Document
@@ -221,7 +221,7 @@ export default class WindowController extends PhantomState {
           elWindow.style.height = `${height}px`;
         }
 
-        // Emit debounced EVT_RESIZED event
+        // Emit debounced EVT_RESIZE event
         this._emitDebouncedResized();
       }, `${this._uuid}-size`);
     }
@@ -229,7 +229,7 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   _emitDebouncedResized() {
-    this.emit(EVT_RESIZED);
+    this.emit(EVT_RESIZE);
   }
 
   /**
@@ -309,7 +309,7 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   _emitDebouncedMoved() {
-    this.emit(EVT_MOVED);
+    this.emit(EVT_MOVE);
   }
 
   /**
@@ -365,6 +365,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMaximized(isMaximized) {
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMaximized });
   }
 
@@ -389,6 +393,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMinimized(isMinimized) {
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMinimized });
   }
 
@@ -413,6 +421,10 @@ export default class WindowController extends PhantomState {
     this.setState({
       isMaximized: false,
       isMinimized: false,
+    });
+
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
     });
   }
 }

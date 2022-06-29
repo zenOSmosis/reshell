@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import classNames from "classnames";
 import styles from "./AutoScaler.module.css";
+
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 import { v4 as uuidv4 } from "uuid";
+
+import PropTypes from "prop-types";
 
 /**
  * Fix issue on iOS 13 where ResizeObserver isn't available.
@@ -17,6 +21,12 @@ if (!window.ResizeObserver) {
 // time)
 // Related issue: https://github.com/jzombie/pre-re-shell/issues/174
 
+AutoScaler.propTypes = {
+  // Determines if the scaled element should scale larger than 1x (otherwise it
+  // can only be shrunk and restored to its original size
+  isEnlargeable: PropTypes.bool,
+};
+
 /**
  * Automatically applies CSS transform scaling to children to fill parent node,
  * while preserving aspect ratio.
@@ -24,7 +34,12 @@ if (!window.ResizeObserver) {
  * Useful for videos and canvases, where the resolution is a fixed size and
  * should not change.
  */
-export default function AutoScaler({ children, className, ...rest }) {
+export default function AutoScaler({
+  children,
+  className,
+  isEnlargeable = false,
+  ...rest
+}) {
   const [elOuterWrap, setElOuterWrap] = useState(null);
   const [elInnerWrap, setElInnerWrap] = useState(null);
 
@@ -66,14 +81,18 @@ export default function AutoScaler({ children, className, ...rest }) {
           const maxScaleX = outerWrapSize.width / innerWrapSize.width;
           const maxScaleY = outerWrapSize.height / innerWrapSize.height;
 
-          const scale = Math.min(maxScaleX, maxScaleY);
+          let scale = Math.min(maxScaleX, maxScaleY);
+
+          if (!isEnlargeable && scale > 1) {
+            scale = 1;
+          }
 
           elInnerWrap.style.transform = `scale(${scale}, ${scale})`;
 
           if (elInnerWrap.style.visibility === "hidden") {
-            setTimeout(() => {
+            queueMicrotask(() => {
               elInnerWrap.style.visibility = "visible";
-            }, 4);
+            });
           }
         }, uuid);
       });
@@ -86,7 +105,7 @@ export default function AutoScaler({ children, className, ...rest }) {
         ro.unobserve(elInnerWrap);
       };
     }
-  }, [elOuterWrap, elInnerWrap, uuid]);
+  }, [elOuterWrap, elInnerWrap, uuid, isEnlargeable]);
 
   return (
     <div

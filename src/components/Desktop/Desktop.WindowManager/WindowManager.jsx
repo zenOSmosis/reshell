@@ -385,11 +385,11 @@ function WrappedWindowView({
       // FIXME: (jh) Should this be potentially batched, or will React handle
       // that on its own?
 
-      // Note: The setImmediate fixes and issue where if two windows are
+      // Note: The queueMicrotask fixes an issue where if two windows are
       // updated simultaneously, the following error could be thrown: Cannot
       // update a component (`WrappedWindowView`) while rendering a different
       // component (`WindowManagerView`)
-      setImmediate(() => {
+      queueMicrotask(() => {
         forceUpdate();
       });
     };
