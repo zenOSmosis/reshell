@@ -47,7 +47,8 @@ export default function useMultiAudioMediaStreamTrackLevelMonitor(
     // NOTE: This event handler will automatically be unbound once the class
     // destructs
     mediaStreamMonitor.on(EVT_AUDIO_LEVEL_UPDATE, audioLevel => {
-      refOnAudioLevelChange.current(audioLevel);
+      // FIXME: Figure out this calculation and move it into media-stream-track-controller
+      refOnAudioLevelChange.current(audioLevel / 1.5);
     });
 
     _setMediaStreamMonitor(mediaStreamMonitor);
