@@ -20,9 +20,6 @@ export default function NetworkConnected({
 }) {
   const windowSize = useWindowSize();
 
-  // TODO: Remove
-  console.log({ windowSize });
-
   const [selectedPhantomPeer, setSelectedPhantomPeer] =
     useState(localPhantomPeer);
 
