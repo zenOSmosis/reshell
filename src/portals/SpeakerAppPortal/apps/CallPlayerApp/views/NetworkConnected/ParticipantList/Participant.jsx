@@ -61,7 +61,7 @@ export default function Participant({
                 <Ellipses className="note" style={{ fontSize: ".8rem" }}>
                   {isLocalPeer && (
                     <>
-                      <span>(You)</span>&nbsp;
+                      <span style={{ fontWeight: "bold" }}>(You)</span>&nbsp;
                     </>
                   )}
                   {profileDescription}
