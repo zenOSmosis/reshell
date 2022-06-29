@@ -277,7 +277,9 @@ const CallPlayerApp = {
 
         {!latestIncomingVideoTrack && (
           <Cover>
-            <Speaker />
+            <Padding>
+              <Speaker />
+            </Padding>
           </Cover>
         )}
 
