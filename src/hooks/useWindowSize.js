@@ -9,10 +9,15 @@ import { EVT_RESIZE } from "@components/Window/classes/WindowController";
  */
 export default function useWindowSize() {
   const windowController = useWindowController();
-  const [windowSize, setWindowSize] = useState({
-    width: null,
-    height: null,
-  });
+
+  const [windowSize, setWindowSize] = useState(
+    windowController
+      ? windowController.getSize()
+      : {
+          width: null,
+          height: null,
+        }
+  );
 
   // Handle resize event binding
   useEffect(() => {
