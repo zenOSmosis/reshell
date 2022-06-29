@@ -23,12 +23,11 @@ export default function ParticipantList({
           />
         </li>
         {[...remotePhantomPeers].reverse().map((phantomPeer, idx) => (
-          <li className={selectedPhantomPeer === phantomPeer ? "selected" : ""}>
-            <Participant
-              key={idx}
-              phantomPeer={phantomPeer}
-              onClick={onClick}
-            />
+          <li
+            key={idx}
+            className={selectedPhantomPeer === phantomPeer ? "selected" : ""}
+          >
+            <Participant phantomPeer={phantomPeer} onClick={onClick} />
           </li>
         ))}
       </ul>

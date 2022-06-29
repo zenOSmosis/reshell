@@ -139,9 +139,16 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
       LocalDeviceIdentificationService
     ).fetchDeviceAddress();
 
-    const writableSyncObject = new LocalPhantomPeerSyncObject({
-      [PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS]: localDeviceAddress,
-    });
+    const inputMediaDevicesService = this.useServiceClass(
+      InputMediaDevicesService
+    );
+
+    const writableSyncObject = new LocalPhantomPeerSyncObject(
+      {
+        [PHANTOM_PEER_STATE_KEY_DEVICE_ADDRESS]: localDeviceAddress,
+      },
+      inputMediaDevicesService
+    );
 
     // Sync SpeakerAppLocalUserProfileService updates to PhantomPeerSyncObject
     (() => {
@@ -172,10 +179,6 @@ export default class SpeakerAppClientPhantomSessionService extends UIServiceCore
 
     // Handle mute state broadcast
     (() => {
-      const inputMediaDevicesService = this.useServiceClass(
-        InputMediaDevicesService
-      );
-
       const handleMediaDeviceUpdate = () => {
         const isMuted = inputMediaDevicesService.getIsAllAudioMuted();
 

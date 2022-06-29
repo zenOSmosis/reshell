@@ -12,6 +12,8 @@ import PhantomPeerSyncObject, {
   STATE_KEY_LAST_CHAT_MESSAGE,
 } from "@portals/SpeakerAppPortal/zenRTC/PhantomPeerSyncObject";
 
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
+
 export {
   EVT_UPDATE,
   EVT_DESTROY,
@@ -31,11 +33,28 @@ export {
  * web-based client device.
  */
 export default class LocalPhantomPeerSyncObject extends PhantomPeerSyncObject {
-  getOutgoingMediaStreams() {
-    this.logger.warn(
-      "getOutgoingMediaStreams() not currently implemented for local peer"
-    );
+  constructor(initialState = {}, inputMediaDevicesService) {
+    if (!(inputMediaDevicesService instanceof InputMediaDevicesService)) {
+      throw new TypeError(
+        "inputMediaDevicesService must be an instance of InputMediaDevicesService"
+      );
+    }
 
-    return [];
+    super(initialState);
+
+    this._inputMediaDevicesService = inputMediaDevicesService;
+  }
+
+  /**
+   * @return {MediaStream[]}
+   */
+  getOutgoingMediaStreams() {
+    // FIXME: Take screen share audio into consideration
+    const captureFactories =
+      this._inputMediaDevicesService.getCaptureFactories();
+
+    return captureFactories
+      .map(factory => factory.getOutputMediaStream())
+      .flat();
   }
 }

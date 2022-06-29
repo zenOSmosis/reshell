@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { globalLogger } from "phantom-core";
 import LoadingSpinner from "@components/LoadingSpinner";
 import ContentButton from "@components/ContentButton";
 import { Row, Column } from "@components/Layout";
@@ -21,6 +22,12 @@ export default function Participant({
       onClick(phantomPeer);
     }
   }, [onClick, phantomPeer]);
+
+  // One-off errors
+  if (!phantomPeer) {
+    globalLogger.error("Could not retrieve PhantomPeer");
+    return;
+  }
 
   const deviceAddress = phantomPeer.getDeviceAddress();
   const avatarURL = phantomPeer.getAvatarURL();
