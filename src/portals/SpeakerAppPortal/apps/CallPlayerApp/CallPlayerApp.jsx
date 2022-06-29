@@ -328,7 +328,7 @@ const CallPlayerApp = {
                         animationDuration="2s"
                         animationDelay="1s"
                       >
-                        {!isZenRTCConnected ? (
+                        {!isZenRTCConnected && !isZenRTCConnecting ? (
                           <Center canOverflow={true}>
                             {lenNetworks === 0 ? (
                               <NoNetworks
@@ -356,13 +356,6 @@ const CallPlayerApp = {
                             onOpenChat={handleOpenChat}
                           />
                         )}
-                        {isZenRTCConnecting && (
-                          <Cover style={{ backgroundColor: "rgba(0,0,0,.2)" }}>
-                            <Center>
-                              <LoadingSpinner />
-                            </Center>
-                          </Cover>
-                        )}
                       </Animation>
                     </Content>
                     <Footer
@@ -387,6 +380,13 @@ const CallPlayerApp = {
             </Animation>
           )}
         </Cover>
+        {isZenRTCConnecting && (
+          <Cover style={{ backgroundColor: "rgba(0,0,0,.2)" }}>
+            <Center>
+              <LoadingSpinner />
+            </Center>
+          </Cover>
+        )}
       </Full>
     );
   },
