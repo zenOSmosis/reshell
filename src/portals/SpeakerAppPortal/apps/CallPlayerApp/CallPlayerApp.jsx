@@ -59,7 +59,7 @@ const CallPlayerApp = {
   title: "Call Player",
   style: {
     width: 640 * 1.5,
-    height: 480 * 1.5,
+    height: 480 * 1.2,
   },
   isPinned: true,
   isPinnedToDock: true,
