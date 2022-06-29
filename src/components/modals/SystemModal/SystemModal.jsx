@@ -30,7 +30,7 @@ export default function SystemModal({
   footerView = ({ onCancel }) => (
     <div style={{ textAlign: "center" }}>
       <Padding>
-        <button onClick={onCancel} style={{ backgroundColor: "red" }}>
+        <button onClick={onCancel} style={{ backgroundColor: "#CD1F2A" }}>
           <CloseIcon /> Cancel
         </button>
       </Padding>

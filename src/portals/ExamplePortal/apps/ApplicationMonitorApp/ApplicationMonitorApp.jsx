@@ -78,7 +78,7 @@ const ApplicationMonitorApp = {
             <Padding>
               <button
                 onClick={() => setIsProfiling(true)}
-                style={{ backgroundColor: "red" }}
+                style={{ backgroundColor: "#CD1F2A" }}
               >
                 Enable Profiling
               </button>

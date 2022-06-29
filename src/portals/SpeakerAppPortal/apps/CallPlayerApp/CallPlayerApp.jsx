@@ -94,7 +94,11 @@ const CallPlayerApp = {
         <Column disableHorizontalFill>
           <NoWrap>
             <button
-              style={{ backgroundColor: "red", float: "left", width: "8em" }}
+              style={{
+                backgroundColor: "#CD1F2A",
+                float: "left",
+                width: "8em",
+              }}
               onClick={localZenRTCPeerService.disconnect}
               disabled={!isZenRTCConnected}
               title="Disconnect"

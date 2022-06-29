@@ -79,7 +79,7 @@ const VirtualServerApp = {
             {isHosting && (
               <button
                 onClick={() => virtualServerService.stopVirtualServer()}
-                style={{ backgroundColor: "red", float: "right" }}
+                style={{ backgroundColor: "#CD1F2A", float: "right" }}
               >
                 Stop
               </button>

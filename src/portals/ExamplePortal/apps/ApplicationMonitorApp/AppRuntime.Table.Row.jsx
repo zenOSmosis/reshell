@@ -136,7 +136,7 @@ export default function AppRuntimeTableRow({ appRuntime }) {
                 appRuntime.destroy();
               }
             }}
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundColor: "#CD1F2A" }}
           >
             Close
           </button>
