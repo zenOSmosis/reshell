@@ -18,14 +18,13 @@ import Timer from "@components/Timer";
 import ButtonGroup from "@components/ButtonGroup";
 import Ellipses from "@components/Ellipses";
 import Animation from "@components/Animation";
-import Speaker from "@components/Speaker";
+import WooferAudioLevelMeter from "@components/audioMeters/WooferAudioLevelMeter";
 
 import MicrophoneIcon from "@icons/MicrophoneIcon";
 
 import Networks from "./views/Networks";
 import NoNetworks from "./views/NoNetworks";
 import NetworkConnected from "./views/NetworkConnected";
-import SoundSystemLayout from "./views/SoundSystemLayout";
 
 import { REGISTRATION_ID as LOCAL_USER_PROFILE_REGISTRATION_ID } from "../LocalUserProfileApp";
 import { REGISTRATION_ID as INPUT_MEDIA_DEVICES_REGISTRATION_ID } from "@portals/ExamplePortal/apps/InputMediaDevicesApp";
@@ -223,6 +222,11 @@ const CallPlayerApp = {
     const incomingAudioMediaStreamTracks =
       outputMediaDevicesService.getOutputAudioMediaStreamTracks();
 
+    const mergedAudioMediaStreamTracks = useMemo(
+      () => [...inputAudioMediaStreamTracks, ...incomingAudioMediaStreamTracks],
+      [inputAudioMediaStreamTracks, incomingAudioMediaStreamTracks]
+    );
+
     const { link: handleCreateNetwork } = useAppRegistrationLink(
       VIRTUAL_SERVER_REGISTRATION_ID
     );
@@ -278,7 +282,9 @@ const CallPlayerApp = {
         {!latestIncomingVideoTrack && (
           <Cover>
             <Padding>
-              <Speaker />
+              <WooferAudioLevelMeter
+                mediaStreamTracks={mergedAudioMediaStreamTracks}
+              />
             </Padding>
           </Cover>
         )}
