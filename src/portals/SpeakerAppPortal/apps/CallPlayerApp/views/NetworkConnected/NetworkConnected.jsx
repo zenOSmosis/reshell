@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
 import Cover from "@components/Cover";
@@ -23,6 +23,24 @@ export default function NetworkConnected({
   const [selectedPhantomPeer, setSelectedPhantomPeer] =
     useState(localPhantomPeer);
 
+  const handleSelectPeer = useCallback(
+    phantomPeer => {
+      if (windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
+        if (selectedPhantomPeer !== phantomPeer) {
+          // First click on participant, set selected peer
+          setSelectedPhantomPeer(phantomPeer);
+        } else {
+          // Subsequent click on same participant, open chat
+          onOpenChat();
+        }
+      } else {
+        // Open chat if on smaller screens
+        onOpenChat();
+      }
+    },
+    [windowSize, selectedPhantomPeer, onOpenChat]
+  );
+
   // Automatically deselect disconnected peers
   useEffect(() => {
     if (
@@ -35,7 +53,13 @@ export default function NetworkConnected({
     }
   }, [localPhantomPeer, remotePhantomPeers, selectedPhantomPeer]);
 
+  // Prevent selection if too small for render pane
   useEffect(() => {
+    // Size not yet calculated
+    if (windowSize.width === null) {
+      return;
+    }
+
     if (windowSize.width < WIDE_LAYOUT_THRESHOLD_WIDTH && selectedPhantomPeer) {
       setSelectedPhantomPeer(null);
     }
@@ -53,7 +77,7 @@ export default function NetworkConnected({
         <ParticipantList
           localPhantomPeer={localPhantomPeer}
           remotePhantomPeers={remotePhantomPeers}
-          onClick={setSelectedPhantomPeer}
+          onClick={handleSelectPeer}
           selectedPhantomPeer={selectedPhantomPeer}
         />
       </Column>
