@@ -323,40 +323,32 @@ const CallPlayerApp = {
                 <Content>
                   <Layout>
                     <Content>
-                      <Animation
-                        animationName="bounceInDown"
-                        animationDuration="2s"
-                        animationDelay="1s"
-                      >
-                        {!isZenRTCConnected && !isZenRTCConnecting ? (
-                          <Center canOverflow={true}>
-                            {lenNetworks === 0 ? (
-                              <NoNetworks
-                                onCreateNetwork={handleCreateNetwork}
-                              />
-                            ) : (
-                              <Networks
-                                networks={networks}
-                                // isConnected,
-                                // realmId,
-                                // channelId,
-                                onConnectToNetwork={
-                                  localZenRTCPeerService.connect
-                                }
-                                onDisconnectFromNetwork={
-                                  localZenRTCPeerService.disconnect
-                                }
-                              />
-                            )}
-                          </Center>
-                        ) : (
-                          <NetworkConnected
-                            localPhantomPeer={localPhantomPeer}
-                            remotePhantomPeers={remotePhantomPeers}
-                            onOpenChat={handleOpenChat}
-                          />
-                        )}
-                      </Animation>
+                      {!isZenRTCConnected && !isZenRTCConnecting ? (
+                        <Center canOverflow={true}>
+                          {lenNetworks === 0 ? (
+                            <NoNetworks onCreateNetwork={handleCreateNetwork} />
+                          ) : (
+                            <Networks
+                              networks={networks}
+                              // isConnected,
+                              // realmId,
+                              // channelId,
+                              onConnectToNetwork={
+                                localZenRTCPeerService.connect
+                              }
+                              onDisconnectFromNetwork={
+                                localZenRTCPeerService.disconnect
+                              }
+                            />
+                          )}
+                        </Center>
+                      ) : (
+                        <NetworkConnected
+                          localPhantomPeer={localPhantomPeer}
+                          remotePhantomPeers={remotePhantomPeers}
+                          onOpenChat={handleOpenChat}
+                        />
+                      )}
                     </Content>
                     <Footer
                       style={{
