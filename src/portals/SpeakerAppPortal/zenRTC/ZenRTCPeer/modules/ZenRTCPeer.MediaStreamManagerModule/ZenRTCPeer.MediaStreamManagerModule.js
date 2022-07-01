@@ -62,24 +62,26 @@ export default class ZenRTCPeerMediaStreamManagerModule extends BaseModule {
          * Original MediaStreamTrack ID is the key; cloned MediaStreamTrack is
          * the value,
          *
-         * @type { [key: string]: MediaStreamTrack }
+         * @type { Map<{[key: string]: MediaStreamTrack }>}
          **/
-        let _trackClones = {};
+        const _trackClones = new Map();
 
         // Empty track clones on disconnect
         this.proxyOn(zenRTCPeer, EVT_DISCONNECT, () => {
-          _trackClones = {};
+          _trackClones.clear();
         });
 
         return function getTrackClone(mediaStreamTrack) {
           const mediaStreamTrackId = mediaStreamTrack.id;
 
-          if (_trackClones[mediaStreamTrackId]) {
-            return _trackClones[mediaStreamTrackId];
+          if (_trackClones.has(mediaStreamTrackId)) {
+            return _trackClones.get(mediaStreamTrackId);
           } else {
-            _trackClones[mediaStreamTrackId] = mediaStreamTrack.clone();
+            const clonedTrack = mediaStreamTrack.clone();
 
-            return _trackClones[mediaStreamTrackId];
+            _trackClones.set(mediaStreamTrackId, clonedTrack);
+
+            return clonedTrack;
           }
         };
       })();
