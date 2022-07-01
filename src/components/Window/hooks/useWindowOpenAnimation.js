@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useAnimation from "@hooks/useAnimation";
 
 // FIXME: (jh) Apply animations to open, close, minimize, maximize, restore,
@@ -18,16 +17,14 @@ import useAnimation from "@hooks/useAnimation";
 export default function useWindowOpenAnimation(elWindow) {
   //const [phase, setPhase] = useState("transition-in");
 
-  const [isOpenAnimationEnded, _setIsOpenAnimationEnded] = useState(false);
-
   // Window opening transition
   useAnimation({
     domElement: elWindow,
-    animationName: "zoomInUp",
+    // FIXME: zoomInUp has weird effects with Safari 15 on mobile and desktop
+    // on animation end; it might be related to the stacking context, but I'm
+    // not positive at the moment
+    animationName: "fadeInUp",
     animationDuration: ".5s",
     shouldRun: Boolean(elWindow),
-    onAnimationEnd: () => _setIsOpenAnimationEnded(true),
   });
-
-  return { isOpenAnimationEnded };
 }

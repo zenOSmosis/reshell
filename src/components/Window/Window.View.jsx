@@ -48,8 +48,7 @@ const WindowView = ({
   /** @type {DOMElement} */
   const [elWindow, _setElWindow] = useState(null);
 
-  // TODO: Document
-  const { isOpenAnimationEnded } = useWindowOpenAnimation(elWindow);
+  useWindowOpenAnimation(elWindow);
 
   // TODO: Document
   useWindowAutoPositioner({ elWindow, elWindowManager, windowController });
@@ -183,10 +182,7 @@ const WindowView = ({
       className={classNames(
         styles["window-outer-border"],
 
-        // Prevents "popping" of window before open animation ends
-        !isOpenAnimationEnded && styles["hidden"],
-
-        isActive && styles["active"],
+        // isActive && styles["active"],
         isMaximized && styles["maximized"],
         isMinimized && styles["minimized"],
         (isUserDragging || isUserResizing) && styles["dragging"]
