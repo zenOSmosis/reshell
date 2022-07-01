@@ -488,51 +488,6 @@ export default class ZenRTCPeer extends PhantomCore {
     } else {
       this._webrtcPeer = null;
 
-      // "BootStream" preliminary fixes for iOS 15 call hosting, where streams
-      // don't start playing on remote peers until at least one stream of type
-      // (i.e. audio / video) is added. This only appears to affect networks
-      // which use iOS 15 as the host "proxy" device / virtual server.
-      // @see https://github.com/jzombie/pre-re-shell/issues/67
-      //
-      // TODO: Add video track to boot stream, if possible
-      // (canvas.captureStream() isn't supported on iOS; is there another way?)
-      // Can MediaSource be the key to the "other way"?
-      // https://developer.mozilla.org/en-US/docs/Web/API/MediaSource?
-      // https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-73622026
-      // [Demo of video over WebRTC data channel] https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-292074470
-      const bootStream = (() => {
-        if (!this._isVirtualServer) {
-          return null;
-        }
-
-        const bootStream =
-          utils.mediaStream.generators.createEmptyAudioMediaStream(10);
-
-        const stopBootStream = async () => {
-          for (const track of bootStream.getTracks()) {
-            try {
-              if (this._webRTCPeer && !this._webrtcPeer.destroyed) {
-                this._webrtcPeer.removeTrack(track, bootStream);
-              }
-            } catch (err) {
-              this.log.error(err);
-            }
-          }
-        };
-
-        // Stop sending BootStream once connected
-        this.once(EVT_CONNECT, () => {
-          // TODO: Don't use setTimeout and instead use bootStream sync event
-          // Stop the bootStream after a short amount of time
-          setTimeout(stopBootStream, 10000);
-        });
-
-        // Explicitly stop bootStream on disconnect
-        this.once(EVT_DISCONNECT, stopBootStream);
-
-        return bootStream;
-      })();
-
       const simplePeerOptions = {
         initiator: this._isInitiator,
 
@@ -542,8 +497,6 @@ export default class ZenRTCPeer extends PhantomCore {
 
         // @see https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration/iceTransportPolicy#value
         // iceTransportPolicy: "relay",
-
-        stream: bootStream,
 
         /**
          * TODO: offerOptions voiceActivityDetection false (better music quality).
