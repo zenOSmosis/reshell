@@ -23,7 +23,7 @@ export default function NetworkConnected({
   const [selectedPhantomPeer, setSelectedPhantomPeer] =
     useState(localPhantomPeer);
 
-  const handleSelectPeer = useCallback(
+  const handleSelectPhantomPeer = useCallback(
     phantomPeer => {
       if (windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
         if (selectedPhantomPeer !== phantomPeer) {
@@ -69,7 +69,7 @@ export default function NetworkConnected({
         <ParticipantList
           localPhantomPeer={localPhantomPeer}
           remotePhantomPeers={remotePhantomPeers}
-          onClick={handleSelectPeer}
+          onClick={handleSelectPhantomPeer}
           selectedPhantomPeer={selectedPhantomPeer}
         />
       </Column>
