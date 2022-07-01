@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
 import Cover from "@components/Cover";
@@ -41,29 +41,21 @@ export default function NetworkConnected({
     [windowSize, selectedPhantomPeer, onOpenChat]
   );
 
-  // Automatically deselect disconnected peers
-  useEffect(() => {
-    if (
-      selectedPhantomPeer === null ||
-      selectedPhantomPeer === localPhantomPeer
-    ) {
-      return;
-    } else if (!remotePhantomPeers.includes(selectedPhantomPeer)) {
-      setSelectedPhantomPeer(null);
-    }
-  }, [localPhantomPeer, remotePhantomPeers, selectedPhantomPeer]);
+  if (
+    selectedPhantomPeer !== null &&
+    selectedPhantomPeer !== localPhantomPeer &&
+    !remotePhantomPeers.includes(selectedPhantomPeer)
+  ) {
+    setSelectedPhantomPeer(null);
+  }
 
-  // Prevent selection if too small for render pane
-  useEffect(() => {
-    // Size not yet calculated
-    if (windowSize.width === null) {
-      return;
-    }
-
-    if (windowSize.width < WIDE_LAYOUT_THRESHOLD_WIDTH && selectedPhantomPeer) {
-      setSelectedPhantomPeer(null);
-    }
-  }, [windowSize, selectedPhantomPeer]);
+  if (
+    windowSize.width !== null &&
+    windowSize.width < WIDE_LAYOUT_THRESHOLD_WIDTH &&
+    selectedPhantomPeer
+  ) {
+    setSelectedPhantomPeer(null);
+  }
 
   return (
     <Row>
