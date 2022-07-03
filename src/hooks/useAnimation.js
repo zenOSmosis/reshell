@@ -1,5 +1,5 @@
 import { globalLogger } from "phantom-core";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import "animate.css";
 
 // TODO: Document
@@ -27,7 +27,7 @@ export default function useAnimation({
 
   const refOnAnimationEnd = useRef(onAnimationEnd);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (shouldRun && domElement) {
       if (isDisabled) {
         // TODO: Can this be used as an exported property instead of directly
