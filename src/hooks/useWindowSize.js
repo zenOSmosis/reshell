@@ -5,7 +5,7 @@ import { EVT_RESIZE } from "@components/Window/classes/WindowController";
 /**
  * Monitors the size of the containing ReShell window via its React Context.
  *
- * @return {{width: number | null, height: number | null}}
+ * @return {{width: number, height: number}}
  */
 export default function useWindowSize() {
   const windowController = useWindowController();
@@ -14,8 +14,8 @@ export default function useWindowSize() {
     windowController
       ? windowController.getSize()
       : {
-          width: null,
-          height: null,
+          width: 0,
+          height: 0,
         }
   );
 

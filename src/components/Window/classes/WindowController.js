@@ -243,7 +243,10 @@ export default class WindowController extends PhantomState {
     if (elWindow) {
       return getElSize(elWindow);
     } else {
-      this.log.warn("Unable to acquire elWindow");
+      return {
+        width: 0,
+        height: 0,
+      };
     }
   }
 
