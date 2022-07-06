@@ -291,7 +291,7 @@ const CallPlayerApp = {
 
         <Cover>
           {!latestIncomingVideoTrack && (
-            <Animation animationName="fadeIn" animationDuration="5s">
+            <Animation animationName="fadeIn" animationDuration="2s">
               <Layout style={{ backgroundColor: "rgba(0,0,0,.5)" }}>
                 <Header
                   style={{
