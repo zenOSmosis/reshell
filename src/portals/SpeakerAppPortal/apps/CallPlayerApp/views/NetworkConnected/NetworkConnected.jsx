@@ -25,7 +25,7 @@ export default function NetworkConnected({
 
   const handleSelectPhantomPeer = useCallback(
     phantomPeer => {
-      if (windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
+      if (windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
         if (selectedPhantomPeer !== phantomPeer) {
           // First click on participant, set selected peer
           setSelectedPhantomPeer(phantomPeer);
@@ -50,8 +50,8 @@ export default function NetworkConnected({
   }
 
   if (
-    windowSize.width !== null &&
-    windowSize.width < WIDE_LAYOUT_THRESHOLD_WIDTH &&
+    windowSize?.width !== null &&
+    windowSize?.width < WIDE_LAYOUT_THRESHOLD_WIDTH &&
     selectedPhantomPeer
   ) {
     setSelectedPhantomPeer(null);
@@ -63,7 +63,8 @@ export default function NetworkConnected({
         disableHorizontalFill
         style={{
           backgroundColor: "rgba(255,255,255,.1)",
-          width: windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH ? 280 : "100%",
+          width:
+            windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH ? 280 : "100%",
         }}
       >
         <ParticipantList
@@ -74,7 +75,7 @@ export default function NetworkConnected({
         />
       </Column>
 
-      {windowSize.width >= WIDE_LAYOUT_THRESHOLD_WIDTH && (
+      {windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH && (
         <Column style={{ backgroundColor: "rgba(0,0,0,.3)" }}>
           <Cover>
             <Avatar

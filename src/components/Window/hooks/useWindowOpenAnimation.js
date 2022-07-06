@@ -20,10 +20,8 @@ export default function useWindowOpenAnimation(elWindow) {
   // Window opening transition
   useAnimation({
     domElement: elWindow,
-    // FIXME: zoomInUp has weird effects with Safari 15 on mobile and desktop
-    // on animation end; it might be related to the stacking context, but I'm
-    // not positive at the moment
-    animationName: "fadeInUp",
+    // FIXME: There seem to be layout bugs
+    animationName: "fadeIn",
     animationDuration: ".5s",
     shouldRun: Boolean(elWindow),
   });
