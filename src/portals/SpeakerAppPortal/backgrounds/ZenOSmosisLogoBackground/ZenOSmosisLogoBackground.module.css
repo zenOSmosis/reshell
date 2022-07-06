@@ -1,0 +1,12 @@
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  padding: 20px;
+  opacity: 0.4;
+}
+
+.logo img {
+  max-width: 320px;
+}

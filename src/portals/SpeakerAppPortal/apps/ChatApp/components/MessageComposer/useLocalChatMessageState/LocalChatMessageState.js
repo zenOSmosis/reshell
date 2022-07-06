@@ -1,8 +1,8 @@
-import SyncObject, { EVT_UPDATED, EVT_DESTROYED } from "sync-object";
+import SyncObject, { EVT_UPDATE, EVT_DESTROY } from "sync-object";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 const INITIAL_BODY_STATE = "";
 

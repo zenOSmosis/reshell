@@ -38,9 +38,9 @@ export default function useAppRuntimesAutoStart(
         activateAppRegistration(registration);
       }
 
-      // IMPORTANT: The setImmediate call fixes an issue where deep-linked apps
+      // IMPORTANT: The queueMicrotask call fixes an issue where deep-linked apps
       // would not focus
-      setImmediate(() => {
+      queueMicrotask(() => {
         if (locationAppRegistrationID) {
           const locationAppRegistration = appRegistrations.find(
             registration => registration.getID() === locationAppRegistrationID

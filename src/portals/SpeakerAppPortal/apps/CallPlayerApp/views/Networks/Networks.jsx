@@ -196,7 +196,7 @@ export default function Networks({
                         <>
                           <HangupIcon
                             style={{
-                              color: "red",
+                              color: "#CD1F2A",
                               fontSize: "1.4rem",
                               verticalAlign: "middle",
                             }}

@@ -1,18 +1,18 @@
 import ZenRTCPeer, {
-  EVT_UPDATED,
+  EVT_UPDATE,
   EVT_CONNECTING,
   EVT_RECONNECTING,
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
-  EVT_DESTROYED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_DATA_RECEIVED,
-  EVT_SYNC_EVT_RECEIVED,
-  EVT_SDP_OFFERED,
-  EVT_SDP_ANSWERED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
+  EVT_DESTROY,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_DATA,
+  EVT_SYNC,
+  EVT_SDP_OFFER,
+  EVT_SDP_ANSWER,
   EVT_ZENRTC_SIGNAL,
 } from "../ZenRTCPeer";
 import LocalZenRTCSignalBroker, {
@@ -20,20 +20,20 @@ import LocalZenRTCSignalBroker, {
 } from "./LocalZenRTCSignalBroker";
 
 export {
-  EVT_UPDATED,
+  EVT_UPDATE,
   EVT_CONNECTING,
   EVT_RECONNECTING,
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
-  EVT_DESTROYED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_DATA_RECEIVED,
-  EVT_SYNC_EVT_RECEIVED,
-  EVT_SDP_OFFERED,
-  EVT_SDP_ANSWERED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
+  EVT_DESTROY,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_DATA,
+  EVT_SYNC,
+  EVT_SDP_OFFER,
+  EVT_SDP_ANSWER,
   EVT_ZENRTC_SIGNAL,
 };
 
@@ -108,10 +108,10 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     this.registerCleanupHandler(() =>
       Promise.all([
         this._zenRTCSignalBroker &&
-          this._zenRTCSignalBroker.getIsDestroying() &&
+          this._zenRTCSignalBroker.getHasDestroyStarted() &&
           this._zenRTCSignalBroker.destroy(),
         this._localPhantomPeerSyncObject &&
-          !this._localPhantomPeerSyncObject.getIsDestroying() &&
+          !this._localPhantomPeerSyncObject.getHasDestroyStarted() &&
           this._localPhantomPeerSyncObject.destroy(),
       ])
     );
@@ -132,14 +132,14 @@ export default class LocalZenRTCPeer extends ZenRTCPeer {
     // Handle dynamic media capture factory publishing
     (() => {
       this._mediaCaptureServices.forEach(mediaCaptureService => {
-        this.proxyOn(mediaCaptureService, EVT_UPDATED, () => {
+        this.proxyOn(mediaCaptureService, EVT_UPDATE, () => {
           if (this.getIsConnected()) {
             this._publishMediaCaptureFactories();
           }
         });
       });
 
-      this.on(EVT_CONNECTED, () => {
+      this.on(EVT_CONNECT, () => {
         this._publishMediaCaptureFactories();
       });
     })();

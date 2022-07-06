@@ -1,7 +1,7 @@
-import PhantomCore, { EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_DESTROY } from "phantom-core";
 import ZenRTCPeer from "../ZenRTCPeer";
 
-export { EVT_DESTROYED };
+export { EVT_DESTROY };
 
 export default class ZenRTCPeerBaseModule extends PhantomCore {
   constructor(zenRTCPeer) {
@@ -15,7 +15,7 @@ export default class ZenRTCPeerBaseModule extends PhantomCore {
 
     // Destroy this module once peer is destroyed
     this._zenRTCPeer.registerCleanupHandler(async () => {
-      if (!this.getIsDestroying()) {
+      if (!this.getHasDestroyStarted()) {
         await this.destroy();
       }
     });

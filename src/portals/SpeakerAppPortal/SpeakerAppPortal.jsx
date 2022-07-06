@@ -1,7 +1,10 @@
 import Desktop from "@components/Desktop";
-import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
+
+import ZenOSmosisLogoBackground from "./backgrounds/ZenOSmosisLogoBackground";
+// import SpeakerAppLogoBackground from "./backgrounds/SpeakerAppLogoBackground";
 
 import AboutReShellApp from "../ExamplePortal/apps/AboutReShellApp";
+import ApplicationsApp from "../ExamplePortal/apps/ApplicationsApp";
 import BeepPrototypeApp from "../ExamplePortal/apps/BeepPrototypeApp";
 import StartupManagerApp from "../ExamplePortal/apps/StartupManagerApp";
 // import BackgroundSelectorApp from "../ExamplePortal/apps/BackgroundSelectorApp";
@@ -20,8 +23,10 @@ import AppRegistrationViewerApp from "../ExamplePortal/apps/AppRegistrationViewe
 import NativeSpyAgentApp from "../ExamplePortal/apps/NativeSpyAgentApp";
 import IPApp from "../ExamplePortal/apps/IPApp";
 import TTSConfigurerApp from "../ExamplePortal/apps/TTSConfigurerApp";
+import LogManagerApp from "../ExamplePortal/apps/LogManagerApp";
+// import PhantomCoreDocsApp from "../ExamplePortal/apps/PhantomCoreDocsApp";
+import UptimeApp from "../ExamplePortal/apps/UptimeApp";
 //
-import ApplicationsApp from "./apps/ApplicationsApp";
 import CallPlayerApp from "./apps/CallPlayerApp";
 import VirtualServerApp from "./apps/VirtualServerApp";
 import LocalUserProfileApp from "./apps/LocalUserProfileApp";
@@ -38,7 +43,7 @@ import defaultAppAutoStartConfigs from "./defaultAppAutoStartConfigs";
 export default function SpeakerAppPortal() {
   return (
     <Desktop
-      backgroundView={<SpeakerAppLogoBackground />}
+      backgroundView={<ZenOSmosisLogoBackground />}
       appDescriptors={[
         ApplicationsApp,
         BeepPrototypeApp,
@@ -61,6 +66,9 @@ export default function SpeakerAppPortal() {
         NativeSpyAgentApp,
         IPApp,
         TTSConfigurerApp,
+        LogManagerApp,
+        // PhantomCoreDocsApp,
+        UptimeApp,
 
         // Speaker.app-specific apps
         CallPlayerApp,

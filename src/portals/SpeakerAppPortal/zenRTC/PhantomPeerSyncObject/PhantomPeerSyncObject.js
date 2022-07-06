@@ -1,6 +1,6 @@
-import SyncObject, { EVT_UPDATED, EVT_DESTROYED } from "sync-object";
+import SyncObject, { EVT_UPDATE, EVT_DESTROY } from "sync-object";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 export const STATE_KEY_AVATAR_URL = "avatarURL";
 export const STATE_KEY_NAME = "name";
@@ -66,6 +66,13 @@ export default class PhantomPeerSyncObject extends SyncObject {
    */
   getIsTypingChatMessage() {
     return this.getState()[STATE_KEY_IS_TYPING_CHAT_MESSAGE];
+  }
+
+  /**
+   * @return {boolean}
+   */
+  getIsAudioMuted() {
+    return this.getState()[STATE_KEY_IS_AUDIO_MUTED];
   }
 
   /**

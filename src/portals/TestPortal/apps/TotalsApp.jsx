@@ -21,12 +21,15 @@ const TotalsApp = {
     const adder = appServices[AdditionService];
     const multiplier = appServices[MultiplicationService];
 
-    // TODO: Remove
+    // TODO: Remove?
+    // TODO: Use Phantom globalLogger?
+    /*
     useEffect(() => {
       console.log("rendered use effect");
 
       return () => console.log("unmount");
     }, []);
+    */
 
     return (
       <Center>

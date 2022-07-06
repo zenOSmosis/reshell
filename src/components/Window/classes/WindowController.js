@@ -1,4 +1,4 @@
-import { PhantomState, EVT_UPDATED, EVT_DESTROYED, sleep } from "phantom-core";
+import { PhantomState, EVT_UPDATE, EVT_DESTROY, sleep } from "phantom-core";
 import { debounce } from "debounce";
 
 import getElPosition from "@utils/getElPosition";
@@ -6,13 +6,13 @@ import getElSize from "@utils/getElSize";
 
 import requestSkippableAnimationFrame from "request-skippable-animation-frame";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // @see https://reactjs.org/docs/profiler.html
-export const EVT_RENDER_PROFILED = "render-profile";
+export const EVT_RENDER_PROFILE = "render-profile";
 
-export const EVT_RESIZED = "resized";
-export const EVT_MOVED = "moved";
+export const EVT_RESIZE = "resize";
+export const EVT_MOVE = "move";
 
 // Number of milliseconds to wait after a restore operation before running a
 // positioning effect such as scattering or centering. This is necessary in
@@ -26,13 +26,13 @@ const POST_RESTORE_POSITION_EFFECT_TIMEOUT = 1000;
 // TODO: Document
 export default class WindowController extends PhantomState {
   // TODO: Document
-  constructor(initialState = {}, { onBringToTop }) {
+  constructor(initialState = {}, { onBringToTop, title }) {
     const DEFAULT_STATE = {
       isMaximized: false,
       isMinimized: false,
     };
 
-    super(PhantomState.mergeOptions({ ...DEFAULT_STATE, ...initialState }));
+    super(PhantomState.mergeOptions(DEFAULT_STATE, initialState), { title });
 
     this._appRuntime = null;
 
@@ -43,7 +43,7 @@ export default class WindowController extends PhantomState {
 
     this._emitDebouncedResized = debounce(
       this._emitDebouncedResized.bind(this),
-      500,
+      50,
       // Ensure runs on trailing edge
       false
     );
@@ -78,7 +78,7 @@ export default class WindowController extends PhantomState {
       // Clear any currently scheduled resize executions
       this._emitDebouncedResized.clear();
 
-      if (this._appRuntime && !this._appRuntime.getIsDestroying()) {
+      if (this._appRuntime && !this._appRuntime.getHasDestroyStarted()) {
         await this._appRuntime.destroy();
       }
 
@@ -105,7 +105,7 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    if (!this.getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this._centerHandler();
     }
   }
@@ -125,7 +125,7 @@ export default class WindowController extends PhantomState {
       await sleep(POST_RESTORE_POSITION_EFFECT_TIMEOUT);
     }
 
-    if (!this.getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this._scatterHandler();
     }
   }
@@ -144,7 +144,7 @@ export default class WindowController extends PhantomState {
   // TODO: Document
   // @see https://reactjs.org/docs/profiler.html
   captureRenderProfile(arrRenderProfile) {
-    this.emit(EVT_RENDER_PROFILED, arrRenderProfile);
+    this.emit(EVT_RENDER_PROFILE, arrRenderProfile);
   }
 
   // TODO: Document
@@ -221,7 +221,7 @@ export default class WindowController extends PhantomState {
           elWindow.style.height = `${height}px`;
         }
 
-        // Emit debounced EVT_RESIZED event
+        // Emit debounced EVT_RESIZE event
         this._emitDebouncedResized();
       }, `${this._uuid}-size`);
     }
@@ -229,7 +229,7 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   _emitDebouncedResized() {
-    this.emit(EVT_RESIZED);
+    this.emit(EVT_RESIZE);
   }
 
   /**
@@ -243,7 +243,10 @@ export default class WindowController extends PhantomState {
     if (elWindow) {
       return getElSize(elWindow);
     } else {
-      this.log.warn("Unable to acquire elWindow");
+      return {
+        width: 0,
+        height: 0,
+      };
     }
   }
 
@@ -309,7 +312,7 @@ export default class WindowController extends PhantomState {
 
   // TODO: Document
   _emitDebouncedMoved() {
-    this.emit(EVT_MOVED);
+    this.emit(EVT_MOVE);
   }
 
   /**
@@ -342,7 +345,7 @@ export default class WindowController extends PhantomState {
    * instead.
    *
    * @param {Object} partialNextState
-   * @emits EVT_UPDATED
+   * @emits EVT_UPDATE
    * @return {void}
    */
   setState(partialNextState) {
@@ -365,6 +368,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMaximized(isMaximized) {
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMaximized });
   }
 
@@ -389,6 +396,10 @@ export default class WindowController extends PhantomState {
    * @return {void}
    */
   setIsMinimized(isMinimized) {
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
+    });
+
     return this.setState({ isMinimized });
   }
 
@@ -413,6 +424,10 @@ export default class WindowController extends PhantomState {
     this.setState({
       isMaximized: false,
       isMinimized: false,
+    });
+
+    queueMicrotask(() => {
+      this._emitDebouncedResized();
     });
   }
 }

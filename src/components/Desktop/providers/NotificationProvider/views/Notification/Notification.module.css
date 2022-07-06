@@ -60,7 +60,7 @@
   hyphens: auto;
 }
 
-.notification button.close {
+.notification .close {
   position: absolute;
   top: 0px;
   right: 0px;

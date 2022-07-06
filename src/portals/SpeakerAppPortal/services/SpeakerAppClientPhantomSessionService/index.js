@@ -1,6 +1,6 @@
 import SpeakerAppClientPhantomSessionService, {
-  EVT_UPDATED,
+  EVT_UPDATE,
 } from "./SpeakerAppClientPhantomSessionService";
 
 export default SpeakerAppClientPhantomSessionService;
-export { EVT_UPDATED };
+export { EVT_UPDATE };

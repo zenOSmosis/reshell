@@ -1,8 +1,8 @@
-import { PhantomCollection, EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { PhantomCollection, EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 
 import AppRuntime from "./AppRuntime";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // TODO: Document
 export default class AppRuntimeCollection extends PhantomCollection {

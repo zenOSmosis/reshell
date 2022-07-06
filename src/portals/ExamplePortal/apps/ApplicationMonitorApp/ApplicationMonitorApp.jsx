@@ -1,4 +1,4 @@
-import PhantomCore from "phantom-core";
+import { getUptime } from "phantom-core";
 
 import { useEffect } from "react";
 
@@ -8,6 +8,7 @@ import Center from "@components/Center";
 import Padding from "@components/Padding";
 import Layout, { Content, Footer } from "@components/Layout";
 import Timer from "@components/Timer";
+import Scrollable from "@components/Scrollable";
 import AppLinkButton from "@components/AppLinkButton";
 
 import { REGISTRATION_ID as SERVICE_MONITOR_REGISTRATION_ID } from "../ServiceMonitorApp";
@@ -77,7 +78,7 @@ const ApplicationMonitorApp = {
             <Padding>
               <button
                 onClick={() => setIsProfiling(true)}
-                style={{ backgroundColor: "red" }}
+                style={{ backgroundColor: "#CD1F2A" }}
               >
                 Enable Profiling
               </button>
@@ -90,16 +91,15 @@ const ApplicationMonitorApp = {
     return (
       <Layout>
         <Content>
-          <Padding style={{ overflowY: "auto" }}>
+          <Scrollable>
             <AppRuntimeTable appRuntimes={appRuntimes} />
-          </Padding>
+          </Scrollable>
         </Content>
         <Footer style={{ fontSize: ".8rem" }}>
           <hr style={{ margin: 0, padding: 0 }} />
           <Padding>
             <div style={{ position: "absolute", bottom: 0, left: 0 }}>
-              PhantomCore uptime:{" "}
-              <Timer onTick={() => PhantomCore.getUptime()} />
+              PhantomCore uptime: <Timer onTick={() => getUptime()} />
             </div>
             <AppLinkButton
               id={SERVICE_MONITOR_REGISTRATION_ID}

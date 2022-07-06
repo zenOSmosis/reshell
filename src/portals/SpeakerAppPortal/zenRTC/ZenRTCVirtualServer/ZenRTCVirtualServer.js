@@ -1,13 +1,13 @@
-import PhantomCore, { EVT_READY, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_READY, EVT_DESTROY } from "phantom-core";
 import VirtualServerZenRTCPeerManager, {
-  EVT_PEER_CONNECTED,
-  EVT_PEER_SHARED_STATE_UPDATED,
-  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_PEER_DISCONNECTED,
-  EVT_PEER_DESTROYED,
+  EVT_PEER_CONNECT,
+  EVT_PEER_SHARED_STATE_UPDATE,
+  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_PEER_DISCONNECT,
+  EVT_PEER_DESTROY,
 } from "./subClasses/VirtualServerZenRTCPeerManager";
 
 import VirtualServerZenRTCPeerPhantomPeerRouter from "./subClasses/routers/VirtualServerZenRTCPeerPhantomPeerRouter";
@@ -23,7 +23,7 @@ import {
   SOCKET_API_ROUTE_SET_NETWORK_PARTICIPANT_COUNT,
 } from "../../shared/socketAPIRoutes";
 
-export { EVT_READY, EVT_DESTROYED };
+export { EVT_READY, EVT_DESTROY };
 
 // TODO: Use secured indexeddb for storing of messages, etc.
 // (i.e. something like: https://github.com/AKASHAorg/secure-webstore)
@@ -125,9 +125,8 @@ export default class ZenRTCVirtualServer extends PhantomCore {
 
     // Set up event routing
     (() => {
-      this._peerManager.on(EVT_PEER_CONNECTED, zenRTCPeer => {
-        // TODO: Remove
-        console.log("zenRTCPeer connected", zenRTCPeer);
+      this._peerManager.on(EVT_PEER_CONNECT, zenRTCPeer => {
+        this.log.debug("zenRTCPeer connected", zenRTCPeer);
 
         // Start peer routing
         this._phantomPeerRouter.addChild(zenRTCPeer);
@@ -144,9 +143,8 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         // TODO: Re-emit
       });
 
-      this._peerManager.on(EVT_PEER_DISCONNECTED, zenRTCPeer => {
-        // TODO: Remove
-        console.log("zenRTCPeer disconnected", zenRTCPeer);
+      this._peerManager.on(EVT_PEER_DISCONNECT, zenRTCPeer => {
+        this.log.debug("zenRTCPeer disconnected", zenRTCPeer);
 
         // Emit to other peers that this peer has disconnected
         this._phantomPeerRouter.handlePeerDisconnect(zenRTCPeer);
@@ -160,21 +158,16 @@ export default class ZenRTCVirtualServer extends PhantomCore {
         // TODO: Re-emit
       });
 
-      this._peerManager.on(EVT_PEER_DESTROYED, zenRTCPeer => {
-        // TODO: Remove
-        console.log("zenRTCPeer destructed", zenRTCPeer);
+      this._peerManager.on(EVT_PEER_DESTROY, zenRTCPeer => {
+        this.log.debug("zenRTCPeer destructed", zenRTCPeer);
 
-        // TODO: Fix issue where this can leave remote peers hanging (it is
-        // likely due to issue in ZenRTCVirtualServer)
-        // (to reproduce, connect remote mobile client connection then close
-        // all mobile windows)
-        // See accompanying TODO in HeartbeatModule.js
+        this._phantomPeerRouter.handlePeerDestruct(zenRTCPeer);
 
         // TODO: Re-emit
       });
 
       this._peerManager.on(
-        EVT_PEER_SHARED_STATE_UPDATED,
+        EVT_PEER_SHARED_STATE_UPDATE,
         ([zenRTCPeer, readOnlyUpdatedState]) => {
           // Send updated state to peer router
           this._phantomPeerRouter.handlePeerSharedStateUpdated(
@@ -187,10 +180,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       );
 
       this._peerManager.on(
-        EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_ADD,
         ([zenRTCPeer, mediaStreamTrack]) => {
-          // TODO: Remove
-          console.log("zenRTCPeer added outgoing media stream track", {
+          this.log.debug("zenRTCPeer added outgoing media stream track", {
             zenRTCPeer,
             mediaStreamTrack,
           });
@@ -198,10 +190,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       );
 
       this._peerManager.on(
-        EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_PEER_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
         ([zenRTCPeer, mediaStreamTrack]) => {
-          // TODO: Remove
-          console.log("zenRTCPeer removed outgoing media stream track", {
+          this.log.debug("zenRTCPeer removed outgoing media stream track", {
             zenRTCPeer,
             mediaStreamTrack,
           });
@@ -209,10 +200,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       );
 
       this._peerManager.on(
-        EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_ADD,
         async ([zenRTCPeer, mediaStreamData]) => {
-          // TODO: Remove
-          console.log("zenRTCPeer added incoming media stream track", {
+          this.log.debug("zenRTCPeer added incoming media stream track", {
             zenRTCPeer,
             mediaStreamData,
           });
@@ -232,10 +222,9 @@ export default class ZenRTCVirtualServer extends PhantomCore {
       );
 
       this._peerManager.on(
-        EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_PEER_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
         async ([zenRTCPeer, mediaStreamData]) => {
-          // TODO: Remove
-          console.log("zenRTCPeer removed incoming media stream track", {
+          this.log.debug("zenRTCPeer removed incoming media stream track", {
             zenRTCPeer,
             mediaStreamData,
           });

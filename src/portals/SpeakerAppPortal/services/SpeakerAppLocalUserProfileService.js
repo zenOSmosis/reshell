@@ -1,6 +1,6 @@
 import UIServiceCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
 } from "@core/classes/UIServiceCore";
 
 import SpeakerAppSocketAuthenticationService from "./SpeakerAppSocketAuthenticationService";
@@ -20,7 +20,7 @@ import {
 } from "../shared/socketAPIRoutes";
 import { KEY_LOCAL_PROFILE } from "@portals/SpeakerAppPortal/local/localStorageKeys";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 export const STATE_KEY_AVATAR_URL = "avatarURL";
 export const STATE_KEY_NAME = "name";
@@ -70,7 +70,7 @@ export default class SpeakerAppLocalUserProfileService extends UIServiceCore {
         false
       );
 
-      this.on(EVT_UPDATED, handleUpdate);
+      this.on(EVT_UPDATE, handleUpdate);
     })();
   }
 

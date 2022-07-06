@@ -35,7 +35,7 @@ export default function KeyEditorForm({
             </Padding>
 
             {errors?.key && (
-              <div className="note" style={{ color: "red" }}>
+              <div className="note" style={{ color: "#CD1F2A" }}>
                 {errors.key}
               </div>
             )}

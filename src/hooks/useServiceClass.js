@@ -1,4 +1,4 @@
-import { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import { useEffect, useMemo, useState } from "react";
 import useServicesContext from "./useServicesContext";
 
@@ -9,7 +9,7 @@ import useServicesContext from "./useServicesContext";
  * @property {Object} serviceState Current state of the instantiated service
  * class.
  * @property {boolean} subscribeToUpdates? [default = true] If true, will re-
- * render the hook when the service emits EVT_UPDATED.
+ * render the hook when the service emits EVT_UPDATE.
  *
  * @param {PhantomServiceCore} ServiceClass Non-instantiated
  * PhantomServiceCore extension.
@@ -40,10 +40,10 @@ export default function useServiceClass(
       // Capture initial state
       _handleServiceUpdate();
 
-      serviceInstance.on(EVT_UPDATED, _handleServiceUpdate);
+      serviceInstance.on(EVT_UPDATE, _handleServiceUpdate);
 
       return function unmount() {
-        serviceInstance.off(EVT_UPDATED, _handleServiceUpdate);
+        serviceInstance.off(EVT_UPDATE, _handleServiceUpdate);
       };
     }
   }, [serviceInstance, subscribeToUpdates]);

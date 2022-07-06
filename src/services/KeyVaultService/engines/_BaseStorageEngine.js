@@ -1,6 +1,6 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // TODO: Look into https://www.npmjs.com/package/localforage for local IndexedDB handling
 // TODO: Implement encrypted storage (indexeddb usage as well?)
@@ -41,13 +41,13 @@ export default class BaseStorageEngine extends PhantomCore {
   }
 
   // TODO: Document
-  // @emits {EVT_UPDATED} // IMPORTANT: The extension must emit this or we might not know when to update the UI
+  // @emits {EVT_UPDATE} // IMPORTANT: The extension must emit this or we might not know when to update the UI
   async setItem(key, value) {
     throw new ReferenceError("setItem must be overridden");
   }
 
   // TODO: Document
-  // @emits {EVT_UPDATED} // IMPORTANT: The extension must emit this or we might not know when to update the UI
+  // @emits {EVT_UPDATE} // IMPORTANT: The extension must emit this or we might not know when to update the UI
   async removeItem(key) {
     throw new ReferenceError("removeItem must be overridden");
   }
@@ -63,7 +63,7 @@ export default class BaseStorageEngine extends PhantomCore {
   }
 
   // TODO: Document
-  // @emits {EVT_UPDATED} // IMPORTANT: The extension must emit this or we might not know when to update the UI
+  // @emits {EVT_UPDATE} // IMPORTANT: The extension must emit this or we might not know when to update the UI
   async clear() {
     throw new ReferenceError("clear must be overridden");
   }

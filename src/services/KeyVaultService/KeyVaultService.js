@@ -1,4 +1,4 @@
-import { PhantomCollection, EVT_UPDATED } from "phantom-core";
+import { PhantomCollection, EVT_UPDATE } from "phantom-core";
 import UIServiceCore from "@core/classes/UIServiceCore";
 
 import BaseStorageEngine from "./engines/_BaseStorageEngine";
@@ -30,7 +30,7 @@ export default class KeyVaultService extends UIServiceCore {
 
     // Cache the collection key / storage engine maps to the instance state so
     // that any attached UIs will know to update
-    this._storageEngineCollection.on(EVT_UPDATED, async () => {
+    this._storageEngineCollection.on(EVT_UPDATE, async () => {
       const keyStorageEngineMaps = await this._fetchKeyStorageEngineMaps();
 
       // Cache the key / storage engine maps

@@ -4,6 +4,10 @@
  * @see https://www.youtube.com/watch?v=Xt1Cw4qM3Ec (Secret Mechanisms of CSS)
  */
 
+// Additional reading:
+//  - CSS Containment: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Containment
+//  - [proposed] CSS Container Queries: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Containment
+
 import React from "react";
 import classNames from "classnames";
 import styles from "./StackingContext.module.css";

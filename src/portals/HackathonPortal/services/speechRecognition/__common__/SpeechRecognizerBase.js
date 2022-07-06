@@ -1,8 +1,8 @@
-import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_BEFORE_DESTROY, EVT_DESTROY } from "phantom-core";
 
 export const EVT_CONNECTING = "connecting";
-export const EVT_CONNECTED = "connected";
-export const EVT_DISCONNECTED = "disconnected";
+export const EVT_CONNECT = "connect";
+export const EVT_DISCONNECT = "disconnect";
 
 export const EVT_BEGIN_RECOGNIZE = "begin-recognize";
 export const EVT_END_RECOGNIZE = "end-recognize";
@@ -14,7 +14,7 @@ export const EVT_REAL_TIME_TRANSCRIPTION = "real-time-transcription";
 // TODO: Document that this emits with text
 export const EVT_FINALIZED_TRANSCRIPTION = "finalized-transcription";
 
-export { EVT_BEFORE_DESTROY, EVT_DESTROYED };
+export { EVT_BEFORE_DESTROY, EVT_DESTROY };
 
 // TODO: Ensure this automatically stops when the input stops or after a
 // certain amount of time
@@ -59,7 +59,7 @@ export default class SpeechRecognizerBase extends PhantomCore {
     this._mediaStream = mediaStream;
 
     // Automatically start recognizing (allow events to be bound first)
-    setImmediate(() => {
+    queueMicrotask(() => {
       this._startRecognizing();
     });
 
@@ -116,8 +116,8 @@ export default class SpeechRecognizerBase extends PhantomCore {
    * Sets whether or not the speech recognizer is connected.
    *
    * @param {boolean} isConnected
-   * @emits EVT_CONNECTED
-   * @emits EVT_DISCONNECTED
+   * @emits EVT_CONNECT
+   * @emits EVT_DISCONNECT
    * @return {void}
    */
   _setIsConnected(isConnected) {
@@ -129,9 +129,9 @@ export default class SpeechRecognizerBase extends PhantomCore {
       this._isConnected = isConnected;
 
       if (isConnected) {
-        this.emit(EVT_CONNECTED);
+        this.emit(EVT_CONNECT);
       } else {
-        this.emit(EVT_DISCONNECTED);
+        this.emit(EVT_DISCONNECT);
       }
     }
   }

@@ -7,6 +7,9 @@ LABEL maintainer="info@zenosmosis.com"
 
 ARG BUILD_ENV
 ARG GIT_HASH
+ARG SYS_USER=node
+ARG SYS_GROUP=node
+
 
 ENV REACT_APP_GIT_HASH="${GIT_HASH}"
 
@@ -20,7 +23,7 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN chown -R node:node /app/frontend.web
 
-USER node
+USER "${SYS_USER}:${SYS_GROUP}"
 
 RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   npm install --loglevel verbose \
@@ -44,7 +47,7 @@ RUN if [ "${BUILD_ENV}" = "production" ] ; then \
   && chown node:node src/__registerPortals__.js \
   && npm run build SpeakerAppPortal \
   ; fi
-USER node
+USER "${SYS_USER}:${SYS_GROUP}"
 
 EXPOSE 3000
 

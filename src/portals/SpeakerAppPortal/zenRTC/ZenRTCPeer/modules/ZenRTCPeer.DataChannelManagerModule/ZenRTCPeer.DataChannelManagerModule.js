@@ -1,6 +1,6 @@
-import BaseModule, { EVT_DESTROYED } from "../ZenRTCPeer.BaseModule";
+import BaseModule, { EVT_DESTROY } from "../ZenRTCPeer.BaseModule";
 import DataChannel from "./ZenRTCPeer.DataChannel";
-import { logger } from "phantom-core";
+import { globalLogger } from "phantom-core";
 
 import {
   DataChannelChunkBatchSender,
@@ -10,7 +10,7 @@ import {
 import {
   EVT_DATA_CHANNEL_OPENED,
   EVT_DATA_CHANNEL_CLOSED,
-  EVT_DATA_RECEIVED,
+  EVT_DATA,
 } from "./constants";
 
 const MARSHAL_PREFIX = "<z:";
@@ -53,7 +53,7 @@ export default class DataChannelManagerModule extends BaseModule {
         SERIAL_TYPE_FLOAT,
       ].includes(serialType)
     ) {
-      logger.warn(`Unknown serial type: ${serialType}`);
+      globalLogger.warn(`Unknown serial type: ${serialType}`);
     }
 
     return serialType;
@@ -125,8 +125,7 @@ export default class DataChannelManagerModule extends BaseModule {
       // No longer need this, as we have the meta data from the batch
       chunkBatch.destroy();
 
-      // TODO: Remove
-      console.log({
+      globalLogger.debug({
         serialChunks,
       });
 
@@ -212,8 +211,7 @@ export default class DataChannelManagerModule extends BaseModule {
       if (DataChannelChunkBatchReceiver.getIsChunked(data)) {
         const batch = DataChannelChunkBatchReceiver.importMetaChunk(data);
 
-        // TODO: Remove
-        console.log({
+        globalLogger.debug({
           batch,
           batchCode: batch.getBatchCode(),
           complete: batch.getIsComplete(),
@@ -262,10 +260,10 @@ export default class DataChannelManagerModule extends BaseModule {
         }
       };
 
-      zenRTCPeer.on(EVT_DATA_RECEIVED, _handleDataReceived);
+      zenRTCPeer.on(EVT_DATA, _handleDataReceived);
 
-      this.once(EVT_DESTROYED, () =>
-        zenRTCPeer.off(EVT_DATA_RECEIVED, _handleDataReceived)
+      this.once(EVT_DESTROY, () =>
+        zenRTCPeer.off(EVT_DATA, _handleDataReceived)
       );
     })();
   }
@@ -324,14 +322,14 @@ export default class DataChannelManagerModule extends BaseModule {
 
       this._dataChannels[dataChannelName] = dataChannel;
 
-      dataChannel.once(EVT_DESTROYED, () => {
+      dataChannel.once(EVT_DESTROY, () => {
         delete this._dataChannels[dataChannelName];
 
         this.emit(EVT_DATA_CHANNEL_CLOSED, dataChannel);
       });
 
-      this.once(EVT_DESTROYED, () => {
-        if (!dataChannel.getIsDestroying()) {
+      this.once(EVT_DESTROY, () => {
+        if (!dataChannel.getHasDestroyStarted()) {
           dataChannel.destroy();
         }
       });

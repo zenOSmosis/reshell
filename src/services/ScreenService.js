@@ -1,6 +1,6 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 /**
  * UI service class for screen resolution detection.

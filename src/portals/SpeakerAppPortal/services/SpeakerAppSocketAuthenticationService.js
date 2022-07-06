@@ -1,6 +1,6 @@
 import SocketIOService, {
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
 } from "@services/SocketIOService";
 import {
   generateClientAuthentication,
@@ -10,7 +10,7 @@ import { SOCKET_EVT_CLIENT_AUTHORIZATION_GRANTED } from "@portals/SpeakerAppPort
 
 import LocalDeviceIdentificationService from "@services/LocalDeviceIdentificationService";
 
-export { EVT_CONNECTED, EVT_DISCONNECTED };
+export { EVT_CONNECT, EVT_DISCONNECT };
 
 // TODO: Document
 export default class SpeakerAppSocketAuthenticationService extends SocketIOService {

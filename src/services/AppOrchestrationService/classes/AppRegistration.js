@@ -1,6 +1,6 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // AppRegistration cache
 const _registrations = {};
@@ -83,7 +83,9 @@ export default class AppRegistration extends PhantomCore {
   constructor(appDescriptor) {
     // TODO: Validate appDescriptor before trying to use
 
-    super();
+    super({
+      title: appDescriptor.title,
+    });
 
     // TODO: Document type
     this._appDescriptor = appDescriptor;
@@ -120,13 +122,6 @@ export default class AppRegistration extends PhantomCore {
    */
   getAppDescriptorID() {
     return this.getID();
-  }
-
-  /**
-   * @return {string}
-   */
-  getTitle() {
-    return this._appDescriptor.title;
   }
 
   /**
@@ -168,6 +163,6 @@ export default class AppRegistration extends PhantomCore {
     this._appDescriptor = appDescriptor;
 
     // TODO: Only emit if something changed
-    this.emit(EVT_UPDATED);
+    this.emit(EVT_UPDATE);
   }
 }

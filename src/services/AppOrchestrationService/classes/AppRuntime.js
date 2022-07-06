@@ -1,7 +1,7 @@
-import PhantomCore, { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import PhantomCore, { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 import AppRegistration from "./AppRegistration";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 // TODO: Include ability to load preload resources, with states representing before / after preloading
 // TODO: Include ability to register splash screen, while preloading
@@ -18,19 +18,21 @@ export default class AppRuntime extends PhantomCore {
       throw new TypeError("appRegistration is not an AppRegistration");
     }
 
-    super();
+    super({
+      title: appRegistration.getTitle(),
+    });
 
     this._appRegistration = appRegistration;
     this._appOrchestrationService = appOrchestrationService;
 
-    // Emit EVT_UPDATED out runtime when the registration updates
-    this.proxyOn(this._appRegistration, EVT_UPDATED, data => {
-      this.emit(EVT_UPDATED, data);
+    // Emit EVT_UPDATE out runtime when the registration updates
+    this.proxyOn(this._appRegistration, EVT_UPDATE, data => {
+      this.emit(EVT_UPDATE, data);
     });
 
     // Destruct runtime when registration destructs
-    this.proxyOnce(this._appRegistration, EVT_DESTROYED, () => {
-      if (!this.getIsDestroying()) {
+    this.proxyOnce(this._appRegistration, EVT_DESTROY, () => {
+      if (!this.getHasDestroyStarted()) {
         this.destroy();
       }
     });
@@ -38,7 +40,7 @@ export default class AppRuntime extends PhantomCore {
     this._windowController = null;
 
     this.registerCleanupHandler(async () => {
-      if (!this.getIsDestroying()) {
+      if (!this.getHasDestroyStarted()) {
         this._windowController.destroy();
       }
 

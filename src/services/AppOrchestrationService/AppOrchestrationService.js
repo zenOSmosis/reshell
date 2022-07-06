@@ -1,6 +1,6 @@
 import UIServiceCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
 } from "@core/classes/UIServiceCore";
 
 import AppRegistration from "./classes/AppRegistration";
@@ -11,7 +11,7 @@ import AppRuntimeCollection from "./classes/AppRuntimeCollection";
 
 import DesktopService from "@services/DesktopService";
 
-export { EVT_UPDATED, EVT_DESTROYED };
+export { EVT_UPDATE, EVT_DESTROY };
 
 /**
  * Manages the collection, starting, and stopping of AppRuntime instances.

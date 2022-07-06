@@ -1,10 +1,10 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import LocalZenRTCPeer, {
   EVT_CONNECTING,
-  EVT_CONNECTED,
-  EVT_DISCONNECTED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_CONNECT,
+  EVT_DISCONNECT,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
 } from "../zenRTC/LocalZenRTCPeer";
 
 import SpeakerAppNetworkDiscoveryService from "./SpeakerAppNetworkDiscoveryService";
@@ -21,7 +21,7 @@ import InputDeviceSelectorModal from "@components/modals/InputDeviceSelectorModa
 
 import beep from "@utils/beep";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 // FIXME: (jh) Consider renaming to non-speaker-app for more dynamic usage
 export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
@@ -33,10 +33,24 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
     this.setState({
       isConnecting: false,
       isConnected: false,
+      network: null,
     });
 
     this._localZenRTCPeer = null;
     this.registerCleanupHandler(() => this.disconnect());
+  }
+
+  /**
+   * Retrieves the current network name.
+   *
+   * @return {string | void}
+   */
+  getNetworkName() {
+    const network = this.getState().network;
+
+    if (network) {
+      return network.name;
+    }
   }
 
   /**
@@ -190,8 +204,8 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
         }
       });
 
-      this.proxyOn(localZenRTCPeer, EVT_CONNECTED, () => {
-        this.setState({ isConnecting: false, isConnected: true });
+      this.proxyOn(localZenRTCPeer, EVT_CONNECT, () => {
+        this.setState({ isConnecting: false, isConnected: true, network });
 
         // Show UI notification
         this.useServiceClass(UINotificationService).showNotification({
@@ -200,10 +214,11 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
         });
       });
 
-      this.proxyOn(localZenRTCPeer, EVT_DISCONNECTED, () => {
+      this.proxyOn(localZenRTCPeer, EVT_DISCONNECT, () => {
         this.setState({
           isConnecting: false,
           isConnected: false,
+          network: null,
         });
 
         // Show UI notification
@@ -215,7 +230,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
 
       this.proxyOn(
         localZenRTCPeer,
-        EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
@@ -229,7 +244,7 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
 
       this.proxyOn(
         localZenRTCPeer,
-        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
+        EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
         mediaStreamData => {
           const { mediaStreamTrack, mediaStream } = mediaStreamData;
 
@@ -252,7 +267,14 @@ export default class SpeakerAppClientZenRTCPeerService extends UIServiceCore {
    * @return {number}
    **/
   getConnectionUptime() {
-    return this._localZenRTCPeer?.getConnectionUptime() || 0;
+    if (
+      !this._localZenRTCPeer ||
+      this._localZenRTCPeer.getHasDestroyStarted()
+    ) {
+      return 0;
+    }
+
+    return this._localZenRTCPeer.getConnectionUptime();
   }
 
   /**

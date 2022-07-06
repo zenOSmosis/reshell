@@ -6,6 +6,9 @@ import symlinkDir from "symlink-dir";
 import chalk from "chalk";
 import { question } from "zx";
 
+// TODO: Abstract console.log statements not intended to be re-routed to
+// Phantom globalLogger
+
 // Currently PhantomCore isn't pre-built nor is an ESM module
 const PhantomCore = require("phantom-core");
 const { sleep } = PhantomCore;

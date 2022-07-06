@@ -1,4 +1,4 @@
-import { EVT_UPDATED } from "phantom-core";
+import { EVT_UPDATE } from "phantom-core";
 import ReShellCore from "@core";
 import { useEffect, useMemo } from "react";
 import MenuBar from "@components/MenuBar";
@@ -42,10 +42,10 @@ export default function DesktopMenuBar() {
   // changed, minimized, maximized, etc.)
   useEffect(() => {
     if (activeWindowController) {
-      activeWindowController.on(EVT_UPDATED, forceUpdate);
+      activeWindowController.on(EVT_UPDATE, forceUpdate);
 
       return () => {
-        activeWindowController.off(EVT_UPDATED, forceUpdate);
+        activeWindowController.off(EVT_UPDATE, forceUpdate);
       };
     }
   }, [activeWindowController, forceUpdate]);

@@ -1,4 +1,4 @@
-import { EVT_UPDATED } from "phantom-core";
+import { EVT_UPDATE } from "phantom-core";
 import { useEffect } from "react";
 import WindowController from "@components/Window/classes/WindowController";
 
@@ -55,10 +55,10 @@ export default function useActiveWindowController(activeWindowController) {
     _handleUpdate();
 
     if (activeWindowController) {
-      activeWindowController.on(EVT_UPDATED, _handleUpdate);
+      activeWindowController.on(EVT_UPDATE, _handleUpdate);
 
       return function unmount() {
-        activeWindowController.off(EVT_UPDATED, _handleUpdate);
+        activeWindowController.off(EVT_UPDATE, _handleUpdate);
       };
     }
   }, [activeWindowController, forceDesktopUpdate]);

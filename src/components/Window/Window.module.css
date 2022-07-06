@@ -188,6 +188,8 @@ of the drag zone outside of the windows. */
 .window:not(.active) button,
 .window:not(.active) input,
 .window:not(.active) textarea,
+.window:not(.active) table,
+.window:not(.active) li,
 .window:not(.active) a {
   filter: grayscale(0.5);
 }

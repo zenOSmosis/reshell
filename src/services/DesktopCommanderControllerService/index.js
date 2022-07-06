@@ -1,6 +1,6 @@
 import DesktopCommanderControllerService, {
-  EVT_UPDATED,
+  EVT_UPDATE,
 } from "./DesktopCommanderControllerService";
 
 export default DesktopCommanderControllerService;
-export { EVT_UPDATED };
+export { EVT_UPDATE };

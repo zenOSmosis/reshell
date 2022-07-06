@@ -1,6 +1,6 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import SpeakerAppSocketAuthenticationService, {
-  EVT_CONNECTED,
+  EVT_CONNECT,
 } from "./SpeakerAppSocketAuthenticationService";
 
 import {
@@ -27,7 +27,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
     );
 
     // Set up network fetching once socket is ready
-    this.proxyOnce(this._socketService, EVT_CONNECTED, () => {
+    this.proxyOnce(this._socketService, EVT_CONNECT, () => {
       const socket = this._socketService.getSocket();
 
       const handleNetworksUpdated = () => this.fetchNetworks();
@@ -39,7 +39,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
       });
     });
 
-    this.proxyOn(this._socketService, EVT_UPDATED, () => {
+    this.proxyOn(this._socketService, EVT_UPDATE, () => {
       if (!this._socketService.getIsConnected()) {
         // Handle resetting of networks once socket goes offline
         this.setState({
@@ -61,8 +61,7 @@ export default class SpeakerAppNetworkDiscoveryService extends UIServiceCore {
 
     this.setState({ networks });
 
-    // TODO: Remove
-    console.log({ networks });
+    this.log.debug("Received networks:", networks);
 
     return networks;
   }

@@ -1,8 +1,9 @@
-import { EVT_UPDATED } from "./classes/WindowController";
+import { EVT_UPDATE } from "./classes/WindowController";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import StackingContext from "../StackingContext";
 import Full from "../Full";
 import Layout, { Header, Content } from "../Layout";
+import Cover from "../Cover";
 
 import WindowBorder from "./Window.Border";
 import WindowTitleBar from "./Window.TitleBar";
@@ -47,8 +48,7 @@ const WindowView = ({
   /** @type {DOMElement} */
   const [elWindow, _setElWindow] = useState(null);
 
-  // TODO: Document
-  const { isOpenAnimationEnded } = useWindowOpenAnimation(elWindow);
+  useWindowOpenAnimation(elWindow);
 
   // TODO: Document
   useWindowAutoPositioner({ elWindow, elWindowManager, windowController });
@@ -122,10 +122,10 @@ const WindowView = ({
       // Perform initial update sync
       _handleWindowControllerUpdate();
 
-      windowController.on(EVT_UPDATED, _handleWindowControllerUpdate);
+      windowController.on(EVT_UPDATE, _handleWindowControllerUpdate);
 
       return function unmount() {
-        windowController.off(EVT_UPDATED, _handleWindowControllerUpdate);
+        windowController.off(EVT_UPDATE, _handleWindowControllerUpdate);
       };
     }
   }, [windowController, title, zIndex]);
@@ -182,10 +182,7 @@ const WindowView = ({
       className={classNames(
         styles["window-outer-border"],
 
-        // Prevents "popping" of window before open animation ends
-        !isOpenAnimationEnded && styles["hidden"],
-
-        isActive && styles["active"],
+        // isActive && styles["active"],
         isMaximized && styles["maximized"],
         isMinimized && styles["minimized"],
         (isUserDragging || isUserResizing) && styles["dragging"]
@@ -228,7 +225,21 @@ const WindowView = ({
                 />
               </Header>
               <Content className={styles["body"]} style={bodyStyle}>
-                {children}
+                {
+                  // Full wrapper fixes issue where subsequent Cover view could
+                  // adversely affect window body layouts using Layout
+                  // component
+                }
+                <Full>{children}</Full>
+
+                {
+                  // Fixes issue where clicking on an IFrame in a window would
+                  // not activate the window
+                  //
+                  // FIXME: Implement optional scroll passthru (scrolling is
+                  // blocked via this overlay)
+                }
+                <Cover isVisible={!isActive} />
               </Content>
             </Layout>
           </Full>

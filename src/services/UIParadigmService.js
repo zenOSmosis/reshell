@@ -1,8 +1,8 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 
 import ScreenService from "./ScreenService";
 
-export { EVT_UPDATED };
+export { EVT_UPDATE };
 
 const DESKTOP_MINIMUM_WIDTH = 640;
 const DESKTOP_MINIMUM_HEIGHT = 480;
@@ -41,7 +41,7 @@ export default class UIParadigmService extends UIServiceCore {
         });
       };
 
-      this.proxyOn(this._screenService, EVT_UPDATED, () =>
+      this.proxyOn(this._screenService, EVT_UPDATE, () =>
         _handleUIParadigmAutoDetect()
       );
 

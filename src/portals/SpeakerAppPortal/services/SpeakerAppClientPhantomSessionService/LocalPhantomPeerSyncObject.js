@@ -1,6 +1,6 @@
 import PhantomPeerSyncObject, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   STATE_KEY_AVATAR_URL,
   STATE_KEY_NAME,
   STATE_KEY_DESCRIPTION,
@@ -12,9 +12,11 @@ import PhantomPeerSyncObject, {
   STATE_KEY_LAST_CHAT_MESSAGE,
 } from "@portals/SpeakerAppPortal/zenRTC/PhantomPeerSyncObject";
 
+import InputMediaDevicesService from "@services/InputMediaDevicesService";
+
 export {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   STATE_KEY_AVATAR_URL,
   STATE_KEY_NAME,
   STATE_KEY_DESCRIPTION,
@@ -30,4 +32,29 @@ export {
  * A virtual participant from the perspective of a web browser, or other
  * web-based client device.
  */
-export default class LocalPhantomPeerSyncObject extends PhantomPeerSyncObject {}
+export default class LocalPhantomPeerSyncObject extends PhantomPeerSyncObject {
+  constructor(initialState = {}, inputMediaDevicesService) {
+    if (!(inputMediaDevicesService instanceof InputMediaDevicesService)) {
+      throw new TypeError(
+        "inputMediaDevicesService must be an instance of InputMediaDevicesService"
+      );
+    }
+
+    super(initialState);
+
+    this._inputMediaDevicesService = inputMediaDevicesService;
+  }
+
+  /**
+   * @return {MediaStream[]}
+   */
+  getOutgoingMediaStreams() {
+    // FIXME: Take screen share audio into consideration
+    const captureFactories =
+      this._inputMediaDevicesService.getCaptureFactories();
+
+    return captureFactories
+      .map(factory => factory.getOutputMediaStream())
+      .flat();
+  }
+}

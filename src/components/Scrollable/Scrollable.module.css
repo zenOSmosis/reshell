@@ -1,0 +1,7 @@
+.scrollable.y {
+  overflow-y: auto;
+}
+
+.scrollable.x {
+  overflow-x: auto;
+}

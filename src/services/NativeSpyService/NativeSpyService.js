@@ -1,4 +1,4 @@
-import UIServiceCore, { EVT_UPDATED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_UPDATE } from "@core/classes/UIServiceCore";
 import persistentSpyAgentCollection from "./persistentSpyAgentCollection";
 
 // Register spies
@@ -24,7 +24,7 @@ export default class NativeSpyService extends UIServiceCore {
 
     this._persistentSpyAgentCollection = persistentSpyAgentCollection;
 
-    this.proxyOn(this._persistentSpyAgentCollection, EVT_UPDATED, () => {
+    this.proxyOn(this._persistentSpyAgentCollection, EVT_UPDATE, () => {
       // TODO: Debounce (this could render a lot depending on how the spy is
       // set up, esp. w/ WebSocket connections)
 

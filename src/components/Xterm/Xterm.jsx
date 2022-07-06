@@ -53,11 +53,6 @@ export default class Xterm extends Component {
 
     this._xterm.open(this._container);
 
-    // TODO: Remove
-    console.log({
-      xterm: this._xterm,
-    });
-
     // this._xterm.on("focus", this.focusChanged.bind(this, true));
     // this._xterm.on("blur", this.focusChanged.bind(this, false));
 

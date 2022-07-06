@@ -1,4 +1,4 @@
-import { EVT_UPDATED, EVT_DESTROYED } from "phantom-core";
+import { EVT_UPDATE, EVT_DESTROY } from "phantom-core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import useRegistrationViewOnResized from "./hooks/useRegistrationViewOnResized";
@@ -264,6 +264,7 @@ function WindowManagerView({ children }) {
                   {},
                   {
                     onBringToTop: handleSetActiveWindow,
+                    title,
                   }
                 );
 
@@ -290,7 +291,7 @@ function WindowManagerView({ children }) {
                   return next;
                 });
 
-                windowController.once(EVT_DESTROYED, () => {
+                windowController.once(EVT_DESTROY, () => {
                   setWindowControllerMaps(prev => {
                     const next = { ...prev };
 
@@ -384,24 +385,24 @@ function WrappedWindowView({
       // FIXME: (jh) Should this be potentially batched, or will React handle
       // that on its own?
 
-      // Note: The setImmediate fixes and issue where if two windows are
+      // Note: The queueMicrotask fixes an issue where if two windows are
       // updated simultaneously, the following error could be thrown: Cannot
       // update a component (`WrappedWindowView`) while rendering a different
       // component (`WindowManagerView`)
-      setImmediate(() => {
+      queueMicrotask(() => {
         forceUpdate();
       });
     };
 
     for (const service of Object.values(appServices)) {
       // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
-      service.on(EVT_UPDATED, _handleServiceUpdate);
+      service.on(EVT_UPDATE, _handleServiceUpdate);
     }
 
     return function unmount() {
       for (const service of Object.values(appServices)) {
         // TODO: Make this channel-specific (i.e. EVT_MAIN_STATE_UPDATED)?
-        service.off(EVT_UPDATED, _handleServiceUpdate);
+        service.off(EVT_UPDATE, _handleServiceUpdate);
       }
     };
   }, [appServices, forceUpdate]);

@@ -1,132 +1,129 @@
-import { useEffect, useState } from "react";
-
+import { useCallback, useState } from "react";
+import Layout, { Header, Content, Row, Column } from "@components/Layout";
 import Center from "@components/Center";
-import LoadingSpinner from "@components/LoadingSpinner";
-import CanvasMicAudioMeter from "@components/audioMeters/CanvasMicAudioMeter";
-import AudioBorderAvatar from "@components/audioMeters/AudioBorderAvatar";
-import Layout, { Content, Footer } from "@components/Layout";
+import Cover from "@components/Cover";
 import Padding from "@components/Padding";
+import Ellipses from "@components/Ellipses";
+import Avatar from "@components/Avatar";
 
-import { Video } from "@components/audioVideoRenderers";
+import ParticipantList from "./ParticipantList";
+
+import useWindowSize from "@hooks/useWindowSize";
+
+const WIDE_LAYOUT_THRESHOLD_WIDTH = 512;
 
 // TODO: Document and add prop-types
 export default function NetworkConnected({
+  onOpenChat,
+  localPhantomPeer,
   remotePhantomPeers = [],
-  latestOutputVideoTrack,
 }) {
-  const isInSync = useFakeIsInSync();
+  const windowSize = useWindowSize();
 
-  if (!remotePhantomPeers.length) {
-    return (
-      <Center>
-        <div style={{ fontWeight: "bold" }}>
-          {!isInSync ? (
-            <div>
-              <div>Performing initial sync...</div>
-              <div style={{ marginTop: 20 }}>
-                <LoadingSpinner />
-              </div>
-            </div>
-          ) : (
-            "No remote peers are connected. You are the only one here."
-          )}
-        </div>
-      </Center>
-    );
+  const [selectedPhantomPeer, setSelectedPhantomPeer] =
+    useState(localPhantomPeer);
+
+  const handleSelectPhantomPeer = useCallback(
+    phantomPeer => {
+      if (windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH) {
+        if (selectedPhantomPeer !== phantomPeer) {
+          // First click on participant, set selected peer
+          setSelectedPhantomPeer(phantomPeer);
+        } else {
+          // Subsequent click on same participant, open chat
+          onOpenChat();
+        }
+      } else {
+        // Open chat if on smaller screens
+        onOpenChat();
+      }
+    },
+    [windowSize, selectedPhantomPeer, onOpenChat]
+  );
+
+  if (
+    selectedPhantomPeer !== null &&
+    selectedPhantomPeer !== localPhantomPeer &&
+    !remotePhantomPeers.includes(selectedPhantomPeer)
+  ) {
+    setSelectedPhantomPeer(null);
   }
 
-  // TODO: Refactor; make transitioning more graceful
-  if (latestOutputVideoTrack) {
-    return <Video mediaStreamTrack={latestOutputVideoTrack} />;
+  if (
+    windowSize?.width !== null &&
+    windowSize?.width < WIDE_LAYOUT_THRESHOLD_WIDTH &&
+    selectedPhantomPeer
+  ) {
+    setSelectedPhantomPeer(null);
   }
 
   return (
-    <Center canOverflow={true}>
-      {remotePhantomPeers.map((phantomPeer, idx) => {
-        const deviceAddress = phantomPeer.getDeviceAddress();
-        const avatarURL = phantomPeer.getAvatarURL();
-        const profileName = phantomPeer.getProfileName();
-        const profileDescription = phantomPeer.getProfileDescription();
-        const outgoingAudioMediaStreamTracks =
-          phantomPeer.getOutgoingAudioMediaStreamTracks();
+    <Row>
+      <Column
+        disableHorizontalFill
+        style={{
+          backgroundColor: "rgba(255,255,255,.1)",
+          width:
+            windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH ? 280 : "100%",
+        }}
+      >
+        <ParticipantList
+          localPhantomPeer={localPhantomPeer}
+          remotePhantomPeers={remotePhantomPeers}
+          onClick={handleSelectPhantomPeer}
+          selectedPhantomPeer={selectedPhantomPeer}
+        />
+      </Column>
 
-        const lenOutgoingAudioMediaStreamTracks =
-          outgoingAudioMediaStreamTracks.length;
-
-        return (
-          <div
-            key={idx}
-            style={{
-              display: "inline-block",
-              width: 200,
-              height: 200,
-              border: "1px #ccc solid",
-              backgroundColor: "rgba(255,255,255,.4)",
-              color: "#000",
-              borderRadius: 4,
-              overflow: "hidden",
-            }}
-            title={profileDescription}
-          >
-            {!deviceAddress ? (
-              <LoadingSpinner />
+      {windowSize?.width >= WIDE_LAYOUT_THRESHOLD_WIDTH && (
+        <Column style={{ backgroundColor: "rgba(0,0,0,.3)" }}>
+          <Cover>
+            <Avatar
+              src={selectedPhantomPeer?.getAvatarURL()}
+              style={{
+                position: "absolute",
+                right: 10,
+                bottom: 10,
+                opacity: 0.5,
+              }}
+              size={100}
+            />
+          </Cover>
+          <Cover>
+            {selectedPhantomPeer ? (
+              <Padding>
+                <Layout>
+                  <Header>
+                    <Row disableVerticalFill>
+                      <Column>
+                        <h1>
+                          <Ellipses>
+                            {selectedPhantomPeer.getProfileName()}
+                          </Ellipses>
+                        </h1>
+                      </Column>
+                      <Column disableHorizontalFill>
+                        <button onClick={onOpenChat}>Chat</button>
+                      </Column>
+                    </Row>
+                  </Header>
+                  <Content>
+                    <Center canOverflow>
+                      <div style={{ fontSize: "1.5rem" }}>
+                        {selectedPhantomPeer.getProfileDescription()}
+                      </div>
+                    </Center>
+                  </Content>
+                </Layout>
+              </Padding>
             ) : (
-              <Layout>
-                <Content>
-                  <Center>
-                    <div>
-                      <AudioBorderAvatar
-                        src={avatarURL}
-                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
-                      />
-                    </div>
-                    <div style={{ marginTop: 10, fontWeight: "bold" }}>
-                      {profileName}
-                    </div>
-                  </Center>
-                </Content>
-                <Footer style={{ textAlign: "right" }}>
-                  <Padding>
-                    {
-                      // FIXME: Provide ability to show independent audio
-                      // streams vs single (uses more CPU)
-                    }
-                    <div
-                      title={`${lenOutgoingAudioMediaStreamTracks} audio stream${
-                        lenOutgoingAudioMediaStreamTracks !== 1 ? "s" : ""
-                      } received from ${profileName}`}
-                    >
-                      <CanvasMicAudioMeter
-                        mediaStreamTracks={outgoingAudioMediaStreamTracks}
-                        size={48}
-                      />
-                    </div>
-                  </Padding>
-                </Footer>
-              </Layout>
+              <Center style={{ fontWeight: "bold" }}>
+                Select a participant to view their profile
+              </Center>
             )}
-          </div>
-        );
-      })}
-    </Center>
+          </Cover>
+        </Column>
+      )}
+    </Row>
   );
-}
-
-/**
- * Mocks in-sync state since ZenRTCPeer does not maintain a state of whether it
- * is in sync.
- *
- * @return {boolean}
- */
-function useFakeIsInSync() {
-  const [isInSync, setIsInSync] = useState(false);
-  useEffect(() => {
-    const to = window.setTimeout(() => setIsInSync(true), 1500);
-
-    return function unmount() {
-      window.clearTimeout(to);
-    };
-  }, []);
-
-  return isInSync;
 }

@@ -1,7 +1,7 @@
 import UIServiceCore from "@core/classes/UIServiceCore";
 import OutputMediaStreamTrackCollection, {
-  EVT_CHILD_INSTANCE_ADDED,
-  EVT_CHILD_INSTANCE_REMOVED,
+  EVT_CHILD_INSTANCE_ADD,
+  EVT_CHILD_INSTANCE_REMOVE,
 } from "./OutputMediaStreamTrackCollection";
 
 import React, { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
         // Handle track syncing
         useEffect(() => {
           this._outputMediaStreamTrackCollection.on(
-            EVT_CHILD_INSTANCE_ADDED,
+            EVT_CHILD_INSTANCE_ADD,
             () => {
               setAudioMediaStreamTracks(
                 this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks()
@@ -39,7 +39,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
           );
 
           this._outputMediaStreamTrackCollection.on(
-            EVT_CHILD_INSTANCE_REMOVED,
+            EVT_CHILD_INSTANCE_REMOVE,
             () => {
               setAudioMediaStreamTracks(
                 this._outputMediaStreamTrackCollection.getOutputAudioMediaStreamTracks()
@@ -74,7 +74,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
       // WindowManager itself.  Might need to circle back to the following
       // information later on for future improvements.
       //
-      // IMPORTANT: The setImmediate wrap fixes an issue where starting this
+      // IMPORTANT: The queueMicrotask wrap fixes an issue where starting this
       // service from a serviceClasses array in an app registration would
       // produce the following warning:
       //
@@ -82,7 +82,7 @@ export default class OutputMediaDevicesService extends UIServiceCore {
       // triggering nested component updates from render is not allowed. If
       // necessary, trigger nested updates in componentDidUpdate."
       //
-      setImmediate(() =>
+      queueMicrotask(() =>
         ReactDOM.render(<OutputMediaDevicesAudio />, audioDOMBase)
       );
     })();

@@ -29,6 +29,7 @@ const MenuBarPrototypeApp = {
           <Center>
             <button
               onClick={() =>
+                // TODO: Use Phantom globalLogger
                 console.log(createTestMenuStructures(appRuntime, true))
               }
             >

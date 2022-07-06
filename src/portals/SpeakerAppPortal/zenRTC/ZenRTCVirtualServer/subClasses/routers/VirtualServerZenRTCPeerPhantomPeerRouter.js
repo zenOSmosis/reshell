@@ -67,12 +67,21 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
    *
    * @see https://github.com/zenOSmosis/sync-object
    *
+   * @param {VirtualServerZenRTCPeer} destructedPeer? [default = null]
    * @return {void}
    */
-  sync() {
+  sync(destructedPeer = null) {
     // Contains all of the remote peer states, which will be written to the
     // shared writable sync object and synced to all of the clients
     const batchPeersUpdate = {};
+
+    // Fix issue where disconnected peers which don't follow correct shutdown
+    // procedure don't get removed
+    if (destructedPeer) {
+      // FIXME: Once SyncObject has a better delete mechanism, use it here
+      // @see https://github.com/zenOSmosis/sync-object/issues/40
+      batchPeersUpdate[destructedPeer.getClientSignalBrokerId()] = null;
+    }
 
     for (const zenRTCPeer of this.getChildren()) {
       const readOnlySyncObject = zenRTCPeer.getReadOnlySyncObject();
@@ -92,8 +101,7 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
       // It should probably be cleaned up.
       delete readOnlyState[STATE_KEY_LAST_CHAT_MESSAGE];
 
-      // TODO: Remove
-      console.log(
+      this.log.debug(
         "length incoming media streams",
         zenRTCPeer.getIncomingMediaStreams().length
       );
@@ -174,6 +182,16 @@ export default class VirtualServerZenRTCPeerPhantomPeerRouter extends PhantomCol
    * @return {void}
    */
   handlePeerDisconnect(virtualServerZenRTCPeer) {
+    this.sync(virtualServerZenRTCPeer);
+  }
+
+  /**
+   * Called by the virtual server when a client destructs.
+   *
+   * @param {VirtualServerZenRTCPeer} virtualServerZenRTCPeer
+   * @return {void}
+   */
+  handlePeerDestruct(virtualServerZenRTCPeer) {
     this.sync(virtualServerZenRTCPeer);
   }
 }

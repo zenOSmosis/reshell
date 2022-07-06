@@ -53,7 +53,7 @@ export const SYNC_EVT_KICK = "kick";
  * @type {Object} Contains msid (media stream id) and kind (track kind)
  * properties.
  */
-export const SYNC_EVT_TRACK_REMOVED = "mst-";
+export const SYNC_EVT_TRACK_REMOVE = "mst-";
 
 /**
  * Emits, with any data, when a client wishes a remote peer to debug data in

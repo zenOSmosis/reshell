@@ -1,5 +1,8 @@
 import React, { useCallback, useState, useRef } from "react";
 
+import styles from "./Image.module.css";
+import classNames from "classnames";
+
 export default function Image({
   alt = "",
   title = "",
@@ -22,6 +25,7 @@ export default function Image({
       ref={setImg}
       {...rest}
       onLoad={handleLoad}
+      className={classNames(styles["image"])}
       alt={alt}
       title={title}
       src={src}

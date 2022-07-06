@@ -123,7 +123,7 @@ export default function SpeechRecognizerSection({ speechProvider }) {
                   <button
                     onClick={apiKeyManagementService.deleteCachedAPIKey}
                     disabled={!apiKeyManagementService.getHasCachedAPIKey()}
-                    style={{ backgroundColor: "red" }}
+                    style={{ backgroundColor: "#CD1F2A" }}
                   >
                     Delete API Key
                   </button>

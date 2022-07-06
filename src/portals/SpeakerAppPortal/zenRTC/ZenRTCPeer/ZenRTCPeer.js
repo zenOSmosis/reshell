@@ -1,12 +1,11 @@
 import PhantomCore, {
-  EVT_UPDATED,
-  EVT_DESTROYED,
+  EVT_UPDATE,
+  EVT_DESTROY,
   getUnixTime,
   sleep,
 } from "phantom-core";
 import WebRTCPeer from "webrtc-peer";
 import SDPAdapter from "./utils/sdp-adapter";
-import { utils } from "media-stream-track-controller";
 
 // TODO: Import utils/getWebRTCSignalStrength
 // TODO: Look into Speedometer: https://www.npmjs.com/package/speedometer
@@ -16,7 +15,7 @@ import {
   SYNC_EVT_PONG,
   SYNC_EVT_BYE,
   SYNC_EVT_KICK,
-  SYNC_EVT_TRACK_REMOVED,
+  SYNC_EVT_TRACK_REMOVE,
   SYNC_EVT_DEBUG,
 } from "./syncEvents";
 
@@ -25,21 +24,22 @@ import SyncObjectLinkerModule from "./modules/ZenRTCPeer.SyncObjectLinkerModule"
 import DataChannelManagerModule from "./modules/ZenRTCPeer.DataChannelManagerModule";
 import SyncEventDataChannelModule from "./modules/ZenRTCPeer.SyncEventDataChannelModule";
 import MediaStreamManagerModule, {
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
 } from "./modules/ZenRTCPeer.MediaStreamManagerModule";
 
 // ZenRTCPeer instances running on this thread, using zenRTCSignalBrokerId as reference
 // keys
+// FIXME: Make this a map
 const _instances = {};
 
-export { EVT_DESTROYED, EVT_UPDATED };
+export { EVT_DESTROY, EVT_UPDATE };
 export const EVT_CONNECTING = "connecting";
+export const EVT_CONNECT = "connect";
 export const EVT_RECONNECTING = "reconnecting";
-export const EVT_CONNECTED = "connected";
-export const EVT_DISCONNECTED = "disconnected";
+export const EVT_DISCONNECT = "disconnect";
 
 // TODO: Document
 //
@@ -47,22 +47,20 @@ export const EVT_DISCONNECTED = "disconnected";
 export const EVT_ZENRTC_SIGNAL = "zenrtc-signal";
 
 export {
-  EVT_INCOMING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADDED,
-  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVED,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_ADD,
+  EVT_INCOMING_MEDIA_STREAM_TRACK_REMOVE,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_ADD,
+  EVT_OUTGOING_MEDIA_STREAM_TRACK_REMOVE,
 };
 
 // Emits, with the received data, once data has been received
-// FIXME: (jh) Rename to EVT_DATA?
-export const EVT_DATA_RECEIVED = "data";
+export const EVT_DATA = "data";
 
-export const EVT_SDP_OFFERED = "sdp-offered";
-export const EVT_SDP_ANSWERED = "sdp-answered";
+export const EVT_SDP_OFFER = "sdp-offer";
+export const EVT_SDP_ANSWER = "sdp-answer";
 
 // TODO: Document type {eventName, eventData}
-// FIXME: (jh) Rename to EVT_SYNC?
-export const EVT_SYNC_EVT_RECEIVED = "sync-event";
+export const EVT_SYNC = "sync";
 
 // Internal event for pinging (in conjunction w/ SYNC_EVT_PONG)
 const EVT_PONG = "pong";
@@ -202,14 +200,14 @@ export default class ZenRTCPeer extends PhantomCore {
 
     // Handle management of connectionStartTime
     (() => {
-      this.on(EVT_CONNECTED, () => {
+      this.on(EVT_CONNECT, () => {
         // TODO: Remove
         this.log.debug(`${this.getClassName()} connected`);
 
         this._connectionStartTime = getUnixTime();
       });
 
-      this.on(EVT_DISCONNECTED, () => {
+      this.on(EVT_DISCONNECT, () => {
         // TODO: Remove
         this.log.debug(`${this.getClassName()} disconnected`);
 
@@ -232,21 +230,21 @@ export default class ZenRTCPeer extends PhantomCore {
 
       this._dataChannelManagerModule = new DataChannelManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._dataChannelManagerModule.getIsDestroying()) {
+        if (!this._dataChannelManagerModule.getHasDestroyStarted()) {
           await this._dataChannelManagerModule.destroy();
         }
       });
 
       this._syncEventDataChannelModule = new SyncEventDataChannelModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._syncEventDataChannelModule.getIsDestroying()) {
+        if (!this._syncEventDataChannelModule.getHasDestroyStarted()) {
           await this._syncEventDataChannelModule.destroy();
         }
       });
 
       this._mediaStreamManagerModule = new MediaStreamManagerModule(this);
       this.registerCleanupHandler(async () => {
-        if (!this._mediaStreamManagerModule.getIsDestroying()) {
+        if (!this._mediaStreamManagerModule.getHasDestroyStarted()) {
           await this._mediaStreamManagerModule.destroy();
         }
       });
@@ -368,7 +366,7 @@ export default class ZenRTCPeer extends PhantomCore {
     // Pause for message to be delivered
     await sleep(100);
 
-    if (!this.getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       this.destroy();
     }
   }
@@ -441,7 +439,7 @@ export default class ZenRTCPeer extends PhantomCore {
     } else {
       // FIXME: Return Promise.race and reject if class is destroyed before
       // connecting
-      await new Promise(resolve => this.once(EVT_CONNECTED, resolve));
+      await new Promise(resolve => this.once(EVT_CONNECT, resolve));
     }
   }
 
@@ -489,51 +487,6 @@ export default class ZenRTCPeer extends PhantomCore {
     } else {
       this._webrtcPeer = null;
 
-      // "BootStream" preliminary fixes for iOS 15 call hosting, where streams
-      // don't start playing on remote peers until at least one stream of type
-      // (i.e. audio / video) is added. This only appears to affect networks
-      // which use iOS 15 as the host "proxy" device / virtual server.
-      // @see https://github.com/jzombie/pre-re-shell/issues/67
-      //
-      // TODO: Add video track to boot stream, if possible
-      // (canvas.captureStream() isn't supported on iOS; is there another way?)
-      // Can MediaSource be the key to the "other way"?
-      // https://developer.mozilla.org/en-US/docs/Web/API/MediaSource?
-      // https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-73622026
-      // [Demo of video over WebRTC data channel] https://github.com/node-webrtc/node-webrtc/issues/156#issuecomment-292074470
-      const bootStream = (() => {
-        if (!this._isVirtualServer) {
-          return null;
-        }
-
-        const bootStream =
-          utils.mediaStream.generators.createEmptyAudioMediaStream(10);
-
-        const stopBootStream = async () => {
-          for (const track of bootStream.getTracks()) {
-            try {
-              if (this._webRTCPeer && !this._webrtcPeer.destroyed) {
-                this._webrtcPeer.removeTrack(track, bootStream);
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          }
-        };
-
-        // Stop sending BootStream once connected
-        this.once(EVT_CONNECTED, () => {
-          // TODO: Don't use setTimeout and instead use bootStream sync event
-          // Stop the bootStream after a short amount of time
-          setTimeout(stopBootStream, 10000);
-        });
-
-        // Explicitly stop bootStream on disconnect
-        this.once(EVT_DISCONNECTED, stopBootStream);
-
-        return bootStream;
-      })();
-
       const simplePeerOptions = {
         initiator: this._isInitiator,
 
@@ -543,8 +496,6 @@ export default class ZenRTCPeer extends PhantomCore {
 
         // @see https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration/iceTransportPolicy#value
         // iceTransportPolicy: "relay",
-
-        stream: bootStream,
 
         /**
          * TODO: offerOptions voiceActivityDetection false (better music quality).
@@ -578,7 +529,7 @@ export default class ZenRTCPeer extends PhantomCore {
           */
 
           this._sdpOffer = sdp;
-          this.emit(EVT_SDP_OFFERED, sdp);
+          this.emit(EVT_SDP_OFFER, sdp);
 
           return sdp;
         },
@@ -624,7 +575,7 @@ export default class ZenRTCPeer extends PhantomCore {
         this._isConnected = true;
         this._connectTime = getUnixTime();
 
-        this.emit(EVT_CONNECTED);
+        this.emit(EVT_CONNECT);
       });
 
       // Handle WebRTC disconnect
@@ -642,7 +593,7 @@ export default class ZenRTCPeer extends PhantomCore {
         // the connection has not been fully established.
         if (wasConnected) {
           // Note that that is emit after _isConnected is set to false.
-          this.emit(EVT_DISCONNECTED);
+          this.emit(EVT_DISCONNECT);
         }
 
         // Provide automated re-connect mechanism, if this is the initiator and
@@ -653,7 +604,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
         this.log.debug("webrtc-peer disconnected");
 
-        if (!this.getIsDestroying()) {
+        if (!this.getHasDestroyStarted()) {
           this.destroy();
         }
       });
@@ -669,7 +620,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
       // TODO: Use event constant
       this._webrtcPeer.on("data", data => {
-        this.emit(EVT_DATA_RECEIVED, data);
+        this.emit(EVT_DATA, data);
       });
     }
   }
@@ -752,7 +703,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
         // Utilized for logging / monitoring purposes only
         this._sdpAnswer = signal.sdp;
-        this.emit(EVT_SDP_ANSWERED, signal.sdp);
+        this.emit(EVT_SDP_ANSWER, signal.sdp);
       }
     } else {
       throw new Error(
@@ -906,14 +857,14 @@ export default class ZenRTCPeer extends PhantomCore {
         break;
 
       case SYNC_EVT_BYE:
-        if (!this.getIsDestroying) {
+        if (!this.getHasDestroyStarted) {
           this.destroy();
         }
         break;
 
       // TODO: Move handler into MediaStreamManagerModule
       // Internal event to zenRTCPeer
-      case SYNC_EVT_TRACK_REMOVED:
+      case SYNC_EVT_TRACK_REMOVE:
         (() => {
           // Remove "tracksOfKind" and remove all tracks with this media stream
           // FIXME: (jh) Try to remove only the relevant track
@@ -922,8 +873,7 @@ export default class ZenRTCPeer extends PhantomCore {
           // kind = "audio" | "video"
           const { msid, kind } = eventData;
 
-          // TODO: Remove or use phantom logger
-          console.debug("SYNC_EVT_TRACK_REMOVED", { msid, kind });
+          this.log.debug("SYNC_EVT_TRACK_REMOVE", { msid, kind });
 
           const mediaStream = this.getIncomingMediaStreams().find(
             ({ id }) => id === msid
@@ -963,7 +913,7 @@ export default class ZenRTCPeer extends PhantomCore {
 
       default:
         // Route up any unhandled sync events
-        this.emit(EVT_SYNC_EVT_RECEIVED, {
+        this.emit(EVT_SYNC, {
           eventName,
           eventData,
         });
@@ -975,7 +925,7 @@ export default class ZenRTCPeer extends PhantomCore {
    * @return {Promise<void>}
    */
   async disconnect() {
-    if (!this.getIsDestroying()) {
+    if (!this.getHasDestroyStarted()) {
       return this.destroy();
     }
   }

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { globalLogger } from "phantom-core";
+import { useLayoutEffect, useRef } from "react";
 import "animate.css";
 
 // TODO: Document
@@ -17,16 +18,16 @@ export default function useAnimation({
   shouldRun = true,
 }) {
   if (typeof animationDuration !== "string") {
-    console.warn('animationDuration should be a string (i.e. "1s")');
+    globalLogger.warn('animationDuration should be a string (i.e. "1s")');
   }
 
   if (typeof animationDelay !== "string") {
-    console.warn('animationDelay should be a string (i.e. "0s")');
+    globalLogger.warn('animationDelay should be a string (i.e. "0s")');
   }
 
   const refOnAnimationEnd = useRef(onAnimationEnd);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (shouldRun && domElement) {
       if (isDisabled) {
         // TODO: Can this be used as an exported property instead of directly

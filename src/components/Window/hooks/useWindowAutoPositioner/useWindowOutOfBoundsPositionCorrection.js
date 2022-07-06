@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import debounce from "debounce";
 
-import { EVT_RESIZED, EVT_MOVED } from "../../classes/WindowController";
+import { EVT_RESIZE, EVT_MOVE } from "../../classes/WindowController";
 
 import getElSize from "@utils/getElSize";
 import getElPosition from "@utils/getElPosition";
@@ -132,8 +132,8 @@ export default function useWindowOutOfBoundsPositionCorrection({
         false
       );
 
-      windowController.on(EVT_RESIZED, _handleResizeOrMove);
-      windowController.on(EVT_MOVED, _handleResizeOrMove);
+      windowController.on(EVT_RESIZE, _handleResizeOrMove);
+      windowController.on(EVT_MOVE, _handleResizeOrMove);
 
       // TODO: Use common handler instead
       window.addEventListener("resize", _handleResizeOrMove);
@@ -142,8 +142,8 @@ export default function useWindowOutOfBoundsPositionCorrection({
       _handleResizeOrMove();
 
       return function unmount() {
-        windowController.off(EVT_RESIZED, _handleResizeOrMove);
-        windowController.off(EVT_MOVED, _handleResizeOrMove);
+        windowController.off(EVT_RESIZE, _handleResizeOrMove);
+        windowController.off(EVT_MOVE, _handleResizeOrMove);
 
         window.removeEventListener("resize", _handleResizeOrMove);
       };

@@ -158,7 +158,7 @@ const DesktopCommanderDebuggerApp = {
           <hr />
           <Padding>
             <Center>
-              <label>Choose a window to send a command:</label>
+              <label>Choose a window to send a command:</label>{" "}
               <select
                 onChange={handleSelectWindowControllerChange}
                 value={selectedWindowControllerUUID}

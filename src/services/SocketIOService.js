@@ -1,10 +1,10 @@
-import UIServiceCore, { EVT_DESTROYED } from "@core/classes/UIServiceCore";
+import UIServiceCore, { EVT_DESTROY } from "@core/classes/UIServiceCore";
 import SocketChannel from "@shared/SocketChannel";
 
 import { io } from "socket.io-client";
 
-export const EVT_CONNECTED = "connected";
-export const EVT_DISCONNECTED = "disconnected";
+export const EVT_CONNECT = "connect";
+export const EVT_DISCONNECT = "disconnect";
 
 // TODO: Generate UI notifications when socket goes offline / comes online
 
@@ -51,7 +51,7 @@ export default class SocketIOService extends UIServiceCore {
           isConnected: true,
         });
 
-        this.emit(EVT_CONNECTED);
+        this.emit(EVT_CONNECT);
       });
 
       // TODO: Use event constant
@@ -60,7 +60,7 @@ export default class SocketIOService extends UIServiceCore {
           isConnected: false,
         });
 
-        this.emit(EVT_DISCONNECTED);
+        this.emit(EVT_DISCONNECT);
       });
 
       this._socket = socket;
@@ -78,7 +78,7 @@ export default class SocketIOService extends UIServiceCore {
     } else {
       return new Promise((resolve, reject) => {
         function handleResolve() {
-          this.off(EVT_DESTROYED, handleReject);
+          this.off(EVT_DESTROY, handleReject);
 
           callback();
 
@@ -86,14 +86,14 @@ export default class SocketIOService extends UIServiceCore {
         }
 
         function handleReject() {
-          this.off(EVT_CONNECTED, handleResolve);
+          this.off(EVT_CONNECT, handleResolve);
 
           reject();
         }
 
-        this.once(EVT_CONNECTED, handleResolve);
+        this.once(EVT_CONNECT, handleResolve);
 
-        this.once(EVT_DESTROYED, handleReject);
+        this.once(EVT_DESTROY, handleReject);
       });
     }
   }

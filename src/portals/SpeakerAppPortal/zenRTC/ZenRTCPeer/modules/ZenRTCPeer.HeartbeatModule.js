@@ -1,5 +1,5 @@
 import BaseModule from "./ZenRTCPeer.BaseModule";
-import { EVT_CONNECTED } from "../ZenRTCPeer";
+import { EVT_CONNECT, EVT_DISCONNECT } from "../ZenRTCPeer";
 
 // In milliseconds
 const HEARTBEAT_INTERVAL_TIME = 5000;
@@ -8,27 +8,22 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
   constructor(zenRTCPeer) {
     super(zenRTCPeer);
 
-    this.ping = this.ping.bind(this);
-
     this._heartbeatInterval = null;
 
     // Perform initial ping on connect
-    zenRTCPeer.on(EVT_CONNECTED, () => {
+    zenRTCPeer.on(EVT_CONNECT, () => {
       // Perform initial ping
       this.ping();
 
       // Handle heartbeat ping polling
-      this._heartbeatInterval = setInterval(this.ping, HEARTBEAT_INTERVAL_TIME);
+      this._heartbeatInterval = zenRTCPeer.setInterval(
+        () => this.ping,
+        HEARTBEAT_INTERVAL_TIME
+      );
     });
-  }
 
-  /**
-   * @return {Promise<void>}
-   */
-  async destroy() {
-    return super.destroy(() => {
-      // Stop the ping polling
-      clearInterval(this._heartbeatInterval);
+    zenRTCPeer.on(EVT_DISCONNECT, () => {
+      zenRTCPeer.clearInterval(this._heartbeatInterval);
     });
   }
 
@@ -51,11 +46,7 @@ export default class ZenRTCPeerHeartbeatModule extends BaseModule {
     return this._zenRTCPeer.ping().catch(err => {
       this.log.error("Heartbeat failed", err);
 
-      // TODO: Fix issue where this can leave remote peers hanging (it is
-      // likely due to issue in ZenRTCVirtualServer)
-      // (to reproduce, connect remote mobile client connection then close all mobile windows)
-
-      if (this._zenRTCPeer && !this._zenRTCPeer.getIsDestroying()) {
+      if (this._zenRTCPeer && !this._zenRTCPeer.getHasDestroyStarted()) {
         this._zenRTCPeer.destroy();
       }
     });
